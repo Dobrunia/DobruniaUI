@@ -86,6 +86,10 @@ interface SidebarListProps {
   onSelect: (key: string) => void;
   width?: string;
   height?: string;
+  allowCollapse?: boolean;
+  wrapperClassName?: string;
+  sectionTitleClassName?: string;
+  itemClassName?: string;
 }
 
 const getSectionKey = (section: SidebarListSection, i: number) =>
@@ -97,10 +101,21 @@ export const SidebarList: React.FC<SidebarListProps> = ({
   onSelect,
   width,
   height,
+  allowCollapse = true,
+  wrapperClassName,
+  sectionTitleClassName,
+  itemClassName,
 }) => {
   const [collapsed, setCollapsed] = useState<{ [title: string]: boolean }>({});
 
+  // Проверка на пустой список (нет секций или все секции пустые)
+  const isEmpty =
+    !sections.length ||
+    sections.every((section) => !section.items || section.items.length === 0);
+  if (isEmpty) return null;
+
   const toggleSection = (title: string) => {
+    if (!allowCollapse) return;
     setCollapsed((prev) => ({
       ...prev,
       [title]: !prev[title],
@@ -108,25 +123,35 @@ export const SidebarList: React.FC<SidebarListProps> = ({
   };
 
   return (
-    <SidebarListWrapper $width={width} $height={height}>
+    <SidebarListWrapper
+      $width={width}
+      $height={height}
+      className={wrapperClassName}
+    >
       {sections.map((section, i) => {
         const sectionKey = getSectionKey(section, i);
         const hasTitle = Boolean(section.title);
         return (
           <React.Fragment key={sectionKey}>
             {hasTitle && (
-              <SectionTitle onClick={() => toggleSection(sectionKey)}>
+              <SectionTitle
+                onClick={() => toggleSection(sectionKey)}
+                className={sectionTitleClassName}
+                style={!allowCollapse ? { cursor: 'default' } : undefined}
+              >
                 {section.title}
-                <span
-                  style={{
-                    fontSize: '1em',
-                    width: 16,
-                    display: 'inline-block',
-                    color: 'var(--text-secondary)',
-                  }}
-                >
-                  {collapsed[sectionKey] ? '►' : '▼'}
-                </span>
+                {allowCollapse && (
+                  <span
+                    style={{
+                      fontSize: '1em',
+                      width: 16,
+                      display: 'inline-block',
+                      color: 'var(--text-secondary)',
+                    }}
+                  >
+                    {collapsed[sectionKey] ? '►' : '▼'}
+                  </span>
+                )}
               </SectionTitle>
             )}
             {!collapsed[sectionKey] && (
@@ -136,6 +161,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
                     key={comp.key}
                     selected={selected === comp.key}
                     onClick={() => onSelect(comp.key)}
+                    className={itemClassName}
                   >
                     {comp.label}
                   </SidebarItem>

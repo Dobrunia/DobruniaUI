@@ -25,6 +25,7 @@ const Playground: React.FC = () => {
           sections={sections}
           selected={selected}
           onSelect={setSelected}
+          allowCollapse={false}
         />
       }
     >
