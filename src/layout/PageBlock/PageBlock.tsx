@@ -19,10 +19,15 @@ const Container = styled.div<{ $stretched?: boolean }>`
     `
     justify-content: stretch;
   `}
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `;
 
 const Content = styled.div<{ $stretched?: boolean }>`
-  max-width: var(--layout-content-width);
+  max-width: ${({ $stretched }) => ($stretched ? '100%' : '700px')};
   flex-grow: 1;
   min-width: 0;
   padding: var(--spacing-large) var(--spacing-medium);
@@ -31,9 +36,13 @@ const Content = styled.div<{ $stretched?: boolean }>`
   ${({ $stretched }) =>
     $stretched &&
     `
-    max-width: 100%;
     flex: 2;
   `}
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: var(--spacing-medium) var(--spacing-small);
+  }
 `;
 
 const Sidebar = styled.div`
@@ -41,6 +50,12 @@ const Sidebar = styled.div`
   flex-shrink: 0;
   box-sizing: border-box;
   padding: var(--spacing-large) var(--spacing-medium);
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: var(--spacing-medium) var(--spacing-small);
+    margin-bottom: var(--spacing-medium);
+  }
 `;
 
 export const PageBlock: React.FC<PageBlockProps> = ({

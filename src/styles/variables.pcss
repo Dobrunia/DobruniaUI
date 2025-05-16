@@ -1,8 +1,75 @@
+/* Правила 1 - только 3 размера small, medium, large */
 :root {
+  /* layout */
   --layout-content-width: 1200px;
   --layout-sidebar-width: 300px;
 
-  --spacing-small: 0.75rem;
-  --spacing-medium: 1.5rem;
-  --spacing-large: 2.5rem;
+  /* spacing */
+  --spacing-small: 0.5rem;
+  --spacing-medium: 1rem;
+  --spacing-large: 2rem;
+
+  /* radius */
+  --radius-medium: 6px;
+
+  /* transition */
+  --transition-fast: 0.15s;
+}
+
+:root[data-theme='light'] {
+  /* background colors */
+  --color-bg: #eaf3fb; /* Light Blue Sky */
+  --color-surface: #ffffff; /* White Card */
+  --color-elevated: #e3eaf6; /* Soft Blue Surface */
+  --color-elevated-active: #c8d4e6; /* Более тёмный голубой для выделения */
+
+  /* accent colors */
+  --color-primary: #3a7bd5; /* Vivid Blue */
+  --color-secondary: #b6d0f7; /* Pale Blue */
+  --color-accent: #f7e6ff; /* Soft Lavender */
+  --color-error: #ffd6db; /* Soft Pink */
+
+  /* text colors */
+  --text-heading: #1a2233; /* Deep Navy */
+  --text-body: #2d3a4d; /* Muted Navy */
+  --text-secondary: #6b7a90; /* Cool Gray */
+  --text-disabled: #b0b8c9; /* Pale Gray */
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #121212; /* Almost Black */
+  --color-surface: #1e1e1e; /* Dark Gray */
+  --color-elevated: #2a2a2a; /* Slightly lighter */
+  --color-elevated-active: #232a36; /* Более тёмный для выделения в тёмной теме */
+
+  --color-primary: #26418f; /* Deep Indigo */
+  --color-secondary: #1b5e20; /* Dark Green */
+  --color-accent: #4a148c; /* Deep Purple */
+  --color-error: #b00020; /* Dark Red */
+
+  --text-heading: #ffffff; /* White */
+  --text-body: #e0e0e0; /* Light Gray */
+  --text-secondary: #b3b3b3; /* Mid Gray */
+  --text-disabled: #757575; /* Dim Gray */
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --layout-content-width: 1000px;
+    --layout-sidebar-width: 220px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --layout-content-width: 100vw;
+    --layout-sidebar-width: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --layout-content-width: 100vw;
+    --layout-sidebar-width: 100vw;
+  }
 }
