@@ -25,38 +25,15 @@ const dash = keyframes`
   }
 `;
 
-const pulse = keyframes`
-  0% {
-    transform: scale(0.95);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.95);
-    opacity: 0.5;
-  }
-`;
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-4px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-`;
-
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warning';
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'warning'
+  | 'send'
+  | 'close';
 type ButtonSize = 'small' | 'medium' | 'large';
+type ButtonShape = 'default' | 'circle' | 'square';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -66,9 +43,121 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   outlined?: boolean;
+  shape?: ButtonShape;
 }
 
+const getButtonSize = (
+  size: ButtonSize,
+  shape: ButtonShape,
+  variant?: ButtonVariant,
+) => {
+  if (variant === 'send') {
+    return css`
+      width: 24px;
+      height: 24px;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      font-size: 20px;
+    `;
+  }
+  if (shape === 'circle') {
+    switch (size) {
+      case 'small':
+        return css`
+          width: 32px;
+          height: 32px;
+          padding: 0;
+          font-size: var(--font-size-small);
+        `;
+      case 'large':
+        return css`
+          width: 48px;
+          height: 48px;
+          padding: 0;
+          font-size: var(--font-size-large);
+        `;
+      default:
+        return css`
+          width: 40px;
+          height: 40px;
+          padding: 0;
+          font-size: var(--font-size-medium);
+        `;
+    }
+  }
+  if (shape === 'square') {
+    switch (size) {
+      case 'small':
+        return css`
+          width: 32px;
+          height: 32px;
+          padding: 0;
+          font-size: var(--font-size-small);
+        `;
+      case 'large':
+        return css`
+          width: 48px;
+          height: 48px;
+          padding: 0;
+          font-size: var(--font-size-large);
+        `;
+      default:
+        return css`
+          width: 40px;
+          height: 40px;
+          padding: 0;
+          font-size: var(--font-size-medium);
+        `;
+    }
+  }
+  switch (size) {
+    case 'small':
+      return css`
+        padding: var(--spacing-tiny) var(--spacing-small);
+        font-size: var(--font-size-small);
+      `;
+    case 'large':
+      return css`
+        padding: var(--spacing-medium) var(--spacing-large);
+        font-size: var(--font-size-large);
+      `;
+    default:
+      return css`
+        padding: var(--spacing-small) var(--spacing-medium);
+        font-size: var(--font-size-medium);
+      `;
+  }
+};
+
 const getButtonStyles = (variant: ButtonVariant, outlined?: boolean) => {
+  if (variant === 'send') {
+    // icon-only send button (no bg, no border)
+    return css`
+      background: none;
+      color: var(--color-primary);
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      min-width: 0;
+      min-height: 0;
+      &:hover:not(:disabled) {
+        color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
+        background: none;
+      }
+    `;
+  }
+  if (variant === 'close') {
+    return css`
+      background: transparent;
+
+      color: var(--color-error);
+      border: 2px solid var(--color-error);
+      &:hover:not(:disabled) {
+        background: var(--color-elevated);
+      }
+    `;
+  }
   const baseStyles = outlined
     ? css`
         background: transparent;
@@ -138,43 +227,40 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean) => {
   }
 };
 
-const getButtonSize = (size: ButtonSize) => {
-  switch (size) {
-    case 'small':
-      return css`
-        padding: var(--spacing-tiny) var(--spacing-small);
-        font-size: var(--font-size-small);
-      `;
-    case 'large':
-      return css`
-        padding: var(--spacing-medium) var(--spacing-large);
-        font-size: var(--font-size-large);
-      `;
-    default:
-      return css`
-        padding: var(--spacing-small) var(--spacing-medium);
-        font-size: var(--font-size-medium);
-      `;
-  }
-};
-
 const StyledButton = styled.button<ButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-small);
-  border-radius: var(--radius-medium);
+  border-radius: ${({ shape, variant }) =>
+    shape === 'square'
+      ? 'var(--radius-medium)'
+      : variant === 'close'
+      ? 'var(--radius-medium)'
+      : shape === 'circle'
+      ? '50%'
+      : 'var(--radius-medium)'};
   cursor: pointer;
   transition: all var(--transition-fast);
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'max-content')};
-  min-width: ${({ fullWidth }) => (fullWidth ? '100%' : 'min-content')};
-  min-height: 2.5em;
+  width: ${({ fullWidth, variant, shape }) =>
+    variant === 'send'
+      ? '24px'
+      : fullWidth
+      ? '100%'
+      : shape === 'circle' || shape === 'square'
+      ? undefined
+      : 'max-content'};
+  min-width: ${({ fullWidth, variant }) =>
+    variant === 'send' ? '0' : fullWidth ? '100%' : 'min-content'};
+  min-height: ${({ variant }) => (variant === 'send' ? '0' : '2.5em')};
   opacity: ${({ isLoading }) => (isLoading ? 0.7 : 1)};
   pointer-events: ${({ isLoading }) => (isLoading ? 'none' : 'auto')};
   position: relative;
+  font-size: 1rem;
 
   ${({ variant = 'primary', outlined }) => getButtonStyles(variant, outlined)}
-  ${({ size = 'medium' }) => getButtonSize(size)}
+  ${({ size = 'medium', shape = 'default', variant }) =>
+    getButtonSize(size, shape, variant)}
 
   &:disabled {
     opacity: 0.5;
@@ -184,6 +270,12 @@ const StyledButton = styled.button<ButtonProps>`
   &:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+  }
+
+  svg {
+    display: block;
+    margin: auto;
+    pointer-events: none;
   }
 `;
 
@@ -212,30 +304,94 @@ const ButtonContent = styled.span<{ $isLoading: boolean }>`
   visibility: ${({ $isLoading }) => ($isLoading ? 'hidden' : 'visible')};
 `;
 
+const SendIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <line
+      x1="5"
+      y1="5"
+      x2="15"
+      y2="15"
+      stroke="var(--color-error)"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    <line
+      x1="15"
+      y1="5"
+      x2="5"
+      y2="15"
+      stroke="var(--color-error)"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
-  size = 'medium',
+  size: sizeProp,
   fullWidth = false,
   isLoading = false,
   leftIcon,
   rightIcon,
-  outlined = false,
+  outlined: outlinedProp,
+  shape: shapeProp,
   ...props
 }) => {
+  let outlined = outlinedProp;
+  let shape = shapeProp;
+  let size = sizeProp;
+
+  if (variant === 'close') {
+    if (size === undefined) size = 'small';
+    outlined = true;
+    shape = 'square';
+  }
+  if (variant === 'send') {
+    outlined = false;
+    shape = 'square';
+  }
+  // Если size не определён, по умолчанию medium
+  const finalSize = size ?? 'medium';
+
+  let icon = leftIcon;
+  if (variant === 'send') icon = <SendIcon />;
+  if (variant === 'close') icon = <CloseIcon />;
+  const isIconOnly = variant === 'send' || variant === 'close';
+
   return (
     <StyledButton
       variant={variant}
-      size={size}
+      size={finalSize}
       fullWidth={fullWidth}
       isLoading={isLoading}
       outlined={outlined}
+      shape={shape}
       {...props}
     >
       <ButtonContent $isLoading={isLoading}>
-        {leftIcon}
-        {children}
-        {rightIcon}
+        {icon}
+        {!isIconOnly && children}
+        {!isIconOnly && rightIcon}
       </ButtonContent>
       {isLoading && (
         <SpinnerWrapper>

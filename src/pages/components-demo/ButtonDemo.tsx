@@ -69,6 +69,44 @@ export const ButtonDemo: React.FC = () => {
       </Section>
 
       <Section>
+        <SectionTitle>Circular Buttons</SectionTitle>
+        <ButtonGrid>
+          <ButtonWrapper>
+            <Button variant="primary" shape="circle" size="small">
+              +
+            </Button>
+            <ButtonLabel>Small Circle</ButtonLabel>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button variant="primary" shape="circle">
+              +
+            </Button>
+            <ButtonLabel>Medium Circle</ButtonLabel>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button variant="primary" shape="circle" size="large">
+              +
+            </Button>
+            <ButtonLabel>Large Circle</ButtonLabel>
+          </ButtonWrapper>
+        </ButtonGrid>
+      </Section>
+
+      <Section>
+        <SectionTitle>Special Buttons</SectionTitle>
+        <ButtonGrid>
+          <ButtonWrapper>
+            <Button variant="send" aria-label="Send" />
+            <ButtonLabel>Send (icon only)</ButtonLabel>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button variant="close" aria-label="Close" />
+            <ButtonLabel>Close Outlined</ButtonLabel>
+          </ButtonWrapper>
+        </ButtonGrid>
+      </Section>
+
+      <Section>
         <SectionTitle>Outlined Buttons</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
@@ -136,26 +174,6 @@ export const ButtonDemo: React.FC = () => {
           <ButtonWrapper style={{ gridColumn: '1 / -1' }}>
             <Button fullWidth>Full Width Button</Button>
             <ButtonLabel>Full Width</ButtonLabel>
-          </ButtonWrapper>
-        </ButtonGrid>
-      </Section>
-
-      <Section>
-        <SectionTitle>Button with Icons</SectionTitle>
-        <ButtonGrid>
-          <ButtonWrapper>
-            <Button leftIcon="→">With Left Icon</Button>
-            <ButtonLabel>Left Icon</ButtonLabel>
-          </ButtonWrapper>
-          <ButtonWrapper>
-            <Button rightIcon="←">With Right Icon</Button>
-            <ButtonLabel>Right Icon</ButtonLabel>
-          </ButtonWrapper>
-          <ButtonWrapper>
-            <Button leftIcon="→" rightIcon="←">
-              Both Icons
-            </Button>
-            <ButtonLabel>Both Icons</ButtonLabel>
           </ButtonWrapper>
         </ButtonGrid>
       </Section>
