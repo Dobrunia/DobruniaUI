@@ -16,7 +16,7 @@ export const SidebarListDemo: React.FC = () => {
     <div>
       <h2>SidebarList Demo</h2>
       <SidebarList
-        items={items}
+        sections={[{ items }]}
         selected={selected}
         onSelect={setSelected}
         width="320px"

@@ -3,9 +3,15 @@ import { PageBlock } from '../layout';
 import { SidebarList } from '../components';
 import { PageBlockDemo, SidebarListDemo } from './components-demo';
 
-const components = [
-  { key: 'PageBlock', label: 'PageBlock' },
-  { key: 'SidebarList', label: 'SidebarList' },
+const sections = [
+  {
+    title: 'Layouts',
+    items: [{ key: 'PageBlock', label: 'PageBlock' }],
+  },
+  {
+    title: 'Components',
+    items: [{ key: 'SidebarList', label: 'SidebarList' }],
+  },
 ];
 
 const Playground: React.FC = () => {
@@ -16,7 +22,7 @@ const Playground: React.FC = () => {
       stretched={true}
       left={
         <SidebarList
-          items={components}
+          sections={sections}
           selected={selected}
           onSelect={setSelected}
         />

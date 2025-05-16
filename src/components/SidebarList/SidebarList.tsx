@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
   list-style: none;
-  padding: 0;
+  padding: var(--spacing-small);
   margin: 0;
   border-radius: var(--radius-medium);
   width: ${({ $width }) => $width || '100%'};
@@ -11,6 +11,30 @@ const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--color-elevated);
+`;
+
+const SectionTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-small) var(--spacing-medium) 0
+    calc(var(--spacing-medium) - 4px);
+  color: var(--text-heading);
+  font-size: 1.05em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: var(--spacing-small);
+  margin-bottom: 0.25em;
+  user-select: none;
+  cursor: pointer;
+  gap: 0.5em;
+  &:first-child {
+    margin-top: 0;
+  }
+`;
+
+const ItemsWrapper = styled.div<{ noIndent?: boolean }>`
+  padding-left: ${({ noIndent }) => (noIndent ? '0' : 'var(--spacing-medium)')};
 `;
 
 const SidebarItem = styled.li<{ selected: boolean }>`
@@ -26,7 +50,7 @@ const SidebarItem = styled.li<{ selected: boolean }>`
   font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
   transition: background var(--transition-fast), color var(--transition-fast);
   &:hover {
-    background: var(--color-elevated);
+    background: color-mix(in srgb, var(--color-elevated-active) 80%, white 20%);
     color: var(--text-heading);
   }
   &:last-child {
@@ -51,30 +75,76 @@ export interface SidebarListItem {
   label: string;
 }
 
-interface SidebarListProps {
+export interface SidebarListSection {
+  title?: string;
   items: SidebarListItem[];
+}
+
+interface SidebarListProps {
+  sections: SidebarListSection[];
   selected: string;
   onSelect: (key: string) => void;
   width?: string;
   height?: string;
 }
 
+const getSectionKey = (section: SidebarListSection, i: number) =>
+  section.title || `section-${i}`;
+
 export const SidebarList: React.FC<SidebarListProps> = ({
-  items,
+  sections,
   selected,
   onSelect,
   width,
   height,
-}) => (
-  <SidebarListWrapper $width={width} $height={height}>
-    {items.map((comp) => (
-      <SidebarItem
-        key={comp.key}
-        selected={selected === comp.key}
-        onClick={() => onSelect(comp.key)}
-      >
-        {comp.label}
-      </SidebarItem>
-    ))}
-  </SidebarListWrapper>
-);
+}) => {
+  const [collapsed, setCollapsed] = useState<{ [title: string]: boolean }>({});
+
+  const toggleSection = (title: string) => {
+    setCollapsed((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  };
+
+  return (
+    <SidebarListWrapper $width={width} $height={height}>
+      {sections.map((section, i) => {
+        const sectionKey = getSectionKey(section, i);
+        const hasTitle = Boolean(section.title);
+        return (
+          <React.Fragment key={sectionKey}>
+            {hasTitle && (
+              <SectionTitle onClick={() => toggleSection(sectionKey)}>
+                {section.title}
+                <span
+                  style={{
+                    fontSize: '1em',
+                    width: 16,
+                    display: 'inline-block',
+                    color: 'var(--text-secondary)',
+                  }}
+                >
+                  {collapsed[sectionKey] ? '►' : '▼'}
+                </span>
+              </SectionTitle>
+            )}
+            {!collapsed[sectionKey] && (
+              <ItemsWrapper noIndent={!hasTitle}>
+                {section.items.map((comp) => (
+                  <SidebarItem
+                    key={comp.key}
+                    selected={selected === comp.key}
+                    onClick={() => onSelect(comp.key)}
+                  >
+                    {comp.label}
+                  </SidebarItem>
+                ))}
+              </ItemsWrapper>
+            )}
+          </React.Fragment>
+        );
+      })}
+    </SidebarListWrapper>
+  );
+};
