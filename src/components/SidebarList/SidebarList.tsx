@@ -20,7 +20,7 @@ const SectionTitle = styled.div`
   padding: var(--spacing-small) var(--spacing-medium) 0
     calc(var(--spacing-medium) - 4px);
   color: var(--text-heading);
-  font-size: 1.05em;
+  font-size: var(--font-size-medium);
   font-weight: 600;
   letter-spacing: 0.01em;
   margin-top: var(--spacing-small);
@@ -48,6 +48,7 @@ const SidebarItem = styled.li<{ selected: boolean }>`
   border-radius: var(--radius-medium);
   margin-bottom: var(--spacing-small);
   font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+  font-size: var(--font-size-medium);
   transition: background var(--transition-fast), color var(--transition-fast);
   &:hover {
     background: color-mix(in srgb, var(--color-elevated-active) 80%, white 20%);

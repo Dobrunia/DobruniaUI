@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PageBlock } from '../layout';
 import { SidebarList } from '../components';
-import { PageBlockDemo, SidebarListDemo } from './components-demo';
+import { PageBlockDemo, SidebarListDemo, ButtonDemo } from './components-demo';
 
 const sections = [
   {
@@ -10,7 +10,10 @@ const sections = [
   },
   {
     title: 'Components',
-    items: [{ key: 'SidebarList', label: 'SidebarList' }],
+    items: [
+      { key: 'SidebarList', label: 'SidebarList' },
+      { key: 'Button', label: 'Button' },
+    ],
   },
 ];
 
@@ -32,6 +35,7 @@ const Playground: React.FC = () => {
       {/* Пока только PageBlock */}
       {selected === 'PageBlock' && <PageBlockDemo />}
       {selected === 'SidebarList' && <SidebarListDemo />}
+      {selected === 'Button' && <ButtonDemo />}
     </PageBlock>
   );
 };

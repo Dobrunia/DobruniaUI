@@ -11,4 +11,5 @@ html {
 body {
     background-color: var(--color-bg);
     color: var(--text-body);
+    font-size: 14px;
 }
