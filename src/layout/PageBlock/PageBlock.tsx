@@ -47,12 +47,20 @@ const Content = styled.div<{ $stretched?: boolean }>`
 
 const Sidebar = styled.div`
   width: var(--layout-sidebar-width);
-  flex-shrink: 0;
+  min-width: var(--layout-sidebar-width);
+  max-height: 100vh;
+  overflow-y: auto;
   box-sizing: border-box;
   padding: var(--spacing-large) var(--spacing-medium);
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
 
   @media (max-width: 600px) {
     width: 100%;
+    min-width: 0;
+    max-height: none;
+    position: static;
     padding: var(--spacing-medium) var(--spacing-small);
     margin-bottom: var(--spacing-medium);
   }
@@ -66,9 +74,9 @@ export const PageBlock: React.FC<PageBlockProps> = ({
 }) => {
   return (
     <Container $stretched={stretched}>
-      {left && <Sidebar>{left}</Sidebar>}
+      <Sidebar>{left && left}</Sidebar>
       <Content $stretched={stretched}>{children}</Content>
-      {right && <Sidebar>{right}</Sidebar>}
+      <Sidebar>{right && right}</Sidebar>
     </Container>
   );
 };
