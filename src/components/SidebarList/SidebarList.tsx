@@ -143,7 +143,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
                 {allowCollapse && (
                   <span
                     style={{
-                      fontSize: '1em',
+                      fontSize: '0.7em',
                       width: 16,
                       display: 'inline-block',
                       color: 'var(--text-secondary)',
