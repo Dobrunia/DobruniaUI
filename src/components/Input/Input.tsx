@@ -143,6 +143,67 @@ const FileThumb = styled.img`
   border: 1.5px solid var(--color-primary);
 `;
 
+// Emoji Picker Component
+const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  ${(p) =>
+    p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;'}
+  background: var(--color-surface);
+  border-radius: var(--radius-medium);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
+  border: 1px solid var(--color-elevated);
+  padding: 4px;
+  z-index: 1000;
+  min-width: 180px;
+  max-width: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: var(--color-surface);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 8px;
+  }
+`;
+
+const EmojiGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px;
+`;
+
+const EmojiButton = styled.button`
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: var(--radius-small);
+  transition: background var(--transition-fast);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: var(--color-elevated);
+  }
+`;
+
+const EmojiButtonWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 // Типы
 export type InputType = 'message' | 'search' | 'file' | 'emoji' | 'audio';
 
@@ -157,6 +218,124 @@ interface InputProps {
   onEmojiSelect?: (emoji: string) => void;
   onAudioRecord?: (audio: Blob) => void;
 }
+
+const EmojiPicker: React.FC<{
+  onSelect?: (emoji: string) => void;
+  visible: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  align?: 'left' | 'right';
+}> = ({ onSelect, visible, onMouseEnter, onMouseLeave, align = 'right' }) => {
+  const emojis = [
+    '😀',
+    '😃',
+    '😄',
+    '😁',
+    '😆',
+    '😅',
+    '😂',
+    '🤣',
+    '😊',
+    '😇',
+    '🙂',
+    '🙃',
+    '😉',
+    '😌',
+    '😍',
+    '🥰',
+    '😘',
+    '😗',
+    '😙',
+    '😚',
+    '😋',
+    '😛',
+    '😝',
+    '😜',
+    '🤪',
+    '🤨',
+    '🧐',
+    '🤓',
+    '😎',
+    '🤩',
+    '🥳',
+    '😏',
+    '😒',
+    '😞',
+    '😔',
+    '😟',
+    '😕',
+    '🙁',
+    '☹️',
+    '😣',
+    '😖',
+    '😫',
+    '😩',
+    '🥺',
+    '😢',
+    '😭',
+    '😤',
+    '😠',
+    '😡',
+    '🤬',
+    '🤯',
+    '😳',
+    '🥵',
+    '🥶',
+    '😱',
+    '😨',
+    '😰',
+    '😥',
+    '😓',
+    '🤗',
+    '🤔',
+    '🤭',
+    '🤫',
+    '🤥',
+    '😶',
+    '😐',
+    '😑',
+    '😬',
+    '🙄',
+    '😯',
+    '😦',
+    '😧',
+    '😮',
+    '😲',
+    '🥱',
+    '😴',
+    '🤤',
+    '😪',
+    '😵',
+    '🤐',
+    '🥴',
+    '🤢',
+    '🤮',
+    '🤧',
+    '😷',
+    '🤒',
+    '🤕',
+  ];
+  if (!visible) return null;
+  return (
+    <EmojiPickerWrapper
+      align={align}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <EmojiGrid>
+        {emojis.map((emoji, index) => (
+          <EmojiButton
+            key={index}
+            onClick={() => onSelect?.(emoji)}
+            aria-label={`Select emoji ${emoji}`}
+          >
+            {emoji}
+          </EmojiButton>
+        ))}
+      </EmojiGrid>
+    </EmojiPickerWrapper>
+  );
+};
 
 export const Input: React.FC<InputProps> = ({
   type,
@@ -212,15 +391,25 @@ export const Input: React.FC<InputProps> = ({
     });
   };
 
-  // Emoji (заглушка)
-  const handleEmojiClick = () => {
-    onEmojiSelect?.('😀'); // пример
-  };
-
   // Audio (заглушка)
   const handleAudioClick = () => {
     // Здесь можно реализовать запись аудио
     onAudioRecord?.(new Blob());
+  };
+
+  // Emoji Picker hover logic
+  const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
+  const emojiPickerTimeout = useRef<number | null>(null);
+  const showEmojiPicker = () => {
+    if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
+    setEmojiPickerVisible(true);
+  };
+  const hideEmojiPicker = () => {
+    if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
+    emojiPickerTimeout.current = setTimeout(
+      () => setEmojiPickerVisible(false),
+      120,
+    );
   };
 
   // Render
@@ -282,9 +471,24 @@ export const Input: React.FC<InputProps> = ({
   }
   if (type === 'emoji') {
     return (
-      <IconBtn type="button" onClick={handleEmojiClick}>
-        <SmileIcon />
-      </IconBtn>
+      <EmojiButtonWrapper>
+        <IconBtn
+          type="button"
+          onMouseEnter={showEmojiPicker}
+          onMouseLeave={hideEmojiPicker}
+        >
+          <SmileIcon />
+        </IconBtn>
+        {onEmojiSelect && (
+          <EmojiPicker
+            onSelect={onEmojiSelect}
+            visible={emojiPickerVisible}
+            onMouseEnter={showEmojiPicker}
+            onMouseLeave={hideEmojiPicker}
+            align="left"
+          />
+        )}
+      </EmojiButtonWrapper>
     );
   }
   if (type === 'audio') {
@@ -345,9 +549,24 @@ export const Input: React.FC<InputProps> = ({
           }}
           rows={1}
         />
-        <IconBtn type="button" onClick={handleEmojiClick}>
-          <SmileIcon />
-        </IconBtn>
+        <EmojiButtonWrapper>
+          <IconBtn
+            type="button"
+            onMouseEnter={showEmojiPicker}
+            onMouseLeave={hideEmojiPicker}
+          >
+            <SmileIcon />
+          </IconBtn>
+          {onEmojiSelect && (
+            <EmojiPicker
+              onSelect={onEmojiSelect}
+              visible={emojiPickerVisible}
+              onMouseEnter={showEmojiPicker}
+              onMouseLeave={hideEmojiPicker}
+              align="right"
+            />
+          )}
+        </EmojiButtonWrapper>
         {val.trim() || files.length > 0 ? (
           <Button variant="send" onClick={onSend} aria-label="Отправить" />
         ) : (
