@@ -297,6 +297,27 @@ export const Input: React.FC<InputProps> = ({
   // message (default)
   return (
     <>
+      {files.length > 0 && (
+        <FilePreview style={{ marginBottom: 10 }}>
+          {files.map((file, i) => (
+            <FileThumbWrapper key={i}>
+              {file.type.startsWith('image/') ? (
+                <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
+              ) : (
+                <span>{file.name}</span>
+              )}
+              <Button
+                variant="close"
+                shape="circle"
+                size="small"
+                aria-label="Удалить"
+                onClick={() => handleRemoveFile(i)}
+                style={{ position: 'absolute', top: -8, right: -8 }}
+              />
+            </FileThumbWrapper>
+          ))}
+        </FilePreview>
+      )}
       <InputBar>
         <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
@@ -331,27 +352,6 @@ export const Input: React.FC<InputProps> = ({
           <MicIcon />
         </IconBtn>
       </InputBar>
-      {files.length > 0 && (
-        <FilePreview>
-          {files.map((file, i) => (
-            <FileThumbWrapper key={i}>
-              {file.type.startsWith('image/') ? (
-                <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
-              ) : (
-                <span>{file.name}</span>
-              )}
-              <Button
-                variant="close"
-                shape="circle"
-                size="small"
-                aria-label="Удалить"
-                onClick={() => handleRemoveFile(i)}
-                style={{ position: 'absolute', top: -8, right: -8 }}
-              />
-            </FileThumbWrapper>
-          ))}
-        </FilePreview>
-      )}
     </>
   );
 };
