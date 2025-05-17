@@ -28,7 +28,7 @@ const SmileIcon = () => (
     <circle cx="13" cy="8.5" r="1" fill="currentColor" />
   </svg>
 );
-const MicIcon = () => (
+const MicIcon = ({ recording }: { recording?: boolean }) => (
   <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
     {/* Корпус микрофона */}
     <rect
@@ -37,13 +37,13 @@ const MicIcon = () => (
       width="6"
       height="10"
       rx="3"
-      stroke="currentColor"
+      stroke={recording ? 'var(--color-error)' : 'currentColor'}
       strokeWidth="1.5"
     />
     {/* Основание-подставка */}
     <path
       d="M4 10.5a6 6 0 0 0 12 0"
-      stroke="currentColor"
+      stroke={recording ? 'var(--color-error)' : 'currentColor'}
       strokeWidth="1.5"
       fill="none"
     />
@@ -53,7 +53,7 @@ const MicIcon = () => (
       y1="13"
       x2="10"
       y2="17"
-      stroke="currentColor"
+      stroke={recording ? 'var(--color-error)' : 'currentColor'}
       strokeWidth="1.5"
       strokeLinecap="round"
     />
@@ -63,7 +63,7 @@ const MicIcon = () => (
       cy="18"
       rx="3"
       ry="0.7"
-      stroke="currentColor"
+      stroke={recording ? 'var(--color-error)' : 'currentColor'}
       strokeWidth="1.2"
       fill="none"
     />
@@ -419,7 +419,7 @@ const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
     height: 32px;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: var(--color-error);
+    background: var(--color-accent);
     opacity: 0.25;
     animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     z-index: 0;
@@ -438,8 +438,6 @@ const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
       opacity: 0;
     }
   }
-  color: ${({ $recording }) =>
-    $recording ? 'var(--color-error)' : 'var(--text-secondary)'};
 `;
 
 const SmileBtn = styled(IconBtn)`
@@ -729,7 +727,7 @@ export const Input: React.FC<InputProps> = ({
         onTouchEnd={stopRecording}
         aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
       >
-        <MicIcon />
+        <MicIcon recording={recording} />
       </MicBtn>
     );
   }
@@ -817,16 +815,7 @@ export const Input: React.FC<InputProps> = ({
             onTouchEnd={stopRecording}
             aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
           >
-            <span
-              onMouseDown={startRecording}
-              onMouseUp={stopRecording}
-              onMouseLeave={stopRecording}
-              onTouchStart={startRecording}
-              onTouchEnd={stopRecording}
-              style={{ display: 'flex' }}
-            >
-              <MicIcon />
-            </span>
+            <MicIcon recording={recording} />
           </MicBtn>
         )}
       </InputBar>
