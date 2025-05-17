@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '../Button/Button';
 
@@ -85,7 +85,7 @@ const SearchIcon = () => (
 const InputBar = styled.div`
   display: flex;
   align-items: flex-end;
-  background: var(--color-surface);
+  background: var(--color-elevated);
   padding: var(--spacing-small) var(--spacing-medium);
   gap: var(--spacing-small);
   width: 100%;
@@ -149,7 +149,7 @@ const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   bottom: calc(100% + 8px);
   ${(p) =>
     p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;'}
-  background: var(--color-surface);
+  background: var(--color-elevated);
   border-radius: var(--radius-medium);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
   border: 1px solid var(--color-elevated);
@@ -162,11 +162,11 @@ const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   overflow-x: hidden;
   display: block;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-surface);
+  scrollbar-color: var(--color-primary) var(--color-elevated);
 
   &::-webkit-scrollbar {
     width: 6px;
-    background: var(--color-surface);
+    background: var(--color-elevated);
     border-radius: 8px;
   }
   &::-webkit-scrollbar-thumb {
@@ -217,6 +217,7 @@ interface InputProps {
   onFilesChange?: (files: File[]) => void;
   onEmojiSelect?: (emoji: string) => void;
   onAudioRecord?: (audio: Blob) => void;
+  files?: File[];
 }
 
 const EmojiPicker: React.FC<{
@@ -347,6 +348,7 @@ export const Input: React.FC<InputProps> = ({
   onFilesChange,
   onEmojiSelect,
   onAudioRecord,
+  files: filesProp,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [files, setFiles] = useState<File[]>([]);
@@ -355,6 +357,10 @@ export const Input: React.FC<InputProps> = ({
   // message/search: controlled/uncontrolled
   const controlled = value !== undefined;
   const val = controlled ? value : inputValue;
+
+  // files controlled/uncontrolled
+  const filesControlled = filesProp !== undefined;
+  const filesToShow = filesControlled ? filesProp! : files;
 
   // Для авто-роста textarea
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -366,29 +372,52 @@ export const Input: React.FC<InputProps> = ({
     }
   }, [val, type]);
 
+  // Сброс файлов при очистке через onFilesChange([])
+  useEffect(() => {
+    if (files.length > 0 && onFilesChange && files.every((f) => !f)) {
+      setFiles([]);
+    }
+  }, [onFilesChange, files]);
+
   // File preview logic
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files ? Array.from(e.target.files) : [];
     // Добавляем новые файлы к уже выбранным, избегая дубликатов по имени и размеру
-    setFiles((prev) => {
-      const all = [...prev, ...fileList];
+    if (filesControlled) {
+      const all = [...(filesProp || []), ...fileList];
       const unique = all.filter(
         (file, idx, arr) =>
           arr.findIndex((f) => f.name === file.name && f.size === file.size) ===
           idx,
       );
       onFilesChange?.(unique);
-      return unique;
-    });
+    } else {
+      setFiles((prev) => {
+        const all = [...prev, ...fileList];
+        const unique = all.filter(
+          (file, idx, arr) =>
+            arr.findIndex(
+              (f) => f.name === file.name && f.size === file.size,
+            ) === idx,
+        );
+        onFilesChange?.(unique);
+        return unique;
+      });
+    }
     // Сброс input чтобы можно было выбрать тот же файл повторно
     e.target.value = '';
   };
   const handleRemoveFile = (idx: number) => {
-    setFiles((prev) => {
-      const updated = prev.filter((_, i) => i !== idx);
+    if (filesControlled) {
+      const updated = (filesProp || []).filter((_, i) => i !== idx);
       onFilesChange?.(updated);
-      return updated;
-    });
+    } else {
+      setFiles((prev) => {
+        const updated = prev.filter((_, i) => i !== idx);
+        onFilesChange?.(updated);
+        return updated;
+      });
+    }
   };
 
   // Audio (заглушка)
@@ -462,9 +491,9 @@ export const Input: React.FC<InputProps> = ({
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
-        {files.length > 0 && (
+        {filesToShow.length > 0 && (
           <FilePreview>
-            {files.map((file, i) => (
+            {filesToShow.map((file, i) => (
               <FileThumbWrapper key={i}>
                 {file.type.startsWith('image/') ? (
                   <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
@@ -518,9 +547,9 @@ export const Input: React.FC<InputProps> = ({
   // message (default)
   return (
     <>
-      {files.length > 0 && (
+      {filesToShow.length > 0 && (
         <FilePreview style={{ marginBottom: 10 }}>
-          {files.map((file, i) => (
+          {filesToShow.map((file, i) => (
             <FileThumbWrapper key={i}>
               {file.type.startsWith('image/') ? (
                 <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
@@ -552,7 +581,7 @@ export const Input: React.FC<InputProps> = ({
         />
         <StyledTextarea
           ref={textareaRef}
-          placeholder={placeholder || 'Сообщение...'}
+          placeholder={placeholder}
           value={val}
           onChange={(e) => {
             if (!controlled) setInputValue(e.target.value);
@@ -582,7 +611,7 @@ export const Input: React.FC<InputProps> = ({
             align="right"
           />
         </EmojiButtonWrapper>
-        {val.trim() || files.length > 0 ? (
+        {val.trim() || filesToShow.length > 0 ? (
           <Button variant="send" onClick={onSend} aria-label="Отправить" />
         ) : (
           <IconBtn type="button" onClick={handleAudioClick}>
