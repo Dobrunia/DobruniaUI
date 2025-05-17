@@ -9,6 +9,7 @@ export const InputDemo = () => {
     [],
   );
   const [messageFiles, setMessageFiles] = useState<File[]>([]);
+  const [audios, setAudios] = useState<Blob[]>([]);
 
   return (
     <div
@@ -117,8 +118,25 @@ export const InputDemo = () => {
       <h2>Audio Input</h2>
       <Input
         type="audio"
-        onAudioRecord={(audio) => console.log('Audio blob:', audio)}
+        onAudioRecord={(audio) => setAudios((prev) => [...prev, audio])}
       />
+      <div
+        style={{
+          marginTop: 12,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+        }}
+      >
+        {audios.map((audio, idx) => (
+          <audio
+            key={idx}
+            controls
+            src={URL.createObjectURL(audio)}
+            style={{ width: '100%' }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

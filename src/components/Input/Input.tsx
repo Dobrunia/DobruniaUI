@@ -75,19 +75,27 @@ const InputBar = styled.div`
   display: flex;
   align-items: flex-end;
   background: var(--color-elevated);
-  padding: var(--spacing-small) var(--spacing-medium);
-  gap: var(--spacing-small);
+  padding: var(--spacing-small);
+  min-height: 32px;
+  gap: 8px;
   width: 100%;
 `;
 const IconBtn = styled.button`
   background: none;
   border: none;
-  padding: var(--spacing-tiny);
+  padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--text-secondary);
   font-size: var(--font-size-large);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
   &:hover {
     color: var(--color-primary);
   }
@@ -109,10 +117,30 @@ const StyledTextarea = styled.textarea`
   font-size: var(--font-size-medium);
   outline: none;
   resize: none;
-  min-height: 26px;
+  min-height: 32px;
   max-height: 144px; /* ~6 строк */
-  line-height: 1.4;
+  line-height: 32px;
   overflow-y: auto;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  &::placeholder {
+    color: var(--text-secondary);
+    line-height: 32px;
+    vertical-align: middle;
+    opacity: 1;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-elevated);
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: var(--color-elevated);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 8px;
+  }
 `;
 const FilePreview = styled.div`
   display: flex;
@@ -125,8 +153,8 @@ const FileThumbWrapper = styled.div`
   height: 56px;
 `;
 const FileThumb = styled.img`
-  width: 56px;
-  height: 56px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
   border-radius: var(--radius-medium);
   border: 1.5px solid var(--color-primary);
@@ -351,20 +379,94 @@ const EmojiPicker: React.FC<{
 const SearchBar = styled(InputBar)`
   background: var(--color-elevated);
   border-radius: 999px;
-  padding: 0 18px;
-  min-height: 44px;
+  padding: 0 var(--spacing-medium);
+  min-height: 32px;
   box-shadow: none;
 `;
 const SearchInputField = styled(StyledInput)`
   background: transparent;
   border: none;
   font-size: var(--font-size-medium);
-  padding: 12px 0;
+  padding: var(--spacing-small) 0;
   border-radius: 999px;
   &::placeholder {
     color: var(--text-secondary);
     opacity: 1;
   }
+`;
+
+const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  &::before {
+    content: '';
+    display: ${({ $recording }) => ($recording ? 'block' : 'none')};
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--color-error);
+    opacity: 0.25;
+    animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    z-index: 0;
+  }
+  @keyframes mic-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.25;
+    }
+    70% {
+      transform: translate(-50%, -50%) scale(1.8);
+      opacity: 0.12;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.2);
+      opacity: 0;
+    }
+  }
+  color: ${({ $recording }) =>
+    $recording ? 'var(--color-error)' : 'var(--text-secondary)'};
+`;
+
+const SmileBtn = styled(IconBtn)`
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+`;
+
+// Для кнопки отправки
+const SendBtn = styled(Button)`
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Input: React.FC<InputProps> = ({
@@ -449,10 +551,39 @@ export const Input: React.FC<InputProps> = ({
     }
   };
 
-  // Audio (заглушка)
-  const handleAudioClick = () => {
-    // Здесь можно реализовать запись аудио
-    onAudioRecord?.(new Blob());
+  // Audio recording state
+  const [recording, setRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+
+  const startRecording = async () => {
+    if (recording) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new window.MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunks.current = [];
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunks.current.push(e.data);
+      };
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        onAudioRecord?.(audioBlob);
+        stream.getTracks().forEach((track) => track.stop());
+        setRecording(false);
+      };
+      mediaRecorder.start();
+      setRecording(true);
+    } catch {
+      setRecording(false);
+      // Можно добавить обработку ошибок
+    }
+  };
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && recording) {
+      mediaRecorderRef.current.stop();
+    }
+    setRecording(false);
   };
 
   // Emoji Picker hover logic
@@ -567,13 +698,13 @@ export const Input: React.FC<InputProps> = ({
   if (type === 'emoji') {
     return (
       <EmojiButtonWrapper>
-        <IconBtn
+        <SmileBtn
           type="button"
           onMouseEnter={showEmojiPicker}
           onMouseLeave={hideEmojiPicker}
         >
           <SmileIcon />
-        </IconBtn>
+        </SmileBtn>
         {onEmojiSelect && (
           <EmojiPicker
             onSelect={onEmojiSelect}
@@ -588,9 +719,18 @@ export const Input: React.FC<InputProps> = ({
   }
   if (type === 'audio') {
     return (
-      <IconBtn type="button" onClick={handleAudioClick}>
+      <MicBtn
+        type="button"
+        $recording={recording}
+        onMouseDown={startRecording}
+        onMouseUp={stopRecording}
+        onMouseLeave={stopRecording}
+        onTouchStart={startRecording}
+        onTouchEnd={stopRecording}
+        aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
+      >
         <MicIcon />
-      </IconBtn>
+      </MicBtn>
     );
   }
   // message (default)
@@ -622,15 +762,6 @@ export const Input: React.FC<InputProps> = ({
           ))}
         </FilePreview>
       )}
-      {previewImage && (
-        <ImageModalOverlay onClick={closePreview}>
-          <ImageModalImg
-            src={previewImage}
-            alt="preview"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </ImageModalOverlay>
-      )}
       <InputBar>
         <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
@@ -659,13 +790,13 @@ export const Input: React.FC<InputProps> = ({
           rows={1}
         />
         <EmojiButtonWrapper>
-          <IconBtn
+          <SmileBtn
             type="button"
             onMouseEnter={showEmojiPicker}
             onMouseLeave={hideEmojiPicker}
           >
             <SmileIcon />
-          </IconBtn>
+          </SmileBtn>
           <EmojiPicker
             onSelect={handleEmojiSelect}
             visible={emojiPickerVisible}
@@ -675,11 +806,28 @@ export const Input: React.FC<InputProps> = ({
           />
         </EmojiButtonWrapper>
         {val.trim() || filesToShow.length > 0 ? (
-          <Button variant="send" onClick={onSend} aria-label="Отправить" />
+          <SendBtn variant="send" onClick={onSend} aria-label="Отправить" />
         ) : (
-          <IconBtn type="button" onClick={handleAudioClick}>
-            <MicIcon />
-          </IconBtn>
+          <MicBtn
+            $recording={recording}
+            onMouseDown={startRecording}
+            onMouseUp={stopRecording}
+            onMouseLeave={stopRecording}
+            onTouchStart={startRecording}
+            onTouchEnd={stopRecording}
+            aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
+          >
+            <span
+              onMouseDown={startRecording}
+              onMouseUp={stopRecording}
+              onMouseLeave={stopRecording}
+              onTouchStart={startRecording}
+              onTouchEnd={stopRecording}
+              style={{ display: 'flex' }}
+            >
+              <MicIcon />
+            </span>
+          </MicBtn>
         )}
       </InputBar>
     </>
