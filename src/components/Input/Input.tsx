@@ -348,9 +348,13 @@ export const Input: React.FC<InputProps> = ({
         <IconBtn type="button" onClick={handleEmojiClick}>
           <SmileIcon />
         </IconBtn>
-        <IconBtn type="button" onClick={handleAudioClick}>
-          <MicIcon />
-        </IconBtn>
+        {val.trim() || files.length > 0 ? (
+          <Button variant="send" onClick={onSend} aria-label="Отправить" />
+        ) : (
+          <IconBtn type="button" onClick={handleAudioClick}>
+            <MicIcon />
+          </IconBtn>
+        )}
       </InputBar>
     </>
   );
