@@ -4,5 +4,3 @@ export * from './ButtonDemo';
 export * from './TextFieldDemo';
 export * from './TextareaDemo';
 export * from './InputDemo';
-
-export * from './ComboDemo';

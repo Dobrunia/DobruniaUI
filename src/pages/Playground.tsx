@@ -8,7 +8,6 @@ import {
   TextFieldDemo,
   TextareaDemo,
   InputDemo,
-  ComboDemo,
 } from './components-demo';
 
 const sections = [
@@ -26,11 +25,7 @@ const sections = [
       { key: 'Input', label: 'Input' },
       
     ],
-  },
-  {
-    title: 'Combo',
-    items: [{ key: 'Combo', label: 'Combo' }],
-  },
+  }
 ];
 
 const Playground: React.FC = () => {
@@ -55,7 +50,6 @@ const Playground: React.FC = () => {
       {selected === 'TextField' && <TextFieldDemo />}
       {selected === 'Textarea' && <TextareaDemo />}
       {selected === 'Input' && <InputDemo />}
-      {selected === 'Combo' && <ComboDemo />}
     </PageBlock>
   );
 };

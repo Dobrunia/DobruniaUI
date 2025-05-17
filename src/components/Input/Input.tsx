@@ -86,7 +86,6 @@ const InputBar = styled.div`
   display: flex;
   align-items: flex-end;
   background: var(--color-surface);
-  border-radius: var(--radius-medium);
   padding: var(--spacing-small) var(--spacing-medium);
   gap: var(--spacing-small);
   width: 100%;
