@@ -103,6 +103,15 @@ export const ButtonDemo: React.FC = () => {
             <Button variant="close" aria-label="Close" />
             <ButtonLabel>Close Outlined</ButtonLabel>
           </ButtonWrapper>
+          <ButtonWrapper>
+            <Button
+              variant="close"
+              shape="circle"
+              size="small"
+              aria-label="Close"
+            />
+            <ButtonLabel>Close Circle</ButtonLabel>
+          </ButtonWrapper>
         </ButtonGrid>
       </Section>
 

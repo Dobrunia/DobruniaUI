@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Button } from '../Button/Button';
 
 // SVG-иконки (заглушки)
 const PaperclipIcon = () => (
@@ -127,15 +128,20 @@ const StyledTextarea = styled.textarea`
 `;
 const FilePreview = styled.div`
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 12px;
+  margin-top: 8px;
+`;
+const FileThumbWrapper = styled.div`
+  position: relative;
+  width: 56px;
+  height: 56px;
 `;
 const FileThumb = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
   border-radius: var(--radius-medium);
-  border: 1px solid var(--color-primary);
+  border: 1.5px solid var(--color-primary);
 `;
 
 // Типы
@@ -182,11 +188,29 @@ export const Input: React.FC<InputProps> = ({
     }
   }, [val, type]);
 
-  // File preview
+  // File preview logic
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files ? Array.from(e.target.files) : [];
-    setFiles(fileList);
-    onFilesChange?.(fileList);
+    // Добавляем новые файлы к уже выбранным, избегая дубликатов по имени и размеру
+    setFiles((prev) => {
+      const all = [...prev, ...fileList];
+      const unique = all.filter(
+        (file, idx, arr) =>
+          arr.findIndex((f) => f.name === file.name && f.size === file.size) ===
+          idx,
+      );
+      onFilesChange?.(unique);
+      return unique;
+    });
+    // Сброс input чтобы можно было выбрать тот же файл повторно
+    e.target.value = '';
+  };
+  const handleRemoveFile = (idx: number) => {
+    setFiles((prev) => {
+      const updated = prev.filter((_, i) => i !== idx);
+      onFilesChange?.(updated);
+      return updated;
+    });
   };
 
   // Emoji (заглушка)
@@ -235,17 +259,23 @@ export const Input: React.FC<InputProps> = ({
         />
         {files.length > 0 && (
           <FilePreview>
-            {files.map((file, i) =>
-              file.type.startsWith('image/') ? (
-                <FileThumb
-                  key={i}
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
+            {files.map((file, i) => (
+              <FileThumbWrapper key={i}>
+                {file.type.startsWith('image/') ? (
+                  <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
+                ) : (
+                  <span>{file.name}</span>
+                )}
+                <Button
+                  variant="close"
+                  shape="circle"
+                  size="small"
+                  aria-label="Удалить"
+                  onClick={() => handleRemoveFile(i)}
+                  style={{ position: 'absolute', top: -8, right: -8 }}
                 />
-              ) : (
-                <span key={i}>{file.name}</span>
-              ),
-            )}
+              </FileThumbWrapper>
+            ))}
           </FilePreview>
         )}
       </div>
@@ -267,39 +297,62 @@ export const Input: React.FC<InputProps> = ({
   }
   // message (default)
   return (
-    <InputBar>
-      <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
-        <PaperclipIcon />
-      </IconBtn>
-      <input
-        ref={fileInputRef}
-        type="file"
-        multiple
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-      <StyledTextarea
-        ref={textareaRef}
-        placeholder={placeholder || 'Сообщение...'}
-        value={val}
-        onChange={(e) => {
-          if (!controlled) setInputValue(e.target.value);
-          onChange?.(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            onSend?.();
-          }
-        }}
-        rows={1}
-      />
-      <IconBtn type="button" onClick={handleEmojiClick}>
-        <SmileIcon />
-      </IconBtn>
-      <IconBtn type="button" onClick={handleAudioClick}>
-        <MicIcon />
-      </IconBtn>
-    </InputBar>
+    <>
+      <InputBar>
+        <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
+          <PaperclipIcon />
+        </IconBtn>
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <StyledTextarea
+          ref={textareaRef}
+          placeholder={placeholder || 'Сообщение...'}
+          value={val}
+          onChange={(e) => {
+            if (!controlled) setInputValue(e.target.value);
+            onChange?.(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              onSend?.();
+            }
+          }}
+          rows={1}
+        />
+        <IconBtn type="button" onClick={handleEmojiClick}>
+          <SmileIcon />
+        </IconBtn>
+        <IconBtn type="button" onClick={handleAudioClick}>
+          <MicIcon />
+        </IconBtn>
+      </InputBar>
+      {files.length > 0 && (
+        <FilePreview>
+          {files.map((file, i) => (
+            <FileThumbWrapper key={i}>
+              {file.type.startsWith('image/') ? (
+                <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
+              ) : (
+                <span>{file.name}</span>
+              )}
+              <Button
+                variant="close"
+                shape="circle"
+                size="small"
+                aria-label="Удалить"
+                onClick={() => handleRemoveFile(i)}
+                style={{ position: 'absolute', top: -8, right: -8 }}
+              />
+            </FileThumbWrapper>
+          ))}
+        </FilePreview>
+      )}
+    </>
   );
 };

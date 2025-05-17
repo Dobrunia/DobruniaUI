@@ -61,6 +61,16 @@ const getButtonSize = (
       font-size: 20px;
     `;
   }
+  if (variant === 'close' && shape === 'circle') {
+    return css`
+      width: 22px;
+      height: 22px;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      font-size: 16px;
+    `;
+  }
   if (shape === 'circle') {
     switch (size) {
       case 'small':
@@ -130,7 +140,24 @@ const getButtonSize = (
   }
 };
 
-const getButtonStyles = (variant: ButtonVariant, outlined?: boolean) => {
+const getButtonStyles = (
+  variant: ButtonVariant,
+  outlined?: boolean,
+  shape?: ButtonShape,
+) => {
+  if (variant === 'close' && shape === 'circle') {
+    return css`
+      background: var(--color-surface);
+      color: var(--color-error);
+      border: 1px solid var(--color-error);
+      &:hover:not(:disabled) {
+        background: var(--color-error);
+        svg line {
+          stroke: #fff;
+        }
+      }
+    `;
+  }
   if (variant === 'send') {
     // icon-only send button (no bg, no border)
     return css`
@@ -154,7 +181,10 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean) => {
       color: var(--color-error);
       border: 2px solid var(--color-error);
       &:hover:not(:disabled) {
-        background: var(--color-elevated);
+        background: var(--color-error);
+        svg line {
+          stroke: #fff;
+        }
       }
     `;
   }
@@ -233,12 +263,12 @@ const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   gap: var(--spacing-small);
   border-radius: ${({ shape, variant }) =>
-    shape === 'square'
+    shape === 'circle' || (variant === 'close' && shape === 'circle')
+      ? '50%'
+      : shape === 'square'
       ? 'var(--radius-medium)'
       : variant === 'close'
       ? 'var(--radius-medium)'
-      : shape === 'circle'
-      ? '50%'
       : 'var(--radius-medium)'};
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -258,7 +288,8 @@ const StyledButton = styled.button<ButtonProps>`
   position: relative;
   font-size: 1rem;
 
-  ${({ variant = 'primary', outlined }) => getButtonStyles(variant, outlined)}
+  ${({ variant = 'primary', outlined, shape }) =>
+    getButtonStyles(variant, outlined, shape)}
   ${({ size = 'medium', shape = 'default', variant }) =>
     getButtonSize(size, shape, variant)}
 
@@ -316,29 +347,29 @@ const SendIcon = () => (
   </svg>
 );
 
-const CloseIcon = () => (
+const CloseIcon = ({ color }: { color?: string }) => (
   <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <line
-      x1="5"
-      y1="5"
-      x2="15"
-      y2="15"
-      stroke="var(--color-error)"
+      x1="4"
+      y1="4"
+      x2="12"
+      y2="12"
+      stroke={color || 'var(--color-error)'}
       strokeWidth="2"
       strokeLinecap="round"
     />
     <line
-      x1="15"
-      y1="5"
-      x2="5"
-      y2="15"
-      stroke="var(--color-error)"
+      x1="12"
+      y1="4"
+      x2="4"
+      y2="12"
+      stroke={color || 'var(--color-error)'}
       strokeWidth="2"
       strokeLinecap="round"
     />
@@ -364,7 +395,11 @@ export const Button: React.FC<ButtonProps> = ({
   if (variant === 'close') {
     if (size === undefined) size = 'small';
     outlined = true;
-    shape = 'square';
+    if (!shape) shape = 'square';
+  }
+  if (variant === 'close' && shape === 'circle') {
+    outlined = false;
+    size = 'small';
   }
   if (variant === 'send') {
     outlined = false;
@@ -375,7 +410,12 @@ export const Button: React.FC<ButtonProps> = ({
 
   let icon = leftIcon;
   if (variant === 'send') icon = <SendIcon />;
-  if (variant === 'close') icon = <CloseIcon />;
+  if (variant === 'close')
+    icon = (
+      <CloseIcon
+        color={shape === 'circle' ? undefined : 'var(--color-error)'}
+      />
+    );
   const isIconOnly = variant === 'send' || variant === 'close';
 
   return (
