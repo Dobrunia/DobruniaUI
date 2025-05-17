@@ -412,6 +412,16 @@ export const Input: React.FC<InputProps> = ({
     );
   };
 
+  // Для message: вставка emoji в inputValue
+  const handleEmojiSelect = (emoji: string) => {
+    if (type === 'message') {
+      const newValue = val + emoji;
+      if (!controlled) setInputValue(newValue);
+      onChange?.(newValue);
+    }
+    onEmojiSelect?.(emoji);
+  };
+
   // Render
   if (type === 'search') {
     return (
@@ -557,15 +567,13 @@ export const Input: React.FC<InputProps> = ({
           >
             <SmileIcon />
           </IconBtn>
-          {onEmojiSelect && (
-            <EmojiPicker
-              onSelect={onEmojiSelect}
-              visible={emojiPickerVisible}
-              onMouseEnter={showEmojiPicker}
-              onMouseLeave={hideEmojiPicker}
-              align="right"
-            />
-          )}
+          <EmojiPicker
+            onSelect={handleEmojiSelect}
+            visible={emojiPickerVisible}
+            onMouseEnter={showEmojiPicker}
+            onMouseLeave={hideEmojiPicker}
+            align="right"
+          />
         </EmojiButtonWrapper>
         {val.trim() || files.length > 0 ? (
           <Button variant="send" onClick={onSend} aria-label="Отправить" />

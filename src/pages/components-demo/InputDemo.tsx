@@ -4,6 +4,7 @@ import { Input } from '../../components/Input/Input';
 export const InputDemo = () => {
   const [message, setMessage] = useState('');
   const [search, setSearch] = useState('');
+  const [selectedEmoji, setSelectedEmoji] = useState('');
 
   return (
     <div
@@ -43,10 +44,12 @@ export const InputDemo = () => {
       />
 
       <h2>Emoji Input</h2>
-      <Input
-        type="emoji"
-        onEmojiSelect={(emoji) => console.log('Emoji:', emoji)}
-      />
+      <Input type="emoji" onEmojiSelect={(emoji) => setSelectedEmoji(emoji)} />
+      {selectedEmoji && (
+        <div style={{ fontSize: 32, marginTop: 8, textAlign: 'center' }}>
+          {selectedEmoji}
+        </div>
+      )}
 
       <h2>Audio Input</h2>
       <Input
@@ -55,4 +58,4 @@ export const InputDemo = () => {
       />
     </div>
   );
-}
+};
