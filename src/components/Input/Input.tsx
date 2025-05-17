@@ -418,6 +418,13 @@ export const Input: React.FC<InputProps> = ({
       const newValue = val + emoji;
       if (!controlled) setInputValue(newValue);
       onChange?.(newValue);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+          const len = newValue.length;
+          textareaRef.current.setSelectionRange(len, len);
+        }
+      }, 0);
     }
     onEmojiSelect?.(emoji);
   };
