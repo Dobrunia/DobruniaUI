@@ -204,6 +204,27 @@ const EmojiButtonWrapper = styled.div`
   display: inline-block;
 `;
 
+// Lightbox для предпросмотра изображений
+const ImageModalOverlay = styled.div`
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ImageModalImg = styled.img`
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: var(--radius-large);
+  box-shadow: 0 8px 32px #0008;
+  background: #fff;
+`;
+
 // Типы
 export type InputType = 'message' | 'search' | 'file' | 'emoji' | 'audio';
 
@@ -458,6 +479,15 @@ export const Input: React.FC<InputProps> = ({
     onEmojiSelect?.(emoji);
   };
 
+  // Lightbox state
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const handlePreview = (file: File) => {
+    if (file.type.startsWith('image/')) {
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+  const closePreview = () => setPreviewImage(null);
+
   // Render
   if (type === 'search') {
     return (
@@ -496,7 +526,12 @@ export const Input: React.FC<InputProps> = ({
             {filesToShow.map((file, i) => (
               <FileThumbWrapper key={i}>
                 {file.type.startsWith('image/') ? (
-                  <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
+                  <FileThumb
+                    src={URL.createObjectURL(file)}
+                    alt={file.name}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handlePreview(file)}
+                  />
                 ) : (
                   <span>{file.name}</span>
                 )}
@@ -511,6 +546,15 @@ export const Input: React.FC<InputProps> = ({
               </FileThumbWrapper>
             ))}
           </FilePreview>
+        )}
+        {previewImage && (
+          <ImageModalOverlay onClick={closePreview}>
+            <ImageModalImg
+              src={previewImage}
+              alt="preview"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ImageModalOverlay>
         )}
       </div>
     );
@@ -552,7 +596,12 @@ export const Input: React.FC<InputProps> = ({
           {filesToShow.map((file, i) => (
             <FileThumbWrapper key={i}>
               {file.type.startsWith('image/') ? (
-                <FileThumb src={URL.createObjectURL(file)} alt={file.name} />
+                <FileThumb
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handlePreview(file)}
+                />
               ) : (
                 <span>{file.name}</span>
               )}
@@ -567,6 +616,15 @@ export const Input: React.FC<InputProps> = ({
             </FileThumbWrapper>
           ))}
         </FilePreview>
+      )}
+      {previewImage && (
+        <ImageModalOverlay onClick={closePreview}>
+          <ImageModalImg
+            src={previewImage}
+            alt="preview"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </ImageModalOverlay>
       )}
       <InputBar>
         <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
