@@ -41,6 +41,15 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
     box-shadow var(--transition-fast);
   outline: none;
   box-sizing: border-box;
+  &:hover {
+    border-color: ${({ $error }) =>
+      $error ? 'var(--color-error)' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px
+      ${({ $error }) =>
+        $error
+          ? 'var(--color-error)'
+          : 'color-mix(in srgb, var(--color-primary) 20%, transparent 80%)'};
+  }
   &:focus {
     border-color: ${({ $error }) =>
       $error ? 'var(--color-error)' : 'var(--color-primary)'};

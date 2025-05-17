@@ -108,6 +108,11 @@ const StyledInput = styled.input`
   font-size: var(--font-size-medium);
   padding: var(--spacing-small) 0;
   outline: none;
+  &:hover {
+    &::placeholder {
+      color: var(--color-primary);
+    }
+  }
 `;
 const StyledTextarea = styled.textarea`
   flex: 1;
@@ -129,6 +134,12 @@ const StyledTextarea = styled.textarea`
     line-height: 32px;
     vertical-align: middle;
     opacity: 1;
+    transition: color var(--transition-fast);
+  }
+  &:hover {
+    &::placeholder {
+      color: var(--color-primary);
+    }
   }
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-elevated);
@@ -382,6 +393,11 @@ const SearchBar = styled(InputBar)`
   padding: 0 var(--spacing-medium);
   min-height: 32px;
   box-shadow: none;
+  transition: box-shadow var(--transition-fast);
+  &:hover {
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--color-primary) 20%, transparent 80%);
+  }
 `;
 const SearchInputField = styled(StyledInput)`
   background: transparent;
@@ -392,6 +408,12 @@ const SearchInputField = styled(StyledInput)`
   &::placeholder {
     color: var(--text-secondary);
     opacity: 1;
+    transition: color var(--transition-fast);
+  }
+  &:hover {
+    &::placeholder {
+      color: var(--color-primary);
+    }
   }
 `;
 

@@ -51,6 +51,15 @@ const Input = styled.input<{ $error?: boolean; $type?: string }>`
     box-shadow var(--transition-fast);
   outline: none;
   box-sizing: border-box;
+  &:hover {
+    border-color: ${({ $error }) =>
+      $error ? 'var(--color-error)' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px
+      ${({ $error }) =>
+        $error
+          ? 'var(--color-error)'
+          : 'color-mix(in srgb, var(--color-primary) 20%, transparent 80%)'};
+  }
   &:disabled {
     background: var(--color-elevated);
     color: var(--text-disabled);
@@ -60,10 +69,11 @@ const Input = styled.input<{ $error?: boolean; $type?: string }>`
   &:focus {
     border-color: ${({ $error }) =>
       $error ? 'var(--color-error)' : 'var(--color-primary)'};
-    box-shadow: 0 0 0 2px ${({ $error }) =>
-      $error
-        ? 'var(--color-error)'
-        : 'color-mix(in srgb, var(--color-primary) 40%, transparent 60%)'};
+    box-shadow: 0 0 0 2px
+      ${({ $error }) =>
+        $error
+          ? 'var(--color-error)'
+          : 'color-mix(in srgb, var(--color-primary) 40%, transparent 60%)'};
   }
   /* Hide number arrows for type=number */
   &[type='number']::-webkit-outer-spin-button,
