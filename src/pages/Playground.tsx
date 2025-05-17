@@ -6,6 +6,9 @@ import {
   SidebarListDemo,
   ButtonDemo,
   TextFieldDemo,
+  TextareaDemo,
+  InputDemo,
+  ComboDemo,
 } from './components-demo';
 
 const sections = [
@@ -19,7 +22,14 @@ const sections = [
       { key: 'SidebarList', label: 'SidebarList' },
       { key: 'Button', label: 'Button' },
       { key: 'TextField', label: 'TextField' },
+      { key: 'Textarea', label: 'Textarea' },
+      { key: 'Input', label: 'Input' },
+      
     ],
+  },
+  {
+    title: 'Combo',
+    items: [{ key: 'Combo', label: 'Combo' }],
   },
 ];
 
@@ -43,6 +53,9 @@ const Playground: React.FC = () => {
       {selected === 'SidebarList' && <SidebarListDemo />}
       {selected === 'Button' && <ButtonDemo />}
       {selected === 'TextField' && <TextFieldDemo />}
+      {selected === 'Textarea' && <TextareaDemo />}
+      {selected === 'Input' && <InputDemo />}
+      {selected === 'Combo' && <ComboDemo />}
     </PageBlock>
   );
 };

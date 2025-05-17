@@ -57,6 +57,14 @@ const Input = styled.input<{ $error?: boolean; $type?: string }>`
     border-color: var(--color-primary);
     cursor: not-allowed;
   }
+  &:focus {
+    border-color: ${({ $error }) =>
+      $error ? 'var(--color-error)' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px ${({ $error }) =>
+      $error
+        ? 'var(--color-error)'
+        : 'color-mix(in srgb, var(--color-primary) 40%, transparent 60%)'};
+  }
   /* Hide number arrows for type=number */
   &[type='number']::-webkit-outer-spin-button,
   &[type='number']::-webkit-inner-spin-button {
