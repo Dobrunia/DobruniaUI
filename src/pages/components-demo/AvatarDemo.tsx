@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar } from '../../data-display/Avatar/Avatar';
 import styled from 'styled-components';
 
@@ -27,6 +27,12 @@ const Label = styled.div`
 export const AvatarDemo: React.FC = () => {
   const demoName = 'Иван Иванов';
   const demoSrc = 'https://randomuser.me/api/portraits/men/32.jpg';
+
+  // Для примера выбора статуса
+  const [status, setStatus] = useState<
+    'online' | 'offline' | 'dnd' | 'invisible'
+  >('online');
+
   return (
     <DemoWrapper>
       <h2>Avatar sizes (with image)</h2>
@@ -92,6 +98,18 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size="md" src={demoSrc} name="No status" showStatus={false} />
           <Label>showStatus=false</Label>
+        </Col>
+      </Row>
+      <h2>Avatar with status picker</h2>
+      <Row>
+        <Col>
+          <Avatar
+            size="md"
+            name="Выбор статуса"
+            status={status}
+            onStatusChange={setStatus}
+          />
+          <Label>Текущий статус: {status}</Label>
         </Col>
       </Row>
     </DemoWrapper>
