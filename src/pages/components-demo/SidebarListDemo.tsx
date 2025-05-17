@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SidebarList } from '../../components/SidebarList/SidebarList';
-import type { SidebarListSection } from '../../components/SidebarList/SidebarList';
+import { SidebarList } from '../../components';
+import type { SidebarListSection } from '../../components';
 
 const sections1: SidebarListSection[] = [
   {
