@@ -69,17 +69,6 @@ const MicIcon = () => (
     />
   </svg>
 );
-const SearchIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-    <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M15 15l-2-2"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
 
 // Стили
 const InputBar = styled.div`
@@ -359,6 +348,25 @@ const EmojiPicker: React.FC<{
   );
 };
 
+const SearchBar = styled(InputBar)`
+  background: var(--color-elevated);
+  border-radius: 999px;
+  padding: 0 18px;
+  min-height: 44px;
+  box-shadow: none;
+`;
+const SearchInputField = styled(StyledInput)`
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-medium);
+  padding: 12px 0;
+  border-radius: 999px;
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+  }
+`;
+
 export const Input: React.FC<InputProps> = ({
   type,
   placeholder,
@@ -491,8 +499,8 @@ export const Input: React.FC<InputProps> = ({
   // Render
   if (type === 'search') {
     return (
-      <InputBar>
-        <StyledInput
+      <SearchBar>
+        <SearchInputField
           type="text"
           placeholder={placeholder || 'Поиск'}
           value={val}
@@ -502,10 +510,7 @@ export const Input: React.FC<InputProps> = ({
             onSearch?.(e.target.value);
           }}
         />
-        <IconBtn type="button" tabIndex={-1}>
-          <SearchIcon />
-        </IconBtn>
-      </InputBar>
+      </SearchBar>
     );
   }
   if (type === 'file') {
