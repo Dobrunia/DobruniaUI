@@ -164,8 +164,8 @@ const FileThumbWrapper = styled.div`
   height: 56px;
 `;
 const FileThumb = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: var(--radius-medium);
   border: 1.5px solid var(--color-primary);
