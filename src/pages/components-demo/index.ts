@@ -9,3 +9,4 @@ export * from './BadgeDemo';
 export * from './AlertDemo';
 export * from './ProgressDemo';
 export * from './SkeletonDemo';
+export * from './SnackbarDemo';
