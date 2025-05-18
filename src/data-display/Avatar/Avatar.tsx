@@ -72,9 +72,9 @@ const StatusDot = styled.span<{ $size: AvatarSize; $status: AvatarStatus }>`
 
 const StatusMenu = styled.div`
   position: absolute;
-  left: 50%;
+  left: 0;
   top: 110%;
-  transform: translateX(-50%);
+  // transform: translateX(-50%);
   background: var(--color-elevated);
   border-radius: var(--radius-medium);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
@@ -88,7 +88,7 @@ const StatusMenuItem = styled.button<{ active?: boolean }>`
   background: none;
   border: none;
   color: var(--text-body);
-  font-size: 1em;
+  font-size: var(--font-size-small);
   padding: 8px 16px;
   text-align: left;
   cursor: pointer;
@@ -121,6 +121,20 @@ function getInitials(name?: string) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
+// Translation utility for status labels
+const statusTranslations = {
+  ru: {
+    online: 'В сети',
+    dnd: 'Занят', // Changed to fit one line
+    invisible: 'Невидимка',
+  },
+  en: {
+    online: 'Online',
+    dnd: 'Busy',
+    invisible: 'Invisible',
+  },
+};
+
 interface AvatarProps {
   src?: string;
   alt?: string;
@@ -130,18 +144,8 @@ interface AvatarProps {
   showStatus?: boolean;
   className?: string;
   onStatusChange?: (status: AvatarStatus) => void;
+  language?: 'ru' | 'en'; // Add language prop
 }
-
-const statusOptions: {
-  value: AvatarStatus;
-  label: string;
-  icon?: React.ReactNode;
-}[] = [
-  { value: 'online', label: 'В сети' },
-  { value: 'dnd', label: 'Не беспокоить' },
-  { value: 'offline', label: 'Оффлайн' },
-  { value: 'invisible', label: 'Невидимка', icon: <EyeSlashIcon /> },
-];
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,
@@ -152,6 +156,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   showStatus = true,
   className,
   onStatusChange,
+  language = 'en', // Default to Russian
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -167,6 +172,17 @@ export const Avatar: React.FC<AvatarProps> = ({
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
   }, [menuOpen]);
+
+  // Build status options with translation
+  const statusOptions = [
+    { value: 'online', label: statusTranslations[language].online },
+    { value: 'dnd', label: statusTranslations[language].dnd },
+    {
+      value: 'invisible',
+      label: statusTranslations[language].invisible,
+      icon: <EyeSlashIcon />,
+    },
+  ];
 
   return (
     <AvatarRoot
@@ -201,12 +217,12 @@ export const Avatar: React.FC<AvatarProps> = ({
               onClick={(e) => {
                 e.stopPropagation();
                 setMenuOpen(false);
-                onStatusChange(opt.value);
+                onStatusChange(opt.value as AvatarStatus);
               }}
             >
               <StatusDot
                 $size={size}
-                $status={opt.value}
+                $status={opt.value as AvatarStatus}
                 style={{ position: 'static' }}
               >
                 {opt.value === 'invisible' && <EyeSlashIcon />}
