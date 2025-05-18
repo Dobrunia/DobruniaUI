@@ -14,6 +14,7 @@ import {
   ProgressDemo,
   SkeletonDemo,
   SnackbarDemo,
+  PaginationDemo,
 } from './components-demo';
 
 const sections = [
@@ -48,6 +49,10 @@ const sections = [
       { key: 'Snackbar', label: 'Snackbar' },
     ],
   },
+  {
+    title: 'Navigation',
+    items: [{ key: 'Pagination', label: 'Pagination' }],
+  },
 ];
 
 const Playground: React.FC = () => {
@@ -65,7 +70,6 @@ const Playground: React.FC = () => {
         />
       }
     >
-      {/* Пока только PageBlock */}
       {selected === 'PageBlock' && <PageBlockDemo />}
       {selected === 'SidebarList' && <SidebarListDemo />}
       {selected === 'Button' && <ButtonDemo />}
@@ -78,6 +82,7 @@ const Playground: React.FC = () => {
       {selected === 'Progress' && <ProgressDemo />}
       {selected === 'Skeleton' && <SkeletonDemo />}
       {selected === 'Snackbar' && <SnackbarDemo />}
+      {selected === 'Pagination' && <PaginationDemo />}
     </PageBlock>
   );
 };
