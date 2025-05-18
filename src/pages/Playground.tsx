@@ -9,6 +9,7 @@ import {
   TextareaDemo,
   InputDemo,
   AvatarDemo,
+  BadgeDemo,
 } from './components-demo';
 
 const sections = [
@@ -29,7 +30,10 @@ const sections = [
   },
   {
     title: 'Data Display',
-    items: [{ key: 'Avatar', label: 'Avatar' }],
+    items: [
+      { key: 'Avatar', label: 'Avatar' },
+      { key: 'Badge', label: 'Badge' },
+    ],
   },
 ];
 
@@ -56,6 +60,7 @@ const Playground: React.FC = () => {
       {selected === 'Textarea' && <TextareaDemo />}
       {selected === 'Input' && <InputDemo />}
       {selected === 'Avatar' && <AvatarDemo />}
+      {selected === 'Badge' && <BadgeDemo />}
     </PageBlock>
   );
 };

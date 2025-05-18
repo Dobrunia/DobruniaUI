@@ -5,3 +5,4 @@ export * from './TextFieldDemo';
 export * from './TextareaDemo';
 export * from './InputDemo';
 export * from './AvatarDemo';
+export * from './BadgeDemo';
