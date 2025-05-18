@@ -12,6 +12,7 @@ import {
   BadgeDemo,
   AlertDemo,
   ProgressDemo,
+  SkeletonDemo,
 } from './components-demo';
 
 const sections = [
@@ -42,6 +43,7 @@ const sections = [
     items: [
       { key: 'Alert', label: 'Alert' },
       { key: 'Progress', label: 'Progress' },
+      { key: 'Skeleton', label: 'Skeleton' },
     ],
   },
 ];
@@ -72,6 +74,7 @@ const Playground: React.FC = () => {
       {selected === 'Badge' && <BadgeDemo />}
       {selected === 'Alert' && <AlertDemo />}
       {selected === 'Progress' && <ProgressDemo />}
+      {selected === 'Skeleton' && <SkeletonDemo />}
     </PageBlock>
   );
 };

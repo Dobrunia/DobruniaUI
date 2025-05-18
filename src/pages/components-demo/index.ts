@@ -8,3 +8,4 @@ export * from './AvatarDemo';
 export * from './BadgeDemo';
 export * from './AlertDemo';
 export * from './ProgressDemo';
+export * from './SkeletonDemo';
