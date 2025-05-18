@@ -6,3 +6,5 @@ export * from './TextareaDemo';
 export * from './InputDemo';
 export * from './AvatarDemo';
 export * from './BadgeDemo';
+export * from './AlertDemo';
+export * from './ProgressDemo';

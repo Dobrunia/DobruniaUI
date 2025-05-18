@@ -10,6 +10,8 @@ import {
   InputDemo,
   AvatarDemo,
   BadgeDemo,
+  AlertDemo,
+  ProgressDemo,
 } from './components-demo';
 
 const sections = [
@@ -33,6 +35,13 @@ const sections = [
     items: [
       { key: 'Avatar', label: 'Avatar' },
       { key: 'Badge', label: 'Badge' },
+    ],
+  },
+  {
+    title: 'Feedback',
+    items: [
+      { key: 'Alert', label: 'Alert' },
+      { key: 'Progress', label: 'Progress' },
     ],
   },
 ];
@@ -61,6 +70,8 @@ const Playground: React.FC = () => {
       {selected === 'Input' && <InputDemo />}
       {selected === 'Avatar' && <AvatarDemo />}
       {selected === 'Badge' && <BadgeDemo />}
+      {selected === 'Alert' && <AlertDemo />}
+      {selected === 'Progress' && <ProgressDemo />}
     </PageBlock>
   );
 };
