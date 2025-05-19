@@ -1,15 +1,26 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import dts from 'vite-plugin-dts';
-import { resolve } from 'path';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export default defineConfig({
-  plugins: [react(), dts({ include: ['src/components'] })],
+  plugins: [
+    react(),
+    tsconfigPaths(), // подтянет ваши paths из tsconfig.json
+    dts({ include: ['src'] }),
+  ],
+  resolve: {
+    alias: {
+      // одноточечный импорт: @DobruniaUI → src/index.ts
+      '@DobruniaUI': path.resolve(__dirname, 'src/index.ts', '../index.ts'),
+    },
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/components/index.ts'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'DobruniaUI',
-      fileName: (format) => `index.${format}.js`,
+      fileName: (f) => `index.${f}.js`,
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'styled-components'],

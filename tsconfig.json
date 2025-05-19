@@ -1,7 +1,40 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "compilerOptions": {
+    /* target & lib */
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* модули и резолв */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+
+    /* JSX */
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
+
+    /* проверка */
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* пути */
+    "baseUrl": ".",
+    "paths": {
+      "@DobruniaUI": ["src/index.ts", "../index.ts", "../../index.ts"]
+    }
+  },
+
+  /* какие файлы вообще обрабатывать */
+  "include": [
+    "src", // весь код библиотеки/приложения
+    "vite.config.ts", // конфиги Vite
+    "vite.lib.config.ts", // сборка библиотеки
   ]
 }

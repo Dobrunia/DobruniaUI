@@ -1,8 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Reaction } from '../Reaction/Reaction';
-import { Avatar } from '../Avatar/Avatar';
-import { ActionsMenu } from '../ActionsMenu/ActionsMenu';
+import { Reaction, Avatar, ActionsMenu } from '@DobruniaUI';
 
 export type MessageType = 'incoming' | 'outgoing';
 

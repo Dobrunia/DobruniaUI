@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '@DobruniaUI';
 
 interface User {
   id: string;

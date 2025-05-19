@@ -5,11 +5,55 @@ export const InputDemo = () => {
   const [message, setMessage] = useState('');
   const [search, setSearch] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('');
-  const [messages, setMessages] = useState<{ text: string; files: File[] }[]>(
-    [],
-  );
+  const [messages, setMessages] = useState<
+    {
+      text: string;
+      files: File[];
+      reactions: { emoji: string; users: { id: string }[] }[];
+    }[]
+  >([]);
   const [messageFiles, setMessageFiles] = useState<File[]>([]);
   const [audios, setAudios] = useState<Blob[]>([]);
+
+  const handleReaction = (msgIdx: number, emoji: string) => {
+    setMessages((prev) =>
+      prev.map((msg, i) => {
+        if (i !== msgIdx) return msg;
+        const existing = msg.reactions.find(
+          (r) => r.emoji === emoji && r.users.some((u) => u.id === 'me'),
+        );
+        if (existing) {
+          return {
+            ...msg,
+            reactions: msg.reactions
+              .map((r) =>
+                r.emoji === emoji
+                  ? { ...r, users: r.users.filter((u) => u.id !== 'me') }
+                  : r,
+              )
+              .filter((r) => r.users.length > 0),
+          };
+        } else {
+          const found = msg.reactions.find((r) => r.emoji === emoji);
+          if (found) {
+            return {
+              ...msg,
+              reactions: msg.reactions.map((r) =>
+                r.emoji === emoji
+                  ? { ...r, users: [...r.users, { id: 'me' }] }
+                  : r,
+              ),
+            };
+          } else {
+            return {
+              ...msg,
+              reactions: [...msg.reactions, { emoji, users: [{ id: 'me' }] }],
+            };
+          }
+        }
+      }),
+    );
+  };
 
   return (
     <div
@@ -31,7 +75,7 @@ export const InputDemo = () => {
           if (message.trim() || messageFiles.length > 0) {
             setMessages((prev) => [
               ...prev,
-              { text: message, files: messageFiles },
+              { text: message, files: messageFiles, reactions: [] },
             ]);
             setMessage('');
             setMessageFiles([]);
@@ -52,6 +96,9 @@ export const InputDemo = () => {
               hour: '2-digit',
               minute: '2-digit',
             })}
+            reactions={msg.reactions}
+            onReaction={(emoji: string) => handleReaction(idx, emoji)}
+            currentUserId="me"
           />
         ))}
       </div>

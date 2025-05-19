@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from '../Button/Button';
+import { Button } from '@DobruniaUI';
 
 // SVG-иконки (заглушки)
 const PaperclipIcon = () => (
@@ -256,9 +256,9 @@ const ImageModalImg = styled.img`
 `;
 
 // Типы
-export type InputType = 'message' | 'search' | 'file' | 'emoji' | 'audio';
+type InputType = 'message' | 'search' | 'file' | 'emoji' | 'audio';
 
-interface InputProps {
+export interface InputProps {
   type: InputType;
   placeholder?: string;
   value?: string;

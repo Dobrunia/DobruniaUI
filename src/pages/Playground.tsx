@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PageBlock } from '../layout';
-import { SidebarList } from '../components';
+import { PageBlock, SidebarList } from '@DobruniaUI';
 import {
   PageBlockDemo,
   SidebarListDemo,
@@ -33,7 +32,6 @@ const sections = [
       { key: 'TextField', label: 'TextField' },
       { key: 'Textarea', label: 'Textarea' },
       { key: 'Input', label: 'Input' },
-      
     ],
   },
   {

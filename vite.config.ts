@@ -1,13 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tsconfigPaths(), // подтянет ваши paths из tsconfig.json
+  ],
   resolve: {
     alias: {
-      '@DobruniaUI': path.resolve(__dirname, './src'),
+      '@DobruniaUI': path.resolve(__dirname, 'src/index.ts'),
+      '@DobruniaUI/': path.resolve(__dirname, 'src'),
     },
   },
 });
