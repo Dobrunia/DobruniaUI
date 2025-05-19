@@ -11,14 +11,16 @@ interface User {
 interface ReactionProps {
   emoji: string;
   users: User[];
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   className?: string;
+  currentUserId?: string;
 }
 
-const ReactionRoot = styled.button`
+const ReactionRoot = styled.button<{ $active?: boolean }>`
   display: flex;
   align-items: center;
-  background: var(--color-primary);
+  background: ${(p) =>
+    p.$active ? 'var(--color-accent)' : 'var(--color-primary)'};
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -58,9 +60,13 @@ export const Reaction: React.FC<ReactionProps> = ({
   users,
   onClick,
   className,
+  currentUserId,
 }) => {
+  const isActive = !!(
+    currentUserId && users.some((u) => u.id === currentUserId)
+  );
   return (
-    <ReactionRoot onClick={onClick} className={className}>
+    <ReactionRoot onClick={onClick} className={className} $active={isActive}>
       <Emoji>{emoji}</Emoji>
       <AvatarsStack>
         {users.slice(0, 3).map((user, idx) => (

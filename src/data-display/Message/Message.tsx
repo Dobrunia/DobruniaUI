@@ -26,6 +26,7 @@ interface MessageProps {
   isRead?: boolean;
   onReaction?: (emoji: string) => void;
   reactionEmojis?: string[];
+  currentUserId?: string;
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
@@ -169,6 +170,7 @@ export const Message: React.FC<MessageProps> = ({
   isRead,
   onReaction,
   reactionEmojis = ['❤️', '😂', '👍', '🔥'],
+  currentUserId,
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
   const bubbleRef = React.useRef<HTMLDivElement>(null);
@@ -221,7 +223,20 @@ export const Message: React.FC<MessageProps> = ({
               {reactions && reactions.length > 0 && (
                 <>
                   {reactions.map((r, i) => (
-                    <Reaction key={i} emoji={r.emoji} users={r.users} />
+                    <Reaction
+                      key={i}
+                      emoji={r.emoji}
+                      users={r.users}
+                      currentUserId={currentUserId}
+                      onClick={
+                        onReaction
+                          ? (e) => {
+                              e.stopPropagation();
+                              onReaction(r.emoji);
+                            }
+                          : undefined
+                      }
+                    />
                   ))}
                 </>
               )}

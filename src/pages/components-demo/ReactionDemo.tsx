@@ -23,7 +23,13 @@ const users = [
   },
 ];
 
+const currentUserId = '2'; // Иван
+
 export const ReactionDemo = () => {
+  const handleClick = (emoji: string) => {
+    alert(`Вы кликнули по реакции: ${emoji}`);
+  };
+
   return (
     <div
       style={{
@@ -34,10 +40,30 @@ export const ReactionDemo = () => {
         borderRadius: 16,
       }}
     >
-      <Reaction emoji="❤️" users={users.slice(0, 2)} />
-      <Reaction emoji="😂" users={users.slice(0, 3)} />
-      <Reaction emoji="👍" users={users} />
-      <Reaction emoji="🔥" users={users.slice(1, 4)} />
+      <Reaction
+        emoji="❤️"
+        users={users.slice(0, 2)}
+        currentUserId={currentUserId}
+        onClick={() => handleClick('❤️')}
+      />
+      <Reaction
+        emoji="😂"
+        users={users.slice(0, 3)}
+        currentUserId={currentUserId}
+        onClick={() => handleClick('😂')}
+      />
+      <Reaction
+        emoji="👍"
+        users={users}
+        currentUserId={currentUserId}
+        onClick={() => handleClick('👍')}
+      />
+      <Reaction
+        emoji="🔥"
+        users={users.slice(1, 4)}
+        currentUserId={currentUserId}
+        onClick={() => handleClick('🔥')}
+      />
     </div>
   );
 };
