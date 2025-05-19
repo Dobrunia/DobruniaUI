@@ -169,6 +169,73 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   z-index: 10;
 `;
 
+/**
+ * Message component - компонент сообщения в чате с поддержкой реакций и действий
+ * @param {('incoming'|'outgoing')} type - тип сообщения (входящее/исходящее)
+ * @param {string} text - текст сообщения
+ * @param {string} time - время отправки сообщения
+ * @param {ReactionData[]} [reactions] - массив реакций на сообщение
+ * @param {string} [className] - дополнительные CSS классы
+ * @param {User} [sender] - информация об отправителе:
+ *   - id: string - идентификатор пользователя
+ *   - name: string - имя пользователя
+ *   - avatar?: string - URL аватара
+ * @param {boolean} [isRead] - флаг прочтения сообщения
+ * @param {(emoji: string) => void} [onReaction] - обработчик добавления реакции
+ * @param {string[]} [reactionEmojis=['❤️', '😂', '👍', '🔥']] - доступные эмодзи для реакций
+ * @param {string} [currentUserId] - ID текущего пользователя
+ * @param {MessageAction[]} [actions] - массив действий с сообщением:
+ *   - label: string - название действия
+ *   - icon: React.ReactNode - иконка действия
+ *   - onClick: () => void - обработчик действия
+ *
+ * @example
+ * // Входящее сообщение
+ * <Message
+ *   type="incoming"
+ *   text="Привет! Как дела?"
+ *   time="12:30"
+ *   sender={{
+ *     id: "1",
+ *     name: "John Doe",
+ *     avatar: "/path/to/avatar.jpg"
+ *   }}
+ * />
+ *
+ * // Исходящее сообщение с реакциями
+ * <Message
+ *   type="outgoing"
+ *   text="Всё отлично!"
+ *   time="12:31"
+ *   isRead={true}
+ *   reactions={[
+ *     {
+ *       emoji: "👍",
+ *       users: [{ id: "2", name: "Jane" }]
+ *     }
+ *   ]}
+ *   onReaction={(emoji) => handleReaction(emoji)}
+ * />
+ *
+ * // Сообщение с действиями
+ * <Message
+ *   type="outgoing"
+ *   text="Важное сообщение"
+ *   time="12:32"
+ *   actions={[
+ *     {
+ *       label: "Редактировать",
+ *       icon: <EditIcon />,
+ *       onClick: () => handleEdit()
+ *     },
+ *     {
+ *       label: "Удалить",
+ *       icon: <DeleteIcon />,
+ *       onClick: () => handleDelete()
+ *     }
+ *   ]}
+ * />
+ */
 export const Message: React.FC<MessageProps> = ({
   type,
   text,

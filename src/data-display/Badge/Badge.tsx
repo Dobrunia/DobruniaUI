@@ -32,6 +32,33 @@ const BadgeCircle = styled.span`
   pointer-events: none;
 `;
 
+/**
+ * Badge component - компонент для отображения числового или текстового бейджа
+ * @param {number|string} [value] - значение бейджа (число или текст)
+ * @param {React.ReactNode} children - элемент, к которому прикрепляется бейдж
+ * @param {number} [max=99] - максимальное значение для числового бейджа
+ *
+ * @example
+ * // Числовой бейдж
+ * <Badge value={5}>
+ *   <IconButton icon={<NotificationIcon />} />
+ * </Badge>
+ *
+ * // Бейдж с превышением максимума
+ * <Badge value={150} max={99}>
+ *   <IconButton icon={<MessageIcon />} />
+ * </Badge>
+ *
+ * // Текстовый бейдж
+ * <Badge value="New">
+ *   <Button>Features</Button>
+ * </Badge>
+ *
+ * // Бейдж с нулевым значением (не отображается)
+ * <Badge value={0}>
+ *   <IconButton icon={<MailIcon />} />
+ * </Badge>
+ */
 export const Badge: React.FC<BadgeProps> = ({ value, children, max = 99 }) => {
   let displayValue = value;
   if (typeof value === 'number' && value > max) {

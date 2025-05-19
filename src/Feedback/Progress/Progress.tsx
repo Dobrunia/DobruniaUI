@@ -28,6 +28,28 @@ const CircleLabel = styled.div`
   font-weight: 500;
 `;
 
+/**
+ * CircularProgressWithLabel component - компонент кругового прогресса с отображением процентов
+ * @param {number} value - значение прогресса (0-100)
+ * @param {number} [size=64] - размер компонента в пикселях
+ * @param {number} [strokeWidth=5] - толщина линии прогресса
+ * @param {string} [color='var(--color-primary)'] - цвет линии прогресса
+ *
+ * @example
+ * // Базовое использование
+ * <CircularProgressWithLabel value={75} />
+ *
+ * // Кастомный размер и цвет
+ * <CircularProgressWithLabel
+ *   value={50}
+ *   size={100}
+ *   strokeWidth={8}
+ *   color="#FF0000"
+ * />
+ *
+ * // Полный прогресс
+ * <CircularProgressWithLabel value={100} />
+ */
 export const CircularProgressWithLabel: React.FC<
   CircularProgressWithLabelProps
 > = ({ value, size = 64, strokeWidth = 5, color = 'var(--color-primary)' }) => {
@@ -112,6 +134,33 @@ const LinearProgressContainer = styled.div`
   width: 100%;
 `;
 
+/**
+ * LinearProgress component - компонент линейного прогресса
+ * @param {number} [value] - значение прогресса (0-100). Если не указано, показывается неопределенный прогресс
+ * @param {string} [color='var(--color-primary)'] - цвет полосы прогресса
+ * @param {number} [height=6] - высота полосы прогресса в пикселях
+ * @param {React.CSSProperties} [style] - дополнительные стили
+ *
+ * @example
+ * // Определенный прогресс
+ * <LinearProgress value={75} />
+ *
+ * // Неопределенный прогресс (анимация)
+ * <LinearProgress />
+ *
+ * // Кастомный цвет и высота
+ * <LinearProgress
+ *   value={50}
+ *   color="#FF0000"
+ *   height={8}
+ * />
+ *
+ * // С дополнительными стилями
+ * <LinearProgress
+ *   value={25}
+ *   style={{ margin: '20px 0' }}
+ * />
+ */
 export const LinearProgress: React.FC<LinearProgressProps> = ({
   value,
   color = 'var(--color-primary)',

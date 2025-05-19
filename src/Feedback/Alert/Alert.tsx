@@ -126,6 +126,43 @@ const icons: Record<AlertType, React.ReactNode> = {
   ),
 };
 
+/**
+ * Alert component - компонент для отображения уведомлений и сообщений
+ * @param {('success'|'info'|'warning'|'error')} type - тип уведомления:
+ *   - success: успешное выполнение операции (зеленый)
+ *   - info: информационное сообщение (синий)
+ *   - warning: предупреждение (желтый)
+ *   - error: ошибка (красный)
+ * @param {React.ReactNode} children - содержимое уведомления
+ * @param {boolean} [outlined] - стиль с обводкой вместо фона
+ * @param {string} [className] - дополнительные CSS классы
+ *
+ * @example
+ * // Успешное уведомление
+ * <Alert type="success">
+ *   Операция успешно выполнена
+ * </Alert>
+ *
+ * // Информационное сообщение с обводкой
+ * <Alert type="info" outlined>
+ *   Система будет обновлена в 3:00
+ * </Alert>
+ *
+ * // Предупреждение
+ * <Alert type="warning">
+ *   Несохраненные изменения будут потеряны
+ * </Alert>
+ *
+ * // Сообщение об ошибке
+ * <Alert type="error">
+ *   Произошла ошибка при загрузке данных
+ * </Alert>
+ *
+ * // С HTML-содержимым
+ * <Alert type="info">
+ *   <strong>Важно:</strong> Пожалуйста, проверьте ваши данные
+ * </Alert>
+ */
 export const Alert: React.FC<AlertProps> = ({
   type,
   children,

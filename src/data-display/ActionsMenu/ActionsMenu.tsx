@@ -59,6 +59,43 @@ const MenuButton = styled.button`
   }
 `;
 
+/**
+ * ActionsMenu component - компонент выпадающего меню действий
+ * @param {ActionsMenuAction[]} actions - массив действий в меню
+ * @param {React.CSSProperties} [style] - дополнительные стили для меню
+ * @param {string} [className] - дополнительные CSS классы
+ * @param {() => void} [onClose] - функция, вызываемая при закрытии меню
+ *
+ * @example
+ * // Базовое использование
+ * <ActionsMenu
+ *   actions={[
+ *     {
+ *       label: "Редактировать",
+ *       icon: <EditIcon />,
+ *       onClick: () => handleEdit()
+ *     },
+ *     {
+ *       label: "Удалить",
+ *       icon: <DeleteIcon />,
+ *       onClick: () => handleDelete()
+ *     }
+ *   ]}
+ * />
+ *
+ * // С кастомными стилями
+ * <ActionsMenu
+ *   actions={actions}
+ *   style={{ top: '100%', right: 0 }}
+ *   className="custom-menu"
+ * />
+ *
+ * // С обработчиком закрытия
+ * <ActionsMenu
+ *   actions={actions}
+ *   onClose={() => setIsOpen(false)}
+ * />
+ */
 export const ActionsMenu: React.FC<ActionsMenuProps> = ({
   actions,
   style,

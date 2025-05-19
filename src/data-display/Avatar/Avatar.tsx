@@ -147,6 +147,54 @@ interface AvatarProps {
   language?: 'ru' | 'en'; // Add language prop
 }
 
+/**
+ * Avatar component - компонент аватара пользователя с поддержкой статуса
+ * @param {string} [src] - URL изображения аватара
+ * @param {string} [alt] - альтернативный текст для изображения
+ * @param {string} [name] - имя пользователя (используется для инициалов, если нет изображения)
+ * @param {('xxs'|'sm'|'md'|'lg')} [size='md'] - размер аватара:
+ *   - xxs: 20px (для реакций)
+ *   - sm: 32px (для отправителя)
+ *   - md: 44px (для контактов)
+ *   - lg: 72px (для профиля)
+ * @param {('online'|'offline'|'dnd'|'invisible')} [status] - статус пользователя
+ * @param {boolean} [showStatus=true] - показывать ли индикатор статуса
+ * @param {string} [className] - дополнительные CSS классы
+ * @param {(status: AvatarStatus) => void} [onStatusChange] - обработчик изменения статуса
+ * @param {('ru'|'en')} [language='en'] - язык интерфейса для статусов
+ *
+ * @example
+ * // Базовое использование с изображением
+ * <Avatar
+ *   src="/path/to/avatar.jpg"
+ *   name="John Doe"
+ *   size="md"
+ *   status="online"
+ * />
+ *
+ * // Аватар с инициалами (без изображения)
+ * <Avatar
+ *   name="John Doe"
+ *   size="lg"
+ *   status="offline"
+ * />
+ *
+ * // Маленький аватар для реакций
+ * <Avatar
+ *   src="/path/to/avatar.jpg"
+ *   size="xxs"
+ *   showStatus={false}
+ * />
+ *
+ * // Аватар с возможностью изменения статуса
+ * <Avatar
+ *   src="/path/to/avatar.jpg"
+ *   name="John Doe"
+ *   status="online"
+ *   onStatusChange={(newStatus) => handleStatusChange(newStatus)}
+ *   language="ru"
+ * />
+ */
 export const Avatar: React.FC<AvatarProps> = ({
   src,
   alt,
