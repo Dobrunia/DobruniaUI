@@ -8,8 +8,13 @@ export const InputDemo = () => {
   const [messages, setMessages] = useState<
     {
       text: string;
-      files: File[];
-      reactions: { emoji: string; users: { id: string }[] }[];
+      attachments?: {
+        type: 'image' | 'file';
+        url: string;
+        name?: string;
+        size?: number;
+      }[];
+      reactions: { emoji: string; users: { id: string; name: string }[] }[];
     }[]
   >([]);
   const [messageFiles, setMessageFiles] = useState<File[]>([]);
@@ -40,19 +45,46 @@ export const InputDemo = () => {
               ...msg,
               reactions: msg.reactions.map((r) =>
                 r.emoji === emoji
-                  ? { ...r, users: [...r.users, { id: 'me' }] }
+                  ? { ...r, users: [...r.users, { id: 'me', name: 'Me' }] }
                   : r,
               ),
             };
           } else {
             return {
               ...msg,
-              reactions: [...msg.reactions, { emoji, users: [{ id: 'me' }] }],
+              reactions: [
+                ...msg.reactions,
+                { emoji, users: [{ id: 'me', name: 'Me' }] },
+              ],
             };
           }
         }
       }),
     );
+  };
+
+  const handleSend = () => {
+    if (message.trim() || messageFiles.length > 0) {
+      const attachments = messageFiles.map((file) => ({
+        type: file.type.startsWith('image/')
+          ? ('image' as const)
+          : ('file' as const),
+        url: URL.createObjectURL(file),
+        name: file.name,
+        size: file.size,
+      }));
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: message,
+          attachments: attachments.length > 0 ? attachments : undefined,
+          reactions: [],
+        },
+      ]);
+      setMessage('');
+      setMessageFiles([]);
+    }
   };
 
   return (
@@ -71,16 +103,7 @@ export const InputDemo = () => {
         placeholder="Сообщение..."
         value={message}
         onChange={setMessage}
-        onSend={() => {
-          if (message.trim() || messageFiles.length > 0) {
-            setMessages((prev) => [
-              ...prev,
-              { text: message, files: messageFiles, reactions: [] },
-            ]);
-            setMessage('');
-            setMessageFiles([]);
-          }
-        }}
+        onSend={handleSend}
         files={messageFiles}
         onFilesChange={setMessageFiles}
         onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
@@ -99,6 +122,7 @@ export const InputDemo = () => {
             reactions={msg.reactions}
             onReaction={(emoji: string) => handleReaction(idx, emoji)}
             currentUserId="me"
+            attachments={msg.attachments}
           />
         ))}
       </div>

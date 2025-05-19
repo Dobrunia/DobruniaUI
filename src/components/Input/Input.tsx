@@ -832,6 +832,11 @@ export const Input: React.FC<InputProps> = ({
           ))}
         </FilePreview>
       )}
+      {previewImage && (
+        <ImageModalOverlay onClick={closePreview}>
+          <ImageModalImg src={previewImage} alt="preview" />
+        </ImageModalOverlay>
+      )}
       <InputBar>
         <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />

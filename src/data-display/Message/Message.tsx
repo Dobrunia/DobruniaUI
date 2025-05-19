@@ -33,6 +33,12 @@ interface MessageProps {
   reactionEmojis?: string[];
   currentUserId?: string;
   actions?: MessageAction[];
+  attachments?: {
+    type: 'image' | 'file';
+    url: string;
+    name?: string;
+    size?: number;
+  }[];
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
@@ -167,6 +173,59 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   z-index: 10;
 `;
 
+const AttachmentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+`;
+
+const ImageAttachment = styled.img`
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--radius-medium);
+  object-fit: cover;
+`;
+
+const FileAttachment = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-elevated);
+  border-radius: var(--radius-medium);
+  color: var(--text-body);
+  text-decoration: none;
+  font-size: var(--font-size-small);
+
+  &:hover {
+    background: var(--color-elevated-active);
+  }
+`;
+
+const ImageModalOverlay = styled.div`
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ImageModalImg = styled.img`
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: var(--radius-large);
+  box-shadow: 0 8px 32px #0008;
+  background: #fff;
+  cursor: default;
+`;
+
 /**
  * Message component - компонент сообщения в чате с поддержкой реакций и действий
  * @param {('incoming'|'outgoing')} type - тип сообщения (входящее/исходящее)
@@ -186,6 +245,7 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
  *   - label: string - название действия
  *   - icon: React.ReactNode - иконка действия
  *   - onClick: () => void - обработчик действия
+ * @param {('image'|'file')[]} [attachments] - массив прикрепленных файлов и изображений
  *
  * @example
  * // Входящее сообщение
@@ -246,8 +306,10 @@ export const Message: React.FC<MessageProps> = ({
   reactionEmojis = ['❤️', '😂', '👍', '🔥'],
   currentUserId,
   actions,
+  attachments,
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
+  const [previewImage, setPreviewImage] = React.useState<string | null>(null);
   const bubbleRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -262,11 +324,7 @@ export const Message: React.FC<MessageProps> = ({
   }, [showReactions]);
 
   return (
-    <MessageRoot
-      $type={type}
-      className={className}
-      onContextMenu={(e) => e.preventDefault()}
-    >
+    <MessageRoot $type={type} className={className}>
       <MessageRow $type={type}>
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
           <Bubble
@@ -324,6 +382,37 @@ export const Message: React.FC<MessageProps> = ({
               </>
             )}
             <div>{text}</div>
+            {attachments && attachments.length > 0 && (
+              <AttachmentContainer>
+                {attachments.map((attachment, index) =>
+                  attachment.type === 'image' ? (
+                    <ImageAttachment
+                      key={index}
+                      src={attachment.url}
+                      alt={attachment.name || 'Image attachment'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPreviewImage(attachment.url);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  ) : (
+                    <FileAttachment
+                      key={index}
+                      href={attachment.url}
+                      download={attachment.name}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span>📎</span>
+                      <span>{attachment.name || 'File'}</span>
+                      {attachment.size && (
+                        <span>({Math.round(attachment.size / 1024)} KB)</span>
+                      )}
+                    </FileAttachment>
+                  ),
+                )}
+              </AttachmentContainer>
+            )}
             <BottomBar>
               {reactions && reactions.length > 0 && (
                 <>
@@ -392,6 +481,11 @@ export const Message: React.FC<MessageProps> = ({
           </Bubble>
         </div>
       </MessageRow>
+      {previewImage && (
+        <ImageModalOverlay onClick={() => setPreviewImage(null)}>
+          <ImageModalImg src={previewImage} alt="preview" />
+        </ImageModalOverlay>
+      )}
     </MessageRoot>
   );
 };
