@@ -24,6 +24,8 @@ interface MessageProps {
   className?: string;
   sender?: User;
   isRead?: boolean;
+  onReaction?: (emoji: string) => void;
+  reactionEmojis?: string[];
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
@@ -143,6 +145,20 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
   }
 `;
 
+const ReactionMenu = styled.div`
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: var(--color-primary);
+  border-radius: var(--radius-large);
+  box-shadow: 0 2px 8px #0002;
+  padding: 6px 12px;
+  z-index: 10;
+`;
+
 export const Message: React.FC<MessageProps> = ({
   type,
   text,
@@ -151,13 +167,55 @@ export const Message: React.FC<MessageProps> = ({
   className,
   sender,
   isRead,
+  onReaction,
+  reactionEmojis = ['❤️', '😂', '👍', '🔥'],
 }) => {
+  const [showReactions, setShowReactions] = React.useState(false);
+  const bubbleRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!showReactions) return;
+    const handle = (e: MouseEvent) => {
+      if (bubbleRef.current && !bubbleRef.current.contains(e.target as Node)) {
+        setShowReactions(false);
+      }
+    };
+    document.addEventListener('mousedown', handle);
+    return () => document.removeEventListener('mousedown', handle);
+  }, [showReactions]);
+
   return (
     <MessageRoot $type={type} className={className}>
       <MessageRow $type={type}>
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
-          <Bubble $type={type}>
+          <Bubble
+            $type={type}
+            ref={bubbleRef}
+            onClick={onReaction ? () => setShowReactions((v) => !v) : undefined}
+            style={onReaction ? { cursor: 'pointer' } : undefined}
+          >
             {!sender && <BubbleTail $type={type} />}
+            {onReaction && showReactions && (
+              <ReactionMenu>
+                {reactionEmojis.map((emoji) => (
+                  <span
+                    key={emoji}
+                    style={{
+                      fontSize: 24,
+                      cursor: 'pointer',
+                      userSelect: 'none',
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onReaction(emoji);
+                      setShowReactions(false);
+                    }}
+                  >
+                    {emoji}
+                  </span>
+                ))}
+              </ReactionMenu>
+            )}
             <div>{text}</div>
             <BottomBar>
               {reactions && reactions.length > 0 && (
