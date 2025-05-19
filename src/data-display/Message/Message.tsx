@@ -62,8 +62,7 @@ const Bubble = styled.div<{ $type: MessageType }>`
       : css`
           border-bottom-left-radius: 0;
         `}
-  padding: 12px ${(p) => (p.$type === 'outgoing' ? '24px' : '16px')} 8px
-    ${(p) => (p.$type === 'outgoing' ? '16px' : '24px')};
+  padding: 12px 16px 8px 16px;
   max-width: 340px;
   min-width: 48px;
   font-size: var(--font-size-medium);
@@ -74,7 +73,7 @@ const Bubble = styled.div<{ $type: MessageType }>`
 const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
   position: absolute;
   bottom: -6px;
-  ${(p) => (p.$type === 'outgoing' ? 'right: -18px;' : 'left: -18px;')}
+  ${(p) => (p.$type === 'outgoing' ? 'right: -24px;' : 'left: -24px;')}
   z-index: 2;
   background: transparent;
 `;

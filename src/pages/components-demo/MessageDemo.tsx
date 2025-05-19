@@ -20,6 +20,14 @@ const reactions = [
     emoji: '😂',
     users: [userOther],
   },
+  {
+    emoji: '👍',
+    users: [userMe],
+  },
+  {
+    emoji: '🔥',
+    users: [userMe],
+  },
 ];
 
 export const MessageDemo = () => {
@@ -72,6 +80,14 @@ export const MessageDemo = () => {
         time={time}
         reactions={[]}
         isRead={false}
+      />
+      <Message
+        type="outgoing"
+        text="Все отлично, спасибо! 😊"
+        time={time}
+        reactions={reactions}
+        sender={userMe}
+        isRead={true}
       />
     </div>
   );
