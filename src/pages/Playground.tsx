@@ -16,6 +16,7 @@ import {
   SnackbarDemo,
   PaginationDemo,
   ReactionDemo,
+  MessageDemo,
 } from './components-demo';
 
 const sections = [
@@ -40,6 +41,7 @@ const sections = [
       { key: 'Avatar', label: 'Avatar' },
       { key: 'Badge', label: 'Badge' },
       { key: 'Reaction', label: 'Reaction' },
+      { key: 'Message', label: 'Message' },
     ],
   },
   {
@@ -86,6 +88,7 @@ const Playground: React.FC = () => {
       {selected === 'Snackbar' && <SnackbarDemo />}
       {selected === 'Pagination' && <PaginationDemo />}
       {selected === 'Reaction' && <ReactionDemo />}
+      {selected === 'Message' && <MessageDemo />}
     </PageBlock>
   );
 };
