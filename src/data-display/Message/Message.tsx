@@ -51,14 +51,33 @@ const Bubble = styled.div<{ $type: MessageType }>`
     p.$type === 'outgoing'
       ? 'var(--color-secondary)'
       : 'var(--color-elevated-active)'};
-  color: ${(p) => (p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)')};
+  color: ${(p) =>
+    p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)'};
   border-radius: var(--radius-large);
-  padding: 12px 16px 8px 16px;
+  padding: 12px ${(p) => (p.$type === 'outgoing' ? '24px' : '16px')} 8px
+    ${(p) => (p.$type === 'outgoing' ? '16px' : '24px')};
   max-width: 340px;
   min-width: 48px;
   font-size: var(--font-size-medium);
   box-shadow: 0 1px 4px #0001;
   position: relative;
+`;
+
+const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
+  position: absolute;
+  bottom: -6px;
+  ${(p) => (p.$type === 'outgoing' ? 'right: -18px;' : 'left: -18px;')}
+  z-index: 2;
+  background: transparent;
+`;
+
+const OutlinedAvatar = styled.div`
+  border: 3px solid var(--color-elevated);
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const BottomBar = styled.div`
@@ -94,30 +113,6 @@ const ReadIcon = styled.span<{ $read?: boolean }>`
   }
 `;
 
-const BubbleTail = styled.div<{ $type: MessageType }>`
-  position: absolute;
-  bottom: 6px;
-  ${(p) => (p.$type === 'outgoing' ? 'right: -10px;' : 'left: -10px;')}
-  width: 16px;
-  height: 16px;
-  z-index: 1;
-  &::after {
-    content: '';
-    position: absolute;
-    ${(p) => (p.$type === 'outgoing' ? 'right: 0;' : 'left: 0;')}
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 0 solid transparent;
-    ${(p) =>
-      p.$type === 'outgoing'
-        ? 'border-left: 12px solid var(--color-secondary);'
-        : 'border-right: 12px solid var(--color-elevated-active);'}
-    box-shadow: 0 1px 2px #0001;
-  }
-`;
-
 export const Message: React.FC<MessageProps> = ({
   type,
   text,
@@ -130,11 +125,6 @@ export const Message: React.FC<MessageProps> = ({
   return (
     <MessageRoot $type={type} className={className}>
       <MessageRow $type={type}>
-        {sender && (
-          <div style={{ alignSelf: 'flex-end', marginBottom: 6 }}>
-            <Avatar src={sender.avatar} size="sm" name={sender.name} />
-          </div>
-        )}
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
           <Bubble $type={type}>
             <div>{text}</div>
@@ -183,7 +173,13 @@ export const Message: React.FC<MessageProps> = ({
                 )}
               </ReadIcon>
             </BubbleMeta>
-            <BubbleTail $type={type} />
+            {sender && (
+              <AvatarBubbleWrapper $type={type}>
+                <OutlinedAvatar>
+                  <Avatar src={sender.avatar} size="sm" name={sender.name} />
+                </OutlinedAvatar>
+              </AvatarBubbleWrapper>
+            )}
           </Bubble>
         </div>
       </MessageRow>
