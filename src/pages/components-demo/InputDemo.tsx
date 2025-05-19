@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Input } from '../../components/Input/Input';
+import { Input } from '../../components';
+import { Message } from '../../data-display';
 
 export const InputDemo = () => {
   const [message, setMessage] = useState('');
@@ -44,51 +45,15 @@ export const InputDemo = () => {
       />
       <div style={{ marginTop: 16 }}>
         {messages.map((msg, idx) => (
-          <div
+          <Message
             key={idx}
-            style={{
-              background: '#fff',
-              borderRadius: 8,
-              padding: 8,
-              marginBottom: 8,
-              boxShadow: '0 1px 4px #0001',
-            }}
-          >
-            <div>{msg.text}</div>
-            {msg.files && msg.files.length > 0 && (
-              <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
-                {msg.files.map((file, i) =>
-                  file.type.startsWith('image/') ? (
-                    <img
-                      key={i}
-                      src={URL.createObjectURL(file)}
-                      alt={file.name}
-                      style={{
-                        width: 48,
-                        height: 48,
-                        objectFit: 'cover',
-                        borderRadius: 6,
-                        border: '1px solid #eee',
-                      }}
-                    />
-                  ) : (
-                    <span
-                      key={i}
-                      style={{
-                        fontSize: 12,
-                        color: '#888',
-                        border: '1px solid #eee',
-                        borderRadius: 6,
-                        padding: '4px 8px',
-                      }}
-                    >
-                      {file.name}
-                    </span>
-                  ),
-                )}
-              </div>
-            )}
-          </div>
+            type="outgoing"
+            text={msg.text}
+            time={new Date().toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          />
         ))}
       </div>
 
