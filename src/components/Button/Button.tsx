@@ -263,11 +263,10 @@ const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   gap: var(--spacing-small);
   border-radius: ${({ shape, variant }) =>
-    shape === 'circle' || (variant === 'close' && shape === 'circle')
+    (shape as ButtonShape) === 'circle' ||
+    (variant === 'close' && (shape as ButtonShape) === 'circle')
       ? '50%'
       : shape === 'square'
-      ? 'var(--radius-medium)'
-      : variant === 'close'
       ? 'var(--radius-medium)'
       : 'var(--radius-medium)'};
   cursor: pointer;

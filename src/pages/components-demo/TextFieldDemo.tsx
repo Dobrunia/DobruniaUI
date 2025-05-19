@@ -23,13 +23,17 @@ export const TextFieldDemo: React.FC = () => {
       <TextField
         label="Standard"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
         helperText="Helper text goes here"
       />
       <TextField
         label="With error"
         value={errorValue}
-        onChange={(e) => setErrorValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setErrorValue(e.target.value)
+        }
         error={!!errorValue && errorValue.length < 4}
         errorText="Minimum 4 characters"
         helperText="Try typing less than 4 chars"
@@ -48,7 +52,9 @@ export const TextFieldDemo: React.FC = () => {
         label="Email"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setEmail(e.target.value)
+        }
         helperText="Type is email"
         errorText="Некорректный email"
       />
@@ -56,7 +62,9 @@ export const TextFieldDemo: React.FC = () => {
         label="Phone"
         type="phone"
         value={phone}
-        onChange={(e) => setPhone(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setPhone(e.target.value)
+        }
         helperText="Type is tel (phone)"
         errorText="Некорректный телефон"
       />
@@ -64,7 +72,9 @@ export const TextFieldDemo: React.FC = () => {
         label="Number"
         type="number"
         value={number}
-        onChange={(e) => setNumber(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setNumber(e.target.value)
+        }
         helperText="Type is number"
         errorText="Введите число"
       />

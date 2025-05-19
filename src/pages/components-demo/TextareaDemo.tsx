@@ -25,13 +25,17 @@ export const TextareaDemo: React.FC = () => {
       <Textarea
         label="Standard"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setValue(e.target.value)
+        }
         helperText="Helper text goes here"
       />
       <Textarea
         label="With error"
         value={errorValue}
-        onChange={(e) => setErrorValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setErrorValue(e.target.value)
+        }
         error={!!errorValue && errorValue.length < 10}
         errorText="Минимум 10 символов"
         helperText="Попробуйте ввести меньше 10 символов"
@@ -40,7 +44,9 @@ export const TextareaDemo: React.FC = () => {
       <Textarea
         label="Auto height"
         value={autoValue}
-        onChange={(e) => setAutoValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setAutoValue(e.target.value)
+        }
         autoHeight
         helperText="Высота меняется автоматически"
       />
@@ -48,21 +54,27 @@ export const TextareaDemo: React.FC = () => {
       <Textarea
         label="Horizontal resize"
         value={horizontalValue}
-        onChange={(e) => setHorizontalValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setHorizontalValue(e.target.value)
+        }
         resize="horizontal"
         helperText="Можно менять ширину"
       />
       <Textarea
         label="Both resize"
         value={bothValue}
-        onChange={(e) => setBothValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setBothValue(e.target.value)
+        }
         resize="both"
         helperText="Можно менять ширину и высоту"
       />
       <Textarea
         label="With max length"
         value={limitedValue}
-        onChange={(e) => setLimitedValue(e.target.value.slice(0, maxLen))}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setLimitedValue(e.target.value.slice(0, maxLen))
+        }
         helperText={`Символов: ${limitedValue.length} / ${maxLen}`}
       />
     </DemoContainer>

@@ -80,7 +80,7 @@ export const SidebarListDemo: React.FC = () => {
         />
         <div style={{ marginTop: 8, fontSize: 14 }}>
           <strong>Selected:</strong>{' '}
-          {sections1[0].items.find((i) => i.key === selected1)?.label}
+          {sections1[0].items.find((i: { key: string; label: string }) => i.key === selected1)?.label}
         </div>
       </div>
       <div>

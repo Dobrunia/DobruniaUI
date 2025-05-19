@@ -658,7 +658,7 @@ export const Input: React.FC<InputProps> = ({
 
   // Emoji Picker hover logic
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
-  const emojiPickerTimeout = useRef<number | null>(null);
+  const emojiPickerTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showEmojiPicker = () => {
     if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
     setEmojiPickerVisible(true);

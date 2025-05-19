@@ -39,8 +39,8 @@ export const InputDemo = () => {
         }}
         files={messageFiles}
         onFilesChange={setMessageFiles}
-        onEmojiSelect={(emoji) => console.log('Emoji:', emoji)}
-        onAudioRecord={(audio) => console.log('Audio blob:', audio)}
+        onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
+        onAudioRecord={(audio: Blob) => console.log('Audio blob:', audio)}
       />
       <div style={{ marginTop: 16 }}>
         {messages.map((msg, idx) => (
@@ -62,17 +62,20 @@ export const InputDemo = () => {
         placeholder="Поиск"
         value={search}
         onChange={setSearch}
-        onSearch={(v) => console.log('Search:', v)}
+        onSearch={(v: string) => console.log('Search:', v)}
       />
 
       <h2>File Input</h2>
       <Input
         type="file"
-        onFilesChange={(files) => console.log('Files:', files)}
+        onFilesChange={(files: File[]) => console.log('Files:', files)}
       />
 
       <h2>Emoji Input</h2>
-      <Input type="emoji" onEmojiSelect={(emoji) => setSelectedEmoji(emoji)} />
+      <Input
+        type="emoji"
+        onEmojiSelect={(emoji: string) => setSelectedEmoji(emoji)}
+      />
       {selectedEmoji && (
         <div style={{ fontSize: 32, marginTop: 8, textAlign: 'center' }}>
           {selectedEmoji}
@@ -82,7 +85,7 @@ export const InputDemo = () => {
       <h2>Audio Input</h2>
       <Input
         type="audio"
-        onAudioRecord={(audio) => setAudios((prev) => [...prev, audio])}
+        onAudioRecord={(audio: Blob) => setAudios((prev) => [...prev, audio])}
       />
       <div
         style={{

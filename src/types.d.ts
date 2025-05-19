@@ -1,6 +1,6 @@
 declare module '@DobruniaUI' {
   export { Button } from './components/Button/Button';
-  export { Input } from './components/Input/Input';
+  export { Input, type InputProps } from './components/Input/Input';
   export { Textarea } from './components/Textarea/Textarea';
   export { SidebarList, type SidebarListSection } from './components/SidebarList/SidebarList';
   export { TextField } from './components/TextField/TextField';

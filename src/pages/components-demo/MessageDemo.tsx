@@ -172,7 +172,7 @@ export const MessageDemo = () => {
         <Message
           key={idx}
           {...msg}
-          onReaction={(emoji) => handleReaction(idx, emoji)}
+          onReaction={(emoji: string) => handleReaction(idx, emoji)}
           currentUserId={userMe.id}
           actions={actionsDemo}
         />
