@@ -59,6 +59,20 @@ export const MessageDemo = () => {
         sender={userOther}
         isRead={true}
       />
+      <Message
+        type="incoming"
+        text="Это сообщение без отправителя."
+        time={time}
+        reactions={[]}
+        isRead={false}
+      />
+      <Message
+        type="outgoing"
+        text="Это сообщение без отправителя."
+        time={time}
+        reactions={[]}
+        isRead={false}
+      />
     </div>
   );
 };

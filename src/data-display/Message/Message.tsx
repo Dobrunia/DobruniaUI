@@ -54,6 +54,14 @@ const Bubble = styled.div<{ $type: MessageType }>`
   color: ${(p) =>
     p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)'};
   border-radius: var(--radius-large);
+  ${(p) =>
+    p.$type === 'outgoing'
+      ? css`
+          border-bottom-right-radius: 0;
+        `
+      : css`
+          border-bottom-left-radius: 0;
+        `}
   padding: 12px ${(p) => (p.$type === 'outgoing' ? '24px' : '16px')} 8px
     ${(p) => (p.$type === 'outgoing' ? '16px' : '24px')};
   max-width: 340px;
@@ -113,6 +121,29 @@ const ReadIcon = styled.span<{ $read?: boolean }>`
   }
 `;
 
+const BubbleTail = styled.div<{ $type: MessageType }>`
+  position: absolute;
+  bottom: 0;
+  ${(p) => (p.$type === 'outgoing' ? 'right: -10px;' : 'left: -10px;')}
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+  &::after {
+    content: '';
+    position: absolute;
+    ${(p) => (p.$type === 'outgoing' ? 'right: 0;' : 'left: 0;')}
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 0 solid transparent;
+    ${(p) =>
+      p.$type === 'outgoing'
+        ? 'border-left: 12px solid var(--color-secondary);'
+        : 'border-right: 12px solid var(--color-elevated-active);'}
+  }
+`;
+
 export const Message: React.FC<MessageProps> = ({
   type,
   text,
@@ -127,6 +158,7 @@ export const Message: React.FC<MessageProps> = ({
       <MessageRow $type={type}>
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
           <Bubble $type={type}>
+            {!sender && <BubbleTail $type={type} />}
             <div>{text}</div>
             <BottomBar>
               {reactions && reactions.length > 0 && (
