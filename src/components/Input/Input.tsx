@@ -164,6 +164,8 @@ const FileThumbWrapper = styled.div`
   height: 56px;
 `;
 const FileThumb = styled.img`
+  width: 32px;
+  height: 32px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -251,35 +253,6 @@ const ImageModalImg = styled.img`
   border-radius: var(--radius-large);
   box-shadow: 0 8px 32px #0008;
   background: #fff;
-`;
-
-// Add new styled component for falling text animation
-const FallingText = styled.div<{ $x: number; $y: number }>`
-  position: fixed;
-  color: var(--text-heading);
-  font-size: var(--font-size-medium);
-  pointer-events: none;
-  animation: fall 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  left: ${(props) => props.$x}px;
-  top: ${(props) => props.$y}px;
-  opacity: 0.8;
-  transform-origin: center top;
-
-  @keyframes fall {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(100vh) rotate(360deg);
-      opacity: 0;
-    }
-  }
-`;
-
-const InputContainer = styled.div`
-  position: relative;
-  width: 100%;
 `;
 
 // Типы
@@ -533,14 +506,6 @@ export const Input: React.FC<InputProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [fallingChars, setFallingChars] = useState<
-    Array<{ char: string; x: number; y: number; id: string }>
-  >([]);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const lastSelectionRef = useRef<{ start: number; end: number }>({
-    start: 0,
-    end: 0,
-  });
 
   // message/search: controlled/uncontrolled
   const controlled = value !== undefined;
@@ -551,6 +516,7 @@ export const Input: React.FC<InputProps> = ({
   const filesToShow = filesControlled ? filesProp! : files;
 
   // Для авто-роста textarea
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   React.useLayoutEffect(() => {
     if (type === 'message' && textareaRef.current) {
       textareaRef.current.style.height = '26.38px';
@@ -682,85 +648,6 @@ export const Input: React.FC<InputProps> = ({
     }
   };
   const closePreview = () => setPreviewImage(null);
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    const oldValue = controlled ? value || '' : inputValue;
-    const currentSelection = {
-      start: e.target.selectionStart || 0,
-      end: e.target.selectionEnd || 0,
-    };
-
-    // Check if text was deleted
-    if (newValue.length < oldValue.length) {
-      const textareaRect = textareaRef.current?.getBoundingClientRect();
-
-      if (textareaRect) {
-        // Create a temporary span to measure text width
-        const tempSpan = document.createElement('span');
-        tempSpan.style.visibility = 'hidden';
-        tempSpan.style.position = 'absolute';
-        tempSpan.style.fontSize = getComputedStyle(
-          textareaRef.current!,
-        ).fontSize;
-        tempSpan.style.fontFamily = getComputedStyle(
-          textareaRef.current!,
-        ).fontFamily;
-        tempSpan.style.padding = '0 4px';
-        document.body.appendChild(tempSpan);
-
-        // Get the deleted text based on selection
-        let deletedText = '';
-        if (currentSelection.start === currentSelection.end) {
-          // Single cursor deletion
-          deletedText = oldValue.slice(
-            currentSelection.start,
-            currentSelection.start + (oldValue.length - newValue.length),
-          );
-        } else {
-          // Selection deletion
-          deletedText = oldValue.slice(
-            currentSelection.start,
-            currentSelection.end,
-          );
-        }
-
-        // Calculate cursor position in pixels
-        const textBeforeCursor = newValue.slice(0, currentSelection.start);
-        tempSpan.textContent = textBeforeCursor;
-        const cursorX = tempSpan.offsetWidth;
-        document.body.removeChild(tempSpan);
-
-        // Calculate the starting position for falling text
-        const startX = textareaRect.left + 0 + cursorX;
-        const startY = textareaRect.top + 4; // Add 4px padding from top
-        const charWidth = 8;
-
-        const newFallingChars = deletedText.split('').map((char, index) => ({
-          char,
-          x: startX + index * charWidth,
-          y: startY,
-          id: `${Date.now()}-${index}`,
-        }));
-
-        setFallingChars((prev) => [...prev, ...newFallingChars]);
-
-        // Remove falling chars after animation
-        setTimeout(() => {
-          setFallingChars((prev) =>
-            prev.filter(
-              (char) =>
-                !newFallingChars.some((newChar) => newChar.id === char.id),
-            ),
-          );
-        }, 1000);
-      }
-    }
-
-    lastSelectionRef.current = currentSelection;
-    if (!controlled) setInputValue(newValue);
-    onChange?.(newValue);
-  };
 
   // Render
   if (type === 'search') {
@@ -897,69 +784,65 @@ export const Input: React.FC<InputProps> = ({
           ))}
         </FilePreview>
       )}
-      <InputContainer>
-        <InputBar>
-          <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
-            <PaperclipIcon />
-          </IconBtn>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
+      <InputBar>
+        <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
+          <PaperclipIcon />
+        </IconBtn>
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <StyledTextarea
+          ref={textareaRef}
+          placeholder={placeholder}
+          value={val}
+          onChange={(e) => {
+            if (!controlled) setInputValue(e.target.value);
+            onChange?.(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              onSend?.();
+            }
+          }}
+          rows={1}
+        />
+        <EmojiButtonWrapper>
+          <SmileBtn
+            type="button"
+            onMouseEnter={showEmojiPicker}
+            onMouseLeave={hideEmojiPicker}
+          >
+            <SmileIcon />
+          </SmileBtn>
+          <EmojiPicker
+            onSelect={handleEmojiSelect}
+            visible={emojiPickerVisible}
+            onMouseEnter={showEmojiPicker}
+            onMouseLeave={hideEmojiPicker}
+            align="right"
           />
-          <StyledTextarea
-            ref={textareaRef}
-            placeholder={placeholder}
-            value={val}
-            onChange={handleTextChange}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                onSend?.();
-              }
-            }}
-            rows={1}
-          />
-          <EmojiButtonWrapper>
-            <SmileBtn
-              type="button"
-              onMouseEnter={showEmojiPicker}
-              onMouseLeave={hideEmojiPicker}
-            >
-              <SmileIcon />
-            </SmileBtn>
-            <EmojiPicker
-              onSelect={handleEmojiSelect}
-              visible={emojiPickerVisible}
-              onMouseEnter={showEmojiPicker}
-              onMouseLeave={hideEmojiPicker}
-              align="right"
-            />
-          </EmojiButtonWrapper>
-          {val.trim() || filesToShow.length > 0 ? (
-            <SendBtn variant="send" onClick={onSend} aria-label="Отправить" />
-          ) : (
-            <MicBtn
-              $recording={recording}
-              onMouseDown={startRecording}
-              onMouseUp={stopRecording}
-              onMouseLeave={stopRecording}
-              onTouchStart={startRecording}
-              onTouchEnd={stopRecording}
-              aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
-            >
-              <MicIcon recording={recording} />
-            </MicBtn>
-          )}
-        </InputBar>
-        {fallingChars.map((char) => (
-          <FallingText key={char.id} $x={char.x} $y={char.y}>
-            {char.char}
-          </FallingText>
-        ))}
-      </InputContainer>
+        </EmojiButtonWrapper>
+        {val.trim() || filesToShow.length > 0 ? (
+          <SendBtn variant="send" onClick={onSend} aria-label="Отправить" />
+        ) : (
+          <MicBtn
+            $recording={recording}
+            onMouseDown={startRecording}
+            onMouseUp={stopRecording}
+            onMouseLeave={stopRecording}
+            onTouchStart={startRecording}
+            onTouchEnd={stopRecording}
+            aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
+          >
+            <MicIcon recording={recording} />
+          </MicBtn>
+        )}
+      </InputBar>
     </>
   );
 };
