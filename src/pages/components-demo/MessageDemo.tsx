@@ -79,6 +79,38 @@ const initialMessages: Array<{
     sender: userMe,
     isRead: true,
   },
+  {
+    type: 'outgoing',
+    text: 'В',
+    time: '8:10',
+    reactions: [],
+    sender: userMe,
+    isRead: true,
+  },
+];
+
+
+const actionsDemo = [
+  {
+    label: 'Ответить',
+    icon: <span style={{ fontSize: 20 }}>↩️</span>,
+    onClick: () => alert('Ответить'),
+  },
+  {
+    label: 'Копировать текст',
+    icon: <span style={{ fontSize: 20 }}>📋</span>,
+    onClick: () => alert('Скопировано!'),
+  },
+  {
+    label: 'Переслать',
+    icon: <span style={{ fontSize: 20 }}>🔀</span>,
+    onClick: () => alert('Переслано!'),
+  },
+  {
+    label: 'Удалить',
+    icon: <span style={{ fontSize: 20 }}>🗑️</span>,
+    onClick: () => alert('Удалено!'),
+  },
 ];
 
 export const MessageDemo = () => {
@@ -143,6 +175,7 @@ export const MessageDemo = () => {
           {...msg}
           onReaction={(emoji) => handleReaction(idx, emoji)}
           currentUserId={userMe.id}
+          actions={actionsDemo}
         />
       ))}
     </div>

@@ -16,6 +16,12 @@ interface ReactionData {
   users: User[];
 }
 
+interface MessageAction {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+}
+
 interface MessageProps {
   type: MessageType;
   text: string;
@@ -27,6 +33,7 @@ interface MessageProps {
   onReaction?: (emoji: string) => void;
   reactionEmojis?: string[];
   currentUserId?: string;
+  actions?: MessageAction[];
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
@@ -146,18 +153,53 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
   }
 `;
 
-const ReactionMenu = styled.div`
+const ReactionMenu = styled.div<{ $type: MessageType }>`
   position: absolute;
   top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
+  ${(p) =>
+    p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;'}
+  transform: none;
   display: flex;
   gap: 8px;
-  background: var(--color-primary);
+  background: var(--color-elevated);
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px #0002;
   padding: 6px 12px;
   z-index: 10;
+`;
+
+const ActionsMenu = styled.div<{ $type: MessageType }>`
+  position: absolute;
+  top: 36px;
+  ${(p) =>
+    p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;'}
+  transform: none;
+  min-width: 200px;
+  background: var(--color-elevated);
+  border-radius: var(--radius-medium);
+  box-shadow: 0 2px 16px #0004;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-body);
+  font-size: 1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 8px;
+  &:hover {
+    background: var(--color-elevated-active);
+  }
 `;
 
 export const Message: React.FC<MessageProps> = ({
@@ -171,6 +213,7 @@ export const Message: React.FC<MessageProps> = ({
   onReaction,
   reactionEmojis = ['❤️', '😂', '👍', '🔥'],
   currentUserId,
+  actions,
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
   const bubbleRef = React.useRef<HTMLDivElement>(null);
@@ -198,25 +241,44 @@ export const Message: React.FC<MessageProps> = ({
           >
             {!sender && <BubbleTail $type={type} />}
             {onReaction && showReactions && (
-              <ReactionMenu>
-                {reactionEmojis.map((emoji) => (
-                  <span
-                    key={emoji}
-                    style={{
-                      fontSize: 24,
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onReaction(emoji);
-                      setShowReactions(false);
-                    }}
-                  >
-                    {emoji}
-                  </span>
-                ))}
-              </ReactionMenu>
+              <>
+                <ReactionMenu $type={type}>
+                  {reactionEmojis.map((emoji) => (
+                    <span
+                      key={emoji}
+                      style={{
+                        fontSize: 24,
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onReaction(emoji);
+                        setShowReactions(false);
+                      }}
+                    >
+                      {emoji}
+                    </span>
+                  ))}
+                </ReactionMenu>
+                {Array.isArray(actions) && actions.length > 0 && (
+                  <ActionsMenu $type={type}>
+                    {actions.map((action, idx) => (
+                      <ActionButton
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          action.onClick();
+                          setShowReactions(false);
+                        }}
+                      >
+                        {action.icon}
+                        <span>{action.label}</span>
+                      </ActionButton>
+                    ))}
+                  </ActionsMenu>
+                )}
+              </>
             )}
             <div>{text}</div>
             <BottomBar>
