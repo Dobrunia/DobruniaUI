@@ -1,4 +1,4 @@
-export { Button } from './components/Button/Button'
+export { Button } from './components/Button/Button';
 export { Input, type InputProps } from './components/Input/Input';
 export { Textarea } from './components/Textarea/Textarea';
 export {
@@ -13,6 +13,7 @@ export {
 } from './data-display/ActionsMenu/ActionsMenu';
 export { Avatar } from './data-display/Avatar/Avatar';
 export { Badge } from './data-display/Badge/Badge';
+export { ChatList } from './data-display/ChatList/ChatList';
 export { Message, type MessageType } from './data-display/Message/Message';
 export { Reaction } from './data-display/Reaction/Reaction';
 

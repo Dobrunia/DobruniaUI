@@ -17,6 +17,7 @@ import {
   ReactionDemo,
   MessageDemo,
   ActionsMenuDemo,
+  ChatListDemo,
 } from './components-demo';
 
 const sections = [
@@ -39,6 +40,7 @@ const sections = [
     items: [
       { key: 'Avatar', label: 'Avatar' },
       { key: 'Badge', label: 'Badge' },
+      { key: 'ChatList', label: 'ChatList' },
       { key: 'Reaction', label: 'Reaction' },
       { key: 'ActionsMenu', label: 'ActionsMenu' },
       { key: 'Message', label: 'Message' },
@@ -82,6 +84,7 @@ const Playground: React.FC = () => {
       {selected === 'Input' && <InputDemo />}
       {selected === 'Avatar' && <AvatarDemo />}
       {selected === 'Badge' && <BadgeDemo />}
+      {selected === 'ChatList' && <ChatListDemo />}
       {selected === 'Alert' && <AlertDemo />}
       {selected === 'Progress' && <ProgressDemo />}
       {selected === 'Skeleton' && <SkeletonDemo />}

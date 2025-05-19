@@ -14,3 +14,4 @@ export * from './PaginationDemo';
 export * from './ReactionDemo';
 export * from './MessageDemo';
 export * from './ActionsMenuDemo';
+export * from './ChatListDemo';
