@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageBlock } from '../../layout';
+import { PageBlock } from '@DobruniaUI';
 import styled from 'styled-components';
 
 const DemoBox = styled.div`

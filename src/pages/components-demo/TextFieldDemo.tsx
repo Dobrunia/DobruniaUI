@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { TextField } from '../../components';
+import { TextField } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: var(--spacing-large);

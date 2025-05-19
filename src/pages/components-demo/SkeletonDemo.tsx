@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '../../Feedback';
+import { Skeleton } from '@DobruniaUI';
 
 export const SkeletonDemo: React.FC = () => {
   return (

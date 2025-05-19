@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CircularProgressWithLabel, LinearProgress } from '../../Feedback';
+import { CircularProgressWithLabel, LinearProgress } from '@DobruniaUI';
 
 export const ProgressDemo: React.FC = () => {
   const [progress, setProgress] = useState(0);

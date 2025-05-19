@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { Button } from '../../components/';
+import { Button } from '@DobruniaUI';
 
 export type SnackbarOrigin = {
   vertical: 'top' | 'bottom';

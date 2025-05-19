@@ -1,6 +1,5 @@
 import React from 'react';
-import { Badge } from '../../data-display/Badge/Badge';
-import { Avatar } from '../../data-display';
+import { Badge, Avatar } from '@DobruniaUI';
 
 // Пример простой иконки
 const BellIcon = () => (

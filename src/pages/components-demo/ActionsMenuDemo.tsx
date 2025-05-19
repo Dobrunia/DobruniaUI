@@ -1,4 +1,4 @@
-import { ActionsMenu, type ActionsMenuAction } from '../../data-display';
+import { ActionsMenu, type ActionsMenuAction } from '@DobruniaUI';
 
 const actions: ActionsMenuAction[] = [
   {

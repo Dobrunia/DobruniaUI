@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pagination } from '../../Navigation/Pagination/Pagination';
+import { Pagination } from '@DobruniaUI';
 
 export const PaginationDemo: React.FC = () => {
   const [page, setPage] = useState(1);

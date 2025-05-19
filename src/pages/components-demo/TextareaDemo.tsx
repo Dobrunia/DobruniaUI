@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Textarea } from '../../components';
+import { Textarea } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: var(--spacing-large);

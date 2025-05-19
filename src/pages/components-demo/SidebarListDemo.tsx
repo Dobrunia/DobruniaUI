@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { SidebarList } from '../../components';
-import type { SidebarListSection } from '../../components';
+import { SidebarList, type SidebarListSection } from '@DobruniaUI';
 
 const sections1: SidebarListSection[] = [
   {

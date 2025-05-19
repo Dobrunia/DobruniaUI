@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar } from '../../data-display/Avatar/Avatar';
+import { Avatar } from '@DobruniaUI';
 import styled from 'styled-components';
 
 const DemoWrapper = styled.div`

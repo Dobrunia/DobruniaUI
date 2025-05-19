@@ -1,6 +1,5 @@
-import { Message } from '../../data-display';
-import type { MessageType } from '../../data-display/Message/Message';
-import React, { useState } from 'react';
+import { Message, type MessageType } from '@DobruniaUI';
+import { useState } from 'react';
 
 const userMe = {
   id: 'me',

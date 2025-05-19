@@ -1,4 +1,4 @@
-import { Reaction } from '../../data-display';
+import { Reaction } from '@DobruniaUI';
 
 const users = [
   {

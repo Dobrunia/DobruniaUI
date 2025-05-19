@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Snackbar, type SnackbarOrigin } from '../../Feedback';
+import { Snackbar, type SnackbarOrigin } from '@DobruniaUI';
 
 const positions: SnackbarOrigin[] = [
   { vertical: 'top', horizontal: 'left' },

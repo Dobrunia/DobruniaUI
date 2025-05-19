@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from '../../Feedback';
+import { Alert } from '@DobruniaUI';
 
 export const AlertDemo: React.FC = () => {
   return (
