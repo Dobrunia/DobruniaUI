@@ -262,13 +262,21 @@ export const Message: React.FC<MessageProps> = ({
   }, [showReactions]);
 
   return (
-    <MessageRoot $type={type} className={className}>
+    <MessageRoot
+      $type={type}
+      className={className}
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <MessageRow $type={type}>
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
           <Bubble
             $type={type}
             ref={bubbleRef}
             onClick={onReaction ? () => setShowReactions((v) => !v) : undefined}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (onReaction) setShowReactions((v) => !v);
+            }}
             style={onReaction ? { cursor: 'pointer' } : undefined}
           >
             {!sender && <BubbleTail $type={type} />}
