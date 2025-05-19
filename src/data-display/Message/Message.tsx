@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Reaction } from '../Reaction/Reaction';
 import { Avatar } from '../Avatar/Avatar';
+import { ActionsMenu } from '../ActionsMenu/ActionsMenu';
 
 export type MessageType = 'incoming' | 'outgoing';
 
@@ -168,40 +169,6 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   z-index: 10;
 `;
 
-const ActionsMenu = styled.div<{ $type: MessageType }>`
-  position: absolute;
-  top: 36px;
-  ${(p) =>
-    p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;'}
-  transform: none;
-  min-width: 200px;
-  background: var(--color-elevated);
-  border-radius: var(--radius-medium);
-  box-shadow: 0 2px 16px #0004;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-`;
-
-const ActionButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  background: none;
-  border: none;
-  color: var(--text-body);
-  font-size: 1rem;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background 0.15s;
-  border-radius: 8px;
-  &:hover {
-    background: var(--color-elevated-active);
-  }
-`;
-
 export const Message: React.FC<MessageProps> = ({
   type,
   text,
@@ -262,21 +229,24 @@ export const Message: React.FC<MessageProps> = ({
                   ))}
                 </ReactionMenu>
                 {Array.isArray(actions) && actions.length > 0 && (
-                  <ActionsMenu $type={type}>
-                    {actions.map((action, idx) => (
-                      <ActionButton
-                        key={idx}
-                        onClick={(e) => {
-                          e.stopPropagation();
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 36,
+                      [type === 'outgoing' ? 'right' : 'left']: 0,
+                      zIndex: 20,
+                    }}
+                  >
+                    <ActionsMenu
+                      actions={actions.map((action) => ({
+                        ...action,
+                        onClick: () => {
                           action.onClick();
                           setShowReactions(false);
-                        }}
-                      >
-                        {action.icon}
-                        <span>{action.label}</span>
-                      </ActionButton>
-                    ))}
-                  </ActionsMenu>
+                        },
+                      }))}
+                    />
+                  </div>
                 )}
               </>
             )}

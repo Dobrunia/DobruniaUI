@@ -13,3 +13,4 @@ export * from './SnackbarDemo';
 export * from './PaginationDemo';
 export * from './ReactionDemo';
 export * from './MessageDemo';
+export * from './ActionsMenuDemo';
