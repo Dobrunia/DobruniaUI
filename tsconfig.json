@@ -35,6 +35,5 @@
   "include": [
     "src", // весь код библиотеки/приложения
     "vite.config.ts", // конфиги Vite
-    "vite.lib.config.ts", // сборка библиотеки
   ]
 }
