@@ -29,7 +29,7 @@ export const MessageDemo = () => {
       style={{
         maxWidth: 720,
         margin: '40px auto',
-        background: 'var(--color-bg)',
+        background: 'var(--color-elevated)',
         padding: 24,
         borderRadius: 16,
         position: 'relative',

@@ -50,27 +50,15 @@ const Bubble = styled.div<{ $type: MessageType }>`
   background: ${(p) =>
     p.$type === 'outgoing'
       ? 'var(--color-secondary)'
-      : 'var(--color-elevated)'};
-  color: ${(p) => (p.$type === 'outgoing' ? '#fff' : 'var(--text-body)')};
-  border-radius: 16px;
+      : 'var(--color-elevated-active)'};
+  color: ${(p) => (p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)')};
+  border-radius: var(--radius-large);
   padding: 12px 16px 8px 16px;
   max-width: 340px;
   min-width: 48px;
   font-size: var(--font-size-medium);
   box-shadow: 0 1px 4px #0001;
   position: relative;
-  ${(p) =>
-    p.$type === 'outgoing'
-      ? css`
-          border-bottom-right-radius: 4px;
-          border-bottom-left-radius: 16px;
-          margin-left: 12px;
-        `
-      : css`
-          border-bottom-left-radius: 4px;
-          border-bottom-right-radius: 16px;
-          margin-right: 12px;
-        `}
 `;
 
 const BottomBar = styled.div`
@@ -125,8 +113,7 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
     ${(p) =>
       p.$type === 'outgoing'
         ? 'border-left: 12px solid var(--color-secondary);'
-        : 'border-right: 12px solid var(--color-elevated);'}
-    border-radius: 0 0 8px 8px;
+        : 'border-right: 12px solid var(--color-elevated-active);'}
     box-shadow: 0 1px 2px #0001;
   }
 `;
