@@ -376,6 +376,35 @@ const CloseIcon = ({ color }: { color?: string }) => (
   </svg>
 );
 
+/**
+ * Button component
+ * @param {ReactNode} children - текст кнопки
+ * @param {('primary'|'secondary'|'ghost'|'warning'|'send'|'close')} [variant='primary'] - тип кнопки
+ * @param {('small'|'medium'|'large')} [size='medium'] - размер кнопки
+ * @param {boolean} [fullWidth=false] - растянуть кнопку на всю ширину
+ * @param {boolean} [isLoading=false] - показать загрузку
+ * @param {ReactNode} [leftIcon] - иконка слева
+ * @param {ReactNode} [rightIcon] - иконка справа
+ * @param {boolean} [outlined] - outline кнопка
+ * @param {('default'|'circle'|'square')} [shape='default'] - форма кнопки
+ * @param {ButtonHTMLAttributes<HTMLButtonElement>} props - остальные пропсы кнопки
+ * @example
+ * // Primary button
+ * <Button>Click me</Button>
+ *
+ * // Secondary outlined button with icon
+ * <Button variant="secondary" outlined leftIcon={<Icon />}>
+ *   With Icon
+ * </Button>
+ *
+ * // Small loading button
+ * <Button size="small" isLoading>
+ *   Loading
+ * </Button>
+ *
+ * // Circle close button
+ * <Button variant="close" shape="circle" />
+ */
 export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',

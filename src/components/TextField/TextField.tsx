@@ -170,6 +170,62 @@ const EyeIcon = ({ open }: { open: boolean }) =>
     </svg>
   );
 
+/**
+ * TextField component - компонент однострочного текстового поля с плавающей меткой
+ * @param {string} [label] - текст метки над полем ввода
+ * @param {boolean} [error] - флаг ошибки
+ * @param {string} [errorText] - текст ошибки
+ * @param {string} [helperText] - вспомогательный текст
+ * @param {string} [width] - ширина компонента (например: '300px', '100%')
+ * @param {string} [id] - уникальный идентификатор поля
+ * @param {string} [value] - значение поля (для контролируемого компонента)
+ * @param {string} [defaultValue] - начальное значение поля
+ * @param {string} [type] - тип поля ввода:
+ *   - 'text' - обычный текст
+ *   - 'password' - пароль (с кнопкой показать/скрыть)
+ *   - 'email' - email (с валидацией)
+ *   - 'phone' - телефон (с валидацией)
+ *   - 'number' - число (с валидацией)
+ *   - другие HTML5 типы input
+ * @param {React.InputHTMLAttributes<HTMLInputElement>} props - остальные пропсы input
+ *
+ * @example
+ * // Базовое использование
+ * <TextField
+ *   label="Имя"
+ *   placeholder="Введите имя"
+ *   helperText="Максимум 50 символов"
+ * />
+ *
+ * // Поле с паролем
+ * <TextField
+ *   label="Пароль"
+ *   type="password"
+ *   errorText="Минимум 8 символов"
+ * />
+ *
+ * // Поле с email
+ * <TextField
+ *   label="Email"
+ *   type="email"
+ *   errorText="Введите корректный email"
+ * />
+ *
+ * // Поле с телефоном
+ * <TextField
+ *   label="Телефон"
+ *   type="phone"
+ *   placeholder="+7 (___) ___-__-__"
+ * />
+ *
+ * // Поле с числом
+ * <TextField
+ *   label="Возраст"
+ *   type="number"
+ *   min={0}
+ *   max={120}
+ * />
+ */
 export const TextField: React.FC<TextFieldProps> = ({
   label,
   error: errorProp,

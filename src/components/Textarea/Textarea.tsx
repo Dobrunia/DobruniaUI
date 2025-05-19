@@ -75,6 +75,50 @@ const HelperText = styled.div<{ $error?: boolean }>`
   margin-top: 0.1em;
 `;
 
+/**
+ * Textarea component - компонент многострочного текстового поля
+ * @param {string} [label] - текст метки над полем ввода
+ * @param {boolean} [error] - флаг ошибки
+ * @param {string} [errorText] - текст ошибки
+ * @param {string} [helperText] - вспомогательный текст
+ * @param {string} [width] - ширина компонента (например: '300px', '100%')
+ * @param {boolean} [autoHeight] - автоматическая высота по содержимому
+ * @param {('none'|'vertical'|'horizontal'|'both')} [resize='none'] - возможность изменения размера
+ * @param {string} [id] - уникальный идентификатор поля
+ * @param {string} [value] - значение поля (для контролируемого компонента)
+ * @param {string} [defaultValue] - начальное значение поля
+ * @param {React.TextareaHTMLAttributes<HTMLTextAreaElement>} props - остальные пропсы textarea
+ *
+ * @example
+ * // Базовое использование
+ * <Textarea
+ *   label="Описание"
+ *   placeholder="Введите описание..."
+ *   helperText="Максимум 500 символов"
+ * />
+ *
+ * // С ошибкой
+ * <Textarea
+ *   label="Описание"
+ *   error
+ *   errorText="Обязательное поле"
+ * />
+ *
+ * // С автоматической высотой
+ * <Textarea
+ *   label="Описание"
+ *   autoHeight
+ *   value={value}
+ *   onChange={(e) => setValue(e.target.value)}
+ * />
+ *
+ * // С возможностью изменения размера
+ * <Textarea
+ *   label="Описание"
+ *   resize="vertical"
+ *   width="300px"
+ * />
+ */
 export const Textarea: React.FC<TextareaProps> = ({
   label,
   error,
