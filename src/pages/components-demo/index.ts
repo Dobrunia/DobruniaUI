@@ -11,3 +11,4 @@ export * from './ProgressDemo';
 export * from './SkeletonDemo';
 export * from './SnackbarDemo';
 export * from './PaginationDemo';
+export * from './ReactionDemo';
