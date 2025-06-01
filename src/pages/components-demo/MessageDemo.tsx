@@ -238,6 +238,11 @@ export const MessageDemo = () => {
         borderRadius: 16,
         height: 600,
       }}
+      lastMessageId={
+        messages.length
+          ? messages[messages.length - 1].replyTo?.id || 'msg-' + (messages.length - 1)
+          : undefined
+      }
     >
       <Badge variant='message-date' date={new Date()} locale='ru' />
       {messages.map((msg, idx) => (

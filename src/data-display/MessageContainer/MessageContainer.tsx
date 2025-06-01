@@ -6,6 +6,7 @@ interface MessageContainerProps {
   autoScrollToBottom?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  lastMessageId?: string | number;
 }
 
 const Container = styled.div`
@@ -63,6 +64,7 @@ const ScrollToBottomBtn = styled.button`
  *
  * @param {React.ReactNode} children — сообщения (обычно <Message />)
  * @param {boolean} [autoScrollToBottom=true] — автоматически прокручивать вниз при появлении новых сообщений
+ * @param {string|number} [lastMessageId] — id последнего сообщения (для автоскролла только при новых сообщениях)
  * @param {React.CSSProperties} [style] — стили контейнера
  * @param {string} [className] — CSS-класс
  *
@@ -72,7 +74,7 @@ const ScrollToBottomBtn = styled.button`
  * - Кнопка "Вниз" появляется при прокрутке вверх, скроллит в самый низ (стрелка SVG)
  *
  * @example
- * <MessageContainer>
+ * <MessageContainer lastMessageId={messages[messages.length-1]?.id}>
  *   {messages.map(msg => <Message {...msg} />)}
  * </MessageContainer>
  */
@@ -81,6 +83,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({
   autoScrollToBottom = true,
   style,
   className,
+  lastMessageId,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
@@ -89,7 +92,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({
     if (autoScrollToBottom && ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
-  }, [children, autoScrollToBottom]);
+  }, [lastMessageId, autoScrollToBottom]);
 
   useEffect(() => {
     const el = ref.current;

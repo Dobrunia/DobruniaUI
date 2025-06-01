@@ -170,36 +170,36 @@ export const InputDemo = () => {
       }}
     >
       <h2>Message Input</h2>
-      <Input
-        type='message'
-        placeholder='Сообщение...'
-        value={message}
-        onChange={setMessage}
-        onSend={handleSend}
-        files={messageFiles}
-        onFilesChange={setMessageFiles}
-        onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
-        onAudioRecord={handleAudioRecord}
-      />
-      <MessageContainer
-        style={{ marginTop: 16, maxHeight: 320, background: 'var(--color-elevated)' }}
-      >
-        {messages.map((msg, idx) => (
-          <Message
-            key={idx}
-            type='outgoing'
-            text={msg.text}
-            time={new Date().toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-            reactions={msg.reactions}
-            onReaction={(emoji: string) => handleReaction(idx, emoji)}
-            currentUserId='me'
-            attachments={msg.attachments}
-          />
-        ))}
-      </MessageContainer>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <MessageContainer style={{ maxHeight: 320 }}>
+          {messages.map((msg, idx) => (
+            <Message
+              key={idx}
+              type='outgoing'
+              text={msg.text}
+              time={new Date().toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+              reactions={msg.reactions}
+              onReaction={(emoji: string) => handleReaction(idx, emoji)}
+              currentUserId='me'
+              attachments={msg.attachments}
+            />
+          ))}
+        </MessageContainer>
+        <Input
+          type='message'
+          placeholder='Сообщение...'
+          value={message}
+          onChange={setMessage}
+          onSend={handleSend}
+          files={messageFiles}
+          onFilesChange={setMessageFiles}
+          onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
+          onAudioRecord={handleAudioRecord}
+        />
+      </div>
 
       <h2>Search Input</h2>
       <Input
