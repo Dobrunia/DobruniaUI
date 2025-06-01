@@ -50,19 +50,19 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Button Variants</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button variant="primary">Primary Button</Button>
+            <Button variant='primary'>Primary Button</Button>
             <ButtonLabel>Primary</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="secondary">Secondary Button</Button>
+            <Button variant='secondary'>Secondary Button</Button>
             <ButtonLabel>Secondary</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="ghost">Ghost Button</Button>
+            <Button variant='ghost'>Ghost Button</Button>
             <ButtonLabel>Ghost</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="warning">Warning Button</Button>
+            <Button variant='warning'>Warning Button</Button>
             <ButtonLabel>Warning</ButtonLabel>
           </ButtonWrapper>
         </ButtonGrid>
@@ -72,19 +72,19 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Circular Buttons</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button variant="primary" shape="circle" size="small">
+            <Button variant='primary' shape='circle' size='small'>
               +
             </Button>
             <ButtonLabel>Small Circle</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="primary" shape="circle">
+            <Button variant='primary' shape='circle'>
               +
             </Button>
             <ButtonLabel>Medium Circle</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="primary" shape="circle" size="large">
+            <Button variant='primary' shape='circle' size='large'>
               +
             </Button>
             <ButtonLabel>Large Circle</ButtonLabel>
@@ -96,20 +96,15 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Special Buttons</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button variant="send" aria-label="Send" />
+            <Button variant='send' aria-label='Send' />
             <ButtonLabel>Send (icon only)</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="close" aria-label="Close" />
+            <Button variant='close' aria-label='Close' />
             <ButtonLabel>Close Outlined</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button
-              variant="close"
-              shape="circle"
-              size="small"
-              aria-label="Close"
-            />
+            <Button variant='close' shape='circle' size='small' aria-label='Close' />
             <ButtonLabel>Close Circle</ButtonLabel>
           </ButtonWrapper>
         </ButtonGrid>
@@ -119,19 +114,19 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Outlined Buttons</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button variant="primary" outlined>
+            <Button variant='primary' outlined>
               Outlined Primary
             </Button>
             <ButtonLabel>Primary Outlined</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="secondary" outlined>
+            <Button variant='secondary' outlined>
               Outlined Secondary
             </Button>
             <ButtonLabel>Secondary Outlined</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button variant="warning" outlined>
+            <Button variant='warning' outlined>
               Outlined Warning
             </Button>
             <ButtonLabel>Warning Outlined</ButtonLabel>
@@ -143,15 +138,15 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Button Sizes</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button size="small">Small Button</Button>
+            <Button size='small'>Small Button</Button>
             <ButtonLabel>Small</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button size="medium">Medium Button</Button>
+            <Button size='medium'>Medium Button</Button>
             <ButtonLabel>Medium</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button size="large">Large Button</Button>
+            <Button size='large'>Large Button</Button>
             <ButtonLabel>Large</ButtonLabel>
           </ButtonWrapper>
         </ButtonGrid>

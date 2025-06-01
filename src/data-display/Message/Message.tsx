@@ -34,10 +34,11 @@ interface MessageProps {
   currentUserId?: string;
   actions?: MessageAction[];
   attachments?: {
-    type: 'image' | 'file';
+    type: 'image' | 'file' | 'audio';
     url: string;
     name?: string;
     size?: number;
+    duration?: number; // Duration in seconds for audio files
   }[];
 }
 
@@ -63,11 +64,8 @@ const MessageRow = styled.div<{ $type: MessageType }>`
 
 const Bubble = styled.div<{ $type: MessageType }>`
   background: ${(p) =>
-    p.$type === 'outgoing'
-      ? 'var(--color-secondary)'
-      : 'var(--color-elevated-active)'};
-  color: ${(p) =>
-    p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)'};
+    p.$type === 'outgoing' ? 'var(--color-secondary)' : 'var(--color-elevated-active)'};
+  color: ${(p) => (p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)')};
   border-radius: var(--radius-large);
   ${(p) =>
     p.$type === 'outgoing'
@@ -127,8 +125,7 @@ const ReadIcon = styled.span<{ $read?: boolean }>`
   display: inline-flex;
   align-items: flex-end;
   font-size: var(--font-size-small);
-  color: ${({ $read }) =>
-    $read ? 'var(--color-accent)' : 'var(--text-secondary)'};
+  color: ${({ $read }) => ($read ? 'var(--color-accent)' : 'var(--text-secondary)')};
   svg {
     display: block;
     vertical-align: bottom;
@@ -161,8 +158,7 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
 const ReactionMenu = styled.div<{ $type: MessageType }>`
   position: absolute;
   top: -50px;
-  ${(p) =>
-    p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;'}
+  ${(p) => (p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;')}
   transform: none;
   display: flex;
   gap: 8px;
@@ -226,6 +222,66 @@ const ImageModalImg = styled.img`
   cursor: default;
 `;
 
+const AudioAttachment = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-elevated);
+  border-radius: var(--radius-medium);
+  color: var(--text-body);
+  font-size: var(--font-size-small);
+  width: 100%;
+  max-width: 300px;
+`;
+
+const AudioControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+`;
+
+const PlayButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-body);
+  &:hover {
+    color: var(--color-primary);
+  }
+`;
+
+const AudioProgress = styled.div`
+  flex: none;
+  width: 180px;
+  height: 8px;
+  background: var(--color-elevated-active);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+`;
+
+const AudioProgressBar = styled.div<{ $progress: number }>`
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: ${(props) => props.$progress}%;
+  background: var(--color-primary);
+  border-radius: 4px;
+`;
+
+const AudioDuration = styled.span`
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  white-space: nowrap;
+`;
+
 /**
  * Message component - компонент сообщения в чате с поддержкой реакций и действий
  * @param {('incoming'|'outgoing')} type - тип сообщения (входящее/исходящее)
@@ -245,7 +301,7 @@ const ImageModalImg = styled.img`
  *   - label: string - название действия
  *   - icon: React.ReactNode - иконка действия
  *   - onClick: () => void - обработчик действия
- * @param {('image'|'file')[]} [attachments] - массив прикрепленных файлов и изображений
+ * @param {('image'|'file'|'audio')[]} [attachments] - массив прикрепленных файлов и изображений
  *
  * @example
  * // Входящее сообщение
@@ -310,6 +366,9 @@ export const Message: React.FC<MessageProps> = ({
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
   const [previewImage, setPreviewImage] = React.useState<string | null>(null);
+  const [audioProgress, setAudioProgress] = React.useState<Record<string, number>>({});
+  const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
+  const audioRefs = React.useRef<Record<string, HTMLAudioElement>>({});
   const bubbleRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -322,6 +381,65 @@ export const Message: React.FC<MessageProps> = ({
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
   }, [showReactions]);
+
+  const formatTime = (seconds: number) => {
+    if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) return '...';
+    if (seconds === 0) return '...';
+    if (seconds < 10) {
+      // Показываем с одной десятичной для коротких сообщений
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = (seconds % 60).toFixed(1);
+      return `${minutes}:${remainingSeconds.padStart(4, '0')}`;
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleAudioPlay = (url: string) => {
+    const audio = audioRefs.current[url];
+    if (!audio) return;
+
+    if (isPlaying[url]) {
+      audio.pause();
+      setIsPlaying((prev) => ({ ...prev, [url]: false }));
+    } else {
+      // Stop all other audio
+      Object.values(audioRefs.current).forEach((a) => a.pause());
+      setIsPlaying((prev) =>
+        Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {})
+      );
+
+      audio.play();
+      setIsPlaying((prev) => ({ ...prev, [url]: true }));
+    }
+  };
+
+  const handleAudioTimeUpdate = (url: string) => {
+    const audio = audioRefs.current[url];
+    if (!audio) return;
+    const progress = (audio.currentTime / audio.duration) * 100;
+    setAudioProgress((prev) => ({ ...prev, [url]: progress }));
+  };
+
+  const handleAudioEnded = (url: string) => {
+    setIsPlaying((prev) => ({ ...prev, [url]: false }));
+    setAudioProgress((prev) => ({ ...prev, [url]: 0 }));
+  };
+
+  const handleAudioProgressClick = (url: string, e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const audio = audioRefs.current[url];
+    if (!audio) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width) * 100;
+    const time = (percentage / 100) * audio.duration;
+
+    audio.currentTime = time;
+    setAudioProgress((prev) => ({ ...prev, [url]: percentage }));
+  };
 
   return (
     <MessageRoot $type={type} className={className}>
@@ -384,33 +502,65 @@ export const Message: React.FC<MessageProps> = ({
             <div>{text}</div>
             {attachments && attachments.length > 0 && (
               <AttachmentContainer>
-                {attachments.map((attachment, index) =>
-                  attachment.type === 'image' ? (
-                    <ImageAttachment
-                      key={index}
-                      src={attachment.url}
-                      alt={attachment.name || 'Image attachment'}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPreviewImage(attachment.url);
-                      }}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  ) : (
-                    <FileAttachment
-                      key={index}
-                      href={attachment.url}
-                      download={attachment.name}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span>📎</span>
-                      <span>{attachment.name || 'File'}</span>
-                      {attachment.size && (
-                        <span>({Math.round(attachment.size / 1024)} KB)</span>
-                      )}
-                    </FileAttachment>
-                  ),
-                )}
+                {attachments.map((attachment, index) => {
+                  if (attachment.type === 'image') {
+                    return (
+                      <ImageAttachment
+                        key={index}
+                        src={attachment.url}
+                        alt={attachment.name || 'Image attachment'}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPreviewImage(attachment.url);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    );
+                  } else if (attachment.type === 'audio') {
+                    return (
+                      <AudioAttachment key={index} onClick={(e) => e.stopPropagation()}>
+                        <audio
+                          ref={(el) => {
+                            if (el) audioRefs.current[attachment.url] = el;
+                          }}
+                          src={attachment.url}
+                          onTimeUpdate={() => handleAudioTimeUpdate(attachment.url)}
+                          onEnded={() => handleAudioEnded(attachment.url)}
+                          style={{ display: 'none' }}
+                        />
+                        <PlayButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAudioPlay(attachment.url);
+                          }}
+                        >
+                          {isPlaying[attachment.url] ? '⏸️' : '▶️'}
+                        </PlayButton>
+                        <AudioControls>
+                          <AudioProgress
+                            onClick={(e) => handleAudioProgressClick(attachment.url, e)}
+                          >
+                            <AudioProgressBar $progress={audioProgress[attachment.url] || 0} />
+                          </AudioProgress>
+                          <AudioDuration>{formatTime(attachment.duration || 0)}</AudioDuration>
+                        </AudioControls>
+                      </AudioAttachment>
+                    );
+                  } else {
+                    return (
+                      <FileAttachment
+                        key={index}
+                        href={attachment.url}
+                        download={attachment.name}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span>📎</span>
+                        <span>{attachment.name || 'File'}</span>
+                        {attachment.size && <span>({Math.round(attachment.size / 1024)} KB)</span>}
+                      </FileAttachment>
+                    );
+                  }
+                })}
               </AttachmentContainer>
             )}
             <BottomBar>
@@ -440,32 +590,32 @@ export const Message: React.FC<MessageProps> = ({
               <ReadIcon $read={isRead}>
                 {isRead ? (
                   <>
-                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none">
+                    <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
                       <path
-                        d="M3 8.5L7 12.5L13 6.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                        d='M3 8.5L7 12.5L13 6.5'
+                        stroke='currentColor'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                       <path
-                        d="M3 8.5L7 12.5L13 6.5"
-                        transform="translate(4)"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                        d='M3 8.5L7 12.5L13 6.5'
+                        transform='translate(4)'
+                        stroke='currentColor'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                     </svg>
                   </>
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
                     <path
-                      d="M3 8.5L7 12.5L13 6.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      d='M3 8.5L7 12.5L13 6.5'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 )}
@@ -474,7 +624,7 @@ export const Message: React.FC<MessageProps> = ({
             {sender && (
               <AvatarBubbleWrapper $type={type}>
                 <OutlinedAvatar>
-                  <Avatar src={sender.avatar} size="sm" name={sender.name} />
+                  <Avatar src={sender.avatar} size='sm' name={sender.name} />
                 </OutlinedAvatar>
               </AvatarBubbleWrapper>
             )}
@@ -483,7 +633,7 @@ export const Message: React.FC<MessageProps> = ({
       </MessageRow>
       {previewImage && (
         <ImageModalOverlay onClick={() => setPreviewImage(null)}>
-          <ImageModalImg src={previewImage} alt="preview" />
+          <ImageModalImg src={previewImage} alt='preview' />
         </ImageModalOverlay>
       )}
     </MessageRoot>

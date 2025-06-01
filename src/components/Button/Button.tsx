@@ -25,13 +25,7 @@ const dash = keyframes`
   }
 `;
 
-type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'ghost'
-  | 'warning'
-  | 'send'
-  | 'close';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'close';
 type ButtonSize = 'small' | 'medium' | 'large';
 type ButtonShape = 'default' | 'circle' | 'square';
 
@@ -46,11 +40,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   shape?: ButtonShape;
 }
 
-const getButtonSize = (
-  size: ButtonSize,
-  shape: ButtonShape,
-  variant?: ButtonVariant,
-) => {
+const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVariant) => {
   if (variant === 'send') {
     return css`
       width: 24px;
@@ -140,11 +130,7 @@ const getButtonSize = (
   }
 };
 
-const getButtonStyles = (
-  variant: ButtonVariant,
-  outlined?: boolean,
-  shape?: ButtonShape,
-) => {
+const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: ButtonShape) => {
   if (variant === 'close' && shape === 'circle') {
     return css`
       background: var(--color-surface);
@@ -287,10 +273,8 @@ const StyledButton = styled.button<ButtonProps>`
   position: relative;
   font-size: 1rem;
 
-  ${({ variant = 'primary', outlined, shape }) =>
-    getButtonStyles(variant, outlined, shape)}
-  ${({ size = 'medium', shape = 'default', variant }) =>
-    getButtonSize(size, shape, variant)}
+  ${({ variant = 'primary', outlined, shape }) => getButtonStyles(variant, outlined, shape)}
+  ${({ size = 'medium', shape = 'default', variant }) => getButtonSize(size, shape, variant)}
 
   &:disabled {
     opacity: 0.5;
@@ -335,42 +319,30 @@ const ButtonContent = styled.span<{ $isLoading: boolean }>`
 `;
 
 const SendIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor" />
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z' fill='currentColor' />
   </svg>
 );
 
 const CloseIcon = ({ color }: { color?: string }) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <line
-      x1="4"
-      y1="4"
-      x2="12"
-      y2="12"
+      x1='4'
+      y1='4'
+      x2='12'
+      y2='12'
       stroke={color || 'var(--color-error)'}
-      strokeWidth="2"
-      strokeLinecap="round"
+      strokeWidth='2'
+      strokeLinecap='round'
     />
     <line
-      x1="12"
-      y1="4"
-      x2="4"
-      y2="12"
+      x1='12'
+      y1='4'
+      x2='4'
+      y2='12'
       stroke={color || 'var(--color-error)'}
-      strokeWidth="2"
-      strokeLinecap="round"
+      strokeWidth='2'
+      strokeLinecap='round'
     />
   </svg>
 );
@@ -439,11 +411,7 @@ export const Button: React.FC<ButtonProps> = ({
   let icon = leftIcon;
   if (variant === 'send') icon = <SendIcon />;
   if (variant === 'close')
-    icon = (
-      <CloseIcon
-        color={shape === 'circle' ? undefined : 'var(--color-error)'}
-      />
-    );
+    icon = <CloseIcon color={shape === 'circle' ? undefined : 'var(--color-error)'} />;
   const isIconOnly = variant === 'send' || variant === 'close';
 
   return (
@@ -463,8 +431,8 @@ export const Button: React.FC<ButtonProps> = ({
       </ButtonContent>
       {isLoading && (
         <SpinnerWrapper>
-          <SpinnerSvg viewBox="0 0 50 50">
-            <SpinnerCircle cx="25" cy="25" r="20" fill="none" strokeWidth="4" />
+          <SpinnerSvg viewBox='0 0 50 50'>
+            <SpinnerCircle cx='25' cy='25' r='20' fill='none' strokeWidth='4' />
           </SpinnerSvg>
         </SpinnerWrapper>
       )}

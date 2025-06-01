@@ -32,8 +32,7 @@ const Item = styled.div<{ $selected?: boolean; $unread?: boolean }>`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: ${({ $selected }) =>
-    $selected ? 'var(--color-secondary)' : 'transparent'};
+  background: ${({ $selected }) => ($selected ? 'var(--color-secondary)' : 'transparent')};
   color: var(--text-heading);
   cursor: pointer;
   border-bottom: 1px solid var(--color-elevated);
@@ -72,8 +71,7 @@ const Time = styled.span`
 
 const LastMessage = styled.span<{ $unread?: boolean }>`
   font-size: 0.97em;
-  color: ${({ $unread }) =>
-    $unread ? 'var(--color-primary)' : 'var(--text-secondary)'};
+  color: ${({ $unread }) => ($unread ? 'var(--color-primary)' : 'var(--text-secondary)')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -109,13 +107,13 @@ export const ChatList: React.FC<ChatListProps> = ({
       <List>
         {Array.from({ length: skeletonCount }).map((_, i) => (
           <Item key={i}>
-            <Skeleton variant="circular" width={44} height={44} />
+            <Skeleton variant='circular' width={44} height={44} />
             <Info>
               <NameRow>
-                <Skeleton variant="text" width={120} height={18} />
-                <Skeleton variant="text" width={32} height={14} />
+                <Skeleton variant='text' width={120} height={18} />
+                <Skeleton variant='text' width={32} height={14} />
               </NameRow>
-              <Skeleton variant="text" width={180} height={16} />
+              <Skeleton variant='text' width={180} height={16} />
             </Info>
           </Item>
         ))}
@@ -135,12 +133,12 @@ export const ChatList: React.FC<ChatListProps> = ({
             <UserAvatar
               src={item.avatar}
               name={item.name}
-              size="md"
+              size='md'
               status={item.status}
               showStatus={!!item.status}
             />
           ) : (
-            <Skeleton variant="circular" width={44} height={44} />
+            <Skeleton variant='circular' width={44} height={44} />
           )}
           <Info>
             <NameRow>
@@ -148,9 +146,7 @@ export const ChatList: React.FC<ChatListProps> = ({
               <Time>{item.time}</Time>
             </NameRow>
             <NameRow>
-              <LastMessage $unread={item.unread}>
-                {item.lastMessage}
-              </LastMessage>
+              <LastMessage $unread={item.unread}>{item.lastMessage}</LastMessage>
               {item.isRead && <ReadMark>✔✔</ReadMark>}
             </NameRow>
           </Info>

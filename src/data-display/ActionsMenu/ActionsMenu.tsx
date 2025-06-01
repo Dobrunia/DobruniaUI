@@ -35,8 +35,7 @@ const Menu = styled.div`
   flex-direction: column;
   gap: 2px;
   opacity: 1;
-  animation: ${scaleInLeft} var(--transition-slow, 0.3s)
-    cubic-bezier(0.4, 1, 0.4, 1);
+  animation: ${scaleInLeft} var(--transition-slow, 0.3s) cubic-bezier(0.4, 1, 0.4, 1);
   will-change: opacity, transform;
   transform-origin: left;
 `;
@@ -96,12 +95,7 @@ const MenuButton = styled.button`
  *   onClose={() => setIsOpen(false)}
  * />
  */
-export const ActionsMenu: React.FC<ActionsMenuProps> = ({
-  actions,
-  style,
-  className,
-  onClose,
-}) => (
+export const ActionsMenu: React.FC<ActionsMenuProps> = ({ actions, style, className, onClose }) => (
   <Menu style={style} className={className}>
     {actions.map((action, idx) => (
       <MenuButton

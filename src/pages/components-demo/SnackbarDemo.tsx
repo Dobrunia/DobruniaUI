@@ -12,9 +12,7 @@ const positions: SnackbarOrigin[] = [
 
 export const SnackbarDemo: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [anchorOrigin, setAnchorOrigin] = useState<SnackbarOrigin>(
-    positions[4],
-  );
+  const [anchorOrigin, setAnchorOrigin] = useState<SnackbarOrigin>(positions[4]);
   const [message, setMessage] = useState('');
 
   const handleOpen = (origin: SnackbarOrigin) => {
@@ -28,9 +26,7 @@ export const SnackbarDemo: React.FC = () => {
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: 24 }}>
       <h2>Snackbar positions</h2>
-      <div
-        style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 32 }}
-      >
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 32 }}>
         {positions.map((pos) => (
           <button
             key={pos.vertical + pos.horizontal}
@@ -47,12 +43,7 @@ export const SnackbarDemo: React.FC = () => {
           </button>
         ))}
       </div>
-      <Snackbar
-        open={open}
-        message={message}
-        onClose={handleClose}
-        anchorOrigin={anchorOrigin}
-      />
+      <Snackbar open={open} message={message} onClose={handleClose} anchorOrigin={anchorOrigin} />
     </div>
   );
 };

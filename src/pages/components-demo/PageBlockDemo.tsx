@@ -30,12 +30,9 @@ export const PageBlockDemo: React.FC = () => {
       >
         <DemoBox>
           <h2>Main Content</h2>
+          <p>This is the main content area. It can contain any content you want.</p>
           <p>
-            This is the main content area. It can contain any content you want.
-          </p>
-          <p>
-            The layout component provides a flexible three-column structure with
-            optional sidebars.
+            The layout component provides a flexible three-column structure with optional sidebars.
           </p>
         </DemoBox>
       </PageBlock>
@@ -58,10 +55,7 @@ export const PageBlockDemo: React.FC = () => {
       >
         <DemoBox>
           <h2>Main Content</h2>
-          <p>
-            Это stretched-версия PageBlock. Контент занимает всю доступную
-            ширину.
-          </p>
+          <p>Это stretched-версия PageBlock. Контент занимает всю доступную ширину.</p>
         </DemoBox>
       </PageBlock>
     </div>

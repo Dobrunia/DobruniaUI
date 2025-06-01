@@ -76,11 +76,14 @@ export const SidebarListDemo: React.FC = () => {
           sections={sections1}
           selected={selected1}
           onSelect={setSelected1}
-          width="220px"
+          width='220px'
         />
         <div style={{ marginTop: 8, fontSize: 14 }}>
           <strong>Selected:</strong>{' '}
-          {sections1[0].items.find((i: { key: string; label: string }) => i.key === selected1)?.label}
+          {
+            sections1[0].items.find((i: { key: string; label: string }) => i.key === selected1)
+              ?.label
+          }
         </div>
       </div>
       <div>
@@ -89,14 +92,11 @@ export const SidebarListDemo: React.FC = () => {
           sections={sections2}
           selected={selected2}
           onSelect={setSelected2}
-          width="220px"
+          width='220px'
         />
         <div style={{ marginTop: 8, fontSize: 14 }}>
           <strong>Selected:</strong>{' '}
-          {
-            sections2.flatMap((s) => s.items).find((i) => i.key === selected2)
-              ?.label
-          }
+          {sections2.flatMap((s) => s.items).find((i) => i.key === selected2)?.label}
         </div>
       </div>
       <div>
@@ -105,14 +105,11 @@ export const SidebarListDemo: React.FC = () => {
           sections={sections3}
           selected={selected3}
           onSelect={setSelected3}
-          width="220px"
+          width='220px'
         />
         <div style={{ marginTop: 8, fontSize: 14 }}>
           <strong>Selected:</strong>{' '}
-          {
-            sections3.flatMap((s) => s.items).find((i) => i.key === selected3)
-              ?.label
-          }
+          {sections3.flatMap((s) => s.items).find((i) => i.key === selected3)?.label}
         </div>
       </div>
       <div>
@@ -121,25 +118,17 @@ export const SidebarListDemo: React.FC = () => {
           sections={sections4}
           selected={selected4}
           onSelect={setSelected4}
-          width="220px"
+          width='220px'
           allowCollapse={false}
         />
         <div style={{ marginTop: 8, fontSize: 14 }}>
           <strong>Selected:</strong>{' '}
-          {
-            sections4.flatMap((s) => s.items).find((i) => i.key === selected4)
-              ?.label
-          }
+          {sections4.flatMap((s) => s.items).find((i) => i.key === selected4)?.label}
         </div>
       </div>
       <div>
         <h3>Пустой список</h3>
-        <SidebarList
-          sections={[]}
-          selected={''}
-          onSelect={() => {}}
-          width="220px"
-        />
+        <SidebarList sections={[]} selected={''} onSelect={() => {}} width='220px' />
       </div>
     </div>
   );

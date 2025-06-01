@@ -4,68 +4,68 @@ import { Button } from '@DobruniaUI';
 
 // SVG-иконки (заглушки)
 const PaperclipIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+  <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
     <path
-      d="M7.5 9.5l5-5a2.121 2.121 0 113 3l-7 7a4 4 0 01-5.657-5.657l7.071-7.07"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      d='M7.5 9.5l5-5a2.121 2.121 0 113 3l-7 7a4 4 0 01-5.657-5.657l7.071-7.07'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     />
   </svg>
 );
 const SmileIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-    <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" />
+  <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
+    <circle cx='10' cy='10' r='8' stroke='currentColor' strokeWidth='1.5' />
     <path
-      d="M6.5 12.5a4 4 0 0 0 7 0"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      fill="none"
+      d='M6.5 12.5a4 4 0 0 0 7 0'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      fill='none'
     />
-    <circle cx="7" cy="8.5" r="1" fill="currentColor" />
-    <circle cx="13" cy="8.5" r="1" fill="currentColor" />
+    <circle cx='7' cy='8.5' r='1' fill='currentColor' />
+    <circle cx='13' cy='8.5' r='1' fill='currentColor' />
   </svg>
 );
 const MicIcon = ({ recording }: { recording?: boolean }) => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+  <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
     {/* Корпус микрофона */}
     <rect
-      x="7"
-      y="2.5"
-      width="6"
-      height="10"
-      rx="3"
+      x='7'
+      y='2.5'
+      width='6'
+      height='10'
+      rx='3'
       stroke={recording ? 'var(--color-error)' : 'currentColor'}
-      strokeWidth="1.5"
+      strokeWidth='1.5'
     />
     {/* Основание-подставка */}
     <path
-      d="M4 10.5a6 6 0 0 0 12 0"
+      d='M4 10.5a6 6 0 0 0 12 0'
       stroke={recording ? 'var(--color-error)' : 'currentColor'}
-      strokeWidth="1.5"
-      fill="none"
+      strokeWidth='1.5'
+      fill='none'
     />
     {/* Ножка */}
     <line
-      x1="10"
-      y1="13"
-      x2="10"
-      y2="17"
+      x1='10'
+      y1='13'
+      x2='10'
+      y2='17'
       stroke={recording ? 'var(--color-error)' : 'currentColor'}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth='1.5'
+      strokeLinecap='round'
     />
     {/* Подставка-кружок */}
     <ellipse
-      cx="10"
-      cy="18"
-      rx="3"
-      ry="0.7"
+      cx='10'
+      cy='18'
+      rx='3'
+      ry='0.7'
       stroke={recording ? 'var(--color-error)' : 'currentColor'}
-      strokeWidth="1.2"
-      fill="none"
+      strokeWidth='1.2'
+      fill='none'
     />
   </svg>
 );
@@ -177,8 +177,7 @@ const FileThumb = styled.img`
 const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   position: absolute;
   bottom: calc(100% + 8px);
-  ${(p) =>
-    p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;'}
+  ${(p) => (p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;')}
   background: var(--color-elevated);
   border-radius: var(--radius-medium);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
@@ -369,11 +368,7 @@ const EmojiPicker: React.FC<{
   ];
   if (!visible) return null;
   return (
-    <EmojiPickerWrapper
-      align={align}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+    <EmojiPickerWrapper align={align} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <EmojiGrid>
         {emojis.map((emoji, index) => (
           <EmojiButton
@@ -397,8 +392,7 @@ const SearchBar = styled(InputBar)`
   box-shadow: none;
   transition: box-shadow var(--transition-fast);
   &:hover {
-    box-shadow: 0 0 0 2px
-      color-mix(in srgb, var(--color-primary) 20%, transparent 80%);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent 80%);
   }
 `;
 const SearchInputField = styled(StyledInput)`
@@ -568,8 +562,7 @@ export const Input: React.FC<InputProps> = ({
   React.useLayoutEffect(() => {
     if (type === 'message' && textareaRef.current) {
       textareaRef.current.style.height = '26.38px';
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
   }, [val, type]);
 
@@ -588,8 +581,7 @@ export const Input: React.FC<InputProps> = ({
       const all = [...(filesProp || []), ...fileList];
       const unique = all.filter(
         (file, idx, arr) =>
-          arr.findIndex((f) => f.name === file.name && f.size === file.size) ===
-          idx,
+          arr.findIndex((f) => f.name === file.name && f.size === file.size) === idx
       );
       onFilesChange?.(unique);
     } else {
@@ -597,9 +589,7 @@ export const Input: React.FC<InputProps> = ({
         const all = [...prev, ...fileList];
         const unique = all.filter(
           (file, idx, arr) =>
-            arr.findIndex(
-              (f) => f.name === file.name && f.size === file.size,
-            ) === idx,
+            arr.findIndex((f) => f.name === file.name && f.size === file.size) === idx
         );
         onFilesChange?.(unique);
         return unique;
@@ -665,10 +655,7 @@ export const Input: React.FC<InputProps> = ({
   };
   const hideEmojiPicker = () => {
     if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
-    emojiPickerTimeout.current = setTimeout(
-      () => setEmojiPickerVisible(false),
-      120,
-    );
+    emojiPickerTimeout.current = setTimeout(() => setEmojiPickerVisible(false), 120);
   };
 
   // Для message: вставка emoji в inputValue
@@ -702,7 +689,7 @@ export const Input: React.FC<InputProps> = ({
     return (
       <SearchBar>
         <SearchInputField
-          type="text"
+          type='text'
           placeholder={placeholder || 'Поиск'}
           value={val}
           onChange={(e) => {
@@ -717,12 +704,12 @@ export const Input: React.FC<InputProps> = ({
   if (type === 'file') {
     return (
       <div>
-        <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
+        <IconBtn type='button' onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
         </IconBtn>
         <input
           ref={fileInputRef}
-          type="file"
+          type='file'
           multiple
           style={{ display: 'none' }}
           onChange={handleFileChange}
@@ -742,10 +729,10 @@ export const Input: React.FC<InputProps> = ({
                   <span>{file.name}</span>
                 )}
                 <Button
-                  variant="close"
-                  shape="circle"
-                  size="small"
-                  aria-label="Удалить"
+                  variant='close'
+                  shape='circle'
+                  size='small'
+                  aria-label='Удалить'
                   onClick={() => handleRemoveFile(i)}
                   style={{ position: 'absolute', top: -8, right: -8 }}
                 />
@@ -755,11 +742,7 @@ export const Input: React.FC<InputProps> = ({
         )}
         {previewImage && (
           <ImageModalOverlay onClick={closePreview}>
-            <ImageModalImg
-              src={previewImage}
-              alt="preview"
-              onClick={(e) => e.stopPropagation()}
-            />
+            <ImageModalImg src={previewImage} alt='preview' onClick={(e) => e.stopPropagation()} />
           </ImageModalOverlay>
         )}
       </div>
@@ -768,11 +751,7 @@ export const Input: React.FC<InputProps> = ({
   if (type === 'emoji') {
     return (
       <EmojiButtonWrapper>
-        <SmileBtn
-          type="button"
-          onMouseEnter={showEmojiPicker}
-          onMouseLeave={hideEmojiPicker}
-        >
+        <SmileBtn type='button' onMouseEnter={showEmojiPicker} onMouseLeave={hideEmojiPicker}>
           <SmileIcon />
         </SmileBtn>
         {onEmojiSelect && (
@@ -781,7 +760,7 @@ export const Input: React.FC<InputProps> = ({
             visible={emojiPickerVisible}
             onMouseEnter={showEmojiPicker}
             onMouseLeave={hideEmojiPicker}
-            align="left"
+            align='left'
           />
         )}
       </EmojiButtonWrapper>
@@ -790,7 +769,7 @@ export const Input: React.FC<InputProps> = ({
   if (type === 'audio') {
     return (
       <MicBtn
-        type="button"
+        type='button'
         $recording={recording}
         onMouseDown={startRecording}
         onMouseUp={stopRecording}
@@ -821,10 +800,10 @@ export const Input: React.FC<InputProps> = ({
                 <span>{file.name}</span>
               )}
               <Button
-                variant="close"
-                shape="circle"
-                size="small"
-                aria-label="Удалить"
+                variant='close'
+                shape='circle'
+                size='small'
+                aria-label='Удалить'
                 onClick={() => handleRemoveFile(i)}
                 style={{ position: 'absolute', top: -8, right: -8 }}
               />
@@ -834,16 +813,16 @@ export const Input: React.FC<InputProps> = ({
       )}
       {previewImage && (
         <ImageModalOverlay onClick={closePreview}>
-          <ImageModalImg src={previewImage} alt="preview" />
+          <ImageModalImg src={previewImage} alt='preview' />
         </ImageModalOverlay>
       )}
       <InputBar>
-        <IconBtn type="button" onClick={() => fileInputRef.current?.click()}>
+        <IconBtn type='button' onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
         </IconBtn>
         <input
           ref={fileInputRef}
-          type="file"
+          type='file'
           multiple
           style={{ display: 'none' }}
           onChange={handleFileChange}
@@ -865,11 +844,7 @@ export const Input: React.FC<InputProps> = ({
           rows={1}
         />
         <EmojiButtonWrapper>
-          <SmileBtn
-            type="button"
-            onMouseEnter={showEmojiPicker}
-            onMouseLeave={hideEmojiPicker}
-          >
+          <SmileBtn type='button' onMouseEnter={showEmojiPicker} onMouseLeave={hideEmojiPicker}>
             <SmileIcon />
           </SmileBtn>
           <EmojiPicker
@@ -877,11 +852,11 @@ export const Input: React.FC<InputProps> = ({
             visible={emojiPickerVisible}
             onMouseEnter={showEmojiPicker}
             onMouseLeave={hideEmojiPicker}
-            align="right"
+            align='right'
           />
         </EmojiButtonWrapper>
         {val.trim() || filesToShow.length > 0 ? (
-          <SendBtn variant="send" onClick={onSend} aria-label="Отправить" />
+          <SendBtn variant='send' onClick={onSend} aria-label='Отправить' />
         ) : (
           <MicBtn
             $recording={recording}

@@ -77,12 +77,7 @@ export const ChatListDemo: React.FC = () => {
       <button onClick={() => setLoading((v) => !v)} style={{ margin: 8 }}>
         {loading ? 'Показать чаты' : 'Показать skeleton'}
       </button>
-      <ChatList
-        items={demoChats}
-        loading={loading}
-        selectedId={selected}
-        onSelect={setSelected}
-      />
+      <ChatList items={demoChats} loading={loading} selectedId={selected} onSelect={setSelected} />
     </div>
   );
 };

@@ -23,54 +23,44 @@ export const TextareaDemo: React.FC = () => {
   return (
     <DemoContainer>
       <Textarea
-        label="Standard"
+        label='Standard'
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setValue(e.target.value)
-        }
-        helperText="Helper text goes here"
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value)}
+        helperText='Helper text goes here'
       />
       <Textarea
-        label="With error"
+        label='With error'
         value={errorValue}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setErrorValue(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setErrorValue(e.target.value)}
         error={!!errorValue && errorValue.length < 10}
-        errorText="Минимум 10 символов"
-        helperText="Попробуйте ввести меньше 10 символов"
+        errorText='Минимум 10 символов'
+        helperText='Попробуйте ввести меньше 10 символов'
       />
-      <Textarea label="Disabled" disabled helperText="Это поле отключено" />
+      <Textarea label='Disabled' disabled helperText='Это поле отключено' />
       <Textarea
-        label="Auto height"
+        label='Auto height'
         value={autoValue}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setAutoValue(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setAutoValue(e.target.value)}
         autoHeight
-        helperText="Высота меняется автоматически"
+        helperText='Высота меняется автоматически'
       />
-      <Textarea label="300px width" width="300px" helperText="Ширина 300px" />
+      <Textarea label='300px width' width='300px' helperText='Ширина 300px' />
       <Textarea
-        label="Horizontal resize"
+        label='Horizontal resize'
         value={horizontalValue}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setHorizontalValue(e.target.value)
-        }
-        resize="horizontal"
-        helperText="Можно менять ширину"
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setHorizontalValue(e.target.value)}
+        resize='horizontal'
+        helperText='Можно менять ширину'
       />
       <Textarea
-        label="Both resize"
+        label='Both resize'
         value={bothValue}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setBothValue(e.target.value)
-        }
-        resize="both"
-        helperText="Можно менять ширину и высоту"
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBothValue(e.target.value)}
+        resize='both'
+        helperText='Можно менять ширину и высоту'
       />
       <Textarea
-        label="With max length"
+        label='With max length'
         value={limitedValue}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setLimitedValue(e.target.value.slice(0, maxLen))

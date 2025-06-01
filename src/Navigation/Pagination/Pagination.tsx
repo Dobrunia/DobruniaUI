@@ -22,10 +22,8 @@ const PageBtn = styled.button<{ $active?: boolean }>`
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: ${({ $active }) =>
-    $active ? 'var(--color-elevated-active)' : 'transparent'};
-  color: ${({ $active }) =>
-    $active ? 'var(--color-primary)' : 'var(--text-body)'};
+  background: ${({ $active }) => ($active ? 'var(--color-elevated-active)' : 'transparent')};
+  color: ${({ $active }) => ($active ? 'var(--color-primary)' : 'var(--text-body)')};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
   font-size: var(--font-size-medium);
   cursor: pointer;
@@ -59,12 +57,7 @@ function range(start: number, end: number) {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-function getPages(
-  page: number,
-  count: number,
-  siblingCount: number,
-  boundaryCount: number,
-) {
+function getPages(page: number, count: number, siblingCount: number, boundaryCount: number) {
   const totalNumbers = siblingCount * 2 + 3 + boundaryCount * 2;
   if (count <= totalNumbers) {
     return range(1, count);
@@ -73,11 +66,11 @@ function getPages(
   const endPages = range(count - boundaryCount + 1, count);
   const siblingsStart = Math.max(
     Math.min(page - siblingCount, count - boundaryCount - siblingCount * 2 - 1),
-    boundaryCount + 2,
+    boundaryCount + 2
   );
   const siblingsEnd = Math.min(
     Math.max(page + siblingCount, boundaryCount + siblingCount * 2 + 2),
-    count - boundaryCount - 1,
+    count - boundaryCount - 1
   );
   const pages: (number | 'dots')[] = [
     ...startPages,
@@ -86,9 +79,7 @@ function getPages(
     siblingsEnd < count - boundaryCount - 1 ? 'dots' : count - boundaryCount,
     ...endPages,
   ];
-  return pages.filter((v, i, arr) =>
-    typeof v === 'number' ? arr.indexOf(v) === i : true,
-  );
+  return pages.filter((v, i, arr) => (typeof v === 'number' ? arr.indexOf(v) === i : true));
 }
 
 /**
@@ -142,19 +133,11 @@ export const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const pages = getPages(page, count, siblingCount, boundaryCount);
   return (
-    <PaginationRoot className={className} aria-label="pagination">
-      <IconBtn
-        onClick={() => onChange(1)}
-        disabled={page === 1}
-        aria-label="first page"
-      >
+    <PaginationRoot className={className} aria-label='pagination'>
+      <IconBtn onClick={() => onChange(1)} disabled={page === 1} aria-label='first page'>
         <FirstIcon />
       </IconBtn>
-      <IconBtn
-        onClick={() => onChange(page - 1)}
-        disabled={page === 1}
-        aria-label="previous page"
-      >
+      <IconBtn onClick={() => onChange(page - 1)} disabled={page === 1} aria-label='previous page'>
         <PrevIcon />
       </IconBtn>
       {pages.map((p, i) =>
@@ -169,20 +152,12 @@ export const Pagination: React.FC<PaginationProps> = ({
           >
             {p}
           </PageBtn>
-        ),
+        )
       )}
-      <IconBtn
-        onClick={() => onChange(page + 1)}
-        disabled={page === count}
-        aria-label="next page"
-      >
+      <IconBtn onClick={() => onChange(page + 1)} disabled={page === count} aria-label='next page'>
         <NextIcon />
       </IconBtn>
-      <IconBtn
-        onClick={() => onChange(count)}
-        disabled={page === count}
-        aria-label="last page"
-      >
+      <IconBtn onClick={() => onChange(count)} disabled={page === count} aria-label='last page'>
         <LastIcon />
       </IconBtn>
     </PaginationRoot>

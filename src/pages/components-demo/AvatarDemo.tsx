@@ -29,16 +29,14 @@ export const AvatarDemo: React.FC = () => {
   const demoSrc = 'https://randomuser.me/api/portraits/men/32.jpg';
 
   // Для примера выбора статуса
-  const [status, setStatus] = useState<
-    'online' | 'offline' | 'dnd' | 'invisible'
-  >('online');
+  const [status, setStatus] = useState<'online' | 'offline' | 'dnd' | 'invisible'>('online');
 
   return (
     <DemoWrapper>
       <h2>Avatar sizes (with image)</h2>
       <Row>
         <Col>
-          <Avatar size="xxs" src={demoSrc} name={demoName} status="online" />
+          <Avatar size='xxs' src={demoSrc} name={demoName} status='online' />
           <Label>
             xxs
             <br />
@@ -46,7 +44,7 @@ export const AvatarDemo: React.FC = () => {
           </Label>
         </Col>
         <Col>
-          <Avatar size="sm" src={demoSrc} name={demoName} status="dnd" />
+          <Avatar size='sm' src={demoSrc} name={demoName} status='dnd' />
           <Label>
             sm
             <br />
@@ -54,7 +52,7 @@ export const AvatarDemo: React.FC = () => {
           </Label>
         </Col>
         <Col>
-          <Avatar size="md" src={demoSrc} name={demoName} status="offline" />
+          <Avatar size='md' src={demoSrc} name={demoName} status='offline' />
           <Label>
             md
             <br />
@@ -65,7 +63,7 @@ export const AvatarDemo: React.FC = () => {
       <h2>Avatar sizes (initials only)</h2>
       <Row>
         <Col>
-          <Avatar size="xxs" name={demoName} status="online" />
+          <Avatar size='xxs' name={demoName} status='online' />
           <Label>
             xxs
             <br />
@@ -73,7 +71,7 @@ export const AvatarDemo: React.FC = () => {
           </Label>
         </Col>
         <Col>
-          <Avatar size="sm" name={demoName} status="dnd" />
+          <Avatar size='sm' name={demoName} status='dnd' />
           <Label>
             sm
             <br />
@@ -81,7 +79,7 @@ export const AvatarDemo: React.FC = () => {
           </Label>
         </Col>
         <Col>
-          <Avatar size="md" name={demoName} status="offline" />
+          <Avatar size='md' name={demoName} status='offline' />
           <Label>
             md
             <br />
@@ -92,23 +90,18 @@ export const AvatarDemo: React.FC = () => {
       <h2>Avatar without status</h2>
       <Row>
         <Col>
-          <Avatar size="md" name="Без статуса" showStatus={false} />
+          <Avatar size='md' name='Без статуса' showStatus={false} />
           <Label>showStatus=false</Label>
         </Col>
         <Col>
-          <Avatar size="md" src={demoSrc} name="No status" showStatus={false} />
+          <Avatar size='md' src={demoSrc} name='No status' showStatus={false} />
           <Label>showStatus=false</Label>
         </Col>
       </Row>
       <h2>Avatar with status picker</h2>
       <Row>
         <Col>
-          <Avatar
-            size="md"
-            name="Выбор статуса"
-            status={status}
-            onStatusChange={setStatus}
-          />
+          <Avatar size='md' name='Выбор статуса' status={status} onStatusChange={setStatus} />
           <Label>Текущий статус: {status}</Label>
         </Col>
       </Row>

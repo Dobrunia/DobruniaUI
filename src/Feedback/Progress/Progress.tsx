@@ -50,9 +50,12 @@ const CircleLabel = styled.div`
  * // Полный прогресс
  * <CircularProgressWithLabel value={100} />
  */
-export const CircularProgressWithLabel: React.FC<
-  CircularProgressWithLabelProps
-> = ({ value, size = 64, strokeWidth = 5, color = 'var(--color-primary)' }) => {
+export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps> = ({
+  value,
+  size = 64,
+  strokeWidth = 5,
+  color = 'var(--color-primary)',
+}) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const safeValue = Math.min(Math.max(value, 0), 100);
@@ -64,9 +67,9 @@ export const CircularProgressWithLabel: React.FC<
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#e3eaf6"
+          stroke='#e3eaf6'
           strokeWidth={strokeWidth}
-          fill="none"
+          fill='none'
         />
         <circle
           cx={size / 2}
@@ -74,10 +77,10 @@ export const CircularProgressWithLabel: React.FC<
           r={radius}
           stroke={color}
           strokeWidth={strokeWidth}
-          fill="none"
+          fill='none'
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          strokeLinecap="round"
+          strokeLinecap='round'
           style={{ transition: 'stroke-dashoffset 0.5s' }}
         />
       </svg>
@@ -171,11 +174,7 @@ export const LinearProgress: React.FC<LinearProgressProps> = ({
   return (
     <LinearProgressContainer style={style}>
       <LinearBar $height={height}>
-        <LinearInner
-          $value={value}
-          $color={color}
-          $indeterminate={indeterminate}
-        />
+        <LinearInner $value={value} $color={color} $indeterminate={indeterminate} />
       </LinearBar>
     </LinearProgressContainer>
   );

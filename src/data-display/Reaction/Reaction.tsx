@@ -19,8 +19,7 @@ interface ReactionProps {
 const ReactionRoot = styled.button<{ $active?: boolean }>`
   display: flex;
   align-items: center;
-  background: ${(p) =>
-    p.$active ? 'var(--color-accent)' : 'var(--color-primary)'};
+  background: ${(p) => (p.$active ? 'var(--color-accent)' : 'var(--color-primary)')};
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -109,21 +108,14 @@ export const Reaction: React.FC<ReactionProps> = ({
   className,
   currentUserId,
 }) => {
-  const isActive = !!(
-    currentUserId && users.some((u) => u.id === currentUserId)
-  );
+  const isActive = !!(currentUserId && users.some((u) => u.id === currentUserId));
   return (
     <ReactionRoot onClick={onClick} className={className} $active={isActive}>
       <Emoji>{emoji}</Emoji>
       <AvatarsStack>
         {users.slice(0, 3).map((user, idx) => (
           <AvatarWrapper key={user.id} style={{ zIndex: 10 - idx }}>
-            <Avatar
-              src={user.avatar}
-              name={user.name}
-              size="xxs"
-              showStatus={false}
-            />
+            <Avatar src={user.avatar} name={user.name} size='xxs' showStatus={false} />
           </AvatarWrapper>
         ))}
         {users.length > 3 && (

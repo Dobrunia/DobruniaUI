@@ -107,10 +107,10 @@ const StatusMenuItem = styled.button<{ active?: boolean }>`
 `;
 
 const EyeSlashIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-    <path d="M2 2l16 16" stroke="#b0b8c9" strokeWidth="2" />
-    <ellipse cx="10" cy="10" rx="7" ry="4" stroke="#b0b8c9" strokeWidth="2" />
-    <circle cx="10" cy="10" r="2" fill="#b0b8c9" />
+  <svg width='14' height='14' viewBox='0 0 20 20' fill='none'>
+    <path d='M2 2l16 16' stroke='#b0b8c9' strokeWidth='2' />
+    <ellipse cx='10' cy='10' rx='7' ry='4' stroke='#b0b8c9' strokeWidth='2' />
+    <circle cx='10' cy='10' r='2' fill='#b0b8c9' />
   </svg>
 );
 
@@ -246,11 +246,7 @@ export const Avatar: React.FC<AvatarProps> = ({
           : undefined
       }
     >
-      {src ? (
-        <AvatarImg src={src} alt={alt || name || 'avatar'} />
-      ) : (
-        getInitials(name)
-      )}
+      {src ? <AvatarImg src={src} alt={alt || name || 'avatar'} /> : getInitials(name)}
       {showStatus && status && (
         <StatusDot $size={size} $status={status}>
           {status === 'invisible' && <EyeSlashIcon />}

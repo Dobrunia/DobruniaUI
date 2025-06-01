@@ -73,54 +73,54 @@ const IconWrapper = styled.span<{ $type: AlertType }>`
 
 const icons: Record<AlertType, React.ReactNode> = {
   success: (
-    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" fill="none" />
+    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+      <circle cx='12' cy='12' r='10' fill='none' />
       <path
-        d="M7 13l3 3 7-7"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d='M7 13l3 3 7-7'
+        stroke='currentColor'
+        strokeWidth='2'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),
   info: (
-    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" fill="none" />
+    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+      <circle cx='12' cy='12' r='10' fill='none' />
       <path
-        d="M12 8h.01M12 12v4"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d='M12 8h.01M12 12v4'
+        stroke='currentColor'
+        strokeWidth='2'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),
   warning: (
-    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" fill="none" />
+    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+      <circle cx='12' cy='12' r='10' fill='none' />
       <path
-        d="M12 8v4m0 4h.01"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d='M12 8v4m0 4h.01'
+        stroke='currentColor'
+        strokeWidth='2'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),
   error: (
-    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" fill="none" />
+    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+      <circle cx='12' cy='12' r='10' fill='none' />
       <path
-        d="M15 9l-6 6M9 9l6 6"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d='M15 9l-6 6M9 9l6 6'
+        stroke='currentColor'
+        strokeWidth='2'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),
@@ -163,12 +163,7 @@ const icons: Record<AlertType, React.ReactNode> = {
  *   <strong>Важно:</strong> Пожалуйста, проверьте ваши данные
  * </Alert>
  */
-export const Alert: React.FC<AlertProps> = ({
-  type,
-  children,
-  outlined,
-  className,
-}) => {
+export const Alert: React.FC<AlertProps> = ({ type, children, outlined, className }) => {
   return (
     <AlertWrapper $type={type} $outlined={outlined} className={className}>
       <IconWrapper $type={type}>{icons[type]}</IconWrapper>

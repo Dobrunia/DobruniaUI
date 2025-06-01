@@ -8,12 +8,12 @@ export const SkeletonDemo: React.FC = () => {
       <p>The component supports 4 shape variants:</p>
       <ul>
         <li>
-          <b>text</b> (default): represents a single line of text (you can
-          adjust the height via font size).
+          <b>text</b> (default): represents a single line of text (you can adjust the height via
+          font size).
         </li>
         <li>
-          <b>circular</b>, <b>rectangular</b>, and <b>rounded</b>: come with
-          different border radius to let you take control of the size.
+          <b>circular</b>, <b>rectangular</b>, and <b>rounded</b>: come with different border radius
+          to let you take control of the size.
         </li>
       </ul>
       <div
@@ -24,10 +24,10 @@ export const SkeletonDemo: React.FC = () => {
           margin: '32px 0',
         }}
       >
-        <Skeleton variant="text" style={{ fontSize: '1.2rem', width: '80%' }} />
-        <Skeleton variant="circular" width={40} height={40} />
-        <Skeleton variant="rectangular" width={210} height={60} />
-        <Skeleton variant="rounded" width={210} height={60} />
+        <Skeleton variant='text' style={{ fontSize: '1.2rem', width: '80%' }} />
+        <Skeleton variant='circular' width={40} height={40} />
+        <Skeleton variant='rectangular' width={210} height={60} />
+        <Skeleton variant='rounded' width={210} height={60} />
       </div>
     </div>
   );

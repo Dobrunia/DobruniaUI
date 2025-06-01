@@ -1,8 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: boolean;
   errorText?: string;
@@ -20,8 +19,7 @@ const Wrapper = styled.div<{ width?: string }>`
 `;
 
 const Label = styled.label<{ $error?: boolean }>`
-  color: ${({ $error }) =>
-    $error ? 'var(--color-error)' : 'var(--color-primary)'};
+  color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   font-size: var(--font-size-small);
   margin-bottom: 0.15em;
 `;
@@ -32,18 +30,15 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
   resize: ${({ $resize }) => $resize};
   padding: 16px;
   border-radius: var(--radius-medium);
-  border: 2px solid
-    ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+  border: 2px solid ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: var(--color-surface);
   color: var(--text-body);
   font-size: var(--font-size-medium);
-  transition: border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
   box-sizing: border-box;
   &:hover {
-    border-color: ${({ $error }) =>
-      $error ? 'var(--color-error)' : 'var(--color-primary)'};
+    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
     box-shadow: 0 0 0 2px
       ${({ $error }) =>
         $error
@@ -51,8 +46,7 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
           : 'color-mix(in srgb, var(--color-primary) 20%, transparent 80%)'};
   }
   &:focus {
-    border-color: ${({ $error }) =>
-      $error ? 'var(--color-error)' : 'var(--color-primary)'};
+    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
     box-shadow: 0 0 0 2px
       ${({ $error }) =>
         $error
@@ -68,8 +62,7 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
 `;
 
 const HelperText = styled.div<{ $error?: boolean }>`
-  color: ${({ $error }) =>
-    $error ? 'var(--color-error)' : 'var(--text-secondary)'};
+  color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--text-secondary)')};
   font-size: var(--font-size-small);
   min-height: 1.2em;
   margin-top: 0.1em;
@@ -146,8 +139,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   useLayoutEffect(() => {
     if (autoHeight && textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
   }, [currentValue, autoHeight]);
 

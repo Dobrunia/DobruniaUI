@@ -17,8 +17,7 @@ const SectionTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-small) var(--spacing-medium) 0
-    calc(var(--spacing-medium) - 4px);
+  padding: var(--spacing-small) var(--spacing-medium) 0 calc(var(--spacing-medium) - 4px);
   color: var(--text-heading);
   font-size: var(--font-size-medium);
   font-weight: 600;
@@ -41,10 +40,8 @@ const SidebarItem = styled.li<{ selected: boolean }>`
   position: relative;
   padding: var(--spacing-small) var(--spacing-medium);
   cursor: pointer;
-  background: ${({ selected }) =>
-    selected ? 'var(--color-elevated-active)' : 'transparent'};
-  color: ${({ selected }) =>
-    selected ? 'var(--text-heading)' : 'var(--text-secondary)'};
+  background: ${({ selected }) => (selected ? 'var(--color-elevated-active)' : 'transparent')};
+  color: ${({ selected }) => (selected ? 'var(--text-heading)' : 'var(--text-secondary)')};
   border-radius: var(--radius-medium);
   margin-bottom: var(--spacing-small);
   font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
@@ -93,8 +90,7 @@ interface SidebarListProps {
   itemClassName?: string;
 }
 
-const getSectionKey = (section: SidebarListSection, i: number) =>
-  section.title || `section-${i}`;
+const getSectionKey = (section: SidebarListSection, i: number) => section.title || `section-${i}`;
 
 /**
  * SidebarList component - компонент для отображения списка с секциями в сайдбаре
@@ -168,8 +164,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
 
   // Проверка на пустой список (нет секций или все секции пустые)
   const isEmpty =
-    !sections.length ||
-    sections.every((section) => !section.items || section.items.length === 0);
+    !sections.length || sections.every((section) => !section.items || section.items.length === 0);
   if (isEmpty) return null;
 
   const toggleSection = (title: string) => {
@@ -181,11 +176,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
   };
 
   return (
-    <SidebarListWrapper
-      $width={width}
-      $height={height}
-      className={wrapperClassName}
-    >
+    <SidebarListWrapper $width={width} $height={height} className={wrapperClassName}>
       {sections.map((section, i) => {
         const sectionKey = getSectionKey(section, i);
         const hasTitle = Boolean(section.title);

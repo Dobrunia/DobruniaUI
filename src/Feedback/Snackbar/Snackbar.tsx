@@ -140,7 +140,7 @@ export const Snackbar: React.FC<SnackbarProps> = ({
           <span>{message}</span>
           <SnackbarAction>
             {action}
-            <Button variant="close" onClick={onClose} />
+            <Button variant='close' onClick={onClose} />
           </SnackbarAction>
         </SnackbarContent>
       )}

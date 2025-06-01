@@ -41,25 +41,25 @@ export const ReactionDemo = () => {
       }}
     >
       <Reaction
-        emoji="❤️"
+        emoji='❤️'
         users={users.slice(0, 2)}
         currentUserId={currentUserId}
         onClick={() => handleClick('❤️')}
       />
       <Reaction
-        emoji="😂"
+        emoji='😂'
         users={users.slice(0, 3)}
         currentUserId={currentUserId}
         onClick={() => handleClick('😂')}
       />
       <Reaction
-        emoji="👍"
+        emoji='👍'
         users={users}
         currentUserId={currentUserId}
         onClick={() => handleClick('👍')}
       />
       <Reaction
-        emoji="🔥"
+        emoji='🔥'
         users={users.slice(1, 4)}
         currentUserId={currentUserId}
         onClick={() => handleClick('🔥')}

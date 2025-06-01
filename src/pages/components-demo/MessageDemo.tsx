@@ -19,6 +19,13 @@ const initialMessages: Array<{
   reactions: { emoji: string; users: (typeof userMe)[] }[];
   sender?: typeof userMe;
   isRead: boolean;
+  attachments?: {
+    type: 'image' | 'file' | 'audio';
+    url: string;
+    name?: string;
+    size?: number;
+    duration?: number;
+  }[];
 }> = [
   {
     type: 'incoming',
@@ -43,8 +50,39 @@ const initialMessages: Array<{
   },
   {
     type: 'incoming',
+    text: 'Посмотри, какая красивая картинка!',
+    time: '8:11',
+    reactions: [],
+    sender: userOther,
+    isRead: true,
+    attachments: [
+      {
+        type: 'image',
+        url: '/src/assets/204596508.jfif',
+        name: 'beautiful-image.jpg',
+      },
+    ],
+  },
+  {
+    type: 'outgoing',
+    text: 'А вот мое голосовое сообщение',
+    time: '8:12',
+    reactions: [],
+    sender: userMe,
+    isRead: true,
+    attachments: [
+      {
+        type: 'audio',
+        url: '/src/assets/cxdy-spooky-szn.mp3',
+        name: 'voice-message.mp3',
+        duration: 180, // 3 minutes in seconds
+      },
+    ],
+  },
+  {
+    type: 'incoming',
     text: 'Всем привет!',
-    time: '8:10',
+    time: '8:13',
     reactions: [],
     sender: userOther,
     isRead: true,
@@ -52,7 +90,7 @@ const initialMessages: Array<{
   {
     type: 'incoming',
     text: 'Это сообщение без отправителя.',
-    time: '8:10',
+    time: '8:14',
     reactions: [],
     sender: undefined,
     isRead: false,
@@ -60,7 +98,7 @@ const initialMessages: Array<{
   {
     type: 'outgoing',
     text: 'Это сообщение без отправителя.',
-    time: '8:10',
+    time: '8:15',
     reactions: [],
     sender: undefined,
     isRead: false,
@@ -68,7 +106,7 @@ const initialMessages: Array<{
   {
     type: 'outgoing',
     text: 'Все отлично, спасибо! 😊',
-    time: '8:10',
+    time: '8:16',
     reactions: [
       { emoji: '❤️', users: [userMe, userOther] },
       { emoji: '😂', users: [userOther] },
@@ -81,13 +119,12 @@ const initialMessages: Array<{
   {
     type: 'outgoing',
     text: 'В',
-    time: '8:10',
+    time: '8:17',
     reactions: [],
     sender: userMe,
     isRead: true,
   },
 ];
-
 
 const actionsDemo = [
   {
@@ -122,7 +159,7 @@ export const MessageDemo = () => {
         if (i !== msgIdx) return msg;
         // Проверяем, есть ли уже такая реакция от userMe
         const existing = msg.reactions.find(
-          (r) => r.emoji === emoji && r.users.some((u) => u.id === userMe.id),
+          (r) => r.emoji === emoji && r.users.some((u) => u.id === userMe.id)
         );
         if (existing) {
           // Если уже есть, убираем реакцию userMe
@@ -130,9 +167,7 @@ export const MessageDemo = () => {
             ...msg,
             reactions: msg.reactions
               .map((r) =>
-                r.emoji === emoji
-                  ? { ...r, users: r.users.filter((u) => u.id !== userMe.id) }
-                  : r,
+                r.emoji === emoji ? { ...r, users: r.users.filter((u) => u.id !== userMe.id) } : r
               )
               .filter((r) => r.users.length > 0),
           };
@@ -143,7 +178,7 @@ export const MessageDemo = () => {
             return {
               ...msg,
               reactions: msg.reactions.map((r) =>
-                r.emoji === emoji ? { ...r, users: [...r.users, userMe] } : r,
+                r.emoji === emoji ? { ...r, users: [...r.users, userMe] } : r
               ),
             };
           } else {
@@ -153,7 +188,7 @@ export const MessageDemo = () => {
             };
           }
         }
-      }),
+      })
     );
   };
 
