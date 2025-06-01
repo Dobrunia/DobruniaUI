@@ -19,6 +19,7 @@ const initialMessages: Array<{
   reactions: { emoji: string; users: (typeof userMe)[] }[];
   sender?: typeof userMe;
   isRead: boolean;
+  id: string;
   attachments?: {
     type: 'image' | 'file' | 'audio';
     url: string;
@@ -34,6 +35,7 @@ const initialMessages: Array<{
   };
 }> = [
   {
+    id: 'msg-1',
     type: 'incoming',
     text: 'Привет! Как дела?',
     time: '8:10',
@@ -47,6 +49,7 @@ const initialMessages: Array<{
     isRead: false,
   },
   {
+    id: 'msg-2',
     type: 'outgoing',
     text: 'Все отлично, спасибо! 😊',
     time: '8:10',
@@ -55,6 +58,7 @@ const initialMessages: Array<{
     isRead: false,
   },
   {
+    id: 'msg-3',
     type: 'incoming',
     text: 'Посмотри, какая красивая картинка!',
     time: '8:11',
@@ -70,6 +74,7 @@ const initialMessages: Array<{
     ],
   },
   {
+    id: 'msg-4',
     type: 'outgoing',
     text: 'А вот мое голосовое сообщение',
     time: '8:12',
@@ -86,6 +91,7 @@ const initialMessages: Array<{
     ],
   },
   {
+    id: 'msg-5',
     type: 'incoming',
     text: 'Всем привет!',
     time: '8:13',
@@ -94,6 +100,7 @@ const initialMessages: Array<{
     isRead: true,
   },
   {
+    id: 'msg-6',
     type: 'incoming',
     text: 'Это сообщение без отправителя.',
     time: '8:14',
@@ -102,6 +109,7 @@ const initialMessages: Array<{
     isRead: false,
   },
   {
+    id: 'msg-7',
     type: 'outgoing',
     text: 'Это сообщение без отправителя.',
     time: '8:15',
@@ -110,6 +118,7 @@ const initialMessages: Array<{
     isRead: false,
   },
   {
+    id: 'msg-8',
     type: 'outgoing',
     text: 'Все отлично, спасибо! 😊',
     time: '8:16',
@@ -123,6 +132,7 @@ const initialMessages: Array<{
     isRead: true,
   },
   {
+    id: 'msg-9',
     type: 'outgoing',
     text: 'В',
     time: '8:17',
@@ -131,6 +141,7 @@ const initialMessages: Array<{
     isRead: true,
   },
   {
+    id: 'msg-10',
     type: 'incoming',
     text: 'А плагина для экспресс нету ?\nЕсть, я посмотрел, переписать?',
     time: '1:03',
@@ -144,6 +155,7 @@ const initialMessages: Array<{
     forwardedFrom: { id: 'peter', name: 'Peter' },
   },
   {
+    id: 'msg-11',
     type: 'outgoing',
     text: 'Да, могу переписать!',
     time: '1:04',
@@ -151,9 +163,9 @@ const initialMessages: Array<{
     sender: userMe,
     isRead: true,
     replyTo: {
-      id: 'msg-1',
-      text: 'А плагина для экспресс нету ?\nЕсть, я посмотрел, переписать?',
-      sender: { name: 'Peter' },
+      id: 'msg-3',
+      text: 'Посмотри, какая красивая картинка!',
+      sender: { name: 'Аня' },
     },
   },
 ];
@@ -247,21 +259,12 @@ export const MessageDemo = () => {
       <Badge variant='message-date' date={new Date()} locale='ru' />
       {messages.map((msg, idx) => (
         <Message
-          key={idx}
+          key={msg.id}
           {...msg}
-          id={msg.replyTo ? msg.replyTo.id : 'msg-' + idx}
           onReaction={(emoji: string) => handleReaction(idx, emoji)}
           currentUserId={userMe.id}
           actions={actionsDemo}
           onForwardedClick={msg.forwardedFrom ? handleForwardedClick : undefined}
-          onReplyClick={
-            msg.replyTo
-              ? (id) => {
-                  const el = document.getElementById(id);
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-              : undefined
-          }
         />
       ))}
     </MessageContainer>

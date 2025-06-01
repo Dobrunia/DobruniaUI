@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Reaction, Avatar, ActionsMenu } from '@DobruniaUI';
+import type { MessageContainerRef } from '../MessageContainer/MessageContainer';
 
 export type MessageType = 'incoming' | 'outgoing';
 
@@ -48,7 +49,6 @@ interface MessageProps {
     attachments?: { type: 'image' | 'file' | 'audio'; name?: string }[];
     sender?: { name: string };
   };
-  onReplyClick?: (id: string) => void;
   id?: string;
 }
 
@@ -366,9 +366,22 @@ const ReplyText = styled.span`
  * @param {('image'|'file'|'audio')[]} [attachments] - массив прикрепленных файлов и изображений
  * @param {User} [forwardedFrom] - информация о пересланном сообщении
  * @param {(id: string) => void} [onForwardedClick] - обработчик клика по пересланному сообщению
- * @param {MessageProps['replyTo']} [replyTo] - информация о ответе на сообщение
- * @param {(id: string) => void} [onReplyClick] - обработчик клика по ответу на сообщение
+ * @param {MessageProps['replyTo']} [replyTo] - информация о ответе на сообщение:
+ *   - id: string - ID сообщения, на которое отвечаем
+ *   - text?: string - текст сообщения
+ *   - attachments?: { type: 'image'|'file'|'audio'; name?: string }[] - вложения
+ *   - sender?: { name: string } - отправитель
  * @param {string} [id] - ID сообщения
+ *
+ * Особенности:
+ * - Поддержка входящих и исходящих сообщений
+ * - Отображение аватара отправителя
+ * - Реакции на сообщения с эмодзи
+ * - Поддержка вложений (изображения, файлы, аудио)
+ * - Пересланные сообщения
+ * - Ответы на сообщения с автоматическим скроллом
+ * - Меню действий с сообщением
+ * - Индикатор прочтения
  *
  * @example
  * // Входящее сообщение
@@ -398,23 +411,16 @@ const ReplyText = styled.span`
  *   onReaction={(emoji) => handleReaction(emoji)}
  * />
  *
- * // Сообщение с действиями
+ * // Сообщение с ответом
  * <Message
  *   type="outgoing"
- *   text="Важное сообщение"
+ *   text="Ответ на сообщение"
  *   time="12:32"
- *   actions={[
- *     {
- *       label: "Редактировать",
- *       icon: <EditIcon />,
- *       onClick: () => handleEdit()
- *     },
- *     {
- *       label: "Удалить",
- *       icon: <DeleteIcon />,
- *       onClick: () => handleDelete()
- *     }
- *   ]}
+ *   replyTo={{
+ *     id: "msg-1",
+ *     text: "Исходное сообщение",
+ *     sender: { name: "John" }
+ *   }}
  * />
  */
 export const Message: React.FC<MessageProps> = ({
@@ -433,7 +439,6 @@ export const Message: React.FC<MessageProps> = ({
   forwardedFrom,
   onForwardedClick,
   replyTo,
-  onReplyClick,
   id,
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
@@ -442,6 +447,7 @@ export const Message: React.FC<MessageProps> = ({
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const audioRefs = React.useRef<Record<string, HTMLAudioElement>>({});
   const bubbleRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<MessageContainerRef>(null);
 
   React.useEffect(() => {
     if (!showReactions) return;
@@ -529,6 +535,16 @@ export const Message: React.FC<MessageProps> = ({
     return <ReplyText>Message</ReplyText>;
   }
 
+  const handleReplyClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (replyTo?.id) {
+      const element = document.getElementById(replyTo.id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
   return (
     <MessageRoot $type={type} className={className} id={id}>
       <MessageRow $type={type}>
@@ -544,17 +560,7 @@ export const Message: React.FC<MessageProps> = ({
             style={onReaction ? { cursor: 'pointer' } : undefined}
           >
             {replyTo && (
-              <ReplyBlock
-                onClick={
-                  onReplyClick
-                    ? (e) => {
-                        e.stopPropagation();
-                        onReplyClick(replyTo.id);
-                      }
-                    : undefined
-                }
-                title='Go to replied message'
-              >
+              <ReplyBlock onClick={handleReplyClick} title='Go to replied message'>
                 {replyTo.sender?.name && <ReplySender>{replyTo.sender.name}</ReplySender>}
                 {getReplyPreview(replyTo)}
               </ReplyBlock>

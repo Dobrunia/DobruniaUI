@@ -1,4 +1,11 @@
-import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import styled from 'styled-components';
 
 interface MessageContainerProps {
@@ -7,6 +14,10 @@ interface MessageContainerProps {
   style?: React.CSSProperties;
   className?: string;
   lastMessageId?: string | number;
+}
+
+export interface MessageContainerRef {
+  scrollToMessage: (id: string) => void;
 }
 
 const Container = styled.div`
@@ -52,10 +63,21 @@ const ScrollToBottomBtn = styled.button`
   justify-content: center;
   font-size: 28px;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease-in-out;
   z-index: 10;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
   &:hover {
     background: var(--color-accent);
+    transform: translateY(-2px);
   }
 `;
 
@@ -71,71 +93,102 @@ const ScrollToBottomBtn = styled.button`
  * Особенности:
  * - Запрещён горизонтальный скролл
  * - Красивый скроллбар
- * - Кнопка "Вниз" появляется при прокрутке вверх, скроллит в самый низ (стрелка SVG)
+ * - Плавная анимация скролла
+ * - Кнопка "Вниз" появляется при прокрутке вверх, плавно скрывается/показывается
+ * - Автоматический скролл к новым сообщениям, если пользователь был внизу
+ * - Поддержка программного скролла к сообщению по id
  *
  * @example
  * <MessageContainer lastMessageId={messages[messages.length-1]?.id}>
  *   {messages.map(msg => <Message {...msg} />)}
  * </MessageContainer>
  */
-export const MessageContainer: React.FC<MessageContainerProps> = ({
-  children,
-  autoScrollToBottom = true,
-  style,
-  className,
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [showScrollBtn, setShowScrollBtn] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const prevScrollHeight = useRef<number>(0);
+export const MessageContainer = forwardRef<MessageContainerRef, MessageContainerProps>(
+  ({ children, autoScrollToBottom = true, style, className }, ref): React.ReactElement => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [showScrollBtn, setShowScrollBtn] = useState(false);
+    const [isAtBottom, setIsAtBottom] = useState(true);
+    const prevScrollHeight = useRef<number>(0);
 
-  const handleScroll = () => {
-    if (!ref.current) return;
-    const { scrollTop, scrollHeight, clientHeight } = ref.current;
-    const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
-    setIsAtBottom(isBottom);
-  };
+    useImperativeHandle(ref, () => ({
+      scrollToMessage: (id: string) => {
+        const element = document.getElementById(id);
+        if (element && containerRef.current) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest',
+          });
+        }
+      },
+    }));
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => el.removeEventListener('scroll', handleScroll);
-  }, []);
+    const checkScroll = () => {
+      if (!containerRef.current) return;
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
+      setIsAtBottom(isBottom);
+      setShowScrollBtn(!isBottom);
+    };
 
-  // Сохраняем scrollHeight до рендера новых сообщений
-  useLayoutEffect(() => {
-    if (ref.current) {
-      prevScrollHeight.current = ref.current.scrollHeight;
-    }
-  }, [children]);
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+      el.addEventListener('scroll', checkScroll);
+      checkScroll();
+      return () => el.removeEventListener('scroll', checkScroll);
+    }, []);
 
-  // После рендера новых сообщений скроллим вниз, если пользователь был внизу
-  useLayoutEffect(() => {
-    if (autoScrollToBottom && isAtBottom && ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
-    }
-  }, [children, autoScrollToBottom, isAtBottom]);
+    // Сохраняем scrollHeight до рендера новых сообщений
+    useLayoutEffect(() => {
+      if (containerRef.current) {
+        prevScrollHeight.current = containerRef.current.scrollHeight;
+      }
+    }, [children]);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const hasScroll = el.scrollHeight > el.clientHeight + 8;
-    setShowScrollBtn(hasScroll && el.scrollHeight - el.scrollTop - el.clientHeight > 200);
-  }, [children]);
+    // После рендера новых сообщений скроллим вниз, если пользователь был внизу
+    useLayoutEffect(() => {
+      if (autoScrollToBottom && isAtBottom && containerRef.current) {
+        containerRef.current.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }, [children, autoScrollToBottom, isAtBottom]);
 
-  const scrollToBottom = () => {
-    if (ref.current) {
-      ref.current.scrollTo({ top: ref.current.scrollHeight, behavior: 'smooth' });
-    }
-  };
+    // Проверяем необходимость показа кнопки при изменении контента
+    useEffect(() => {
+      if (containerRef.current) {
+        const { scrollHeight, clientHeight } = containerRef.current;
+        const hasScroll = scrollHeight > clientHeight + 8;
+        const isScrolledUp =
+          containerRef.current.scrollHeight -
+            containerRef.current.scrollTop -
+            containerRef.current.clientHeight >
+          200;
+        setShowScrollBtn(hasScroll && isScrolledUp);
+      }
+    }, [children]);
 
-  return (
-    <Container ref={ref} style={style} className={className}>
-      {children}
-      {showScrollBtn && (
-        <ScrollToBottomBtn onClick={scrollToBottom} title='Scroll to bottom'>
+    const scrollToBottom = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+        setIsAtBottom(true);
+        setShowScrollBtn(false);
+      }
+    };
+
+    return (
+      <Container ref={containerRef} style={style} className={className}>
+        {children}
+        <ScrollToBottomBtn
+          onClick={scrollToBottom}
+          title='Scroll to bottom'
+          className={showScrollBtn ? 'visible' : ''}
+        >
           <svg
             width='28'
             height='28'
@@ -153,7 +206,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({
             />
           </svg>
         </ScrollToBottomBtn>
-      )}
-    </Container>
-  );
-};
+      </Container>
+    );
+  }
+);
