@@ -294,29 +294,11 @@ const AudioDuration = styled.span`
 
 const ForwardedBlock = styled.div`
   display: flex;
-  align-items: center;
-  background: var(--color-elevated);
-  color: var(--text-secondary);
-  font-size: 0.97em;
-  border-left: 3px solid var(--color-primary);
-  padding: 4px 12px;
-  margin-bottom: 4px;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.15s;
-  &:hover {
-    background: var(--color-elevated-active);
-    color: var(--color-primary);
-  }
-`;
-
-const ReplyBlock = styled.div`
-  display: flex;
   flex-direction: column;
-  background: var(--color-elevated);
-  color: var(--text-secondary);
-  font-size: 0.97em;
+  background: var(--color-secondary-active);
+  font-size: var(--font-size-small-plus);
   border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-medium);
   padding: 4px 12px;
   margin-bottom: 4px;
   cursor: pointer;
@@ -324,8 +306,25 @@ const ReplyBlock = styled.div`
   transition: background 0.15s;
   max-width: 100%;
   &:hover {
-    background: var(--color-elevated-active);
-    color: var(--color-primary);
+    opacity: 0.8;
+  }
+`;
+
+const ReplyBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: var(--color-secondary-active);
+  font-size: var(--font-size-small-plus);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-medium);
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  max-width: 100%;
+  &:hover {
+    opacity: 0.8;
   }
 `;
 
