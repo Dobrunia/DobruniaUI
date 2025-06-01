@@ -170,7 +170,7 @@ export const InputDemo = () => {
       }}
     >
       <h2>Message Input</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <MessageContainer style={{ maxHeight: 320 }}>
           {messages.map((msg, idx) => (
             <Message
