@@ -156,7 +156,7 @@ const StyledTextarea = styled.textarea`
 const FilePreview = styled.div`
   display: flex;
   gap: 12px;
-  margin-top: 8px;
+  background: var(--color-elevated);
 `;
 const FileThumbWrapper = styled.div`
   position: relative;
@@ -786,7 +786,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <>
       {filesToShow.length > 0 && (
-        <FilePreview style={{ marginBottom: 10 }}>
+        <FilePreview>
           {filesToShow.map((file, i) => (
             <FileThumbWrapper key={i}>
               {file.type.startsWith('image/') ? (

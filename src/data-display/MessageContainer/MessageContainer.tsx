@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
 interface MessageContainerProps {
@@ -83,28 +83,47 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({
   autoScrollToBottom = true,
   style,
   className,
-  lastMessageId,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const prevScrollHeight = useRef<number>(0);
 
-  useEffect(() => {
-    if (autoScrollToBottom && ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
-    }
-  }, [lastMessageId, autoScrollToBottom]);
+  const handleScroll = () => {
+    if (!ref.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = ref.current;
+    const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
+    setIsAtBottom(isBottom);
+  };
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const onScroll = () => {
-      const hasScroll = el.scrollHeight > el.clientHeight + 8;
-      setShowScrollBtn(hasScroll && el.scrollHeight - el.scrollTop - el.clientHeight > 200);
-    };
-    el.addEventListener('scroll', onScroll);
-    onScroll();
-    return () => el.removeEventListener('scroll', onScroll);
+    el.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => el.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Сохраняем scrollHeight до рендера новых сообщений
+  useLayoutEffect(() => {
+    if (ref.current) {
+      prevScrollHeight.current = ref.current.scrollHeight;
+    }
+  }, [children]);
+
+  // После рендера новых сообщений скроллим вниз, если пользователь был внизу
+  useLayoutEffect(() => {
+    if (autoScrollToBottom && isAtBottom && ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [children, autoScrollToBottom, isAtBottom]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const hasScroll = el.scrollHeight > el.clientHeight + 8;
+    setShowScrollBtn(hasScroll && el.scrollHeight - el.scrollTop - el.clientHeight > 200);
+  }, [children]);
 
   const scrollToBottom = () => {
     if (ref.current) {
