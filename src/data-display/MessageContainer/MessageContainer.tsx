@@ -109,6 +109,7 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(true);
     const prevScrollHeight = useRef<number>(0);
+    const isFirstRender = useRef(true);
 
     useImperativeHandle(ref, () => ({
       scrollToMessage: (id: string) => {
@@ -139,6 +140,21 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
       return () => el.removeEventListener('scroll', checkScroll);
     }, []);
 
+    // Отдельный эффект для первого скролла
+    useEffect(() => {
+      if (isFirstRender.current && containerRef.current) {
+        // Небольшая задержка для гарантии полного рендера контента
+        setTimeout(() => {
+          if (containerRef.current) {
+            containerRef.current.scrollTo({
+              top: containerRef.current.scrollHeight,
+            });
+            isFirstRender.current = false;
+          }
+        }, 100);
+      }
+    }, [children]);
+
     // Сохраняем scrollHeight до рендера новых сообщений
     useLayoutEffect(() => {
       if (containerRef.current) {
@@ -148,11 +164,13 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
 
     // После рендера новых сообщений скроллим вниз, если пользователь был внизу
     useLayoutEffect(() => {
-      if (autoScrollToBottom && isAtBottom && containerRef.current) {
-        containerRef.current.scrollTo({
-          top: containerRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
+      if (containerRef.current && !isFirstRender.current) {
+        if (autoScrollToBottom && isAtBottom) {
+          containerRef.current.scrollTo({
+            top: containerRef.current.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
       }
     }, [children, autoScrollToBottom, isAtBottom]);
 
