@@ -9,6 +9,7 @@ export { Avatar } from './data-display/Avatar/Avatar';
 export { Badge } from './data-display/Badge/Badge';
 export { ChatList } from './data-display/ChatList/ChatList';
 export { Message, type MessageType } from './data-display/Message/Message';
+export { MessageContainer } from './data-display/MessageContainer/MessageContainer';
 export { Reaction } from './data-display/Reaction/Reaction';
 
 export { Alert } from './Feedback/Alert/Alert';

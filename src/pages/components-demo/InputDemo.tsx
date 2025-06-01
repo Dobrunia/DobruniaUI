@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, Message } from '@DobruniaUI';
+import { Input, Message, MessageContainer } from '@DobruniaUI';
 
 export const InputDemo = () => {
   const [message, setMessage] = useState('');
@@ -181,7 +181,9 @@ export const InputDemo = () => {
         onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
         onAudioRecord={handleAudioRecord}
       />
-      <div style={{ marginTop: 16 }}>
+      <MessageContainer
+        style={{ marginTop: 16, maxHeight: 320, background: 'var(--color-elevated)' }}
+      >
         {messages.map((msg, idx) => (
           <Message
             key={idx}
@@ -197,7 +199,7 @@ export const InputDemo = () => {
             attachments={msg.attachments}
           />
         ))}
-      </div>
+      </MessageContainer>
 
       <h2>Search Input</h2>
       <Input

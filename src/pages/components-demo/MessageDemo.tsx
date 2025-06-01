@@ -1,4 +1,4 @@
-import { Badge, Message, type MessageType } from '@DobruniaUI';
+import { Badge, Message, MessageContainer, type MessageType } from '@DobruniaUI';
 import { useState } from 'react';
 
 const userMe = {
@@ -26,6 +26,12 @@ const initialMessages: Array<{
     size?: number;
     duration?: number;
   }[];
+  forwardedFrom?: { id: string; name: string };
+  replyTo?: {
+    id: string;
+    text: string;
+    sender: { name: string };
+  };
 }> = [
   {
     type: 'incoming',
@@ -124,6 +130,32 @@ const initialMessages: Array<{
     sender: userMe,
     isRead: true,
   },
+  {
+    type: 'incoming',
+    text: 'А плагина для экспресс нету ?\nЕсть, я посмотрел, переписать?',
+    time: '1:03',
+    reactions: [],
+    sender: {
+      id: 'peter',
+      name: 'Peter',
+      avatar: 'https://randomuser.me/api/portraits/men/33.jpg',
+    },
+    isRead: true,
+    forwardedFrom: { id: 'peter', name: 'Peter' },
+  },
+  {
+    type: 'outgoing',
+    text: 'Да, могу переписать!',
+    time: '1:04',
+    reactions: [],
+    sender: userMe,
+    isRead: true,
+    replyTo: {
+      id: 'msg-1',
+      text: 'А плагина для экспресс нету ?\nЕсть, я посмотрел, переписать?',
+      sender: { name: 'Peter' },
+    },
+  },
 ];
 
 const actionsDemo = [
@@ -192,28 +224,41 @@ export const MessageDemo = () => {
     );
   };
 
+  const handleForwardedClick = (id: string) => {
+    alert('Переход к сообщению пользователя с id: ' + id);
+  };
+
   return (
-    <div
+    <MessageContainer
       style={{
         maxWidth: 720,
         margin: '40px auto',
         background: 'var(--color-elevated)',
         padding: 24,
         borderRadius: 16,
-        position: 'relative',
+        height: 600,
       }}
     >
-      {/* Мок-дата между сообщениями */}
-      <Badge variant='message-date' date={new Date()} locale='ru'></Badge>
+      <Badge variant='message-date' date={new Date()} locale='ru' />
       {messages.map((msg, idx) => (
         <Message
           key={idx}
           {...msg}
+          id={msg.replyTo ? msg.replyTo.id : 'msg-' + idx}
           onReaction={(emoji: string) => handleReaction(idx, emoji)}
           currentUserId={userMe.id}
           actions={actionsDemo}
+          onForwardedClick={msg.forwardedFrom ? handleForwardedClick : undefined}
+          onReplyClick={
+            msg.replyTo
+              ? (id) => {
+                  const el = document.getElementById(id);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+              : undefined
+          }
         />
       ))}
-    </div>
+    </MessageContainer>
   );
 };

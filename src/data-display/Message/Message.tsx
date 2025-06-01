@@ -40,6 +40,16 @@ interface MessageProps {
     size?: number;
     duration?: number; // Duration in seconds for audio files
   }[];
+  forwardedFrom?: { id: string; name: string };
+  onForwardedClick?: (id: string) => void;
+  replyTo?: {
+    id: string;
+    text?: string;
+    attachments?: { type: 'image' | 'file' | 'audio'; name?: string }[];
+    sender?: { name: string };
+  };
+  onReplyClick?: (id: string) => void;
+  id?: string;
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
@@ -282,6 +292,58 @@ const AudioDuration = styled.span`
   white-space: nowrap;
 `;
 
+const ForwardedBlock = styled.div`
+  display: flex;
+  align-items: center;
+  background: var(--color-elevated);
+  color: var(--text-secondary);
+  font-size: 0.97em;
+  border-left: 3px solid var(--color-primary);
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  &:hover {
+    background: var(--color-elevated-active);
+    color: var(--color-primary);
+  }
+`;
+
+const ReplyBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: var(--color-elevated);
+  color: var(--text-secondary);
+  font-size: 0.97em;
+  border-left: 3px solid var(--color-primary);
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  max-width: 100%;
+  &:hover {
+    background: var(--color-elevated-active);
+    color: var(--color-primary);
+  }
+`;
+
+const ReplySender = styled.span`
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+`;
+
+const ReplyText = styled.span`
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
 /**
  * Message component - компонент сообщения в чате с поддержкой реакций и действий
  * @param {('incoming'|'outgoing')} type - тип сообщения (входящее/исходящее)
@@ -302,6 +364,11 @@ const AudioDuration = styled.span`
  *   - icon: React.ReactNode - иконка действия
  *   - onClick: () => void - обработчик действия
  * @param {('image'|'file'|'audio')[]} [attachments] - массив прикрепленных файлов и изображений
+ * @param {User} [forwardedFrom] - информация о пересланном сообщении
+ * @param {(id: string) => void} [onForwardedClick] - обработчик клика по пересланному сообщению
+ * @param {MessageProps['replyTo']} [replyTo] - информация о ответе на сообщение
+ * @param {(id: string) => void} [onReplyClick] - обработчик клика по ответу на сообщение
+ * @param {string} [id] - ID сообщения
  *
  * @example
  * // Входящее сообщение
@@ -363,6 +430,11 @@ export const Message: React.FC<MessageProps> = ({
   currentUserId,
   actions,
   attachments,
+  forwardedFrom,
+  onForwardedClick,
+  replyTo,
+  onReplyClick,
+  id,
 }) => {
   const [showReactions, setShowReactions] = React.useState(false);
   const [previewImage, setPreviewImage] = React.useState<string | null>(null);
@@ -441,8 +513,24 @@ export const Message: React.FC<MessageProps> = ({
     setAudioProgress((prev) => ({ ...prev, [url]: percentage }));
   };
 
+  function getReplyPreview(reply?: MessageProps['replyTo']) {
+    if (!reply) return null;
+    if (reply.text && reply.text.trim()) {
+      let text = reply.text.trim();
+      if (text.length > 80) text = text.slice(0, 80) + '...';
+      return <ReplyText>{text}</ReplyText>;
+    }
+    if (reply.attachments && reply.attachments.length > 0) {
+      const att = reply.attachments[0];
+      if (att.type === 'image') return <ReplyText>Photo</ReplyText>;
+      if (att.type === 'audio') return <ReplyText>Audio</ReplyText>;
+      if (att.type === 'file') return <ReplyText>File: {att.name}</ReplyText>;
+    }
+    return <ReplyText>Message</ReplyText>;
+  }
+
   return (
-    <MessageRoot $type={type} className={className}>
+    <MessageRoot $type={type} className={className} id={id}>
       <MessageRow $type={type}>
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
           <Bubble
@@ -455,6 +543,37 @@ export const Message: React.FC<MessageProps> = ({
             }}
             style={onReaction ? { cursor: 'pointer' } : undefined}
           >
+            {replyTo && (
+              <ReplyBlock
+                onClick={
+                  onReplyClick
+                    ? (e) => {
+                        e.stopPropagation();
+                        onReplyClick(replyTo.id);
+                      }
+                    : undefined
+                }
+                title='Go to replied message'
+              >
+                {replyTo.sender?.name && <ReplySender>{replyTo.sender.name}</ReplySender>}
+                {getReplyPreview(replyTo)}
+              </ReplyBlock>
+            )}
+            {forwardedFrom && (
+              <ForwardedBlock
+                onClick={
+                  onForwardedClick
+                    ? (e) => {
+                        e.stopPropagation();
+                        onForwardedClick(forwardedFrom.id);
+                      }
+                    : undefined
+                }
+                title={`Go to forwarded message`}
+              >
+                Forwarded from {forwardedFrom.name}
+              </ForwardedBlock>
+            )}
             {!sender && <BubbleTail $type={type} />}
             {onReaction && showReactions && (
               <>
