@@ -237,7 +237,7 @@ const AudioAttachment = styled.div`
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--color-elevated);
+  background: var(--color-secondary-active);
   border-radius: var(--radius-medium);
   color: var(--text-body);
   font-size: var(--font-size-small);
@@ -446,7 +446,6 @@ export const Message: React.FC<MessageProps> = ({
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const audioRefs = React.useRef<Record<string, HTMLAudioElement>>({});
   const bubbleRef = React.useRef<HTMLDivElement>(null);
-  const containerRef = React.useRef<MessageContainerRef>(null);
 
   React.useEffect(() => {
     if (!showReactions) return;
