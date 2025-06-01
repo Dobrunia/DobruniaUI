@@ -1,4 +1,4 @@
-import { Message, type MessageType } from '@DobruniaUI';
+import { Badge, Message, type MessageType } from '@DobruniaUI';
 import { useState } from 'react';
 
 const userMe = {
@@ -203,6 +203,8 @@ export const MessageDemo = () => {
         position: 'relative',
       }}
     >
+      {/* Мок-дата между сообщениями */}
+      <Badge variant='message-date' date={new Date()} locale='ru'></Badge>
       {messages.map((msg, idx) => (
         <Message
           key={idx}

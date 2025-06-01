@@ -44,6 +44,8 @@ export const BadgeDemo: React.FC = () => {
       <Badge value={150} max={99}>
         <Avatar name='John Doe' />
       </Badge>
+
+      <Badge variant='message-date' date={new Date()} locale='ru'></Badge>
     </div>
   );
 };
