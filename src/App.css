@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 html {
     box-sizing: border-box;
 }
@@ -6,6 +8,7 @@ html {
 *::before,
 *::after {
     box-sizing: inherit;
+    font-family: var(--font-family);
 }
 
 body {

@@ -15,3 +15,7 @@ export * from './ReactionDemo';
 export * from './MessageDemo';
 export * from './ActionsMenuDemo';
 export * from './ChatListDemo';
+export * from './TabbarDemo';
+export * from './CheckboxDemo';
+export * from './RadioDemo';
+export * from './SwitchDemo';

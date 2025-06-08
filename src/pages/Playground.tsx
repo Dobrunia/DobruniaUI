@@ -18,6 +18,10 @@ import {
   MessageDemo,
   ActionsMenuDemo,
   ChatListDemo,
+  TabbarDemo,
+  CheckboxDemo,
+  RadioDemo,
+  SwitchDemo,
 } from './components-demo';
 
 const sections = [
@@ -33,6 +37,9 @@ const sections = [
       { key: 'TextField', label: 'TextField' },
       { key: 'Textarea', label: 'Textarea' },
       { key: 'Input', label: 'Input' },
+      { key: 'Checkbox', label: 'Checkbox' },
+      { key: 'Radio', label: 'Radio' },
+      { key: 'Switch', label: 'Switch' },
     ],
   },
   {
@@ -57,7 +64,10 @@ const sections = [
   },
   {
     title: 'Navigation',
-    items: [{ key: 'Pagination', label: 'Pagination' }],
+    items: [
+      { key: 'Pagination', label: 'Pagination' },
+      { key: 'Tabbar', label: 'Tabbar' },
+    ],
   },
 ];
 
@@ -93,6 +103,10 @@ const Playground: React.FC = () => {
       {selected === 'Reaction' && <ReactionDemo />}
       {selected === 'ActionsMenu' && <ActionsMenuDemo />}
       {selected === 'Message' && <MessageDemo />}
+      {selected === 'Tabbar' && <TabbarDemo />}
+      {selected === 'Checkbox' && <CheckboxDemo />}
+      {selected === 'Radio' && <RadioDemo />}
+      {selected === 'Switch' && <SwitchDemo />}
     </PageBlock>
   );
 };
