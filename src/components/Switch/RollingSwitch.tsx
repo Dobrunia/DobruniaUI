@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TRACK_WIDTH, TRACK_HEIGHT, THUMB_SIZE, TRACK_PADDING } from './variables';
+import {
+  TRACK_WIDTH,
+  TRACK_HEIGHT,
+  THUMB_SIZE,
+  TRACK_PADDING,
+  SwitchWrapper,
+  LabelText,
+} from './variables';
 
 interface RollingSwitchProps {
   checked: boolean;
@@ -11,25 +18,8 @@ interface RollingSwitchProps {
   label?: string;
 }
 
-const Wrapper = styled.label<{ $disabled?: boolean }>`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
-  width: max-content;
-`;
-
 const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
   display: none;
-`;
-
-const LabelText = styled.span`
-  margin-left: var(--spacing-medium);
-  color: var(--text-heading);
-  font-size: var(--font-size-medium);
-  font-weight: 600;
 `;
 
 const Track = styled.div<{ checked: boolean }>`
@@ -91,13 +81,8 @@ export const RollingSwitch: React.FC<RollingSwitchProps> = ({
   className,
   label,
 }) => {
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!disabled) onChange(!checked);
-  };
-
   return (
-    <Wrapper $disabled={disabled} className={className} onClick={handleClick}>
+    <SwitchWrapper htmlFor={id} className={className} $disabled={disabled}>
       <Track checked={checked}>
         <Thumb checked={checked}>
           {checked ? (
@@ -119,6 +104,6 @@ export const RollingSwitch: React.FC<RollingSwitchProps> = ({
         onChange={(e) => onChange(e.target.checked)}
         disabled={disabled}
       />
-    </Wrapper>
+    </SwitchWrapper>
   );
 };

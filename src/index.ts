@@ -10,6 +10,7 @@ export { TextField } from './components/TextField/TextField';
 export { Radio } from './components/Radio/Radio';
 export { Switch } from './components/Switch/Switch';
 export { RollingSwitch } from './components/Switch/RollingSwitch';
+export { YinYangSwitch } from './components/Switch/YinYangSwitch';
 
 /**
  * Data Display

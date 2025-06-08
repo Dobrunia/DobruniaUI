@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TRACK_WIDTH, TRACK_HEIGHT, THUMB_SIZE, TRACK_PADDING } from './variables';
+import {
+  TRACK_WIDTH,
+  TRACK_HEIGHT,
+  THUMB_SIZE,
+  TRACK_PADDING,
+  SwitchWrapper,
+  LabelText,
+} from './variables';
 
 interface SwitchProps {
   checked: boolean;
@@ -10,18 +17,6 @@ interface SwitchProps {
   id?: string;
   className?: string;
 }
-
-const SwitchWrapper = styled.label<{ $disabled?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-small);
-  cursor: pointer;
-  font-size: var(--font-size-medium);
-  color: var(--text-body);
-  user-select: none;
-  position: relative;
-  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
-`;
 
 const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
   position: absolute;
@@ -63,11 +58,6 @@ const CustomThumb = styled.span<{ checked: boolean }>`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   transition: left var(--transition-fast), background var(--transition-fast);
   border: 1.5px solid var(--color-elevated-active);
-`;
-
-const LabelText = styled.span`
-  line-height: 1.2;
-  display: inline-block;
 `;
 
 /**

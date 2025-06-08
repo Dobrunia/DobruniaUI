@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Switch } from '../../components/Switch/Switch';
-import { RollingSwitch } from '../../components/Switch/RollingSwitch';
+import { Switch, RollingSwitch, YinYangSwitch } from '@DobruniaUI';
 
 export const SwitchDemo: React.FC = () => {
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(true);
   const [rolling, setRolling] = useState(false);
+  const [yinYang, setYinYang] = useState(false);
 
   return (
     <div
@@ -40,12 +40,16 @@ export const SwitchDemo: React.FC = () => {
           disabled
         />
         <RollingSwitch checked={rolling} onChange={setRolling} label='Rolling toggle (demo)' />
+        <YinYangSwitch checked={yinYang} onChange={setYinYang} label='Yin Yang Switch (demo)' />
       </div>
       <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
         <b>Состояние первого переключателя:</b> {checked ? 'включен' : 'выключен'}
       </div>
       <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
         <b>Состояние rolling toggle:</b> {rolling ? 'включен' : 'выключен'}
+      </div>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+        <b>Состояние Yin Yang Switch:</b> {yinYang ? 'включен' : 'выключен'}
       </div>
     </div>
   );
