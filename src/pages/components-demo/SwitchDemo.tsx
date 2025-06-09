@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Switch, RollingSwitch, YinYangSwitch } from '@DobruniaUI';
+import { Switch, RollingSwitch, YinYangSwitch, FlipSwitch, PowerSwitch } from '@DobruniaUI';
 
 export const SwitchDemo: React.FC = () => {
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(true);
   const [rolling, setRolling] = useState(false);
   const [yinYang, setYinYang] = useState(false);
+  const [flip, setFlip] = useState(false);
+  const [power, setPower] = useState(false);
 
   return (
     <div
@@ -41,6 +43,14 @@ export const SwitchDemo: React.FC = () => {
         />
         <RollingSwitch checked={rolling} onChange={setRolling} label='Rolling toggle (demo)' />
         <YinYangSwitch checked={yinYang} onChange={setYinYang} label='Yin Yang Switch (demo)' />
+        <FlipSwitch checked={flip} onChange={setFlip} />
+        <div
+          style={{
+            background: '#000',
+          }}
+        >
+          <PowerSwitch checked={power} onChange={setPower} />
+        </div>
       </div>
       <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
         <b>Состояние первого переключателя:</b> {checked ? 'включен' : 'выключен'}
@@ -50,6 +60,15 @@ export const SwitchDemo: React.FC = () => {
       </div>
       <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
         <b>Состояние Yin Yang Switch:</b> {yinYang ? 'включен' : 'выключен'}
+      </div>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+        <b>Состояние Flip Switch:</b> {flip ? 'Yeah!' : 'Nope'}
+      </div>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+        <b>Состояние Flip Switch:</b> {flip ? 'On' : 'Off'}
+      </div>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+        <b>Состояние Power Switch:</b> {power ? 'On' : 'Off'}
       </div>
     </div>
   );

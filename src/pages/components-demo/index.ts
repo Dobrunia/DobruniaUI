@@ -19,3 +19,4 @@ export * from './TabbarDemo';
 export * from './CheckboxDemo';
 export * from './RadioDemo';
 export * from './SwitchDemo';
+export * from './DropdownDemo';

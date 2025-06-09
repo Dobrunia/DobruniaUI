@@ -22,6 +22,7 @@ import {
   CheckboxDemo,
   RadioDemo,
   SwitchDemo,
+  DropdownDemo,
 } from './components-demo';
 
 const sections = [
@@ -40,6 +41,7 @@ const sections = [
       { key: 'Checkbox', label: 'Checkbox' },
       { key: 'Radio', label: 'Radio' },
       { key: 'Switch', label: 'Switch' },
+      { key: 'Dropdown', label: 'Dropdown' },
     ],
   },
   {
@@ -107,6 +109,7 @@ const Playground: React.FC = () => {
       {selected === 'Checkbox' && <CheckboxDemo />}
       {selected === 'Radio' && <RadioDemo />}
       {selected === 'Switch' && <SwitchDemo />}
+      {selected === 'Dropdown' && <DropdownDemo />}
     </PageBlock>
   );
 };

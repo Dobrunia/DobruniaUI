@@ -11,6 +11,9 @@ export { Radio } from './components/Radio/Radio';
 export { Switch } from './components/Switch/Switch';
 export { RollingSwitch } from './components/Switch/RollingSwitch';
 export { YinYangSwitch } from './components/Switch/YinYangSwitch';
+export { FlipSwitch } from './components/Switch/FlipSwitch';
+export { PowerSwitch } from './components/Switch/PowerSwitch';
+export { Dropdown } from './components/Dropdown/Dropdown';
 
 /**
  * Data Display
