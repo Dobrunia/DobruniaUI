@@ -1,0 +1,162 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # Проверка билда и линтинга
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linting
+        run: yarn lint
+
+      - name: Build project
+        run: yarn build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  # Автоматическое обновление версии и публикация
+  version-and-publish:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Check if version was updated
+        id: version-check
+        run: |
+          # Получаем текущую версию из package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current-version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+          # Проверяем, была ли версия изменена в последнем коммите
+          VERSION_CHANGED=$(git diff HEAD~1 HEAD -- package.json | grep '"version":' || true)
+
+          if [ -z "$VERSION_CHANGED" ]; then
+            echo "version-changed=false" >> $GITHUB_OUTPUT
+            echo "Version was NOT changed in the last commit"
+          else
+            echo "version-changed=true" >> $GITHUB_OUTPUT
+            echo "Version was changed in the last commit"
+          fi
+
+      - name: Auto-bump version
+        if: steps.version-check.outputs.version-changed == 'false'
+        run: |
+          echo "Auto-bumping patch version..."
+          yarn version --patch --no-git-tag-version
+
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "New version: $NEW_VERSION"
+
+          # Коммитим изменение версии
+          git add package.json
+          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
+          git push origin ${{ github.ref_name }}
+
+      - name: Get final version
+        id: final-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Final version: $VERSION"
+
+      - name: Create Git tag
+        run: |
+          VERSION=${{ steps.final-version.outputs.version }}
+          git tag v$VERSION
+          git push origin v$VERSION
+
+      - name: Check if version exists on NPM
+        id: npm-check
+        run: |
+          VERSION=${{ steps.final-version.outputs.version }}
+          if npm view dobruniaui@$VERSION version 2>/dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Version $VERSION already exists on NPM"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Version $VERSION does not exist on NPM"
+          fi
+
+      - name: Publish to NPM
+        if: steps.npm-check.outputs.exists == 'false'
+        run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.npm-check.outputs.exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.final-version.outputs.version }}
+          release_name: Release v${{ steps.final-version.outputs.version }}
+          body: |
+            🚀 **DobruniaUI v${{ steps.final-version.outputs.version }}**
+
+            Автоматический релиз новой версии библиотеки компонентов.
+
+            ### 📦 Установка
+            ```bash
+            npm install dobruniaui@${{ steps.final-version.outputs.version }}
+            # или
+            yarn add dobruniaui@${{ steps.final-version.outputs.version }}
+            ```
+
+            ### 📋 Изменения
+            Смотрите коммиты в этом релизе для подробной информации об изменениях.
+          draft: false
+          prerelease: false

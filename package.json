@@ -1,18 +1,36 @@
 {
   "name": "dobruniaui",
   "version": "0.1.0",
+  "description": "React UI библиотека компонентов с современным дизайном",
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "typescript",
+    "styled-components"
+  ],
+  "author": "Dobrunia",
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode lib",
+    "build:watch": "vite build --mode lib --watch",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "prepublishOnly": "yarn build",
+    "version:patch": "yarn version --patch",
+    "version:minor": "yarn version --minor",
+    "version:major": "yarn version --major"
   },
   "dependencies": {
     "react": "^19.1.0",
