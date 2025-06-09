@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal } from '@DobruniaUI';
+import { Modal, TextField, Button } from '@DobruniaUI';
 
 const styles = {
   demoContainer: {
@@ -27,63 +27,14 @@ const styles = {
     backgroundColor: 'var(--color-background)',
   } as React.CSSProperties,
 
-  demoButton: {
-    padding: '12px 24px',
-    borderRadius: '8px',
-    border: 'none',
-    backgroundColor: 'var(--color-primary)',
-    color: 'white',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '500',
-    transition: 'all 0.2s ease',
-  } as React.CSSProperties,
-
   buttonGroup: {
     display: 'flex',
     gap: '12px',
     flexWrap: 'wrap' as const,
   } as React.CSSProperties,
 
-  danger: {
-    backgroundColor: '#ef4444',
-  } as React.CSSProperties,
-
-  primary: {
-    backgroundColor: 'var(--color-primary)',
-  } as React.CSSProperties,
-
   formGroup: {
     marginBottom: '20px',
-  } as React.CSSProperties,
-
-  formLabel: {
-    display: 'block',
-    marginBottom: '8px',
-    fontWeight: '500',
-    color: 'var(--color-text)',
-  } as React.CSSProperties,
-
-  formInput: {
-    width: '100%',
-    padding: '12px',
-    borderRadius: '8px',
-    border: '1px solid var(--color-border)',
-    fontSize: '14px',
-    backgroundColor: 'var(--color-background)',
-    color: 'var(--color-text)',
-  } as React.CSSProperties,
-
-  formTextarea: {
-    width: '100%',
-    padding: '12px',
-    borderRadius: '8px',
-    border: '1px solid var(--color-border)',
-    fontSize: '14px',
-    backgroundColor: 'var(--color-background)',
-    color: 'var(--color-text)',
-    resize: 'vertical' as const,
-    minHeight: '100px',
   } as React.CSSProperties,
 };
 
@@ -156,9 +107,9 @@ export const ModalDemo: React.FC = () => {
         <div style={styles.demoCard}>
           <h3>Базовое модальное окно</h3>
           <p>Простое модальное окно с заголовком и кнопкой закрытия</p>
-          <button style={styles.demoButton} onClick={() => setBasicModal(true)}>
+          <Button variant='primary' onClick={() => setBasicModal(true)}>
             Открыть базовое модальное окно
-          </button>
+          </Button>
         </div>
 
         {/* Size Variants */}
@@ -166,18 +117,18 @@ export const ModalDemo: React.FC = () => {
           <h3>Размеры модальных окон</h3>
           <p>Различные размеры: small, medium, large, fullscreen</p>
           <div style={styles.buttonGroup}>
-            <button style={styles.demoButton} onClick={() => setSizesModal('small')}>
+            <Button variant='primary' onClick={() => setSizesModal('small')}>
               Small
-            </button>
-            <button style={styles.demoButton} onClick={() => setSizesModal('medium')}>
+            </Button>
+            <Button variant='primary' onClick={() => setSizesModal('medium')}>
               Medium
-            </button>
-            <button style={styles.demoButton} onClick={() => setSizesModal('large')}>
+            </Button>
+            <Button variant='primary' onClick={() => setSizesModal('large')}>
               Large
-            </button>
-            <button style={styles.demoButton} onClick={() => setSizesModal('fullscreen')}>
+            </Button>
+            <Button variant='primary' onClick={() => setSizesModal('fullscreen')}>
               Fullscreen
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -185,39 +136,36 @@ export const ModalDemo: React.FC = () => {
         <div style={styles.demoCard}>
           <h3>Модальное окно подтверждения</h3>
           <p>Модальное окно для подтверждения действий</p>
-          <button
-            style={{ ...styles.demoButton, ...styles.danger }}
-            onClick={() => setConfirmModal(true)}
-          >
+          <Button variant='warning' onClick={() => setConfirmModal(true)}>
             Удалить аккаунт
-          </button>
+          </Button>
         </div>
 
         {/* Form Modal */}
         <div style={styles.demoCard}>
           <h3>Модальное окно с формой</h3>
           <p>Форма обратной связи в модальном окне</p>
-          <button style={styles.demoButton} onClick={() => setFormModal(true)}>
+          <Button variant='primary' onClick={() => setFormModal(true)}>
             Открыть форму
-          </button>
+          </Button>
         </div>
 
         {/* Nested Modals */}
         <div style={styles.demoCard}>
           <h3>Вложенные модальные окна</h3>
           <p>Модальное окно, которое открывает другое модальное окно</p>
-          <button style={styles.demoButton} onClick={() => setNestedModal(true)}>
+          <Button variant='primary' onClick={() => setNestedModal(true)}>
             Открыть вложенное модальное окно
-          </button>
+          </Button>
         </div>
 
         {/* Custom Styled Modal */}
         <div style={styles.demoCard}>
           <h3>Кастомное модальное окно</h3>
           <p>Модальное окно с отключением стандартного поведения</p>
-          <button style={styles.demoButton} onClick={() => setCustomModal(true)}>
+          <Button variant='primary' onClick={() => setCustomModal(true)}>
             Открыть кастомное
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -266,18 +214,18 @@ export const ModalDemo: React.FC = () => {
             <strong>Это действие нельзя отменить.</strong>
           </p>
           <div style={{ ...styles.buttonGroup, marginTop: '24px' }}>
-            <button style={styles.demoButton} onClick={() => setConfirmModal(false)}>
+            <Button variant='secondary' onClick={() => setConfirmModal(false)}>
               Отмена
-            </button>
-            <button
-              style={{ ...styles.demoButton, ...styles.danger }}
+            </Button>
+            <Button
+              variant='warning'
               onClick={() => {
                 console.log('Account deleted');
                 setConfirmModal(false);
               }}
             >
               Удалить
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>
@@ -291,51 +239,38 @@ export const ModalDemo: React.FC = () => {
       >
         <form onSubmit={handleFormSubmit}>
           <div style={styles.formGroup}>
-            <label htmlFor='name' style={styles.formLabel}>
-              Имя:
-            </label>
-            <input
-              id='name'
+            <TextField
+              label='Имя'
               type='text'
-              style={styles.formInput}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
           </div>
           <div style={styles.formGroup}>
-            <label htmlFor='email' style={styles.formLabel}>
-              Email:
-            </label>
-            <input
-              id='email'
+            <TextField
+              label='Email'
               type='email'
-              style={styles.formInput}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
             />
           </div>
           <div style={styles.formGroup}>
-            <label htmlFor='message' style={styles.formLabel}>
-              Сообщение:
-            </label>
-            <textarea
-              id='message'
-              rows={4}
-              style={styles.formTextarea}
+            <TextField
+              label='Сообщение'
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               required
             />
           </div>
           <div style={styles.buttonGroup}>
-            <button type='button' style={styles.demoButton} onClick={() => setFormModal(false)}>
+            <Button type='button' variant='secondary' onClick={() => setFormModal(false)}>
               Отмена
-            </button>
-            <button type='submit' style={{ ...styles.demoButton, ...styles.primary }}>
+            </Button>
+            <Button type='submit' variant='primary'>
               Отправить
-            </button>
+            </Button>
           </div>
         </form>
       </Modal>
@@ -349,9 +284,9 @@ export const ModalDemo: React.FC = () => {
         <div>
           <p>Это первое модальное окно.</p>
           <p>Из него можно открыть второе модальное окно.</p>
-          <button style={styles.demoButton} onClick={() => setSecondNestedModal(true)}>
+          <Button variant='primary' onClick={() => setSecondNestedModal(true)}>
             Открыть второе модальное окно
-          </button>
+          </Button>
         </div>
       </Modal>
 
@@ -384,9 +319,9 @@ export const ModalDemo: React.FC = () => {
             <li>Нет кнопки закрытия в заголовке</li>
           </ul>
           <p>Его можно закрыть только кнопкой ниже:</p>
-          <button style={styles.demoButton} onClick={() => setCustomModal(false)}>
+          <Button variant='primary' onClick={() => setCustomModal(false)}>
             Закрыть модальное окно
-          </button>
+          </Button>
         </div>
       </Modal>
     </div>

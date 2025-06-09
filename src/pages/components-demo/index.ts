@@ -24,3 +24,4 @@ export * from './UndoSnackbarDemo';
 export * from './LoadingSpinnerDemo';
 export * from './BreadcrumbsDemo';
 export * from './ModalDemo';
+export * from './ModalSubmitDemo';

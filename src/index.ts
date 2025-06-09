@@ -44,6 +44,7 @@ export {
   type SpinnerSize,
 } from './Feedback/LoadingSpinner/LoadingSpinner';
 export { Modal, type ModalProps } from './Feedback/Modal/Modal';
+export { ModalSubmit, type ModalSubmitProps } from './Feedback/ModalSubmit/ModalSubmit';
 
 /**
  * Layout

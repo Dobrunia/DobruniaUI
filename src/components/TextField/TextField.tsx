@@ -152,7 +152,6 @@ const EyeIcon = ({ open }: { open: boolean }) =>
  * // Базовое использование
  * <TextField
  *   label="Имя"
- *   placeholder="Введите имя"
  *   helperText="Максимум 50 символов"
  * />
  *
@@ -174,7 +173,6 @@ const EyeIcon = ({ open }: { open: boolean }) =>
  * <TextField
  *   label="Телефон"
  *   type="phone"
- *   placeholder="+7 (___) ___-__-__"
  * />
  *
  * // Поле с числом
