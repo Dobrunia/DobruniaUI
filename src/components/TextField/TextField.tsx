@@ -23,13 +23,12 @@ const FieldWrapper = styled.div`
 
 const Label = styled.label<{ floating: boolean; $error?: boolean }>`
   position: absolute;
-  left: 16px;
+  left: 12px;
   top: ${({ floating }) => (floating ? '2px' : '50%')};
   transform: translateY(${({ floating }) => (floating ? '0' : '-50%')});
   font-size: ${({ floating }) => (floating ? 'var(--font-size-small)' : 'var(--font-size-medium)')};
   color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: transparent;
-  padding: 0 4px;
   pointer-events: none;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
@@ -37,7 +36,8 @@ const Label = styled.label<{ floating: boolean; $error?: boolean }>`
 
 const Input = styled.input<{ $error?: boolean; $type?: string }>`
   width: 100%;
-  padding: 22px ${({ $type }) => ($type === 'password' ? '40px' : '16px')} 8px 16px;
+  height: 40px;
+  padding: 10px ${({ $type }) => ($type === 'password' ? '40px' : '16px')} 2px 10px;
   border-radius: var(--radius-medium);
   border: 2px solid ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: var(--color-surface);

@@ -38,7 +38,8 @@ const SelectWrapper = styled.div`
 
 const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?: boolean }>`
   width: 100%;
-  padding: 10px ${({ $clearable }) => ($clearable ? '50px' : '30px')} 10px 10px;
+  height: 40px;
+  padding: 10px ${({ $clearable }) => ($clearable ? '50px' : '30px')} 0px 10px;
   font-size: var(--font-size-medium);
   font-family: var(--font-family);
   color: var(--text-body);
@@ -56,22 +57,9 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   overflow: hidden;
   text-overflow: ellipsis;
 
-  &:focus {
-    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
-    box-shadow: 0 0 0 2px
-      ${({ $error }) =>
-        $error
-          ? 'var(--color-error)'
-          : 'color-mix(in srgb, var(--color-primary) 40%, transparent 60%)'};
-  }
-
   &:hover:not(:disabled) {
-    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
-    box-shadow: 0 0 0 2px
-      ${({ $error }) =>
-        $error
-          ? 'var(--color-error)'
-          : 'color-mix(in srgb, var(--color-primary) 20%, transparent 80%)'};
+    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-accent)')};
+    color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-accent)')};
   }
 
   &:disabled {
@@ -100,13 +88,12 @@ const FloatingLabel = styled.label<{
   $error?: boolean;
 }>`
   position: absolute;
-  left: 10px;
+  left: 12px;
   top: ${({ floating }) => (floating ? '2px' : '50%')};
   transform: translateY(${({ floating }) => (floating ? '0' : '-50%')});
   font-size: ${({ floating }) => (floating ? 'var(--font-size-small)' : 'var(--font-size-medium)')};
   color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: transparent;
-  padding: 0 4px;
   pointer-events: none;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
