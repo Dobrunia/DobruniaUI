@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
-import { Reaction, Avatar, ActionsMenu } from '@DobruniaUI';
-import type { MessageContainerRef } from '../MessageContainer/MessageContainer';
+import { Reaction, Avatar, ActionsMenu, type ActionsMenuAction } from '@DobruniaUI';
 
 export type MessageType = 'incoming' | 'outgoing';
 
@@ -16,11 +15,8 @@ interface ReactionData {
   users: User[];
 }
 
-interface MessageAction {
-  label: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-}
+// Используем ActionsMenuAction напрямую
+type MessageAction = ActionsMenuAction;
 
 interface MessageProps {
   type: MessageType;
@@ -172,7 +168,7 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   transform: none;
   display: flex;
   gap: 8px;
-  background: var(--color-elevated);
+  background: var(--color-surface);
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px #0002;
   padding: 6px 12px;
@@ -610,13 +606,15 @@ export const Message: React.FC<MessageProps> = ({
                     }}
                   >
                     <ActionsMenu
-                      actions={actions.map((action) => ({
+                      items={actions.map((action) => ({
                         ...action,
                         onClick: () => {
                           action.onClick();
                           setShowReactions(false);
                         },
                       }))}
+                      size='small'
+                      animationOrigin={type === 'outgoing' ? 'right' : 'left'}
                     />
                   </div>
                 )}

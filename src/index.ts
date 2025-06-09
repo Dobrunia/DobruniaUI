@@ -18,7 +18,11 @@ export { Dropdown } from './components/Dropdown/Dropdown';
 /**
  * Data Display
  */
-export { ActionsMenu, type ActionsMenuAction } from './data-display/ActionsMenu/ActionsMenu';
+export {
+  ActionsMenu,
+  type ActionsMenuAction,
+  type ActionsMenuGroup,
+} from './data-display/ActionsMenu/ActionsMenu';
 export { Avatar } from './data-display/Avatar/Avatar';
 export { Badge } from './data-display/Badge/Badge';
 export { ChatList } from './data-display/ChatList/ChatList';
@@ -34,12 +38,18 @@ export { CircularProgressWithLabel, LinearProgress } from './Feedback/Progress/P
 export { Skeleton } from './Feedback/Skeleton/Skeleton';
 export { Snackbar, type SnackbarOrigin } from './Feedback/Snackbar/Snackbar';
 export { UndoSnackbar } from './Feedback/UndoSnackbar/UndoSnackbar';
-export { LoadingSpinner, type SpinnerVariant, type SpinnerSize } from './Feedback/LoadingSpinner/LoadingSpinner';
+export {
+  LoadingSpinner,
+  type SpinnerVariant,
+  type SpinnerSize,
+} from './Feedback/LoadingSpinner/LoadingSpinner';
+export { Modal, type ModalProps } from './Feedback/Modal/Modal';
 
 /**
  * Layout
  */
 export { PageBlock } from './layout/PageBlock/PageBlock';
+export { Portal, type PortalProps } from './layout/Portal/Portal';
 
 /**
  * Navigation

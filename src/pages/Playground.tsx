@@ -26,6 +26,7 @@ import {
   UndoSnackbarDemo,
   LoadingSpinnerDemo,
   BreadcrumbsDemo,
+  ModalDemo,
 } from './components-demo';
 
 const sections = [
@@ -67,6 +68,7 @@ const sections = [
       { key: 'Skeleton', label: 'Skeleton' },
       { key: 'Snackbar', label: 'Snackbar' },
       { key: 'UndoSnackbar', label: 'UndoSnackbar' },
+      { key: 'Modal', label: 'Modal' },
     ],
   },
   {
@@ -119,6 +121,7 @@ const Playground: React.FC = () => {
       {selected === 'UndoSnackbar' && <UndoSnackbarDemo />}
       {selected === 'LoadingSpinner' && <LoadingSpinnerDemo />}
       {selected === 'Breadcrumbs' && <BreadcrumbsDemo />}
+      {selected === 'Modal' && <ModalDemo />}
     </PageBlock>
   );
 };

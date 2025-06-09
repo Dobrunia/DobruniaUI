@@ -1,5 +1,48 @@
-import { Badge, Message, MessageContainer, type MessageType } from '@DobruniaUI';
+import {
+  Badge,
+  Message,
+  MessageContainer,
+  type MessageType,
+  type ActionsMenuAction,
+} from '@DobruniaUI';
 import { useState } from 'react';
+
+// SVG иконки для действий с сообщениями
+const ReplyIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z' />
+  </svg>
+);
+
+const CopyIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z' />
+  </svg>
+);
+
+const ForwardIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M14 15v4l7-7-7-7v4.1c-5 0-8.5-1.6-11-5.1 1 5 4 10 11 11z' />
+  </svg>
+);
+
+const DeleteIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z' />
+  </svg>
+);
+
+const SelectIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' />
+  </svg>
+);
+
+const PinIcon = () => (
+  <svg viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M14,4V10.5L12,9L10,10.5V4H14M16,2H8V13L12,10L16,13V2Z' />
+  </svg>
+);
 
 const userMe = {
   id: 'me',
@@ -170,26 +213,50 @@ const initialMessages: Array<{
   },
 ];
 
-const actionsDemo = [
+// Действия для контекстного меню сообщений (Telegram-style)
+const actionsDemo: ActionsMenuAction[] = [
   {
     label: 'Ответить',
-    icon: <span style={{ fontSize: 20 }}>↩️</span>,
-    onClick: () => alert('Ответить'),
+    icon: <ReplyIcon />,
+    onClick: () => alert('Ответить на сообщение'),
+    shortcut: '⌘R',
   },
   {
     label: 'Копировать текст',
-    icon: <span style={{ fontSize: 20 }}>📋</span>,
-    onClick: () => alert('Скопировано!'),
+    icon: <CopyIcon />,
+    onClick: () => {
+      navigator.clipboard?.writeText('Текст сообщения скопирован!');
+      alert('Текст скопирован в буфер обмена!');
+    },
+    shortcut: '⌘C',
   },
   {
     label: 'Переслать',
-    icon: <span style={{ fontSize: 20 }}>🔀</span>,
-    onClick: () => alert('Переслано!'),
+    icon: <ForwardIcon />,
+    onClick: () => alert('Сообщение переслано'),
+    shortcut: '⌘F',
+  },
+  {
+    label: 'Выбрать',
+    icon: <SelectIcon />,
+    onClick: () => alert('Сообщение выбрано для группового действия'),
+  },
+  {
+    label: 'Закрепить',
+    icon: <PinIcon />,
+    onClick: () => alert('Сообщение закреплено'),
+    type: 'primary',
   },
   {
     label: 'Удалить',
-    icon: <span style={{ fontSize: 20 }}>🗑️</span>,
-    onClick: () => alert('Удалено!'),
+    icon: <DeleteIcon />,
+    onClick: () => {
+      if (confirm('Вы уверены, что хотите удалить это сообщение?')) {
+        alert('Сообщение удалено');
+      }
+    },
+    type: 'destructive',
+    shortcut: '⌫',
   },
 ];
 
