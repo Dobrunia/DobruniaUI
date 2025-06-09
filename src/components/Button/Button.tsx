@@ -243,38 +243,47 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
   }
 };
 
-const StyledButton = styled.button<ButtonProps>`
+interface StyledButtonProps {
+  $variant?: ButtonVariant;
+  $size?: ButtonSize;
+  $fullWidth?: boolean;
+  $isLoading?: boolean;
+  $outlined?: boolean;
+  $shape?: ButtonShape;
+}
+
+const StyledButton = styled.button<StyledButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-small);
-  border-radius: ${({ shape, variant }) =>
-    (shape as ButtonShape) === 'circle' ||
-    (variant === 'close' && (shape as ButtonShape) === 'circle')
+  border-radius: ${({ $shape, $variant }) =>
+    ($shape as ButtonShape) === 'circle' ||
+    ($variant === 'close' && ($shape as ButtonShape) === 'circle')
       ? '50%'
-      : shape === 'square'
+      : $shape === 'square'
       ? 'var(--radius-medium)'
       : 'var(--radius-medium)'};
   cursor: pointer;
   transition: all var(--transition-fast);
-  width: ${({ fullWidth, variant, shape }) =>
-    variant === 'send'
+  width: ${({ $fullWidth, $variant, $shape }) =>
+    $variant === 'send'
       ? '24px'
-      : fullWidth
+      : $fullWidth
       ? '100%'
-      : shape === 'circle' || shape === 'square'
+      : $shape === 'circle' || $shape === 'square'
       ? undefined
       : 'max-content'};
-  min-width: ${({ fullWidth, variant }) =>
-    variant === 'send' ? '0' : fullWidth ? '100%' : 'min-content'};
-  min-height: ${({ variant }) => (variant === 'send' ? '0' : '2.5em')};
-  opacity: ${({ isLoading }) => (isLoading ? 0.7 : 1)};
-  pointer-events: ${({ isLoading }) => (isLoading ? 'none' : 'auto')};
+  min-width: ${({ $fullWidth, $variant }) =>
+    $variant === 'send' ? '0' : $fullWidth ? '100%' : 'min-content'};
+  min-height: ${({ $variant }) => ($variant === 'send' ? '0' : '2.5em')};
+  opacity: ${({ $isLoading }) => ($isLoading ? 0.7 : 1)};
+  pointer-events: ${({ $isLoading }) => ($isLoading ? 'none' : 'auto')};
   position: relative;
   font-size: 1rem;
 
-  ${({ variant = 'primary', outlined, shape }) => getButtonStyles(variant, outlined, shape)}
-  ${({ size = 'medium', shape = 'default', variant }) => getButtonSize(size, shape, variant)}
+  ${({ $variant = 'primary', $outlined, $shape }) => getButtonStyles($variant, $outlined, $shape)}
+  ${({ $size = 'medium', $shape = 'default', $variant }) => getButtonSize($size, $shape, $variant)}
 
   &:disabled {
     opacity: 0.5;
@@ -416,12 +425,12 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <StyledButton
-      variant={variant}
-      size={finalSize}
-      fullWidth={fullWidth}
-      isLoading={isLoading}
-      outlined={outlined}
-      shape={shape}
+      $variant={variant}
+      $size={finalSize}
+      $fullWidth={fullWidth}
+      $isLoading={isLoading}
+      $outlined={outlined}
+      $shape={shape}
       {...props}
     >
       <ButtonContent $isLoading={isLoading}>

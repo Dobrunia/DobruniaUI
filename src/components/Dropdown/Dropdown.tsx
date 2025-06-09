@@ -19,12 +19,12 @@ interface DropdownProps {
   id?: string;
 }
 
-const Wrapper = styled.div<{ labelLength?: number }>`
+const Wrapper = styled.div<{ $labelLength?: number }>`
   display: flex;
   flex-direction: column;
   font-family: var(--font-family);
   width: fit-content;
-  min-width: ${({ labelLength }) => (labelLength ? Math.max(80, labelLength * 8 + 60) : 80)}px;
+  min-width: ${({ $labelLength }) => ($labelLength ? Math.max(80, $labelLength * 8 + 60) : 80)}px;
   max-width: 320px;
   gap: 0.25em;
   overflow: hidden;
@@ -84,14 +84,15 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
 `;
 
 const FloatingLabel = styled.label<{
-  floating: boolean;
+  $floating: boolean;
   $error?: boolean;
 }>`
   position: absolute;
   left: 12px;
-  top: ${({ floating }) => (floating ? '2px' : '50%')};
-  transform: translateY(${({ floating }) => (floating ? '0' : '-50%')});
-  font-size: ${({ floating }) => (floating ? 'var(--font-size-small)' : 'var(--font-size-medium)')};
+  top: ${({ $floating }) => ($floating ? '2px' : '50%')};
+  transform: translateY(${({ $floating }) => ($floating ? '0' : '-50%')});
+  font-size: ${({ $floating }) =>
+    $floating ? 'var(--font-size-small)' : 'var(--font-size-medium)'};
   color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: transparent;
   pointer-events: none;
@@ -219,7 +220,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <Wrapper className={className} labelLength={label?.length}>
+    <Wrapper className={className} $labelLength={label?.length}>
       <SelectWrapper>
         <Select
           id={selectId}
@@ -246,7 +247,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         )}
         <DropdownArrow disabled={disabled} $error={error} />
         {label && (
-          <FloatingLabel floating={floating} $error={error} htmlFor={selectId}>
+          <FloatingLabel $floating={floating} $error={error} htmlFor={selectId}>
             {label}
           </FloatingLabel>
         )}

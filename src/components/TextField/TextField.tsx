@@ -9,10 +9,10 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: string;
 }
 
-const Wrapper = styled.div<{ width?: string }>`
+const Wrapper = styled.div<{ $width?: string }>`
   display: flex;
   flex-direction: column;
-  width: ${({ width }) => width || '100%'};
+  width: ${({ $width }) => $width || '100%'};
   gap: 0.25em;
 `;
 
@@ -21,12 +21,13 @@ const FieldWrapper = styled.div`
   width: 100%;
 `;
 
-const Label = styled.label<{ floating: boolean; $error?: boolean }>`
+const Label = styled.label<{ $floating: boolean; $error?: boolean }>`
   position: absolute;
   left: 12px;
-  top: ${({ floating }) => (floating ? '2px' : '50%')};
-  transform: translateY(${({ floating }) => (floating ? '0' : '-50%')});
-  font-size: ${({ floating }) => (floating ? 'var(--font-size-small)' : 'var(--font-size-medium)')};
+  top: ${({ $floating }) => ($floating ? '2px' : '50%')};
+  transform: translateY(${({ $floating }) => ($floating ? '0' : '-50%')});
+  font-size: ${({ $floating }) =>
+    $floating ? 'var(--font-size-small)' : 'var(--font-size-medium)'};
   color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
   background: transparent;
   pointer-events: none;
@@ -225,7 +226,7 @@ export const TextField: React.FC<TextFieldProps> = ({
     type === 'password' ? (showPassword ? 'text' : 'password') : type === 'phone' ? 'tel' : type;
 
   return (
-    <Wrapper width={width}>
+    <Wrapper $width={width}>
       <FieldWrapper>
         <Input
           id={inputId}
@@ -259,7 +260,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           </EyeButton>
         )}
         {label && (
-          <Label htmlFor={inputId} floating={floating} $error={error}>
+          <Label htmlFor={inputId} $floating={floating} $error={error}>
             {label}
           </Label>
         )}

@@ -32,8 +32,8 @@ const SectionTitle = styled.div`
   }
 `;
 
-const ItemsWrapper = styled.div<{ noIndent?: boolean }>`
-  padding-left: ${({ noIndent }) => (noIndent ? '0' : 'var(--spacing-medium)')};
+const ItemsWrapper = styled.div<{ $noIndent?: boolean }>`
+  padding-left: ${({ $noIndent }) => ($noIndent ? '0' : 'var(--spacing-medium)')};
 `;
 
 const SidebarItem = styled.li<{ selected: boolean }>`
@@ -204,7 +204,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
               </SectionTitle>
             )}
             {!collapsed[sectionKey] && (
-              <ItemsWrapper noIndent={!hasTitle}>
+              <ItemsWrapper $noIndent={!hasTitle}>
                 {section.items.map((comp) => (
                   <SidebarItem
                     key={comp.key}
