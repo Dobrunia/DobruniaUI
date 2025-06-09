@@ -111,8 +111,8 @@ const initialMessages: Array<{
     attachments: [
       {
         type: 'image',
-        url: '/src/assets/204596508.jfif',
-        name: 'beautiful-image.jpg',
+        url: 'https://cdn.fishki.net/upload/post/2021/02/16/3613245/tn/alberta-2297204-1280.jpg',
+        name: 'beautiful-landscape.jpg',
       },
     ],
   },
@@ -127,9 +127,9 @@ const initialMessages: Array<{
     attachments: [
       {
         type: 'audio',
-        url: '/src/assets/cxdy-spooky-szn.mp3',
+        url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav',
         name: 'voice-message.mp3',
-        duration: 180, // 3 minutes in seconds
+        duration: 15, // 15 seconds
       },
     ],
   },
