@@ -44,7 +44,7 @@ jobs:
         run: rm -rf dist
 
       - name: Build demo app
-        run: yarn build:demo --base=/dobruniaui/
+        run: yarn build:demo
 
       - name: Upload demo build artifacts
         uses: actions/upload-artifact@v4

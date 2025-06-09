@@ -6,7 +6,12 @@ import path from 'path';
 
 export default defineConfig(({ command, mode }) => {
   const isLib = command === 'build' && mode === 'lib';
+  const isDemoProduction = command === 'build' && mode !== 'lib';
+
   return {
+    // Настройка base path для GitHub Pages
+    base: isDemoProduction ? '/dobruniaui/' : '/',
+
     plugins: [
       react(),
       tsconfigPaths(),
@@ -42,6 +47,15 @@ export default defineConfig(({ command, mode }) => {
             },
           },
         },
+      },
+    }),
+
+    // Настройки для демо-сборки
+    ...(!isLib && {
+      build: {
+        outDir: 'dist',
+        emptyOutDir: true,
+        sourcemap: false,
       },
     }),
   };
