@@ -44,11 +44,11 @@ const SelectIcon = () => (
   </svg>
 );
 
-const MoreIcon = () => (
-  <svg viewBox='0 0 24 24' fill='currentColor'>
-    <path d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z' />
-  </svg>
-);
+// const MoreIcon = () => (
+//   <svg viewBox='0 0 24 24' fill='currentColor'>
+//     <path d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z' />
+//   </svg>
+// );
 
 export const ActionsMenuDemo = () => {
   const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium');
@@ -225,7 +225,9 @@ export const ActionsMenuDemo = () => {
                       name='size'
                       value={size.value}
                       checked={selectedSize === size.value}
-                      onChange={(e) => setSelectedSize(e.target.value as any)}
+                      onChange={(e) =>
+                        setSelectedSize(e.target.value as 'small' | 'medium' | 'large')
+                      }
                     />
                     <span>{size.label}</span>
                   </label>
@@ -253,7 +255,11 @@ export const ActionsMenuDemo = () => {
                       name='animation'
                       value={animation.value}
                       checked={selectedAnimation === animation.value}
-                      onChange={(e) => setSelectedAnimation(e.target.value as any)}
+                      onChange={(e) =>
+                        setSelectedAnimation(
+                          e.target.value as 'left' | 'right' | 'top' | 'bottom' | 'center'
+                        )
+                      }
                     />
                     <span>{animation.label}</span>
                   </label>

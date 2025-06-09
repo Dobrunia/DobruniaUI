@@ -11,7 +11,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       tsconfigPaths(),
       // генерим .d.ts только в режиме сборки библиотеки
-      ...(isLib ? [dts({ include: ['src'] })] : []),
+      ...(isLib ? [dts({ include: ['src'], exclude: ['src/pages/**/*'] })] : []),
     ],
     resolve: {
       alias: {

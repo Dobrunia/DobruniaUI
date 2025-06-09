@@ -179,7 +179,9 @@ export const BreadcrumbsDemo: React.FC = () => {
                       name='size'
                       value={size.value}
                       checked={selectedSize === size.value}
-                      onChange={(e) => setSelectedSize(e.target.value as any)}
+                      onChange={(e) =>
+                        setSelectedSize(e.target.value as 'small' | 'medium' | 'large')
+                      }
                     />
                     <span>{size.label}</span>
                   </label>
@@ -207,7 +209,9 @@ export const BreadcrumbsDemo: React.FC = () => {
                       name='variant'
                       value={variant.value}
                       checked={selectedVariant === variant.value}
-                      onChange={(e) => setSelectedVariant(e.target.value as any)}
+                      onChange={(e) =>
+                        setSelectedVariant(e.target.value as 'default' | 'underlined' | 'pills')
+                      }
                     />
                     <span>{variant.label}</span>
                   </label>

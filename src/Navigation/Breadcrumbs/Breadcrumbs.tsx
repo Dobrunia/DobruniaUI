@@ -12,6 +12,12 @@ export interface BreadcrumbItem {
   icon?: React.ReactNode;
 }
 
+// Расширенный тип для внутреннего использования
+type InternalBreadcrumbItem = BreadcrumbItem & {
+  /** Флаг для обозначения сколлапсированного элемента */
+  isCollapsed?: boolean;
+};
+
 export interface BreadcrumbsProps {
   /** Массив элементов навигации */
   items: BreadcrumbItem[];
@@ -216,7 +222,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   const [showAllItems, setShowAllItems] = React.useState(false);
 
   // Логика сворачивания элементов
-  const getDisplayItems = () => {
+  const getDisplayItems = (): InternalBreadcrumbItem[] => {
     if (!maxItems || items.length <= maxItems || showAllItems) {
       return items;
     }
@@ -228,13 +234,21 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     const startItems = items.slice(0, 1);
     const endItems = items.slice(-(maxItems - 2));
 
-    return [...startItems, { label: '...', isCollapsed: true } as BreadcrumbItem, ...endItems];
+    return [
+      ...startItems,
+      { label: '...', isCollapsed: true } as InternalBreadcrumbItem,
+      ...endItems,
+    ];
   };
 
   const displayItems = getDisplayItems();
 
-  const handleItemClick = (item: BreadcrumbItem, index: number, event: React.MouseEvent) => {
-    if ((item as any).isCollapsed) {
+  const handleItemClick = (
+    item: InternalBreadcrumbItem,
+    index: number,
+    event: React.MouseEvent
+  ) => {
+    if (item.isCollapsed) {
       event.preventDefault();
       setShowAllItems(true);
       return;
@@ -248,9 +262,9 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     onItemClick?.(item, index);
   };
 
-  const renderItem = (item: BreadcrumbItem, index: number, isLast: boolean) => {
+  const renderItem = (item: InternalBreadcrumbItem, index: number, isLast: boolean) => {
     const isClickable = !!(item.href || item.onClick) && !isLast;
-    const isCollapsed = (item as any).isCollapsed;
+    const isCollapsed = item.isCollapsed;
 
     if (isCollapsed) {
       return (

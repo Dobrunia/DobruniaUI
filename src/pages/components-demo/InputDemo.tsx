@@ -19,7 +19,6 @@ export const InputDemo = () => {
     }[]
   >([]);
   const [messageFiles, setMessageFiles] = useState<File[]>([]);
-  const [audios, setAudios] = useState<Blob[]>([]);
 
   const handleReaction = (msgIdx: number, emoji: string) => {
     setMessages((prev) =>

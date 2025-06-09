@@ -1,0 +1,36 @@
+# Исходники (оставляем только dist)
+src/
+!src/index.ts
+
+# Тестовые файлы и демо
+src/pages/
+**/*.test.*
+**/*.spec.*
+**/*.stories.*
+
+# Конфигурационные файлы
+vite.config.ts
+tsconfig*.json
+.eslintrc*
+.prettierrc*
+
+# Dev зависимости
+yarn.lock
+package-lock.json
+.yarnrc
+.npmrc
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Логи
+logs/
+*.log
+
+# Разное
+.DS_Store
+Thumbs.db
+.env* 

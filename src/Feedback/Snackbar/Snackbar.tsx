@@ -22,7 +22,7 @@ const recalculateStackPositions = (positionKey: string) => {
 
   // Сортируем по порядку появления и пересчитываем индексы
   const sortedEntries = Array.from(stack.entries()).sort((a, b) => a[1].order - b[1].order);
-  sortedEntries.forEach(([id, data], index) => {
+  sortedEntries.forEach(([, data], index) => {
     data.setStackIndex(index);
   });
 };
@@ -222,7 +222,7 @@ export const Snackbar: React.FC<SnackbarProps> = ({
         }
       }
     };
-  }, [open, snackbarId, enableStacking, anchorOrigin.vertical, anchorOrigin.horizontal]);
+  }, [open, snackbarId, enableStacking, anchorOrigin]);
 
   useEffect(() => {
     if (!open) return;
