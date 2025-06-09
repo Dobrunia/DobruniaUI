@@ -1,0 +1,100 @@
+// CSS переменные из variables.pcss в виде строки для инжекции
+export const CSS_VARIABLES = `/* Правила 1 - только 3 размера small, medium, large */
+:root {
+  /* layout */
+  --layout-content-width: 1200px;
+  --layout-sidebar-width: 300px;
+
+  /* spacing */
+  --spacing-tiny: 0.2rem;
+  --spacing-small: 0.5rem;
+  --spacing-medium: 1rem;
+  --spacing-large: 2rem;
+
+  /* radius */
+  --radius-medium: 6px;
+  --radius-large: 16px;
+
+  /* transition */
+  --transition-fast: 0.15s;
+  --transition-slow: 0.3s;
+
+  /* font sizes */
+  --font-size-small: 0.7rem;
+  --font-size-small-plus: 0.8rem;
+  --font-size-medium: 1rem;
+  --font-size-large: 1.2rem;
+
+  /* avatar status colors */
+  --avatar-status-online: #4cd964;
+  --avatar-status-offline: #b0b8c9;
+  --avatar-status-dnd: #d44c4a;
+
+  /* font family */
+  --font-family: 'Rubik', sans-serif;
+}
+
+:root[data-theme='light'] {
+  /* background colors */
+  --color-bg: #eaf3fb; /* Light Blue Sky */
+  --color-surface: #ffffff; /* White Card */
+  --color-elevated: #e3eaf6; /* Soft Blue Surface */
+  --color-elevated-active: #c8d4e6; /* Более тёмный голубой для выделения */
+
+  /* accent colors */
+  --color-primary: rgb(78, 147, 245);
+  --color-secondary: #78b4f8;
+  --color-secondary-active: rgb(145, 194, 251);
+  --color-accent: #3a7bd5;
+  --color-error: #d44c4a;
+
+  /* text colors */
+  --text-heading: #1a2233; /* Deep Navy */
+  --text-body: #2d3a4d; /* Muted Navy */
+  --text-secondary: #6b7a90; /* Cool Gray */
+  --text-disabled: #b0b8c9; /* Pale Gray */
+
+  /* borders */
+  --color-border: #e3eaf6; /* Same as elevated for consistency */
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #121212; /* Almost Black */
+  --color-surface: #1e1e1e; /* Dark Gray */
+  --color-elevated: #2a2a2a; /* Slightly lighter */
+  --color-elevated-active: #232a36; /* Более тёмный для выделения в тёмной теме */
+
+  --color-primary: #26418f; /* Deep Indigo */
+  --color-secondary: #1b5e20; /* Dark Green */
+  --color-accent: #4a148c; /* Deep Purple */
+  --color-error: #b00020; /* Dark Red */
+
+  --text-heading: #ffffff; /* White */
+  --text-body: #e0e0e0; /* Light Gray */
+  --text-secondary: #b3b3b3; /* Mid Gray */
+  --text-disabled: #757575; /* Dim Gray */
+
+  /* borders */
+  --color-border: #2a2a2a; /* Same as elevated for consistency */
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --layout-content-width: 1000px;
+    --layout-sidebar-width: 220px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --layout-content-width: 100vw;
+    --layout-sidebar-width: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --layout-content-width: 100vw;
+    --layout-sidebar-width: 100vw;
+  }
+}`;

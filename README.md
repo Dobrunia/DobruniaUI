@@ -19,6 +19,7 @@ npm install dobruniaui styled-components react react-dom
 ```tsx
 import React from 'react';
 import { Button, Alert, TextField } from 'dobruniaui';
+
 function App() {
   return (
     <div>
@@ -35,6 +36,8 @@ function App() {
 
 export default App;
 ```
+
+> 🎨 **Автоматические стили**: DobruniaUI автоматически инжектирует CSS стили при импорте любого компонента. Никаких дополнительных CSS файлов подключать не нужно!
 
 ## 🎨 Темы
 
