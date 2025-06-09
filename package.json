@@ -12,9 +12,17 @@
   "author": "Dobrunia",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./style.css": "./dist/dobruniaui.css"
+  },
   "files": [
     "dist",
     "README.md",
@@ -32,10 +40,10 @@
     "version:minor": "yarn version --minor",
     "version:major": "yarn version --major"
   },
-  "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "styled-components": "^6.1.18"
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "styled-components": ">=5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

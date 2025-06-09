@@ -22,10 +22,23 @@ pnpm add dobruniaui styled-components react react-dom
 
 ## 🚀 Быстрый старт
 
+**1. Импортируйте компоненты:**
+
 ```tsx
 import React from 'react';
 import { Button, Alert, TextField } from 'dobruniaui';
+```
 
+**2. Подключите стили:**
+
+```tsx
+// В вашем main.tsx или App.tsx
+import 'dobruniaui/style.css';
+```
+
+**3. Используйте компоненты:**
+
+```tsx
 function App() {
   return (
     <div>
@@ -375,7 +388,7 @@ DobruniaUI использует CSS переменные для кастомиз
 
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/USERNAME/dobruniaui.git
+git clone https://github.com/Dobrunia/dobruniaui.git
 
 # Установить зависимости
 yarn install
@@ -416,9 +429,9 @@ MIT © [Dobrunia](https://github.com/Dobrunia)
 
 ## 🔗 Полезные ссылки
 
-- [Документация](https://github.com/USERNAME/dobruniaui#readme)
-- [Примеры использования](https://github.com/USERNAME/dobruniaui/tree/main/src/pages/components-demo)
-- [Сообщить об ошибке](https://github.com/USERNAME/dobruniaui/issues)
+- [Документация](https://github.com/Dobrunia/dobruniaui#readme)
+- [Примеры использования](https://github.com/Dobrunia/dobruniaui/tree/main/src/pages/components-demo)
+- [Сообщить об ошибке](https://github.com/Dobrunia/dobruniaui/issues)
 
 ---
 

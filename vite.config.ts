@@ -26,7 +26,11 @@ export default defineConfig(({ command, mode }) => {
         lib: {
           entry: path.resolve(__dirname, 'src/index.ts'),
           name: 'DobruniaUI',
-          fileName: (f) => `index.${f}.js`,
+          fileName: (format) => {
+            if (format === 'es') return 'index.es.js';
+            if (format === 'umd') return 'index.umd.js';
+            return `index.${format}.js`;
+          },
         },
         rollupOptions: {
           external: ['react', 'react-dom', 'styled-components'],
