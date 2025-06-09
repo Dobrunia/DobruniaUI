@@ -28,9 +28,14 @@ import {
   BreadcrumbsDemo,
   ModalDemo,
   ModalSubmitDemo,
+  StartPage,
 } from './components-demo';
 
 const sections = [
+  {
+    title: 'StartPage',
+    items: [{ key: 'StartPage', label: 'StartPage' }],
+  },
   {
     title: 'Layouts',
     items: [{ key: 'PageBlock', label: 'PageBlock' }],
@@ -98,6 +103,7 @@ const Playground: React.FC = () => {
         />
       }
     >
+      {selected === 'StartPage' && <StartPage />}
       {selected === 'PageBlock' && <PageBlockDemo />}
       {selected === 'SidebarList' && <SidebarListDemo />}
       {selected === 'Button' && <ButtonDemo />}

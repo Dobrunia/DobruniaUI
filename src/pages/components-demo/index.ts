@@ -25,3 +25,4 @@ export * from './LoadingSpinnerDemo';
 export * from './BreadcrumbsDemo';
 export * from './ModalDemo';
 export * from './ModalSubmitDemo';
+export * from './StartPage';
