@@ -1,10 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button } from '@DobruniaUI';
 
 export type SnackbarOrigin = {
   vertical: 'top' | 'bottom';
   horizontal: 'left' | 'center' | 'right';
+};
+
+// Глобальная система управления стеками Snackbar'ов по позициям
+const snackbarStacks = new Map<
+  string,
+  Map<string, { order: number; setStackIndex: (index: number) => void }>
+>();
+let nextOrder = 0;
+
+const getPositionKey = (origin: SnackbarOrigin) => `${origin.vertical}-${origin.horizontal}`;
+
+const recalculateStackPositions = (positionKey: string) => {
+  const stack = snackbarStacks.get(positionKey);
+  if (!stack) return;
+
+  // Сортируем по порядку появления и пересчитываем индексы
+  const sortedEntries = Array.from(stack.entries()).sort((a, b) => a[1].order - b[1].order);
+  sortedEntries.forEach(([id, data], index) => {
+    data.setStackIndex(index);
+  });
 };
 
 interface SnackbarProps {
@@ -15,14 +35,22 @@ interface SnackbarProps {
   anchorOrigin?: SnackbarOrigin;
   action?: React.ReactNode;
   className?: string;
+  enableStacking?: boolean; // Новый пропс для включения стекинга
 }
 
-const getPosition = (origin: SnackbarOrigin) => {
+const getPosition = (
+  origin: SnackbarOrigin,
+  stackIndex: number = 0,
+  enableStacking: boolean = false
+) => {
   let justify = 'center';
   if (origin.horizontal === 'left') justify = 'flex-start';
   if (origin.horizontal === 'right') justify = 'flex-end';
+
+  const offset = enableStacking ? stackIndex * 72 : 0; // 56px высота + 16px отступ
+
   return css`
-    ${origin.vertical}: 32px;
+    ${origin.vertical}: ${32 + offset}px;
     left: 0;
     right: 0;
     display: flex;
@@ -31,13 +59,21 @@ const getPosition = (origin: SnackbarOrigin) => {
   `;
 };
 
-const SnackbarRoot = styled.div<{ $origin: SnackbarOrigin; $open: boolean }>`
+const SnackbarRoot = styled.div<{
+  $origin: SnackbarOrigin;
+  $open: boolean;
+  $stackIndex: number;
+  $enableStacking: boolean;
+}>`
   position: fixed;
-  z-index: 1400;
+  z-index: ${({ $stackIndex, $enableStacking }) => 1400 + ($enableStacking ? $stackIndex : 0)};
   width: 100vw;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.3s,
+    transform 0.3s
+      ${({ $enableStacking }) => ($enableStacking ? ', top 0.3s ease, bottom 0.3s ease' : '')};
   opacity: ${({ $open }) => ($open ? 1 : 0)};
-  ${({ $origin }) => getPosition($origin)}
+  ${({ $origin, $stackIndex, $enableStacking }) =>
+    getPosition($origin, $stackIndex, $enableStacking)}
   pointer-events: none;
 `;
 
@@ -75,6 +111,7 @@ const SnackbarAction = styled.div`
  *   - horizontal: 'left' | 'center' | 'right' - горизонтальное положение
  * @param {React.ReactNode} [action] - дополнительное действие (кнопка, ссылка и т.д.)
  * @param {string} [className] - дополнительные CSS классы
+ * @param {boolean} [enableStacking=false] - включить автоматическое управление стекингом для данной позиции
  *
  * @example
  * // Базовое использование
@@ -82,6 +119,15 @@ const SnackbarAction = styled.div`
  *   open={isOpen}
  *   message="Изменения сохранены"
  *   onClose={() => setIsOpen(false)}
+ * />
+ *
+ * // С включенным стекингом
+ * <Snackbar
+ *   open={isOpen}
+ *   message="Файл загружен"
+ *   onClose={() => setIsOpen(false)}
+ *   enableStacking={true}
+ *   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
  * />
  *
  * // С дополнительным действием
@@ -125,7 +171,59 @@ export const Snackbar: React.FC<SnackbarProps> = ({
   anchorOrigin = { vertical: 'bottom', horizontal: 'center' },
   action,
   className,
+  enableStacking = false,
 }) => {
+  const [stackIndex, setStackIndex] = useState(0);
+  const [snackbarId] = useState(() => Math.random().toString(36).substr(2, 9));
+
+  useEffect(() => {
+    if (!enableStacking) return;
+
+    const positionKey = getPositionKey(anchorOrigin);
+
+    if (open) {
+      // Создаем стек для позиции если его нет
+      if (!snackbarStacks.has(positionKey)) {
+        snackbarStacks.set(positionKey, new Map());
+      }
+
+      // Регистрируем snackbar в стеке для данной позиции
+      const stack = snackbarStacks.get(positionKey)!;
+      const order = nextOrder++;
+      stack.set(snackbarId, { order, setStackIndex });
+
+      // Пересчитываем позиции для данного стека
+      recalculateStackPositions(positionKey);
+    } else {
+      // Удаляем snackbar из стека
+      const stack = snackbarStacks.get(positionKey);
+      if (stack) {
+        stack.delete(snackbarId);
+
+        // Если стек пустой, удаляем его
+        if (stack.size === 0) {
+          snackbarStacks.delete(positionKey);
+        } else {
+          // Пересчитываем позиции для оставшихся snackbar'ов
+          recalculateStackPositions(positionKey);
+        }
+      }
+    }
+
+    return () => {
+      // Очистка при размонтировании
+      const stack = snackbarStacks.get(positionKey);
+      if (stack) {
+        stack.delete(snackbarId);
+        if (stack.size === 0) {
+          snackbarStacks.delete(positionKey);
+        } else {
+          recalculateStackPositions(positionKey);
+        }
+      }
+    };
+  }, [open, snackbarId, enableStacking, anchorOrigin.vertical, anchorOrigin.horizontal]);
+
   useEffect(() => {
     if (!open) return;
     if (!autoHideDuration) return;
@@ -134,7 +232,13 @@ export const Snackbar: React.FC<SnackbarProps> = ({
   }, [open, autoHideDuration, onClose]);
 
   return (
-    <SnackbarRoot $origin={anchorOrigin} $open={open} className={className}>
+    <SnackbarRoot
+      $origin={anchorOrigin}
+      $open={open}
+      $stackIndex={stackIndex}
+      $enableStacking={enableStacking}
+      className={className}
+    >
       {open && (
         <SnackbarContent>
           <span>{message}</span>

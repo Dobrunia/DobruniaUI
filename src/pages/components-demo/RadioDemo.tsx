@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio } from '../../components/Radio/Radio';
+import { Radio } from '@DobruniaUI';
 
 export const RadioDemo: React.FC = () => {
   const [value, setValue] = useState('option1');

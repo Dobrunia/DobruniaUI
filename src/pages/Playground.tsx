@@ -23,6 +23,9 @@ import {
   RadioDemo,
   SwitchDemo,
   DropdownDemo,
+  UndoSnackbarDemo,
+  LoadingSpinnerDemo,
+  BreadcrumbsDemo,
 } from './components-demo';
 
 const sections = [
@@ -60,8 +63,10 @@ const sections = [
     items: [
       { key: 'Alert', label: 'Alert' },
       { key: 'Progress', label: 'Progress' },
+      { key: 'LoadingSpinner', label: 'LoadingSpinner' },
       { key: 'Skeleton', label: 'Skeleton' },
       { key: 'Snackbar', label: 'Snackbar' },
+      { key: 'UndoSnackbar', label: 'UndoSnackbar' },
     ],
   },
   {
@@ -69,6 +74,7 @@ const sections = [
     items: [
       { key: 'Pagination', label: 'Pagination' },
       { key: 'Tabbar', label: 'Tabbar' },
+      { key: 'Breadcrumbs', label: 'Breadcrumbs' },
     ],
   },
 ];
@@ -110,6 +116,9 @@ const Playground: React.FC = () => {
       {selected === 'Radio' && <RadioDemo />}
       {selected === 'Switch' && <SwitchDemo />}
       {selected === 'Dropdown' && <DropdownDemo />}
+      {selected === 'UndoSnackbar' && <UndoSnackbarDemo />}
+      {selected === 'LoadingSpinner' && <LoadingSpinnerDemo />}
+      {selected === 'Breadcrumbs' && <BreadcrumbsDemo />}
     </PageBlock>
   );
 };

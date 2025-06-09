@@ -33,6 +33,8 @@ export { Alert } from './Feedback/Alert/Alert';
 export { CircularProgressWithLabel, LinearProgress } from './Feedback/Progress/Progress';
 export { Skeleton } from './Feedback/Skeleton/Skeleton';
 export { Snackbar, type SnackbarOrigin } from './Feedback/Snackbar/Snackbar';
+export { UndoSnackbar } from './Feedback/UndoSnackbar/UndoSnackbar';
+export { LoadingSpinner, type SpinnerVariant, type SpinnerSize } from './Feedback/LoadingSpinner/LoadingSpinner';
 
 /**
  * Layout
@@ -45,3 +47,4 @@ export { PageBlock } from './layout/PageBlock/PageBlock';
 export { Pagination } from './Navigation/Pagination/Pagination';
 export { Tabbar } from './Navigation/Tabbar/Tabbar';
 export { Tab, type TabData } from './Navigation/Tabbar/Tab';
+export { Breadcrumbs, type BreadcrumbItem } from './Navigation/Breadcrumbs/Breadcrumbs';
