@@ -487,7 +487,3 @@ MIT © [Dobrunia](https://github.com/Dobrunia)
 - [🎮 Интерактивное демо](https://dobrunia.github.io/DobruniaUI/)
 - [📖 Документация](https://github.com/Dobrunia/dobruniaui#readme)
 - [🐛 Сообщить об ошибке](https://github.com/Dobrunia/dobruniaui/issues)
-
----
-
-**Создано с ❤️ для современной веб-разработки**

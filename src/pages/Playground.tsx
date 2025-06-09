@@ -89,7 +89,7 @@ const sections = [
 ];
 
 const Playground: React.FC = () => {
-  const [selected, setSelected] = useState('PageBlock');
+  const [selected, setSelected] = useState('StartPage');
 
   return (
     <PageBlock
