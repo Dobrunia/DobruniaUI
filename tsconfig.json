@@ -24,6 +24,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
+    /* сборка библиотеки */
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+
     /* пути */
     "baseUrl": ".",
     "paths": {
@@ -34,6 +39,14 @@
   /* какие файлы вообще обрабатывать */
   "include": [
     "src", // весь код библиотеки/приложения
-    "vite.config.ts", // конфиги Vite
+    "vite.config.ts" // конфиги Vite
+  ],
+
+  /* исключения для сборки библиотеки */
+  "exclude": [
+    "src/pages/**/*", // демо компоненты
+    "**/*.test.*", // тесты
+    "**/*.spec.*", // спеки
+    "**/*.stories.*" // Storybook stories
   ]
 }
