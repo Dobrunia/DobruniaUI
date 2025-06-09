@@ -10,7 +10,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     // Настройка base path для GitHub Pages
-    base: isDemoProduction ? '/dobruniaui/' : '/',
+    base: isDemoProduction ? '/DobruniaUI/' : '/',
 
     plugins: [
       react(),
