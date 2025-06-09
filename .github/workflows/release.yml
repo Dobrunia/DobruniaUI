@@ -86,5 +86,8 @@ jobs:
             # или
             yarn add dobruniaui@${{ env.NEW_VERSION }}
             ```
+
+            ### 🎮 Демо
+            Посмотреть все компоненты в действии: https://dobrunia.github.io/dobruniaui/
           draft: false
           prerelease: false
