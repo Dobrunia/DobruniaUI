@@ -12,33 +12,13 @@ DobruniaUI - это комплексная библиотека React компо
 ```bash
 # npm
 npm install dobruniaui styled-components react react-dom
-
-# yarn
-yarn add dobruniaui styled-components react react-dom
-
-# pnpm
-pnpm add dobruniaui styled-components react react-dom
 ```
 
 ## 🚀 Быстрый старт
 
-**1. Импортируйте компоненты:**
-
 ```tsx
 import React from 'react';
 import { Button, Alert, TextField } from 'dobruniaui';
-```
-
-**2. Подключите стили:**
-
-```tsx
-// В вашем main.tsx или App.tsx
-import 'dobruniaui/style.css';
-```
-
-**3. Используйте компоненты:**
-
-```tsx
 function App() {
   return (
     <div>
@@ -54,6 +34,42 @@ function App() {
 }
 
 export default App;
+```
+
+## 🎨 Темы
+
+DobruniaUI автоматически определяет и применяет тему на основе системных настроек. Вы также можете управлять темой вручную:
+
+**Через утилиты библиотеки:**
+
+```tsx
+import { setTheme, getTheme, toggleTheme, getSystemTheme } from 'dobruniaui';
+
+// Установить тему
+setTheme('dark');
+setTheme('light');
+
+// Получить текущую тему
+const currentTheme = getTheme(); // 'light' | 'dark' | null
+
+// Переключить тему
+toggleTheme();
+
+// Получить системную тему
+const systemTheme = getSystemTheme(); // 'light' | 'dark'
+```
+
+**Через DOM напрямую:**
+
+```tsx
+// Установить светлую тему
+document.documentElement.setAttribute('data-theme', 'light');
+
+// Установить тёмную тему
+document.documentElement.setAttribute('data-theme', 'dark');
+
+// Удалить тему (будет использоваться системная)
+document.documentElement.removeAttribute('data-theme');
 ```
 
 ## 🧩 Компоненты

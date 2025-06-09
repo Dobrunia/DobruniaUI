@@ -1,4 +1,9 @@
 /**
+ * Auto-inject styles
+ */
+import './styles/inject';
+
+/**
  * Components
  */
 export { Checkbox } from './components/Checkbox/Checkbox';
@@ -59,3 +64,15 @@ export { Pagination } from './Navigation/Pagination/Pagination';
 export { Tabbar } from './Navigation/Tabbar/Tabbar';
 export { Tab, type TabData } from './Navigation/Tabbar/Tab';
 export { Breadcrumbs, type BreadcrumbItem } from './Navigation/Breadcrumbs/Breadcrumbs';
+
+/**
+ * Theme Utils
+ */
+export {
+  setTheme,
+  getTheme,
+  toggleTheme,
+  removeTheme,
+  getSystemTheme,
+  type Theme,
+} from './utils/theme';
