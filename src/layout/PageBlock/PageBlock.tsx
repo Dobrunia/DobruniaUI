@@ -10,6 +10,8 @@ interface PageBlockProps {
 
 const Container = styled.div<{ $stretched?: boolean }>`
   width: 100%;
+  height: 100%;
+  max-height: 100%;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -19,15 +21,13 @@ const Container = styled.div<{ $stretched?: boolean }>`
     `
     justify-content: stretch;
   `}
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
 `;
 
 const Content = styled.div<{ $stretched?: boolean }>`
   max-width: ${({ $stretched }) => ($stretched ? '100%' : '700px')};
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
   flex-grow: 1;
   min-width: 0;
   padding: var(--spacing-large) var(--spacing-medium);
@@ -39,30 +39,30 @@ const Content = styled.div<{ $stretched?: boolean }>`
     flex: 2;
   `}
 
-  @media (max-width: 600px) {
-    max-width: 100%;
-    padding: var(--spacing-medium) var(--spacing-small);
+  -ms-overflow-style: none; /* IE 10+ / старый Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
 const Sidebar = styled.div`
   width: var(--layout-sidebar-width);
   min-width: var(--layout-sidebar-width);
-  max-height: 100vh;
+  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
-  box-sizing: border-box;
   padding: var(--spacing-large) var(--spacing-medium);
   position: sticky;
   top: 0;
   align-self: flex-start;
 
-  @media (max-width: 600px) {
-    width: 100%;
-    min-width: 0;
-    max-height: none;
-    position: static;
-    padding: var(--spacing-medium) var(--spacing-small);
-    margin-bottom: var(--spacing-medium);
+  -ms-overflow-style: none; /* IE 10+ / старый Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 

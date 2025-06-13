@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { Portal, Button } from '@DobruniaUI';
-import styles from './Modal.module.pcss';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -18,21 +18,179 @@ export interface ModalProps {
   container?: HTMLElement | string;
 }
 
+// Animations
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+`;
+
+// Styled Components
+const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  animation: ${fadeIn} 0.2s ease-out;
+
+  @media (prefers-contrast: high) {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+const Container = styled.div<{ $centered: boolean }>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 16px;
+  overflow-y: auto;
+
+  ${({ $centered }) =>
+    $centered &&
+    `
+    align-items: center;
+    justify-content: center;
+  `}
+`;
+
+const ModalWrapper = styled.div<{ $size: string }>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  ${({ $size }) => {
+    switch ($size) {
+      case 'small':
+        return `
+          width: 100%;
+          max-width: 400px;
+        `;
+      case 'medium':
+        return `
+          width: 100%;
+          max-width: 600px;
+        `;
+      case 'large':
+        return `
+          width: 100%;
+          max-width: 800px;
+        `;
+      case 'fullscreen':
+        return `
+          width: calc(100% - 32px);
+          height: calc(100% - 32px);
+        `;
+      default:
+        return `
+          width: 100%;
+          max-width: 600px;
+        `;
+    }
+  }}
+`;
+
+const ModalContent = styled.div<{ $size: string }>`
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  position: relative;
+  animation: ${slideIn} 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  outline: none;
+  width: 100%;
+
+  @media (prefers-contrast: high) {
+    border: 2px solid var(--text-disabled);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+const CloseButton = styled(Button)`
+  position: relative;
+  top: 22px;
+  right: -26px;
+  z-index: 10;
+  background: var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  align-self: flex-end;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  flex-shrink: 0;
+`;
+
+const Title = styled.h2`
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin: 0;
+  line-height: 1.4;
+`;
+
+const Content = styled.div<{ $hasHeader: boolean }>`
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+
+  ${({ $hasHeader }) =>
+    !$hasHeader &&
+    `
+    padding-top: 24px;
+  `}
+`;
+
 /**
- * Modal
- * @param isOpen - Флаг открытия модального окна
- * @param onClose - Функция закрытия модального окна
- * @param children - Контент модального окна
- * @param title - Заголовок модального окна
- * @param closeOnBackdropClick - Закрывать модальное окно при клике на бэкдроп
- * @param closeOnEscape - Закрывать модальное окно при нажатии на Escape
- * @param size - Размер модального окна
- * @param centered - Центрировать модальное окно
- * @param className - Классы модального окна
- * @param backdropClassName - Классы бэкдропа
- * @param showCloseButton - Показывать кнопку закрытия
- * @param closeable - Закрываемое модальное окно
- * @param container - Контейнер для модального окна
+ * Modal component - компонент модального окна
+ * @param {boolean} isOpen - флаг открытия модального окна
+ * @param {() => void} onClose - функция закрытия модального окна
+ * @param {React.ReactNode} children - контент модального окна
+ * @param {string} [title] - заголовок модального окна
+ * @param {boolean} [closeOnBackdropClick] - закрывать модальное окно при клике на бэкдроп
+ * @param {boolean} [closeOnEscape] - закрывать модальное окно при нажатии на Escape
+ * @param {'small' | 'medium' | 'large' | 'fullscreen'} [size] - размер модального окна
+ * @param {boolean} [centered] - центрировать модальное окно
+ * @param {string} [className] - дополнительный CSS класс
+ * @param {string} [backdropClassName] - дополнительный CSS класс для бэкдропа
+ * @param {boolean} [showCloseButton] - показывать кнопку закрытия
+ * @param {boolean} [closeable] - закрываемое модальное окно
+ * @param {HTMLElement | string} [container] - контейнер для модального окна
  */
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -128,47 +286,45 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Portal container={container}>
-      <div
+      <Backdrop
         ref={backdropRef}
-        className={`${styles.backdrop} ${backdropClassName || ''}`}
+        className={backdropClassName}
         onMouseDown={handleMouseDown}
         onClick={handleBackdropClick}
         data-modal-backdrop
       >
-        <div className={`${styles.container} ${centered ? styles.centered : ''}`}>
-          <div className={styles.modalWrapper}>
+        <Container $centered={centered}>
+          <ModalWrapper $size={size}>
             {/* Close button above modal in top right */}
             {showCloseButton && closeable && (
-              <Button
+              <CloseButton
                 variant='close'
                 shape='circle'
                 onClick={handleCloseClick}
                 aria-label='Закрыть модальное окно'
                 type='button'
-                className={styles.closeButton}
               />
             )}
 
-            <div
+            <ModalContent
               ref={modalRef}
-              className={`${styles.modal} ${styles[size]} ${className || ''}`}
+              $size={size}
+              className={className}
               role='dialog'
               aria-modal='true'
               aria-labelledby={title ? 'modal-title' : undefined}
               tabIndex={-1}
             >
               {title && (
-                <div className={styles.header}>
-                  <h2 id='modal-title' className={styles.title}>
-                    {title}
-                  </h2>
-                </div>
+                <Header>
+                  <Title id='modal-title'>{title}</Title>
+                </Header>
               )}
-              <div className={styles.content}>{children}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+              <Content $hasHeader={!!title}>{children}</Content>
+            </ModalContent>
+          </ModalWrapper>
+        </Container>
+      </Backdrop>
     </Portal>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Modal, Button } from '@DobruniaUI';
-import styles from './ModalSubmit.module.pcss';
 
 export interface ModalSubmitProps {
   isOpen: boolean;
@@ -17,20 +17,34 @@ export interface ModalSubmitProps {
   preventCloseOnSubmit?: boolean;
 }
 
+// Styled Components
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+`;
+
 /**
- * ModalSubmit - модальное окно для действий подтверждения и форм
- * @param isOpen - Флаг открытия модального окна
- * @param onClose - Функция закрытия модального окна
- * @param onSubmit - Функция отправки/подтверждения
- * @param title - Заголовок модального окна
- * @param children - Контент модального окна
- * @param submitText - Текст кнопки подтверждения
- * @param cancelText - Текст кнопки отмены
- * @param submitVariant - Вариант кнопки подтверждения
- * @param isLoading - Флаг загрузки
- * @param disabled - Флаг блокировки кнопки подтверждения
- * @param size - Размер модального окна
- * @param preventCloseOnSubmit - Не закрывать модал автоматически после submit
+ * ModalSubmit component - модальное окно для действий подтверждения и форм
+ * @param {boolean} isOpen - флаг открытия модального окна
+ * @param {() => void} onClose - функция закрытия модального окна
+ * @param {() => void | Promise<void>} onSubmit - функция отправки/подтверждения
+ * @param {string} title - заголовок модального окна
+ * @param {React.ReactNode} children - контент модального окна
+ * @param {string} [submitText] - текст кнопки подтверждения
+ * @param {string} [cancelText] - текст кнопки отмены
+ * @param {'primary' | 'warning'} [submitVariant] - вариант кнопки подтверждения
+ * @param {boolean} [isLoading] - флаг загрузки
+ * @param {boolean} [disabled] - флаг блокировки кнопки подтверждения
+ * @param {'small' | 'medium' | 'large'} [size] - размер модального окна
+ * @param {boolean} [preventCloseOnSubmit] - не закрывать модал автоматически после submit
  */
 export const ModalSubmit: React.FC<ModalSubmitProps> = ({
   isOpen,
@@ -69,10 +83,10 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
       closeOnBackdropClick={!isLoading}
       closeOnEscape={!isLoading}
     >
-      <div className={styles.content}>
-        <div className={styles.body}>{children}</div>
+      <Content>
+        <div>{children}</div>
 
-        <div className={styles.actions}>
+        <Actions>
           <Button variant='secondary' onClick={onClose} disabled={isLoading} type='button'>
             {cancelText}
           </Button>
@@ -86,8 +100,8 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
           >
             {submitText}
           </Button>
-        </div>
-      </div>
+        </Actions>
+      </Content>
     </Modal>
   );
 };

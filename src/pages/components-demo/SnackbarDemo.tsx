@@ -36,6 +36,7 @@ export const SnackbarDemo: React.FC = () => {
               border: '1px solid var(--color-primary)',
               background: 'var(--color-surface)',
               cursor: 'pointer',
+              color: 'var(--text-body)',
             }}
             onClick={() => handleOpen(pos)}
           >

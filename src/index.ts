@@ -4,21 +4,22 @@
 import './styles/inject';
 
 /**
- * Components
+ * Inputs
  */
-export { Checkbox } from './components/Checkbox/Checkbox';
-export { Button } from './components/Button/Button';
-export { Input, type InputProps } from './components/Input/Input';
-export { Textarea } from './components/Textarea/Textarea';
-export { SidebarList, type SidebarListSection } from './components/SidebarList/SidebarList';
-export { TextField } from './components/TextField/TextField';
-export { Radio } from './components/Radio/Radio';
-export { Switch } from './components/Switch/Switch';
-export { RollingSwitch } from './components/Switch/RollingSwitch';
-export { YinYangSwitch } from './components/Switch/YinYangSwitch';
-export { FlipSwitch } from './components/Switch/FlipSwitch';
-export { PowerSwitch } from './components/Switch/PowerSwitch';
-export { Dropdown } from './components/Dropdown/Dropdown';
+export { Checkbox } from './Inputs/Checkbox/Checkbox';
+export { Button } from './Inputs/Button/Button';
+export { Input, type InputProps } from './Inputs/Input/Input';
+export { Textarea } from './Inputs/Textarea/Textarea';
+export { SidebarList, type SidebarListSection } from './Inputs/SidebarList/SidebarList';
+export { TextField } from './Inputs/TextField/TextField';
+export { Radio } from './Inputs/Radio/Radio';
+export { Switch } from './Inputs/Switch/Switch';
+export { RollingSwitch } from './Inputs/Switch/RollingSwitch';
+export { YinYangSwitch } from './Inputs/Switch/YinYangSwitch';
+export { FlipSwitch } from './Inputs/Switch/FlipSwitch';
+export { PowerSwitch } from './Inputs/Switch/PowerSwitch';
+export { Dropdown } from './Inputs/Dropdown/Dropdown';
+export { Select, type SelectOption } from './Inputs/Select/Select';
 
 /**
  * Data Display
@@ -27,13 +28,13 @@ export {
   ActionsMenu,
   type ActionsMenuAction,
   type ActionsMenuGroup,
-} from './data-display/ActionsMenu/ActionsMenu';
-export { Avatar } from './data-display/Avatar/Avatar';
-export { Badge } from './data-display/Badge/Badge';
-export { ChatList } from './data-display/ChatList/ChatList';
-export { Message, type MessageType } from './data-display/Message/Message';
-export { MessageContainer } from './data-display/MessageContainer/MessageContainer';
-export { Reaction } from './data-display/Reaction/Reaction';
+} from './Data-display/ActionsMenu/ActionsMenu';
+export { Avatar } from './Data-display/Avatar/Avatar';
+export { Badge } from './Data-display/Badge/Badge';
+export { ChatList } from './Data-display/ChatList/ChatList';
+export { Message, type MessageType } from './Data-display/Message/Message';
+export { MessageContainer } from './Data-display/MessageContainer/MessageContainer';
+export { Reaction } from './Data-display/Reaction/Reaction';
 
 /**
  * Feedback
@@ -74,5 +75,15 @@ export {
   toggleTheme,
   removeTheme,
   getSystemTheme,
+  registerTheme,
+  getAllThemes,
+  getThemeConfig,
+  initThemeSystem,
   type Theme,
+  type ThemeConfig,
 } from './utils/theme';
+
+/**
+ * Theme Components
+ */
+export { ThemeSelect } from './Theme/ThemeSelect';

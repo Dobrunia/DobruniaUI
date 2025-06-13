@@ -17,7 +17,8 @@ const SectionTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-small) var(--spacing-medium) 0 calc(var(--spacing-medium) - 4px);
+  padding: var(--spacing-small);
+  padding-right: 0;
   color: var(--text-heading);
   font-size: var(--font-size-medium);
   font-weight: 600;

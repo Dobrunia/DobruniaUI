@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageBlock, SidebarList } from '@DobruniaUI';
+import { PageBlock, SidebarList, ThemeSelect, initThemeSystem } from '@DobruniaUI';
 import {
   PageBlockDemo,
   SidebarListDemo,
@@ -23,6 +23,7 @@ import {
   RadioDemo,
   SwitchDemo,
   DropdownDemo,
+  SelectDemo,
   UndoSnackbarDemo,
   LoadingSpinnerDemo,
   BreadcrumbsDemo,
@@ -41,7 +42,7 @@ const sections = [
     items: [{ key: 'PageBlock', label: 'PageBlock' }],
   },
   {
-    title: 'Components',
+    title: 'Inputs',
     items: [
       { key: 'SidebarList', label: 'SidebarList' },
       { key: 'Button', label: 'Button' },
@@ -52,6 +53,7 @@ const sections = [
       { key: 'Radio', label: 'Radio' },
       { key: 'Switch', label: 'Switch' },
       { key: 'Dropdown', label: 'Dropdown' },
+      { key: 'Select', label: 'Select' },
     ],
   },
   {
@@ -102,6 +104,7 @@ const Playground: React.FC = () => {
           allowCollapse={false}
         />
       }
+      right={<ThemeSelect />}
     >
       {selected === 'StartPage' && <StartPage />}
       {selected === 'PageBlock' && <PageBlockDemo />}
@@ -126,6 +129,7 @@ const Playground: React.FC = () => {
       {selected === 'Radio' && <RadioDemo />}
       {selected === 'Switch' && <SwitchDemo />}
       {selected === 'Dropdown' && <DropdownDemo />}
+      {selected === 'Select' && <SelectDemo />}
       {selected === 'UndoSnackbar' && <UndoSnackbarDemo />}
       {selected === 'LoadingSpinner' && <LoadingSpinnerDemo />}
       {selected === 'Breadcrumbs' && <BreadcrumbsDemo />}
