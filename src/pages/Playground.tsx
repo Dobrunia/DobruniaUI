@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageBlock, SidebarList, ThemeSelect, initThemeSystem } from '@DobruniaUI';
+import { PageBlock, SidebarList, ThemeSelect } from '@DobruniaUI';
 import {
   PageBlockDemo,
   SidebarListDemo,
