@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, registerTheme, setTheme } from '@DobruniaUI';
+import { Button, TextField, registerTheme, setTheme, type Theme } from '@DobruniaUI';
 
 interface ThemeVariables extends Record<string, string> {
   '--c-bg-default': string;
@@ -126,7 +126,7 @@ export const ThemeCreatorDemo: React.FC = () => {
     };
 
     registerTheme(themeConfig);
-    setTheme(themeName as any);
+    setTheme(themeName as Theme);
     setPreviewMode(true);
   };
 
