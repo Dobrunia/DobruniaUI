@@ -78,24 +78,37 @@ const StyledToggleButton = styled.button<{
 `;
 
 const ToggleIcon = styled.span<{ $showIcon: boolean; $checked: boolean }>`
-  font-size: 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+  transition: all 0.2s ease;
+  width: 20px;
+  height: 20px;
 
   ${(p) =>
-    !p.$showIcon &&
-    css`
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: ${p.$checked ? 'var(--c-accent)' : '#000000'};
-      font-size: 0;
-      transition: all 0.2s ease;
+    p.$showIcon && p.$checked
+      ? css`
+          font-size: 1.2em;
+          filter: drop-shadow(0 0 4px rgba(255, 107, 53, 0.6));
+        `
+      : css`
+          font-size: 0;
 
-      ${p.$checked &&
-      css`
-        box-shadow: 0 0 8px var(--c-accent);
-      `}
-    `}
+          &::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: ${p.$checked ? 'var(--c-accent)' : '#000000'};
+            display: block;
+            transition: all 0.2s ease;
+            ${p.$checked &&
+            css`
+              box-shadow: 0 0 8px var(--c-accent);
+            `}
+          }
+        `}
 `;
 
 const ToggleText = styled.span`
@@ -168,7 +181,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
       {...props}
     >
       <ToggleIcon $showIcon={showIcon} $checked={checked}>
-        {showIcon ? (checked ? '🔥' : '⚫') : ''}
+        {showIcon && checked ? '🔥' : null}
       </ToggleIcon>
       <ToggleText>{children}</ToggleText>
     </StyledToggleButton>

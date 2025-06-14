@@ -13,7 +13,11 @@ export type Theme =
   | 'graphite'
   | 'bloodmoon'
   | 'obsidian'
-  | 'lavender';
+  | 'lavender'
+  | 'vinokurov'
+  | 'vasiliy'
+  | 'dasha'
+  | 'oldmoney';
 
 // Интерфейс для описания темы
 export interface ThemeConfig {
@@ -373,6 +377,98 @@ const builtInThemes: ThemeConfig[] = [
       '--c-error': '#e05d6f',
       '--c-warning': '#f5b248',
       '--c-info': '#4e8df7',
+    },
+  },
+  {
+    name: 'vinokurov',
+    label: 'Александр Винокуров',
+    icon: '🤓',
+    description: 'Элегантная тема с розово-бирюзовой палитрой',
+    variables: {
+      '--c-bg-default': '#f5f0f2',
+      '--c-bg-subtle': '#e8dde1',
+      '--c-bg-elevated': '#ffffff',
+      '--c-text-primary': '#2d2d2d',
+      '--c-text-secondary': '#6b5b5e',
+      '--c-text-inverse': '#ffffff',
+      '--c-border': '#c4a8b0',
+      '--c-border-focus': '#4a9ca6',
+      '--c-accent': '#4a9ca6',
+      '--c-accent-hover': '#3d8a94',
+      '--c-accent-active': '#2f7882',
+      '--c-success': '#2bb07f',
+      '--c-error': '#d67b7b',
+      '--c-warning': '#e6a85c',
+      '--c-info': '#6ba3d6',
+    },
+  },
+  {
+    name: 'vasiliy',
+    label: 'Василий',
+    icon: '🏺',
+    description: 'Тёплая земляная тема в коричнево-золотистых тонах',
+    variables: {
+      '--c-bg-default': '#f5f2ed',
+      '--c-bg-subtle': '#ede6db',
+      '--c-bg-elevated': '#ffffff',
+      '--c-text-primary': '#3d3025',
+      '--c-text-secondary': '#6b5d4a',
+      '--c-text-inverse': '#ffffff',
+      '--c-border': '#c4b59a',
+      '--c-border-focus': '#b8860b',
+      '--c-accent': '#b8860b',
+      '--c-accent-hover': '#9a7209',
+      '--c-accent-active': '#7c5e07',
+      '--c-success': '#6b8e23',
+      '--c-error': '#a0522d',
+      '--c-warning': '#daa520',
+      '--c-info': '#708090',
+    },
+  },
+  {
+    name: 'dasha',
+    label: 'Даша',
+    icon: '🧘‍♀️',
+    description: 'Уютная персиково-оранжевая тема в тёплых тонах',
+    variables: {
+      '--c-bg-default': '#fdf6f0',
+      '--c-bg-subtle': '#f7e6d7',
+      '--c-bg-elevated': '#ffffff',
+      '--c-text-primary': '#4a2c1a',
+      '--c-text-secondary': '#8b5a3c',
+      '--c-text-inverse': '#ffffff',
+      '--c-border': '#d4a574',
+      '--c-border-focus': '#cd853f',
+      '--c-accent': '#cd853f',
+      '--c-accent-hover': '#b8722d',
+      '--c-accent-active': '#a3601b',
+      '--c-success': '#8fbc8f',
+      '--c-error': '#cd5c5c',
+      '--c-warning': '#daa520',
+      '--c-info': '#87ceeb',
+    },
+  },
+  {
+    name: 'oldmoney',
+    label: 'Old Money',
+    icon: '🎩',
+    description: 'Элегантная тема в стиле старых денег с бежево-коричневой палитрой',
+    variables: {
+      '--c-bg-default': '#f7f5f3',
+      '--c-bg-subtle': '#f0ede8',
+      '--c-bg-elevated': '#ffffff',
+      '--c-text-primary': '#2c2419',
+      '--c-text-secondary': '#6b5d4f',
+      '--c-text-inverse': '#ffffff',
+      '--c-border': '#d4c4a8',
+      '--c-border-focus': '#8b7355',
+      '--c-accent': '#8b7355',
+      '--c-accent-hover': '#7a6449',
+      '--c-accent-active': '#69553d',
+      '--c-success': '#7d8471',
+      '--c-error': '#a0674a',
+      '--c-warning': '#b8860b',
+      '--c-info': '#6b7c95',
     },
   },
 ];
