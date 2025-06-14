@@ -28,13 +28,13 @@ export {
   ActionsMenu,
   type ActionsMenuAction,
   type ActionsMenuGroup,
-} from './Data-display/ActionsMenu/ActionsMenu';
-export { Avatar } from './Data-display/Avatar/Avatar';
-export { Badge } from './Data-display/Badge/Badge';
-export { ChatList } from './Data-display/ChatList/ChatList';
-export { Message, type MessageType } from './Data-display/Message/Message';
-export { MessageContainer } from './Data-display/MessageContainer/MessageContainer';
-export { Reaction } from './Data-display/Reaction/Reaction';
+} from './data-display/ActionsMenu/ActionsMenu';
+export { Avatar } from './data-display/Avatar/Avatar';
+export { Badge } from './data-display/Badge/Badge';
+export { ChatList } from './data-display/ChatList/ChatList';
+export { Message, type MessageType } from './data-display/Message/Message';
+export { MessageContainer } from './data-display/MessageContainer/MessageContainer';
+export { Reaction } from './data-display/Reaction/Reaction';
 
 /**
  * Feedback
