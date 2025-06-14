@@ -23,12 +23,12 @@ export const LoadingSpinnerDemo: React.FC = () => {
   ];
 
   const colors = [
-    { value: 'var(--c-accent)', label: 'Accent', hex: '#4e93f5' },
-    { value: 'var(--c-success)', label: 'Success', hex: '#10b981' },
-    { value: 'var(--c-error)', label: 'Error', hex: '#ef4444' },
-    { value: 'var(--c-warning)', label: 'Warning', hex: '#f59e0b' },
-    { value: 'var(--c-info)', label: 'Info', hex: '#3b82f6' },
-    { value: '#9b59b6', label: 'Purple', hex: '#9b59b6' },
+    { value: 'var(--c-accent)', label: 'Accent' },
+    { value: 'var(--c-success)', label: 'Success' },
+    { value: 'var(--c-error)', label: 'Error' },
+    { value: 'var(--c-warning)', label: 'Warning' },
+    { value: 'var(--c-info)', label: 'Info' },
+    { value: '#9b59b6', label: 'Purple' },
   ];
 
   const simulateLoading = () => {
@@ -150,15 +150,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                       checked={selectedColor === color.value}
                       onChange={(e) => setSelectedColor(e.target.value)}
                     />
-                    <div
-                      style={{
-                        width: '16px',
-                        height: '16px',
-                        backgroundColor: color.hex,
-                        borderRadius: '50%',
-                        border: '1px solid var(--c-border)',
-                      }}
-                    />
+
                     <span>{color.label}</span>
                   </label>
                 ))}

@@ -35,7 +35,7 @@ const StyledSkeleton = styled.span<{
   $height?: number | string;
 }>`
   display: inline-block;
-  background: color-mix(in srgb, var(--c-text-secondary) 10%, transparent 90%);
+  background: color-mix(in srgb, var(--c-text-secondary) 25%, var(--c-bg-subtle) 75%);
   border-radius: ${({ $variant }) => getBorderRadius($variant)};
   width: ${({ $width }) => (typeof $width === 'number' ? `${$width}px` : $width || '100%')};
   height: ${({ $height, $variant }) =>
@@ -57,10 +57,15 @@ const StyledSkeleton = styled.span<{
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, var(--c-bg-subtle), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--c-text-secondary) 40%, var(--c-bg-elevated) 60%),
+      transparent
+    );
     background-size: 200px 100%;
     animation: ${shimmer} 1.2s infinite;
-    opacity: 0.7;
+    opacity: 0.8;
   }
 `;
 
