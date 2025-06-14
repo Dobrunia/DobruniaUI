@@ -29,3 +29,6 @@ export * from './StartPage';
 export * from './SelectDemo';
 export * from './ToggleButtonDemo';
 export * from './ThemeCreatorDemo';
+export * from './RowDemo';
+export * from './CardDemo';
+export * from './ThemeSelectDemo';

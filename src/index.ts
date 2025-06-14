@@ -36,6 +36,7 @@ export { ChatList } from './data-display/ChatList/ChatList';
 export { Message, type MessageType } from './data-display/Message/Message';
 export { MessageContainer } from './data-display/MessageContainer/MessageContainer';
 export { Reaction } from './data-display/Reaction/Reaction';
+export { Card } from './data-display/Card/Card';
 
 /**
  * Feedback
@@ -58,6 +59,7 @@ export { ModalSubmit, type ModalSubmitProps } from './Feedback/ModalSubmit/Modal
  */
 export { PageBlock } from './layout/PageBlock/PageBlock';
 export { Portal, type PortalProps } from './layout/Portal/Portal';
+export { Row } from './layout/Row/Row';
 
 /**
  * Navigation

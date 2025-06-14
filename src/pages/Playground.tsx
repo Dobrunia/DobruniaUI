@@ -33,6 +33,9 @@ import {
   StartPage,
   ToggleButtonDemo,
   ThemeCreatorDemo,
+  RowDemo,
+  CardDemo,
+  ThemeSelectDemo,
 } from './components-demo';
 
 const sections = [
@@ -42,11 +45,17 @@ const sections = [
   },
   {
     title: 'Theme Creator',
-    items: [{ key: 'ThemeCreator', label: 'Theme Creator' }],
+    items: [
+      { key: 'ThemeCreator', label: 'Theme Creator' },
+      { key: 'ThemeSelect', label: 'Theme Select' },
+    ],
   },
   {
     title: 'Layouts',
-    items: [{ key: 'PageBlock', label: 'PageBlock' }],
+    items: [
+      { key: 'PageBlock', label: 'PageBlock' },
+      { key: 'Row', label: 'Row' },
+    ],
   },
   {
     title: 'Inputs',
@@ -73,6 +82,7 @@ const sections = [
       { key: 'Reaction', label: 'Reaction' },
       { key: 'ActionsMenu', label: 'ActionsMenu' },
       { key: 'Message', label: 'Message' },
+      { key: 'Card', label: 'Card' },
     ],
   },
   {
@@ -182,6 +192,9 @@ const Playground: React.FC = () => {
       {selected === 'Modal' && <ModalDemo />}
       {selected === 'ModalSubmit' && <ModalSubmitDemo />}
       {selected === 'ToggleButton' && <ToggleButtonDemo />}
+      {selected === 'Row' && <RowDemo />}
+      {selected === 'Card' && <CardDemo />}
+      {selected === 'ThemeSelect' && <ThemeSelectDemo />}
     </PageBlock>
   );
 };

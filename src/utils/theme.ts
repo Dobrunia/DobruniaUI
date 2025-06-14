@@ -565,6 +565,11 @@ export const setTheme = (themeName: Theme): void => {
 
   // Применяем переменные темы
   applyCSSVariables(themeConfig.variables);
+
+  // Диспатчим событие для синхронизации компонентов
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: themeName }));
+  }
 };
 
 /**
@@ -595,6 +600,11 @@ export const removeTheme = (): void => {
   if (typeof document !== 'undefined') {
     document.documentElement.removeAttribute('data-theme');
     clearCSSVariables();
+  }
+
+  // Диспатчим событие для синхронизации компонентов
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: null }));
   }
 };
 
