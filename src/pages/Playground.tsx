@@ -32,12 +32,17 @@ import {
   ModalSubmitDemo,
   StartPage,
   ToggleButtonDemo,
+  ThemeCreatorDemo,
 } from './components-demo';
 
 const sections = [
   {
     title: 'StartPage',
     items: [{ key: 'StartPage', label: 'StartPage' }],
+  },
+  {
+    title: 'Theme Creator',
+    items: [{ key: 'ThemeCreator', label: 'Theme Creator' }],
   },
   {
     title: 'Layouts',
@@ -147,6 +152,7 @@ const Playground: React.FC = () => {
       right={<ThemeToggler />}
     >
       {selected === 'StartPage' && <StartPage />}
+      {selected === 'ThemeCreator' && <ThemeCreatorDemo />}
       {selected === 'PageBlock' && <PageBlockDemo />}
       {selected === 'SidebarList' && <SidebarListDemo />}
       {selected === 'Button' && <ButtonDemo />}

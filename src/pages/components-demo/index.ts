@@ -28,3 +28,4 @@ export * from './ModalSubmitDemo';
 export * from './StartPage';
 export * from './SelectDemo';
 export * from './ToggleButtonDemo';
+export * from './ThemeCreatorDemo';

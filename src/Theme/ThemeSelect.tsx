@@ -21,8 +21,8 @@ export const ThemeSelect: React.FC = () => {
   }));
 
   const handleThemeChange = (value: string) => {
-    setTheme(value);
-    setCurrentTheme(value);
+    setTheme(value as Theme);
+    setCurrentTheme(value as Theme);
   };
 
   return (
