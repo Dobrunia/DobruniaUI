@@ -11,7 +11,7 @@ export type Theme =
   | 'fullmoon'
   | 'metallic'
   | 'graphite'
-  | 'lava'
+  | 'bloodmoon'
   | 'obsidian'
   | 'lavender';
 
@@ -284,26 +284,26 @@ const builtInThemes: ThemeConfig[] = [
     },
   },
   {
-    name: 'lava',
+    name: 'bloodmoon',
     label: 'Кровавая луна',
-    icon: '🌋',
-    description: 'Мистическая тема в стиле Blood Moon',
+    icon: '🩸',
+    description: 'Мистическая тёмная тема с ярко-красными акцентами',
     variables: {
       '--c-bg-default': '#0a0a0a',
       '--c-bg-subtle': '#1a1a1a',
       '--c-bg-elevated': '#2a2a2a',
       '--c-text-primary': '#f5f5f5',
       '--c-text-secondary': '#b8b8b8',
-      '--c-text-inverse': '#000000',
+      '--c-text-inverse': '#ffffff',
       '--c-border': '#3a3a3a',
       '--c-border-focus': '#dc2626',
-      '--c-accent': '#dc2626',
+      '--c-accent': '#7b1515',
       '--c-accent-hover': '#b91c1c',
       '--c-accent-active': '#991b1b',
       '--c-success': '#16a34a',
-      '--c-error': '#ef4444',
-      '--c-warning': '#f59e0b',
-      '--c-info': '#3b82f6',
+      '--c-error': '#ff4757',
+      '--c-warning': '#ffa502',
+      '--c-info': '#3742fa',
     },
   },
   {
@@ -374,7 +374,7 @@ const builtInThemes: ThemeConfig[] = [
       '--c-warning': '#f5b248',
       '--c-info': '#4e8df7',
     },
-  }
+  },
 ];
 
 // Инициализация встроенных тем

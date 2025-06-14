@@ -134,14 +134,12 @@ const BubbleMeta = styled.div`
 
 const SendTime = styled.span`
   font-size: var(--font-size-small);
-  color: var(--c-text-secondary);
 `;
 
-const ReadIcon = styled.span<{ $read?: boolean }>`
+const ReadIcon = styled.span`
   display: inline-flex;
   align-items: flex-end;
   font-size: var(--font-size-small);
-  color: ${({ $read }) => ($read ? 'var(--c-success)' : 'var(--c-text-secondary)')};
   svg {
     display: block;
     vertical-align: bottom;
@@ -721,8 +719,24 @@ export const Message: React.FC<MessageProps> = ({
               )}
             </BottomBar>
             <BubbleMeta>
-              <SendTime>{time}</SendTime>
-              <ReadIcon $read={isRead}>
+              <SendTime
+                style={{
+                  color: type === 'outgoing' ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)',
+                  opacity: type === 'outgoing' ? 0.9 : 1,
+                }}
+              >
+                {time}
+              </SendTime>
+              <ReadIcon
+                style={{
+                  color: isRead
+                    ? 'var(--c-success)'
+                    : type === 'outgoing'
+                    ? 'var(--c-text-inverse)'
+                    : 'var(--c-text-secondary)',
+                  opacity: type === 'outgoing' && !isRead ? 0.9 : 1,
+                }}
+              >
                 {isRead ? (
                   <>
                     <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
