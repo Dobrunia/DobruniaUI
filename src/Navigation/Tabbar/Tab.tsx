@@ -25,7 +25,7 @@ const TabButton = styled.button<{ $selected: boolean }>`
   border: none;
   cursor: pointer;
   position: relative;
-  color: ${(props) => (props.$selected ? 'var(--text-heading)' : 'var(--text-secondary)')};
+  color: ${(props) => (props.$selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
   font-size: var(--font-size-medium);
   font-weight: 500;
   transition: color var(--transition-fast);
@@ -35,7 +35,7 @@ const TabButton = styled.button<{ $selected: boolean }>`
 
   &:hover,
   &:focus {
-    color: var(--text-heading);
+    color: var(--c-text-primary);
   }
 `;
 
@@ -56,7 +56,7 @@ const LeftSlotWrapper = styled.span`
 const RightSlotWrapper = styled.span`
   height: 100%;
   font-size: var(--font-size-small);
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
 `;
 
 const TabText = styled.span`
@@ -72,7 +72,7 @@ const Underline = styled.div`
   bottom: -8px;
   width: 100%;
   height: 2px;
-  background-color: var(--color-primary);
+  background-color: var(--c-accent);
   border-radius: var(--radius-medium);
 `;
 

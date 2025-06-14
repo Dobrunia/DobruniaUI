@@ -12,7 +12,7 @@ export const SwitchWrapper = styled.label<{ $disabled?: boolean }>`
   gap: var(--spacing-small);
   cursor: pointer;
   font-size: var(--font-size-medium);
-  color: var(--text-body);
+  color: var(--c-text-primary);
   user-select: none;
   position: relative;
 `;

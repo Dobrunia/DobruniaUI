@@ -3,8 +3,8 @@ import { PageBlock } from '@DobruniaUI';
 import styled from 'styled-components';
 
 const DemoBox = styled.div`
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  background-color: var(--c-bg-elevated);
+  border: 1px solid var(--c-border);
   padding: 1rem;
   border-radius: 4px;
   height: 100%;

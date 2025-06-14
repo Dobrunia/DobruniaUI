@@ -167,20 +167,20 @@ export const SelectDemo: React.FC = () => {
         padding: 'var(--spacing-large)',
         maxWidth: 800,
         margin: '0 auto',
-        background: 'var(--color-bg)',
+        background: 'var(--c-bg-default)',
         borderRadius: 'var(--radius-large)',
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--spacing-large)',
       }}
     >
-      <h2 style={{ color: 'var(--text-heading)', marginBottom: 0 }}>Select Demo</h2>
+      <h2 style={{ color: 'var(--c-text-primary)', marginBottom: 0 }}>Select Demo</h2>
 
       {/* Режимы работы */}
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -189,7 +189,7 @@ export const SelectDemo: React.FC = () => {
         </h3>
 
         <div style={{ marginBottom: 'var(--spacing-large)' }}>
-          <h4 style={{ color: 'var(--text-heading)', marginBottom: 'var(--spacing-medium)' }}>
+          <h4 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-medium)' }}>
             Click режим (по умолчанию)
           </h4>
           <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
@@ -198,7 +198,7 @@ export const SelectDemo: React.FC = () => {
                 style={{
                   marginBottom: 'var(--spacing-small)',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Базовый Select с очисткой
@@ -214,7 +214,7 @@ export const SelectDemo: React.FC = () => {
               <div
                 style={{
                   marginTop: 'var(--spacing-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                   fontSize: 'var(--font-size-small)',
                 }}
               >
@@ -227,7 +227,7 @@ export const SelectDemo: React.FC = () => {
                 style={{
                   marginBottom: 'var(--spacing-small)',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Меню с подменю
@@ -243,7 +243,7 @@ export const SelectDemo: React.FC = () => {
               <div
                 style={{
                   marginTop: 'var(--spacing-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                   fontSize: 'var(--font-size-small)',
                 }}
               >
@@ -254,7 +254,7 @@ export const SelectDemo: React.FC = () => {
         </div>
 
         <div>
-          <h4 style={{ color: 'var(--text-heading)', marginBottom: 'var(--spacing-medium)' }}>
+          <h4 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-medium)' }}>
             Hover режим
           </h4>
           <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
@@ -263,7 +263,7 @@ export const SelectDemo: React.FC = () => {
                 style={{
                   marginBottom: 'var(--spacing-small)',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Базовый Select (hover)
@@ -280,7 +280,7 @@ export const SelectDemo: React.FC = () => {
               <div
                 style={{
                   marginTop: 'var(--spacing-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                   fontSize: 'var(--font-size-small)',
                 }}
               >
@@ -293,7 +293,7 @@ export const SelectDemo: React.FC = () => {
                 style={{
                   marginBottom: 'var(--spacing-small)',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Меню с подменю (hover)
@@ -310,7 +310,7 @@ export const SelectDemo: React.FC = () => {
               <div
                 style={{
                   marginTop: 'var(--spacing-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                   fontSize: 'var(--font-size-small)',
                 }}
               >
@@ -323,7 +323,7 @@ export const SelectDemo: React.FC = () => {
                 style={{
                   marginBottom: 'var(--spacing-small)',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Категории (hover)
@@ -340,7 +340,7 @@ export const SelectDemo: React.FC = () => {
               <div
                 style={{
                   marginTop: 'var(--spacing-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                   fontSize: 'var(--font-size-small)',
                 }}
               >
@@ -354,17 +354,17 @@ export const SelectDemo: React.FC = () => {
           style={{
             marginTop: 'var(--spacing-medium)',
             padding: 'var(--spacing-medium)',
-            backgroundColor: 'var(--color-surface)',
+            backgroundColor: 'var(--c-bg-elevated)',
             borderRadius: 'var(--radius-medium)',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
           }}
         >
-          <h5 style={{ color: 'var(--text-heading)', marginBottom: 'var(--spacing-small)' }}>
+          <h5 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-small)' }}>
             Особенности режимов:
           </h5>
           <ul
             style={{
-              color: 'var(--text-secondary)',
+              color: 'var(--c-text-secondary)',
               fontSize: 'var(--font-size-small)',
               margin: 0,
               paddingLeft: 'var(--spacing-medium)',
@@ -395,7 +395,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -408,7 +408,7 @@ export const SelectDemo: React.FC = () => {
               style={{
                 marginBottom: 'var(--spacing-small)',
                 fontSize: 'var(--font-size-small)',
-                color: 'var(--text-secondary)',
+                color: 'var(--c-text-secondary)',
               }}
             >
               Обычный Select
@@ -423,7 +423,7 @@ export const SelectDemo: React.FC = () => {
             <div
               style={{
                 marginTop: 'var(--spacing-small)',
-                color: 'var(--text-secondary)',
+                color: 'var(--c-text-secondary)',
                 fontSize: 'var(--font-size-small)',
               }}
             >
@@ -436,7 +436,7 @@ export const SelectDemo: React.FC = () => {
               style={{
                 marginBottom: 'var(--spacing-small)',
                 fontSize: 'var(--font-size-small)',
-                color: 'var(--text-secondary)',
+                color: 'var(--c-text-secondary)',
               }}
             >
               С кнопкой очистки
@@ -452,7 +452,7 @@ export const SelectDemo: React.FC = () => {
             <div
               style={{
                 marginTop: 'var(--spacing-small)',
-                color: 'var(--text-secondary)',
+                color: 'var(--c-text-secondary)',
                 fontSize: 'var(--font-size-small)',
               }}
             >
@@ -466,7 +466,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -477,7 +477,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -489,7 +489,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -506,7 +506,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -518,7 +518,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -535,7 +535,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -547,7 +547,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -563,7 +563,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -575,7 +575,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -586,7 +586,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -598,7 +598,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -618,7 +618,7 @@ export const SelectDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -630,7 +630,7 @@ export const SelectDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}

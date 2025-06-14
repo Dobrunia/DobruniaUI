@@ -27,3 +27,4 @@ export * from './ModalDemo';
 export * from './ModalSubmitDemo';
 export * from './StartPage';
 export * from './SelectDemo';
+export * from './ToggleButtonDemo';

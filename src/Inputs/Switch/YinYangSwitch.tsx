@@ -36,9 +36,8 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
   position: relative;
   width: ${TRACK_WIDTH}px;
   height: ${TRACK_HEIGHT}px;
-  background: var(--color-elevated);
-  border: 2px solid
-    ${({ $checked }) => ($checked ? 'var(--color-primary)' : 'var(--color-elevated-active)')};
+  background: var(--c-bg-elevated);
+  border: 2px solid ${({ $checked }) => ($checked ? 'var(--c-accent)' : 'var(--c-border)')};
   border-radius: ${TRACK_HEIGHT / 2}px;
   box-shadow: 0px 4px 16px 0px rgba(51, 51, 51, 0.08);
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
@@ -52,7 +51,7 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
     left: 0;
     height: 100%;
     width: ${({ $checked }) => ($checked ? '100%' : '0')};
-    background: var(--color-primary);
+    background: var(--c-accent);
     border-radius: inherit;
     z-index: 1;
     transition: var(--transition-slow);
@@ -70,11 +69,11 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
   }
   &::before {
     left: ${TRACK_PADDING}px;
-    background: var(--color-primary);
+    background: var(--c-accent);
   }
   &::after {
     right: ${TRACK_PADDING}px;
-    background: ${({ $checked }) => ($checked ? 'var(--color-elevated)' : 'var(--color-elevated)')};
+    background: ${({ $checked }) => ($checked ? 'var(--c-bg-elevated)' : 'var(--c-bg-elevated)')};
   }
 `;
 

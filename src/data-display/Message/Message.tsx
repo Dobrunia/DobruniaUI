@@ -70,8 +70,14 @@ const MessageRow = styled.div<{ $type: MessageType }>`
 
 const Bubble = styled.div<{ $type: MessageType }>`
   background: ${(p) =>
-    p.$type === 'outgoing' ? 'var(--color-secondary)' : 'var(--color-elevated-active)'};
-  color: ${(p) => (p.$type === 'outgoing' ? 'var(--text-body)' : 'var(--text-body)')};
+    p.$type === 'outgoing'
+      ? 'var(--c-accent)'
+      : 'color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%)'};
+  color: ${(p) => (p.$type === 'outgoing' ? 'var(--c-text-inverse)' : 'var(--c-text-primary)')};
+  border: ${(p) =>
+    p.$type === 'incoming'
+      ? '1px solid color-mix(in srgb, var(--c-border) 60%, var(--c-text-primary) 40%)'
+      : 'none'};
   border-radius: var(--radius-large);
   ${(p) =>
     p.$type === 'outgoing'
@@ -85,8 +91,12 @@ const Bubble = styled.div<{ $type: MessageType }>`
   max-width: 340px;
   min-width: 48px;
   font-size: var(--font-size-medium);
-  box-shadow: 0 1px 4px #0001;
+  box-shadow: ${(p) =>
+    p.$type === 'incoming'
+      ? '0 2px 8px color-mix(in srgb, var(--c-text-primary) 20%, transparent 80%)'
+      : '0 1px 4px #0001'};
   position: relative;
+  backdrop-filter: ${(p) => (p.$type === 'incoming' ? 'brightness(1.1)' : 'none')};
 `;
 
 const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
@@ -98,7 +108,7 @@ const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
 `;
 
 const OutlinedAvatar = styled.div`
-  border: 3px solid var(--color-elevated);
+  border: 3px solid var(--c-bg-default);
   border-radius: 50%;
   background: transparent;
   display: flex;
@@ -124,14 +134,14 @@ const BubbleMeta = styled.div`
 
 const SendTime = styled.span`
   font-size: var(--font-size-small);
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
 `;
 
 const ReadIcon = styled.span<{ $read?: boolean }>`
   display: inline-flex;
   align-items: flex-end;
   font-size: var(--font-size-small);
-  color: ${({ $read }) => ($read ? 'var(--color-accent)' : 'var(--text-secondary)')};
+  color: ${({ $read }) => ($read ? 'var(--c-success)' : 'var(--c-text-secondary)')};
   svg {
     display: block;
     vertical-align: bottom;
@@ -156,8 +166,8 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
     border-bottom: 0 solid transparent;
     ${(p) =>
       p.$type === 'outgoing'
-        ? 'border-left: 12px solid var(--color-secondary);'
-        : 'border-right: 12px solid var(--color-elevated-active);'}
+        ? 'border-left: 12px solid var(--c-accent);'
+        : 'border-right: 12px solid color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%);'}
   }
 `;
 
@@ -168,7 +178,7 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   transform: none;
   display: flex;
   gap: 8px;
-  background: var(--color-surface);
+  background: var(--c-bg-elevated);
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px #0002;
   padding: 6px 12px;
@@ -194,14 +204,15 @@ const FileAttachment = styled.a`
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--color-elevated);
+  background: color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-text-primary) 20%);
   border-radius: var(--radius-medium);
-  color: var(--text-body);
+  color: var(--c-text-primary);
   text-decoration: none;
   font-size: var(--font-size-small);
+  border: 1px solid var(--c-border);
 
   &:hover {
-    background: var(--color-elevated-active);
+    background: color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%);
   }
 `;
 
@@ -233,12 +244,13 @@ const AudioAttachment = styled.div`
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--color-secondary-active);
+  background: color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-text-primary) 20%);
   border-radius: var(--radius-medium);
-  color: var(--text-body);
+  color: var(--c-text-primary);
   font-size: var(--font-size-small);
   width: 100%;
   max-width: 300px;
+  border: 1px solid var(--c-border);
 `;
 
 const AudioControls = styled.div`
@@ -256,9 +268,9 @@ const PlayButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   &:hover {
-    color: var(--color-primary);
+    color: var(--c-accent);
   }
 `;
 
@@ -266,7 +278,7 @@ const AudioProgress = styled.div`
   flex: none;
   width: 180px;
   height: 8px;
-  background: var(--color-elevated-active);
+  background: var(--c-bg-elevated);
   border-radius: 4px;
   position: relative;
   cursor: pointer;
@@ -278,12 +290,12 @@ const AudioProgressBar = styled.div<{ $progress: number }>`
   top: 0;
   height: 100%;
   width: ${(props) => props.$progress}%;
-  background: var(--color-primary);
+  background: var(--c-accent);
   border-radius: 4px;
 `;
 
 const AudioDuration = styled.span`
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   font-size: 0.9em;
   white-space: nowrap;
 `;
@@ -291,9 +303,9 @@ const AudioDuration = styled.span`
 const ForwardedBlock = styled.div`
   display: flex;
   flex-direction: column;
-  background: var(--color-secondary-active);
+  background: color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-accent) 15%);
   font-size: var(--font-size-small-plus);
-  border-left: 3px solid var(--color-primary);
+  border-left: 3px solid var(--c-accent);
   border-radius: var(--radius-medium);
   padding: 4px 12px;
   margin-bottom: 4px;
@@ -301,17 +313,18 @@ const ForwardedBlock = styled.div`
   user-select: none;
   transition: background 0.15s;
   max-width: 100%;
+  color: var(--c-text-primary);
   &:hover {
-    opacity: 0.8;
+    background: color-mix(in srgb, var(--c-bg-elevated) 75%, var(--c-accent) 25%);
   }
 `;
 
 const ReplyBlock = styled.div`
   display: flex;
   flex-direction: column;
-  background: var(--color-secondary-active);
+  background: color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-accent) 15%);
   font-size: var(--font-size-small-plus);
-  border-left: 3px solid var(--color-primary);
+  border-left: 3px solid var(--c-accent);
   border-radius: var(--radius-medium);
   padding: 4px 12px;
   margin-bottom: 4px;
@@ -319,14 +332,15 @@ const ReplyBlock = styled.div`
   user-select: none;
   transition: background 0.15s;
   max-width: 100%;
+  color: var(--c-text-primary);
   &:hover {
-    opacity: 0.8;
+    background: color-mix(in srgb, var(--c-bg-elevated) 75%, var(--c-accent) 25%);
   }
 `;
 
 const ReplySender = styled.span`
   font-weight: 500;
-  color: var(--color-primary);
+  color: var(--c-accent);
   margin-bottom: 2px;
 `;
 

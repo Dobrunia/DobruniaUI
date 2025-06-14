@@ -29,9 +29,8 @@ const CustomTrack = styled.span<{ checked: boolean; disabled?: boolean }>`
   width: ${TRACK_WIDTH}px;
   height: ${TRACK_HEIGHT}px;
   border-radius: ${TRACK_HEIGHT / 2}px;
-  background: ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-elevated)')};
-  border: 2px solid
-    ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-elevated-active)')};
+  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-elevated)')};
+  border: 2px solid ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-border)')};
   display: flex;
   align-items: center;
   transition: background var(--transition-fast), border-color var(--transition-fast);
@@ -41,9 +40,11 @@ const CustomTrack = styled.span<{ checked: boolean; disabled?: boolean }>`
 
   &:hover {
     background: ${({ checked, disabled }) =>
-      !disabled && !checked ? 'var(--color-elevated-active)' : undefined};
+      !disabled && !checked
+        ? 'color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-accent) 20%)'
+        : undefined};
     border-color: ${({ checked, disabled }) =>
-      !disabled && !checked ? 'var(--color-primary)' : undefined};
+      !disabled && !checked ? 'var(--c-accent)' : undefined};
   }
 `;
 
@@ -57,7 +58,7 @@ const CustomThumb = styled.span<{ checked: boolean }>`
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   transition: left var(--transition-fast), background var(--transition-fast);
-  border: 1.5px solid var(--color-elevated-active);
+  border: 1.5px solid var(--c-border);
 `;
 
 /**

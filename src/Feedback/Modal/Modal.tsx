@@ -114,7 +114,7 @@ const ModalWrapper = styled.div<{ $size: string }>`
 `;
 
 const ModalContent = styled.div<{ $size: string }>`
-  background: var(--color-surface);
+  background: var(--c-bg-elevated);
   border-radius: 12px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   display: flex;
@@ -126,7 +126,7 @@ const ModalContent = styled.div<{ $size: string }>`
   width: 100%;
 
   @media (prefers-contrast: high) {
-    border: 2px solid var(--text-disabled);
+    border: 2px solid var(--c-border);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -139,7 +139,7 @@ const CloseButton = styled(Button)`
   top: 22px;
   right: -26px;
   z-index: 10;
-  background: var(--color-surface);
+  background: var(--c-bg-elevated);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   align-self: flex-end;
 
@@ -159,7 +159,7 @@ const Header = styled.div`
 const Title = styled.h2`
   font-size: 20px;
   font-weight: 600;
-  color: var(--text-heading);
+  color: var(--c-text-primary);
   margin: 0;
   line-height: 1.4;
 `;

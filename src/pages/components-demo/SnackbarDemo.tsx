@@ -33,10 +33,10 @@ export const SnackbarDemo: React.FC = () => {
             style={{
               padding: '8px 16px',
               borderRadius: 6,
-              border: '1px solid var(--color-primary)',
-              background: 'var(--color-surface)',
+              border: '1px solid var(--c-accent)',
+              background: 'var(--c-bg-elevated)',
               cursor: 'pointer',
-              color: 'var(--text-body)',
+              color: 'var(--c-text-primary)',
             }}
             onClick={() => handleOpen(pos)}
           >

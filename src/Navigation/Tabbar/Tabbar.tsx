@@ -12,9 +12,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: var(--spacing-medium);
-  background-color: var(--color-surface);
+  background-color: var(--c-bg-subtle);
   padding: var(--spacing-medium) 0;
-  border-bottom: 1px solid var(--color-elevated);
+  border-bottom: 1px solid var(--c-border);
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;

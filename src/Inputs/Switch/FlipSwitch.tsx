@@ -47,12 +47,12 @@ const FlipLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
   }
   &::before {
     content: attr(data-tg-off);
-    background: var(--color-error);
+    background: var(--c-error);
     transform: ${({ $checked }) => ($checked ? 'rotateY(180deg)' : 'rotateY(0)')};
   }
   &::after {
     content: attr(data-tg-on);
-    background: var(--color-primary);
+    background: var(--c-accent);
     transform: ${({ $checked }) => ($checked ? 'rotateY(0)' : 'rotateY(-180deg)')};
   }
   &:active::before {

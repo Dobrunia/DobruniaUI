@@ -42,9 +42,9 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   padding: 10px ${({ $clearable }) => ($clearable ? '50px' : '30px')} 0px 10px;
   font-size: var(--font-size-medium);
   font-family: var(--font-family);
-  color: var(--text-body);
-  background: var(--color-surface);
-  border: 2px solid ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+  color: var(--c-text-primary);
+  background: var(--c-bg-subtle);
+  border: 2px solid ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
   border-radius: var(--radius-medium);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
@@ -58,21 +58,21 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   text-overflow: ellipsis;
 
   &:hover:not(:disabled) {
-    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-accent)')};
-    color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-accent)')};
+    border-color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
+    color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
   }
 
   &:disabled {
-    background: var(--color-elevated);
-    color: var(--text-disabled);
-    border-color: var(--color-primary);
+    background: var(--c-bg-elevated);
+    color: var(--c-text-secondary);
+    border-color: var(--c-border);
     cursor: not-allowed;
   }
 
   /* Стили для опций */
   option {
-    background: var(--color-surface);
-    color: var(--text-body);
+    background: var(--c-bg-subtle);
+    color: var(--c-text-primary);
     padding: var(--spacing-small);
     font-family: var(--font-family);
     white-space: nowrap;
@@ -93,7 +93,7 @@ const FloatingLabel = styled.label<{
   transform: translateY(${({ $floating }) => ($floating ? '0' : '-50%')});
   font-size: ${({ $floating }) =>
     $floating ? 'var(--font-size-small)' : 'var(--font-size-medium)'};
-  color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+  color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
   background: transparent;
   pointer-events: none;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
@@ -118,15 +118,15 @@ const ClearButton = styled.button`
   align-items: center;
   justify-content: center;
   z-index: 3;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   height: 18px;
   width: 18px;
   border-radius: 50%;
   transition: all var(--transition-fast);
 
   &:hover {
-    background: var(--color-elevated-active);
-    color: var(--text-body);
+    background: color-mix(in srgb, var(--c-accent) 10%, transparent 90%);
+    color: var(--c-text-primary);
   }
 
   svg {
@@ -146,14 +146,14 @@ const DropdownArrow = styled.div<{ disabled?: boolean; $error?: boolean }>`
   border-right: 4px solid transparent;
   border-top: 5px solid
     ${({ disabled, $error }) =>
-      disabled ? 'var(--text-disabled)' : $error ? 'var(--color-error)' : 'var(--color-primary)'};
+      disabled ? 'var(--c-text-secondary)' : $error ? 'var(--c-error)' : 'var(--c-accent)'};
   pointer-events: none;
   transition: all var(--transition-fast);
   z-index: 3;
 `;
 
 const ErrorText = styled.div`
-  color: var(--color-error);
+  color: var(--c-error);
   font-size: var(--font-size-small);
   min-height: 1.2em;
   margin-top: 0.1em;

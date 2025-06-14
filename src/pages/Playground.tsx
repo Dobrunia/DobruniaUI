@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { PageBlock, SidebarList, ThemeSelect } from '@DobruniaUI';
+import { PageBlock, SidebarList, ToggleButton } from '@DobruniaUI';
+import { getAllThemes, getTheme, setTheme, type Theme } from '../utils/theme';
 import {
   PageBlockDemo,
   SidebarListDemo,
@@ -30,6 +31,7 @@ import {
   ModalDemo,
   ModalSubmitDemo,
   StartPage,
+  ToggleButtonDemo,
 } from './components-demo';
 
 const sections = [
@@ -54,6 +56,7 @@ const sections = [
       { key: 'Switch', label: 'Switch' },
       { key: 'Dropdown', label: 'Dropdown' },
       { key: 'Select', label: 'Select' },
+      { key: 'ToggleButton', label: 'ToggleButton' },
     ],
   },
   {
@@ -90,6 +93,43 @@ const sections = [
   },
 ];
 
+const ThemeToggler: React.FC = () => {
+  const [currentTheme, setCurrentTheme] = useState(getTheme() || 'light');
+  const themes = getAllThemes();
+
+  const handleThemeChange = (checked: boolean, value?: string) => {
+    if (checked && value) {
+      setTheme(value as Theme);
+      setCurrentTheme(value as Theme);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}
+    >
+      {themes.map((theme) => (
+        <ToggleButton
+          key={theme.name}
+          name='theme'
+          value={theme.name}
+          checked={currentTheme === theme.name}
+          onChange={handleThemeChange}
+          size='medium'
+        >
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {theme.icon} {theme.label}
+          </span>
+        </ToggleButton>
+      ))}
+    </div>
+  );
+};
+
 const Playground: React.FC = () => {
   const [selected, setSelected] = useState('StartPage');
 
@@ -104,7 +144,7 @@ const Playground: React.FC = () => {
           allowCollapse={false}
         />
       }
-      right={<ThemeSelect />}
+      right={<ThemeToggler />}
     >
       {selected === 'StartPage' && <StartPage />}
       {selected === 'PageBlock' && <PageBlockDemo />}
@@ -135,6 +175,7 @@ const Playground: React.FC = () => {
       {selected === 'Breadcrumbs' && <BreadcrumbsDemo />}
       {selected === 'Modal' && <ModalDemo />}
       {selected === 'ModalSubmit' && <ModalSubmitDemo />}
+      {selected === 'ToggleButton' && <ToggleButtonDemo />}
     </PageBlock>
   );
 };

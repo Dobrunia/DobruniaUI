@@ -45,7 +45,7 @@ export const TabbarDemo: React.FC = () => {
     >
       <h2
         style={{
-          color: 'var(--text-heading)',
+          color: 'var(--c-text-primary)',
           marginBottom: 'var(--spacing-large)',
           fontSize: 'var(--font-size-large)',
         }}
@@ -54,7 +54,7 @@ export const TabbarDemo: React.FC = () => {
       </h2>
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 'var(--radius-large)',
           padding: 'var(--spacing-large)',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -66,7 +66,7 @@ export const TabbarDemo: React.FC = () => {
       </div>
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 'var(--radius-large)',
           padding: 'var(--spacing-large)',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -78,7 +78,7 @@ export const TabbarDemo: React.FC = () => {
       </div>
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 'var(--radius-large)',
           padding: 'var(--spacing-large)',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -98,7 +98,7 @@ export const TabbarDemo: React.FC = () => {
       </div>
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 'var(--radius-large)',
           padding: 'var(--spacing-large)',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -114,7 +114,7 @@ export const TabbarDemo: React.FC = () => {
       <div
         style={{
           marginTop: 'var(--spacing-large)',
-          color: 'var(--text-body)',
+          color: 'var(--c-text-primary)',
         }}
       >
         <p>Выбранная вкладка: {getLabel(selectedId)}</p>

@@ -4,11 +4,11 @@ import { Alert } from '@DobruniaUI';
 export const AlertDemo: React.FC = () => {
   return (
     <div style={{ maxWidth: 700, margin: '0 auto', padding: 24 }}>
-      <h2 style={{ marginBottom: 24, color: 'var(--text-heading)' }}>
+      <h2 style={{ marginBottom: 24, color: 'var(--c-text-primary)' }}>
         Alert - Компонент уведомлений
       </h2>
 
-      <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-heading)' }}>Базовые стили</h3>
+      <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Базовые стили</h3>
       <div style={{ marginBottom: 32 }}>
         <Alert type='success'>✨ Операция успешно выполнена! Ваши данные сохранены.</Alert>
         <Alert type='info'>💡 Информация: Система будет обновлена сегодня в 3:00.</Alert>
@@ -16,7 +16,7 @@ export const AlertDemo: React.FC = () => {
         <Alert type='error'>🚫 Ошибка: Не удалось загрузить данные. Попробуйте позже.</Alert>
       </div>
 
-      <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-heading)' }}>Outlined стили</h3>
+      <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Outlined стили</h3>
       <div style={{ marginBottom: 32 }}>
         <Alert type='success' outlined>
           Файл успешно загружен в систему.
@@ -32,7 +32,7 @@ export const AlertDemo: React.FC = () => {
         </Alert>
       </div>
 
-      <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-heading)' }}>С богатым содержимым</h3>
+      <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>С богатым содержимым</h3>
       <div style={{ marginBottom: 32 }}>
         <Alert type='info'>
           <strong>Обновление системы:</strong>
@@ -67,7 +67,7 @@ export const AlertDemo: React.FC = () => {
         </Alert>
       </div>
 
-      <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-heading)' }}>Практические примеры</h3>
+      <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Практические примеры</h3>
       <div>
         <Alert type='info'>
           <strong>Совет:</strong> Используйте type="success" для подтверждения действий, "info" для

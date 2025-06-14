@@ -20,6 +20,7 @@ export { FlipSwitch } from './Inputs/Switch/FlipSwitch';
 export { PowerSwitch } from './Inputs/Switch/PowerSwitch';
 export { Dropdown } from './Inputs/Dropdown/Dropdown';
 export { Select, type SelectOption } from './Inputs/Select/Select';
+export { ToggleButton } from './Inputs/ToggleButton/ToggleButton';
 
 /**
  * Data Display

@@ -37,13 +37,13 @@ const MicIcon = ({ recording }: { recording?: boolean }) => (
       width='6'
       height='10'
       rx='3'
-      stroke={recording ? 'var(--color-error)' : 'currentColor'}
+      stroke={recording ? 'var(--c-error)' : 'currentColor'}
       strokeWidth='1.5'
     />
     {/* Основание-подставка */}
     <path
       d='M4 10.5a6 6 0 0 0 12 0'
-      stroke={recording ? 'var(--color-error)' : 'currentColor'}
+      stroke={recording ? 'var(--c-error)' : 'currentColor'}
       strokeWidth='1.5'
       fill='none'
     />
@@ -53,7 +53,7 @@ const MicIcon = ({ recording }: { recording?: boolean }) => (
       y1='13'
       x2='10'
       y2='17'
-      stroke={recording ? 'var(--color-error)' : 'currentColor'}
+      stroke={recording ? 'var(--c-error)' : 'currentColor'}
       strokeWidth='1.5'
       strokeLinecap='round'
     />
@@ -63,7 +63,7 @@ const MicIcon = ({ recording }: { recording?: boolean }) => (
       cy='18'
       rx='3'
       ry='0.7'
-      stroke={recording ? 'var(--color-error)' : 'currentColor'}
+      stroke={recording ? 'var(--c-error)' : 'currentColor'}
       strokeWidth='1.2'
       fill='none'
     />
@@ -74,7 +74,7 @@ const MicIcon = ({ recording }: { recording?: boolean }) => (
 const InputBar = styled.div`
   display: flex;
   align-items: flex-end;
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
   padding: var(--spacing-small);
   min-height: 32px;
   gap: 8px;
@@ -88,7 +88,7 @@ const IconBtn = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   font-size: var(--font-size-large);
   width: 32px;
   height: 32px;
@@ -97,20 +97,20 @@ const IconBtn = styled.button`
   max-width: 32px;
   max-height: 32px;
   &:hover {
-    color: var(--color-primary);
+    color: var(--c-accent);
   }
 `;
 const StyledInput = styled.input`
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   font-size: var(--font-size-medium);
   padding: var(--spacing-small) 0;
   outline: none;
   &:hover {
     &::placeholder {
-      color: var(--color-primary);
+      color: var(--c-accent);
     }
   }
 `;
@@ -118,7 +118,7 @@ const StyledTextarea = styled.textarea`
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   font-size: var(--font-size-medium);
   outline: none;
   resize: none;
@@ -130,7 +130,7 @@ const StyledTextarea = styled.textarea`
   display: flex;
   align-items: center;
   &::placeholder {
-    color: var(--text-secondary);
+    color: var(--c-text-secondary);
     line-height: 32px;
     vertical-align: middle;
     opacity: 1;
@@ -138,25 +138,25 @@ const StyledTextarea = styled.textarea`
   }
   &:hover {
     &::placeholder {
-      color: var(--color-primary);
+      color: var(--c-accent);
     }
   }
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-elevated);
+  scrollbar-color: var(--c-accent) var(--c-bg-elevated);
   &::-webkit-scrollbar {
     width: 6px;
-    background: var(--color-elevated);
+    background: var(--c-bg-elevated);
     border-radius: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
+    background: var(--c-accent);
     border-radius: 8px;
   }
 `;
 const FilePreview = styled.div`
   display: flex;
   gap: 12px;
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
 `;
 const FileThumbWrapper = styled.div`
   position: relative;
@@ -170,7 +170,7 @@ const FileThumb = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-medium);
-  border: 1.5px solid var(--color-primary);
+  border: 1.5px solid var(--c-accent);
 `;
 
 // Emoji Picker Component
@@ -178,10 +178,10 @@ const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   position: absolute;
   bottom: calc(100% + 8px);
   ${(p) => (p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;')}
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
   border-radius: var(--radius-medium);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
-  border: 1px solid var(--color-elevated);
+  border: 1px solid var(--c-border);
   padding: 4px;
   z-index: 1000;
   min-width: 180px;
@@ -191,15 +191,15 @@ const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   overflow-x: hidden;
   display: block;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-elevated);
+  scrollbar-color: var(--c-accent) var(--c-bg-elevated);
 
   &::-webkit-scrollbar {
     width: 6px;
-    background: var(--color-elevated);
+    background: var(--c-bg-elevated);
     border-radius: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
+    background: var(--c-accent);
     border-radius: 8px;
   }
 `;
@@ -224,7 +224,7 @@ const EmojiButton = styled.button`
   align-items: center;
   justify-content: center;
   &:hover {
-    background: var(--color-elevated);
+    background: var(--c-bg-default);
   }
 `;
 
@@ -385,14 +385,14 @@ const EmojiPicker: React.FC<{
 };
 
 const SearchBar = styled(InputBar)`
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
   border-radius: 999px;
   padding: 0 var(--spacing-medium);
   min-height: 32px;
   box-shadow: none;
   transition: box-shadow var(--transition-fast);
   &:hover {
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent 80%);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 20%, transparent 80%);
   }
 `;
 const SearchInputField = styled(StyledInput)`
@@ -402,13 +402,13 @@ const SearchInputField = styled(StyledInput)`
   padding: var(--spacing-small) 0;
   border-radius: 999px;
   &::placeholder {
-    color: var(--text-secondary);
+    color: var(--c-text-secondary);
     opacity: 1;
     transition: color var(--transition-fast);
   }
   &:hover {
     &::placeholder {
-      color: var(--color-primary);
+      color: var(--c-accent);
     }
   }
 `;
@@ -437,7 +437,7 @@ const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
     height: 32px;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: var(--color-accent);
+    background: var(--c-accent);
     opacity: 0.25;
     animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     z-index: 0;

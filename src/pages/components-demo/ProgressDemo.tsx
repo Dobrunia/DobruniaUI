@@ -19,7 +19,7 @@ export const ProgressDemo: React.FC = () => {
       <h2 style={{ marginTop: 0 }}>Circular with label</h2>
       <div
         style={{
-          background: 'var(--color-elevated)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 12,
           padding: 32,
           marginBottom: 32,
@@ -40,7 +40,7 @@ export const ProgressDemo: React.FC = () => {
       <h4>Linear indeterminate</h4>
       <div
         style={{
-          background: 'var(--color-elevated)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 12,
           padding: 32,
           marginBottom: 32,
@@ -51,7 +51,7 @@ export const ProgressDemo: React.FC = () => {
       <h4>Linear with value</h4>
       <div
         style={{
-          background: 'var(--color-elevated)',
+          background: 'var(--c-bg-elevated)',
           borderRadius: 12,
           padding: 32,
         }}

@@ -133,13 +133,14 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
 const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: ButtonShape) => {
   if (variant === 'close' && shape === 'circle') {
     return css`
-      background: var(--color-surface);
-      color: var(--color-error);
-      border: 1px solid var(--color-error);
+      background: var(--c-bg-elevated);
+      color: var(--c-error);
+      border: 1px solid var(--c-error);
       &:hover:not(:disabled) {
-        background: var(--color-error);
+        background: var(--c-error);
+        color: var(--c-text-inverse);
         svg line {
-          stroke: #fff;
+          stroke: var(--c-text-inverse);
         }
       }
     `;
@@ -148,14 +149,14 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
     // icon-only send button (no bg, no border)
     return css`
       background: none;
-      color: var(--color-primary);
+      color: var(--c-accent);
       border: none;
       box-shadow: none;
       padding: 0;
       min-width: 0;
       min-height: 0;
       &:hover:not(:disabled) {
-        color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
+        color: color-mix(in srgb, var(--c-accent) 80%, black 20%);
         background: none;
       }
     `;
@@ -163,13 +164,13 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
   if (variant === 'close') {
     return css`
       background: transparent;
-
-      color: var(--color-error);
-      border: 2px solid var(--color-error);
+      color: var(--c-error);
+      border: 2px solid var(--c-error);
       &:hover:not(:disabled) {
-        background: var(--color-error);
+        background: var(--c-error);
+        color: var(--c-text-inverse);
         svg line {
-          stroke: #fff;
+          stroke: var(--c-text-inverse);
         }
       }
     `;
@@ -180,11 +181,11 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
         border: 2px solid;
         &:hover:not(:disabled) {
           background: ${variant === 'warning'
-            ? 'var(--color-error)'
+            ? 'var(--c-error)'
             : variant === 'primary'
-            ? 'var(--color-primary)'
-            : 'var(--color-secondary)'};
-          color: white;
+            ? 'var(--c-accent)'
+            : 'var(--c-bg-elevated)'};
+          color: var(--c-text-inverse);
         }
       `
     : css`
@@ -195,49 +196,49 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
     case 'primary':
       return css`
         ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--color-primary)'};
-        color: ${outlined ? 'var(--color-primary)' : 'white'};
-        border-color: var(--color-primary);
+        background: ${outlined ? 'transparent' : 'var(--c-accent)'};
+        color: ${outlined ? 'var(--c-accent)' : 'var(--c-text-inverse)'};
+        border-color: var(--c-accent);
         &:hover:not(:disabled) {
           background: ${outlined
-            ? 'var(--color-primary)'
-            : 'color-mix(in srgb, var(--color-primary) 90%, black 10%)'};
-          color: white;
+            ? 'var(--c-accent)'
+            : 'color-mix(in srgb, var(--c-accent) 85%, black 15%)'};
+          color: var(--c-text-inverse);
         }
       `;
     case 'secondary':
       return css`
         ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--color-secondary)'};
-        color: ${outlined ? 'var(--color-secondary)' : 'var(--text-heading)'};
-        border-color: var(--color-secondary);
+        background: ${outlined ? 'transparent' : 'var(--c-bg-elevated)'};
+        color: ${outlined ? 'var(--c-text-primary)' : 'var(--c-text-primary)'};
+        border-color: var(--c-border);
         &:hover:not(:disabled) {
           background: ${outlined
-            ? 'var(--color-secondary)'
-            : 'color-mix(in srgb, var(--color-secondary) 90%, black 10%)'};
-          color: ${outlined ? 'var(--text-heading)' : 'var(--text-heading)'};
+            ? 'var(--c-bg-elevated)'
+            : 'color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-text-primary) 15%)'};
+          color: var(--c-text-primary);
         }
       `;
     case 'warning':
       return css`
         ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--color-error)'};
-        color: ${outlined ? 'var(--color-error)' : 'white'};
-        border-color: var(--color-error);
+        background: ${outlined ? 'transparent' : 'var(--c-error)'};
+        color: ${outlined ? 'var(--c-error)' : 'var(--c-text-inverse)'};
+        border-color: var(--c-error);
         &:hover:not(:disabled) {
           background: ${outlined
-            ? 'var(--color-error)'
-            : 'color-mix(in srgb, var(--color-error) 90%, black 10%)'};
-          color: white;
+            ? 'var(--c-error)'
+            : 'color-mix(in srgb, var(--c-error) 85%, black 15%)'};
+          color: var(--c-text-inverse);
         }
       `;
     case 'ghost':
       return css`
         background: transparent;
-        color: var(--text-heading);
+        color: var(--c-text-primary);
         border: none;
         &:hover:not(:disabled) {
-          background: var(--color-elevated);
+          background: var(--c-bg-elevated);
         }
       `;
   }
@@ -291,7 +292,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--c-accent);
     outline-offset: 2px;
   }
 
@@ -340,7 +341,7 @@ const CloseIcon = ({ color }: { color?: string }) => (
       y1='4'
       x2='12'
       y2='12'
-      stroke={color || 'var(--color-error)'}
+      stroke={color || 'var(--c-error)'}
       strokeWidth='2'
       strokeLinecap='round'
     />
@@ -349,7 +350,7 @@ const CloseIcon = ({ color }: { color?: string }) => (
       y1='4'
       x2='4'
       y2='12'
-      stroke={color || 'var(--color-error)'}
+      stroke={color || 'var(--c-error)'}
       strokeWidth='2'
       strokeLinecap='round'
     />
@@ -420,7 +421,7 @@ export const Button: React.FC<ButtonProps> = ({
   let icon = leftIcon;
   if (variant === 'send') icon = <SendIcon />;
   if (variant === 'close')
-    icon = <CloseIcon color={shape === 'circle' ? undefined : 'var(--color-error)'} />;
+    icon = <CloseIcon color={shape === 'circle' ? undefined : 'var(--c-error)'} />;
   const isIconOnly = variant === 'send' || variant === 'close';
 
   return (

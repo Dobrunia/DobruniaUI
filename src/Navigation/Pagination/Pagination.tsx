@@ -22,8 +22,9 @@ const PageBtn = styled.button<{ $active?: boolean }>`
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: ${({ $active }) => ($active ? 'var(--color-elevated-active)' : 'transparent')};
-  color: ${({ $active }) => ($active ? 'var(--color-primary)' : 'var(--text-body)')};
+  background: ${({ $active }) =>
+    $active ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
+  color: ${({ $active }) => ($active ? 'var(--c-accent)' : 'var(--c-text-primary)')};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
   font-size: var(--font-size-medium);
   cursor: pointer;
@@ -38,7 +39,7 @@ const PageBtn = styled.button<{ $active?: boolean }>`
 const Dots = styled.span`
   min-width: 32px;
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   font-size: var(--font-size-medium);
 `;
 

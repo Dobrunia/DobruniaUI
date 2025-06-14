@@ -24,8 +24,8 @@ const AvatarRoot = styled.div<{ $size: AvatarSize }>`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--color-elevated);
-  color: var(--color-primary);
+  background: var(--c-bg-elevated);
+  color: var(--c-accent);
   font-weight: 600;
   user-select: none;
   cursor: pointer;
@@ -56,7 +56,7 @@ const StatusDot = styled.span<{ $size: AvatarSize; $status: AvatarStatus }>`
   right: 0px;
   bottom: ${({ $size }) => ($size === 'xxs' ? 0 : $size === 'sm' ? 4 : 6)}px;
   border-radius: 50%;
-  border: 1px solid var(--color-bg);
+  border: 1px solid var(--c-bg-default);
   background: ${({ $status }) => statusVarMap[$status]};
   display: flex;
   align-items: center;
@@ -75,10 +75,10 @@ const StatusMenu = styled.div`
   left: 0;
   top: 110%;
   // transform: translateX(-50%);
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
   border-radius: var(--radius-medium);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
-  border: 1px solid var(--color-elevated);
+  border: 1px solid var(--c-border);
   padding: 6px 0;
   z-index: 100;
   min-width: 120px;
@@ -87,7 +87,7 @@ const StatusMenuItem = styled.button<{ active?: boolean }>`
   width: 100%;
   background: none;
   border: none;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   font-size: var(--font-size-small);
   padding: 8px 16px;
   text-align: left;
@@ -98,11 +98,13 @@ const StatusMenuItem = styled.button<{ active?: boolean }>`
   ${({ active }) =>
     active &&
     css`
-      background: var(--color-elevated-active);
+      background: var(--c-accent);
+      color: var(--c-text-inverse);
       font-weight: 600;
     `}
   &:hover {
-    background: var(--color-elevated-active);
+    background: var(--c-accent-hover);
+    color: var(--c-text-inverse);
   }
 `;
 
@@ -242,7 +244,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       onClick={onStatusChange ? () => setMenuOpen((v) => !v) : undefined}
       style={
         onStatusChange
-          ? { outline: menuOpen ? '2px solid var(--color-primary)' : undefined }
+          ? { outline: menuOpen ? '2px solid var(--c-border-focus)' : undefined }
           : undefined
       }
     >

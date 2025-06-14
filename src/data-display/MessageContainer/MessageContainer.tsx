@@ -31,17 +31,18 @@ const Container = styled.div`
   max-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background: var(--color-elevated);
+  background: var(--c-bg-default);
   padding: 24px 0 24px 0;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-elevated);
+  scrollbar-color: var(--c-accent) var(--c-bg-default);
+
   &::-webkit-scrollbar {
     width: 8px;
-    background: var(--color-elevated);
+    background: var(--c-bg-default);
     border-radius: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
+    background: var(--c-accent);
     border-radius: 8px;
   }
 `;
@@ -51,8 +52,8 @@ const ScrollToBottomBtn = styled.button`
   align-self: flex-end;
   bottom: 10px;
   margin-right: 0px;
-  background: var(--color-primary);
-  color: #fff;
+  background: var(--c-accent);
+  color: var(--c-text-inverse);
   border: none;
   border-radius: 50%;
   width: 30px;
@@ -76,7 +77,7 @@ const ScrollToBottomBtn = styled.button`
   }
 
   &:hover {
-    background: var(--color-accent);
+    background: color-mix(in srgb, var(--c-accent) 85%, black 15%);
     transform: translateY(-2px);
   }
 `;

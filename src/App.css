@@ -8,8 +8,8 @@
 }
 
 body {
-    background-color: var(--color-bg);
-    color: var(--text-body);
+    background-color: var(--c-bg-default);
+    color: var(--c-text-primary);
     font-size: 14px;
     margin: 0;
     padding: 0;

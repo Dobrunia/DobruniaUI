@@ -13,7 +13,7 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  color: var(--text-heading);
+  color: var(--c-text-primary);
   font-size: var(--font-size-large);
   margin-bottom: var(--spacing-medium);
 `;
@@ -32,7 +32,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const ButtonLabel = styled.span`
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   font-size: var(--font-size-small);
 `;
 

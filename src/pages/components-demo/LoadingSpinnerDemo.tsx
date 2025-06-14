@@ -4,7 +4,7 @@ import { LoadingSpinner, Button, type SpinnerVariant, type SpinnerSize } from '@
 export const LoadingSpinnerDemo: React.FC = () => {
   const [selectedVariant, setSelectedVariant] = useState<SpinnerVariant>('classic');
   const [selectedSize, setSelectedSize] = useState<SpinnerSize>('medium');
-  const [selectedColor, setSelectedColor] = useState('var(--color-primary)');
+  const [selectedColor, setSelectedColor] = useState('var(--c-accent)');
   const [isLoading, setIsLoading] = useState(false);
 
   const variants: { value: SpinnerVariant; label: string; description: string }[] = [
@@ -23,12 +23,12 @@ export const LoadingSpinnerDemo: React.FC = () => {
   ];
 
   const colors = [
-    { value: 'var(--color-primary)', label: 'Primary', hex: '#007bff' },
-    { value: 'var(--color-accent)', label: 'Accent', hex: '#28a745' },
-    { value: '#ff6b35', label: 'Orange', hex: '#ff6b35' },
-    { value: '#e74c3c', label: 'Red', hex: '#e74c3c' },
+    { value: 'var(--c-accent)', label: 'Accent', hex: '#4e93f5' },
+    { value: 'var(--c-success)', label: 'Success', hex: '#10b981' },
+    { value: 'var(--c-error)', label: 'Error', hex: '#ef4444' },
+    { value: 'var(--c-warning)', label: 'Warning', hex: '#f59e0b' },
+    { value: 'var(--c-info)', label: 'Info', hex: '#3b82f6' },
     { value: '#9b59b6', label: 'Purple', hex: '#9b59b6' },
-    { value: '#1abc9c', label: 'Teal', hex: '#1abc9c' },
   ];
 
   const simulateLoading = () => {
@@ -38,7 +38,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
 
   return (
     <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
-      <h1 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>LoadingSpinner Demo</h1>
+      <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>LoadingSpinner Demo</h1>
 
       <div
         style={{
@@ -51,13 +51,13 @@ export const LoadingSpinnerDemo: React.FC = () => {
         <div
           style={{
             padding: '32px',
-            border: '2px solid var(--color-primary)',
+            border: '2px solid var(--c-accent)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: 'var(--c-bg-default)',
             textAlign: 'center',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             🎡 Настраиваемый спиннер
           </h3>
 
@@ -72,7 +72,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           >
             {/* Выбор варианта */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Тип анимации:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Тип анимации:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {variants.map((variant) => (
                   <label
@@ -102,7 +102,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
 
             {/* Выбор размера */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Размер:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Размер:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {sizes.map((size) => (
                   <label
@@ -130,7 +130,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
 
             {/* Выбор цвета */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Цвет:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Цвет:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {colors.map((color) => (
                   <label
@@ -156,7 +156,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                         height: '16px',
                         backgroundColor: color.hex,
                         borderRadius: '50%',
-                        border: '1px solid var(--color-border)',
+                        border: '1px solid var(--c-border)',
                       }}
                     />
                     <span>{color.label}</span>
@@ -170,7 +170,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           <div
             style={{
               padding: '48px',
-              backgroundColor: 'var(--color-background-secondary)',
+              backgroundColor: 'var(--c-bg-subtle)',
               borderRadius: 'var(--radius-medium)',
               marginBottom: '16px',
             }}
@@ -178,7 +178,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
             <LoadingSpinner variant={selectedVariant} size={selectedSize} color={selectedColor} />
           </div>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-small)' }}>
+          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
             Попробуйте разные комбинации настроек выше
           </p>
         </div>
@@ -187,11 +187,11 @@ export const LoadingSpinnerDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             🎯 Все варианты спиннеров
           </h3>
 
@@ -207,19 +207,19 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 key={variant.value}
                 style={{
                   padding: '16px',
-                  border: '1px solid var(--color-border)',
+                  border: '1px solid var(--c-border)',
                   borderRadius: 'var(--radius-small)',
                   textAlign: 'center',
                 }}
               >
-                <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>
+                <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>
                   {variant.label}
                 </h4>
                 <p
                   style={{
                     marginBottom: '16px',
                     fontSize: 'var(--font-size-small)',
-                    color: 'var(--text-muted)',
+                    color: 'var(--c-text-secondary)',
                   }}
                 >
                   {variant.description}
@@ -227,7 +227,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '16px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -242,11 +242,11 @@ export const LoadingSpinnerDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             📏 Размеры (на примере Waves)
           </h3>
 
@@ -261,11 +261,13 @@ export const LoadingSpinnerDemo: React.FC = () => {
           >
             {sizes.map((size) => (
               <div key={size.value} style={{ textAlign: 'center' }}>
-                <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>{size.label}</h4>
+                <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>
+                  {size.label}
+                </h4>
                 <div
                   style={{
                     padding: '16px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -280,11 +282,11 @@ export const LoadingSpinnerDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             🎨 Цвета (на примере Dots)
           </h3>
 
@@ -297,11 +299,13 @@ export const LoadingSpinnerDemo: React.FC = () => {
           >
             {colors.map((color) => (
               <div key={color.value} style={{ textAlign: 'center' }}>
-                <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>{color.label}</h4>
+                <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>
+                  {color.label}
+                </h4>
                 <div
                   style={{
                     padding: '16px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -316,11 +320,11 @@ export const LoadingSpinnerDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             💼 Практическое применение
           </h3>
 
@@ -337,12 +341,12 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 alignItems: 'center',
                 gap: '16px',
                 padding: '16px',
-                backgroundColor: 'var(--color-background-secondary)',
+                backgroundColor: 'var(--c-bg-subtle)',
                 borderRadius: 'var(--radius-small)',
               }}
             >
               <LoadingSpinner variant='classic' size='small' />
-              <span style={{ color: 'var(--text-body)' }}>
+              <span style={{ color: 'var(--c-text-primary)' }}>
                 Выполняется операция, пожалуйста подождите...
               </span>
             </div>
@@ -360,12 +364,12 @@ export const LoadingSpinnerDemo: React.FC = () => {
             <div
               style={{
                 padding: '16px',
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--c-border)',
                 borderRadius: 'var(--radius-small)',
                 textAlign: 'center',
               }}
             >
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Загрузка данных
               </h4>
               <LoadingSpinner variant='ring' size='medium' />
@@ -373,7 +377,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-muted)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Получение информации...
@@ -384,20 +388,20 @@ export const LoadingSpinnerDemo: React.FC = () => {
             <div
               style={{
                 padding: '16px',
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--c-border)',
                 borderRadius: 'var(--radius-small)',
                 textAlign: 'center',
                 position: 'relative',
               }}
             >
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Оверлей загрузки
               </h4>
               <div
                 style={{
                   position: 'relative',
                   padding: '24px',
-                  backgroundColor: 'var(--color-background-secondary)',
+                  backgroundColor: 'var(--c-bg-subtle)',
                   borderRadius: 'var(--radius-small)',
                   opacity: 0.6,
                 }}
@@ -420,12 +424,12 @@ export const LoadingSpinnerDemo: React.FC = () => {
             <div
               style={{
                 padding: '16px',
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--c-border)',
                 borderRadius: 'var(--radius-small)',
                 textAlign: 'center',
               }}
             >
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Новый Waves спиннер
               </h4>
               <LoadingSpinner variant='waves' size='medium' color='#1abc9c' />
@@ -433,7 +437,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-muted)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Волновая анимация

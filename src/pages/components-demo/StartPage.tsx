@@ -11,8 +11,8 @@ export const StartPage: React.FC = () => {
         justifyContent: 'center',
         height: '100%',
         textAlign: 'center',
-        background: 'var(--color-bg)',
-        color: 'var(--text-body)',
+        background: 'var(--c-bg-default)',
+        color: 'var(--c-text-primary)',
         fontFamily: 'var(--font-family)',
       }}
     >
@@ -20,7 +20,7 @@ export const StartPage: React.FC = () => {
         style={{
           fontSize: '3rem',
           margin: '0 0 1rem 0',
-          color: 'var(--text-heading)',
+          color: 'var(--c-text-primary)',
         }}
       >
         DobruniaUI
@@ -30,7 +30,7 @@ export const StartPage: React.FC = () => {
         style={{
           fontSize: '1.2rem',
           margin: '0 0 2rem 0',
-          color: 'var(--text-secondary)',
+          color: 'var(--c-text-secondary)',
         }}
       >
         Современная React UI библиотека компонентов

@@ -19,7 +19,7 @@ export const SwitchDemo: React.FC = () => {
     >
       <h2
         style={{
-          color: 'var(--text-heading)',
+          color: 'var(--c-text-primary)',
           marginBottom: 'var(--spacing-large)',
           fontSize: 'var(--font-size-large)',
         }}
@@ -52,22 +52,22 @@ export const SwitchDemo: React.FC = () => {
           <PowerSwitch checked={power} onChange={setPower} />
         </div>
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние первого переключателя:</b> {checked ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние rolling toggle:</b> {rolling ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние Yin Yang Switch:</b> {yinYang ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние Flip Switch:</b> {flip ? 'Yeah!' : 'Nope'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние Flip Switch:</b> {flip ? 'On' : 'Off'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Состояние Power Switch:</b> {power ? 'On' : 'Off'}
       </div>
     </div>

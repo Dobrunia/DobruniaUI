@@ -19,16 +19,35 @@ interface ReactionProps {
 const ReactionRoot = styled.button<{ $active?: boolean }>`
   display: flex;
   align-items: center;
-  background: ${(p) => (p.$active ? 'var(--color-accent)' : 'var(--color-primary)')};
-  border: none;
+  background: ${(p) =>
+    p.$active
+      ? 'color-mix(in srgb, var(--c-accent) 90%, white 10%)'
+      : 'color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-text-primary) 20%)'};
+  border: ${(p) => (p.$active ? '2px solid var(--c-accent)' : '1px solid var(--c-border)')};
   border-radius: 999px;
   cursor: pointer;
   gap: 6px;
   min-height: 32px;
-  transition: background 0.15s;
+  transition: all 0.15s;
   position: relative;
+  color: ${(p) => (p.$active ? 'var(--c-text-inverse)' : 'var(--c-text-primary)')};
+  padding: 4px 8px;
+  box-shadow: ${(p) =>
+    p.$active
+      ? '0 0 8px color-mix(in srgb, var(--c-accent) 40%, transparent 60%), inset 0 1px 2px color-mix(in srgb, white 20%, transparent 80%)'
+      : '0 1px 3px color-mix(in srgb, var(--c-text-primary) 15%, transparent 85%)'};
+  filter: ${(p) => (p.$active ? 'brightness(1.1) saturate(1.2)' : 'none')};
   &:hover {
-    background: var(--color-accent);
+    background: ${(p) =>
+      p.$active
+        ? 'color-mix(in srgb, var(--c-accent) 80%, white 20%)'
+        : 'color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-accent) 30%)'};
+    border-color: var(--c-accent);
+    transform: ${(p) => (p.$active ? 'scale(1.05)' : 'none')};
+    box-shadow: ${(p) =>
+      p.$active
+        ? '0 0 12px color-mix(in srgb, var(--c-accent) 50%, transparent 50%), inset 0 1px 2px color-mix(in srgb, white 30%, transparent 70%)'
+        : '0 2px 6px color-mix(in srgb, var(--c-text-primary) 20%, transparent 80%)'};
   }
 `;
 
@@ -123,7 +142,8 @@ export const Reaction: React.FC<ReactionProps> = ({
             style={{
               fontSize: '12px',
               marginLeft: 4,
-              color: 'var(--text-heading)',
+              color: isActive ? 'var(--c-text-inverse)' : 'var(--c-text-primary)',
+              fontWeight: isActive ? '600' : '400',
             }}
           >
             +{users.length - 3}

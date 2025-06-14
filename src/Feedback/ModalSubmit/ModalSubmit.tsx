@@ -28,7 +28,7 @@ const Actions = styled.div`
   gap: 12px;
   justify-content: flex-end;
   padding-top: 20px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--c-border);
 `;
 
 /**

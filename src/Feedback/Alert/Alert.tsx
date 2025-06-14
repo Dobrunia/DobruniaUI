@@ -12,24 +12,24 @@ interface AlertProps {
 
 const typeStyles = {
   success: {
-    bg: 'var(--avatar-status-online, #4cd964)10',
-    border: 'var(--avatar-status-online, #4cd964)',
-    color: 'var(--avatar-status-online, #4cd964)',
+    bg: 'color-mix(in srgb, var(--c-success) 10%, transparent 90%)',
+    border: 'var(--c-success)',
+    color: 'var(--c-success)',
   },
   info: {
-    bg: 'var(--color-primary, #2196f3)10',
-    border: 'var(--color-primary, #2196f3)',
-    color: 'var(--color-primary, #2196f3)',
+    bg: 'color-mix(in srgb, var(--c-info) 10%, transparent 90%)',
+    border: 'var(--c-info)',
+    color: 'var(--c-info)',
   },
   warning: {
-    bg: 'var(--color-accent, #ffb300)10',
-    border: 'var(--color-accent, #ffb300)',
-    color: 'var(--color-accent, #ffb300)',
+    bg: 'color-mix(in srgb, var(--c-warning) 10%, transparent 90%)',
+    border: 'var(--c-warning)',
+    color: 'var(--c-warning)',
   },
   error: {
-    bg: 'var(--color-error, #f44336)10',
-    border: 'var(--color-error, #f44336)',
-    color: 'var(--color-error, #f44336)',
+    bg: 'color-mix(in srgb, var(--c-error) 10%, transparent 90%)',
+    border: 'var(--c-error)',
+    color: 'var(--c-error)',
   },
 };
 

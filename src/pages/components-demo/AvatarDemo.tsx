@@ -21,7 +21,7 @@ const Col = styled.div`
 `;
 const Label = styled.div`
   font-size: 0.95em;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
 `;
 
 export const AvatarDemo: React.FC = () => {

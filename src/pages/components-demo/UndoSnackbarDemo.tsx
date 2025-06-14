@@ -113,7 +113,7 @@ export const UndoSnackbarDemo: React.FC = () => {
 
   return (
     <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
-      <h1 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+      <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
         Snackbar Demo (стекинг встроен в базовый компонент)
       </h1>
 
@@ -128,15 +128,15 @@ export const UndoSnackbarDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '2px solid var(--color-primary)',
+            border: '2px solid var(--c-accent)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: 'var(--c-bg-default)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             🧪 Тест стекинга UndoSnackbar'ов (справа сверху)
           </h3>
-          <p style={{ color: 'var(--text-body)', marginBottom: '16px' }}>
+          <p style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             UndoSnackbar'ы используют <code>enableStacking=true</code> и позицию{' '}
             <code>top-right</code>.
             <br />
@@ -155,15 +155,15 @@ export const UndoSnackbarDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '2px solid var(--color-accent)',
+            border: '2px solid var(--c-accent)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: 'var(--c-bg-default)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             🎯 Тест стекинга по позициям
           </h3>
-          <p style={{ color: 'var(--text-body)', marginBottom: '16px' }}>
+          <p style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             Обычные Snackbar'ы с <code>enableStacking=true</code> в разных углах экрана.
             <br />
             Каждая позиция имеет свой независимый стек!
@@ -180,10 +180,10 @@ export const UndoSnackbarDemo: React.FC = () => {
             style={{
               marginTop: '16px',
               padding: '12px',
-              backgroundColor: 'var(--color-background-secondary)',
+              backgroundColor: 'var(--c-bg-subtle)',
               borderRadius: 'var(--radius-small)',
               fontSize: 'var(--font-size-small)',
-              color: 'var(--text-muted)',
+              color: 'var(--c-text-secondary)',
             }}
           >
             💡 <strong>Позиции:</strong> Справа сверху, Снизу по центру, Слева сверху, Слева снизу
@@ -218,7 +218,7 @@ export const UndoSnackbarDemo: React.FC = () => {
         {/* Подробные примеры */}
         <details
           style={{
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
             padding: '16px',
           }}
@@ -231,16 +231,16 @@ export const UndoSnackbarDemo: React.FC = () => {
             <div
               style={{
                 padding: '16px',
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--c-border)',
                 borderRadius: 'var(--radius-small)',
               }}
             >
-              <h4 style={{ color: 'var(--text-heading)', marginBottom: '8px' }}>
+              <h4 style={{ color: 'var(--c-text-primary)', marginBottom: '8px' }}>
                 Новая архитектура
               </h4>
               <p
                 style={{
-                  color: 'var(--text-body)',
+                  color: 'var(--c-text-primary)',
                   marginBottom: '12px',
                   fontSize: 'var(--font-size-small)',
                 }}
@@ -253,16 +253,16 @@ export const UndoSnackbarDemo: React.FC = () => {
             <div
               style={{
                 padding: '16px',
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--c-border)',
                 borderRadius: 'var(--radius-small)',
               }}
             >
-              <h4 style={{ color: 'var(--text-heading)', marginBottom: '8px' }}>
+              <h4 style={{ color: 'var(--c-text-primary)', marginBottom: '8px' }}>
                 Группировка по позициям
               </h4>
               <p
                 style={{
-                  color: 'var(--text-body)',
+                  color: 'var(--c-text-primary)',
                   marginBottom: '12px',
                   fontSize: 'var(--font-size-small)',
                 }}
