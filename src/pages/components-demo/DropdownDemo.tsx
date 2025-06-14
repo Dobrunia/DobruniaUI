@@ -45,20 +45,20 @@ export const DropdownDemo: React.FC = () => {
         padding: 'var(--spacing-large)',
         maxWidth: 600,
         margin: '0 auto',
-        background: 'var(--color-bg)',
+        background: 'var(--c-bg-default)',
         borderRadius: 'var(--radius-large)',
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--spacing-large)',
       }}
     >
-      <h2 style={{ color: 'var(--text-heading)', marginBottom: 0 }}>Dropdown Demo</h2>
+      <h2 style={{ color: 'var(--c-text-primary)', marginBottom: 0 }}>Dropdown Demo</h2>
 
       {/* Базовый вариант */}
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -74,7 +74,7 @@ export const DropdownDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -86,7 +86,7 @@ export const DropdownDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -103,7 +103,7 @@ export const DropdownDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -115,7 +115,7 @@ export const DropdownDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -134,7 +134,7 @@ export const DropdownDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -146,7 +146,7 @@ export const DropdownDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -164,7 +164,7 @@ export const DropdownDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -176,7 +176,7 @@ export const DropdownDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}
@@ -193,7 +193,7 @@ export const DropdownDemo: React.FC = () => {
         <div
           style={{
             marginTop: 'var(--spacing-small)',
-            color: 'var(--text-secondary)',
+            color: 'var(--c-text-secondary)',
             fontSize: 'var(--font-size-small)',
           }}
         >
@@ -205,7 +205,7 @@ export const DropdownDemo: React.FC = () => {
       <div>
         <h3
           style={{
-            color: 'var(--text-heading)',
+            color: 'var(--c-text-primary)',
             marginBottom: 'var(--spacing-medium)',
             fontSize: 'var(--font-size-large)',
           }}

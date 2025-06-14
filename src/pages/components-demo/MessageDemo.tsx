@@ -312,7 +312,7 @@ export const MessageDemo = () => {
       style={{
         maxWidth: 720,
         margin: '40px auto',
-        background: 'var(--color-elevated)',
+        background: 'var(--c-bg-elevated)',
         padding: 24,
         borderRadius: 16,
         height: 600,

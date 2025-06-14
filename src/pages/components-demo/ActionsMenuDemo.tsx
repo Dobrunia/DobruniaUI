@@ -174,7 +174,7 @@ export const ActionsMenuDemo = () => {
 
   return (
     <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
-      <h1 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>ActionsMenu Demo</h1>
+      <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>ActionsMenu Demo</h1>
 
       <div
         style={{
@@ -187,12 +187,12 @@ export const ActionsMenuDemo = () => {
         <div
           style={{
             padding: '32px',
-            border: '2px solid var(--color-primary)',
+            border: '2px solid var(--c-accent)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-surface)',
+            backgroundColor: 'var(--c-bg-elevated)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             🎛️ Настраиваемое меню
           </h3>
 
@@ -207,7 +207,7 @@ export const ActionsMenuDemo = () => {
           >
             {/* Размер */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Размер:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Размер:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {sizes.map((size) => (
                   <label
@@ -237,7 +237,7 @@ export const ActionsMenuDemo = () => {
 
             {/* Анимация */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Анимация:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Анимация:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {animations.map((animation) => (
                   <label
@@ -269,7 +269,7 @@ export const ActionsMenuDemo = () => {
 
             {/* Тип меню */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Тип меню:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Тип меню:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 <label
                   style={{
@@ -313,7 +313,7 @@ export const ActionsMenuDemo = () => {
           <div
             style={{
               padding: '48px',
-              backgroundColor: 'var(--color-elevated)',
+              backgroundColor: 'var(--c-bg-elevated)',
               borderRadius: 'var(--radius-medium)',
               display: 'flex',
               justifyContent: 'center',
@@ -328,7 +328,7 @@ export const ActionsMenuDemo = () => {
             />
           </div>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--font-size-small)' }}>
+          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
             Попробуйте разные настройки выше. Кликайте на действия в меню!
           </p>
         </div>
@@ -337,18 +337,18 @@ export const ActionsMenuDemo = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-elevated)',
+            border: '1px solid var(--c-bg-elevated)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             📱 Примеры использования
           </h3>
 
           <div style={{ display: 'grid', gap: '24px' }}>
             {/* Контекстное меню сообщения */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Контекстное меню сообщения (Telegram-style)
               </h4>
 
@@ -362,7 +362,7 @@ export const ActionsMenuDemo = () => {
                 {/* Имитация сообщения */}
                 <div
                   style={{
-                    background: 'var(--color-primary)',
+                    background: 'var(--c-accent)',
                     color: 'white',
                     padding: '12px 16px',
                     borderRadius: 'var(--radius-medium)',
@@ -392,7 +392,7 @@ export const ActionsMenuDemo = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Полнофункциональное меню с группировкой действий и горячими клавишами
@@ -401,7 +401,7 @@ export const ActionsMenuDemo = () => {
 
             {/* Разные размеры */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>Размеры меню</h4>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>Размеры меню</h4>
 
               <div
                 style={{
@@ -467,7 +467,7 @@ export const ActionsMenuDemo = () => {
 
             {/* Типы действий */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>Типы действий</h4>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>Типы действий</h4>
 
               <div
                 style={{
@@ -552,7 +552,7 @@ export const ActionsMenuDemo = () => {
 
             {/* Направления анимации */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Направления анимации
               </h4>
 
@@ -593,7 +593,7 @@ export const ActionsMenuDemo = () => {
           <div
             style={{
               padding: '24px',
-              border: '1px solid var(--color-elevated)',
+              border: '1px solid var(--c-bg-elevated)',
               borderRadius: 'var(--radius-medium)',
             }}
           >
@@ -605,7 +605,7 @@ export const ActionsMenuDemo = () => {
                 marginBottom: '16px',
               }}
             >
-              <h3 style={{ color: 'var(--text-heading)', margin: 0 }}>📋 История действий</h3>
+              <h3 style={{ color: 'var(--c-text-primary)', margin: 0 }}>📋 История действий</h3>
               <Button variant='secondary' size='small' onClick={() => setActionHistory([])}>
                 Очистить
               </Button>
@@ -615,7 +615,7 @@ export const ActionsMenuDemo = () => {
               style={{
                 maxHeight: '200px',
                 overflowY: 'auto',
-                backgroundColor: 'var(--color-elevated)',
+                backgroundColor: 'var(--c-bg-elevated)',
                 padding: '12px',
                 borderRadius: 'var(--radius-medium)',
                 fontSize: 'var(--font-size-small)',
@@ -628,8 +628,8 @@ export const ActionsMenuDemo = () => {
                   style={{
                     padding: '4px 0',
                     borderBottom:
-                      index < actionHistory.length - 1 ? '1px solid var(--color-surface)' : 'none',
-                    color: 'var(--text-body)',
+                      index < actionHistory.length - 1 ? '1px solid var(--c-bg-elevated)' : 'none',
+                    color: 'var(--c-text-primary)',
                   }}
                 >
                   {entry}
@@ -643,18 +643,18 @@ export const ActionsMenuDemo = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-elevated)',
+            border: '1px solid var(--c-bg-elevated)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-elevated)',
+            backgroundColor: 'var(--c-bg-elevated)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             💡 Особенности и советы
           </h3>
 
           <ul
             style={{
-              color: 'var(--text-body)',
+              color: 'var(--c-text-primary)',
               fontSize: 'var(--font-size-small)',
               lineHeight: '1.6',
               paddingLeft: '20px',

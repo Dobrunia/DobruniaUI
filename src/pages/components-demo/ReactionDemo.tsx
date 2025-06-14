@@ -35,7 +35,7 @@ export const ReactionDemo = () => {
       style={{
         display: 'flex',
         gap: 24,
-        background: 'var(--color-elevated)',
+        background: 'var(--c-bg-elevated)',
         padding: 32,
         borderRadius: 16,
       }}

@@ -24,7 +24,7 @@ const CircleLabel = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--font-size-medium);
-  color: var(--color-primary);
+  color: var(--c-accent);
   font-weight: 500;
 `;
 
@@ -33,7 +33,7 @@ const CircleLabel = styled.div`
  * @param {number} value - значение прогресса (0-100)
  * @param {number} [size=64] - размер компонента в пикселях
  * @param {number} [strokeWidth=5] - толщина линии прогресса
- * @param {string} [color='var(--color-primary)'] - цвет линии прогресса
+ * @param {string} [color='var(--c-accent)'] - цвет линии прогресса
  *
  * @example
  * // Базовое использование
@@ -54,7 +54,7 @@ export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps>
   value,
   size = 64,
   strokeWidth = 5,
-  color = 'var(--color-primary)',
+  color = 'var(--c-accent)',
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -67,7 +67,7 @@ export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps>
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke='#e3eaf6'
+          stroke='var(--c-border)'
           strokeWidth={strokeWidth}
           fill='none'
         />
@@ -103,7 +103,7 @@ const indeterminateAnim = keyframes`
 
 const LinearBar = styled.div<{ $height: number }>`
   width: 100%;
-  background: var(--color-surface);
+  background: var(--c-bg-elevated);
   border-radius: 999px;
   overflow: hidden;
   height: ${({ $height }) => $height}px;
@@ -140,7 +140,7 @@ const LinearProgressContainer = styled.div`
 /**
  * LinearProgress component - компонент линейного прогресса
  * @param {number} [value] - значение прогресса (0-100). Если не указано, показывается неопределенный прогресс
- * @param {string} [color='var(--color-primary)'] - цвет полосы прогресса
+ * @param {string} [color='var(--c-accent)'] - цвет полосы прогресса
  * @param {number} [height=6] - высота полосы прогресса в пикселях
  * @param {React.CSSProperties} [style] - дополнительные стили
  *
@@ -166,7 +166,7 @@ const LinearProgressContainer = styled.div`
  */
 export const LinearProgress: React.FC<LinearProgressProps> = ({
   value,
-  color = 'var(--color-primary)',
+  color = 'var(--c-accent)',
   height = 6,
   style,
 }) => {

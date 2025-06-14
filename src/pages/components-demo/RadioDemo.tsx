@@ -14,7 +14,7 @@ export const RadioDemo: React.FC = () => {
     >
       <h2
         style={{
-          color: 'var(--text-heading)',
+          color: 'var(--c-text-primary)',
           marginBottom: 'var(--spacing-large)',
           fontSize: 'var(--font-size-large)',
         }}
@@ -45,7 +45,7 @@ export const RadioDemo: React.FC = () => {
           disabled
         />
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--text-body)' }}>
+      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
         <b>Выбрано:</b> {value}
       </div>
     </div>

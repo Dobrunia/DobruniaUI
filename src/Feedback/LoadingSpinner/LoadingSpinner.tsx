@@ -232,7 +232,7 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
  *   - 'bars' - анимированные полоски
  *   - 'waves' - волновые полоски с изменением высоты
  * @param {SpinnerSize} [size='medium'] - размер спиннера: 'small' | 'medium' | 'large'
- * @param {string} [color='var(--color-primary)'] - цвет спиннера
+ * @param {string} [color='var(--c-accent)'] - цвет спиннера
  * @param {string} [className] - дополнительные CSS классы
  *
  * @example
@@ -246,7 +246,7 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
  * <LoadingSpinner variant="dots" size="small" color="#ff6b35" />
  *
  * // Волновые полоски
- * <LoadingSpinner variant="waves" size="medium" color="var(--color-accent)" />
+ * <LoadingSpinner variant="waves" size="medium" color="var(--c-accent)" />
  *
  * // Полоски для загрузки контента
  * <LoadingSpinner variant="bars" size="large" />
@@ -254,7 +254,7 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   variant = 'classic',
   size = 'medium',
-  color = 'var(--color-primary)',
+  color = 'var(--c-accent)',
   className,
 }) => {
   const renderSpinner = () => {

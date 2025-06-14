@@ -23,8 +23,8 @@ const styles = {
   demoCard: {
     padding: '24px',
     borderRadius: '12px',
-    border: '1px solid var(--color-border)',
-    backgroundColor: 'var(--color-background)',
+    border: '1px solid var(--c-border)',
+    backgroundColor: 'var(--c-bg-default)',
   } as React.CSSProperties,
 
   buttonGroup: {

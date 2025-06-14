@@ -63,8 +63,8 @@ const SelectButton = styled.button<{ $isOpen: boolean; $disabled: boolean }>`
   min-height: 44px;
   padding: 12px 16px;
   padding-right: 60px; /* Space for actions */
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  background: var(--c-bg-subtle);
+  border: 2px solid var(--c-border);
   border-radius: var(--radius-medium);
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   transition: all var(--transition-fast);
@@ -73,20 +73,20 @@ const SelectButton = styled.button<{ $isOpen: boolean; $disabled: boolean }>`
   opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 
   &:hover:not(:disabled) {
-    border-color: var(--color-primary);
+    border-color: var(--c-border-focus);
   }
 
   &:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+    border-color: var(--c-border-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-border-focus) 20%, transparent);
   }
 
   ${({ $isOpen }) =>
     $isOpen &&
     `
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+    border-color: var(--c-border-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-border-focus) 20%, transparent);
   `}
 `;
 
@@ -112,7 +112,7 @@ const DropdownArrow = styled.div<{ $isOpen: boolean }>`
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 5px solid var(--text-secondary);
+  border-top: 5px solid var(--c-text-secondary);
   transition: transform var(--transition-fast);
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
@@ -123,8 +123,8 @@ const OptionsList = styled.div<{ $isSubmenu?: boolean }>`
   left: ${({ $isSubmenu }) => ($isSubmenu ? '0' : '0')};
   right: ${({ $isSubmenu }) => ($isSubmenu ? 'auto' : '0')};
   min-width: ${({ $isSubmenu }) => ($isSubmenu ? '250px' : '100%')};
-  background: var(--color-surface);
-  border: 2px solid var(--color-primary);
+  background: var(--c-bg-subtle);
+  border: 2px solid var(--c-border-focus);
   border-radius: var(--radius-medium);
   overflow: hidden;
   z-index: 9999;
@@ -149,26 +149,26 @@ const Option = styled.div<{ $isSelected: boolean; $hasSubmenu?: boolean }>`
   padding: 12px;
   cursor: pointer;
   transition: background var(--transition-fast);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-border-focus) 20%, transparent);
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: var(--color-elevated);
+    background: var(--c-bg-elevated);
   }
 
   ${({ $isSelected, $hasSubmenu }) =>
     $isSelected &&
     `
-    background: var(--color-elevated-active);
+    background: color-mix(in srgb, var(--c-accent) 10%, transparent 90%);
     
     &::after {
       content: '✓';
       position: absolute;
       right: ${$hasSubmenu ? '32px' : '12px'};
-      color: var(--color-accent);
+      color: var(--c-accent);
       font-weight: bold;
     }
   `}
@@ -179,7 +179,7 @@ const SubmenuArrow = styled.div`
   right: 12px;
   width: 0;
   height: 0;
-  border-left: 5px solid var(--text-secondary);
+  border-left: 5px solid var(--c-text-secondary);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   transition: color var(--transition-fast);
@@ -205,7 +205,7 @@ const OptionContent = styled.div`
 
 const OptionLabel = styled.span`
   font-weight: 500;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -221,7 +221,7 @@ const OptionDescription = styled.span`
 
 const PlaceholderText = styled.span`
   height: 20px;
-  color: var(--text-body);
+  color: var(--c-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -257,12 +257,6 @@ const ClearButton = styled.button`
   width: 20px;
   height: 20px;
   transition: all 0.2s ease;
-  color: var(--text-body);
-
-  &:hover {
-    background-color: var(--color-surface);
-    color: var(--text-primary);
-  }
 
   &:active {
     transform: scale(0.95);

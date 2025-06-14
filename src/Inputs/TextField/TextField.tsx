@@ -28,7 +28,7 @@ const Label = styled.label<{ $floating: boolean; $error?: boolean }>`
   transform: translateY(${({ $floating }) => ($floating ? '0' : '-50%')});
   font-size: ${({ $floating }) =>
     $floating ? 'var(--font-size-small)' : 'var(--font-size-medium)'};
-  color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+  color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
   background: transparent;
   pointer-events: none;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,34 +40,34 @@ const Input = styled.input<{ $error?: boolean; $type?: string }>`
   height: 40px;
   padding: 10px ${({ $type }) => ($type === 'password' ? '40px' : '16px')} 2px 10px;
   border-radius: var(--radius-medium);
-  border: 2px solid ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
-  background: var(--color-surface);
-  color: var(--text-body);
+  border: 2px solid ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
+  background: var(--c-bg-subtle);
+  color: var(--c-text-primary);
   font-size: var(--font-size-medium);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
   box-sizing: border-box;
   &:hover {
-    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+    border-color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
     box-shadow: 0 0 0 2px
       ${({ $error }) =>
         $error
-          ? 'var(--color-error)'
-          : 'color-mix(in srgb, var(--color-primary) 20%, transparent 80%)'};
+          ? 'var(--c-error)'
+          : 'color-mix(in srgb, var(--c-border-focus) 20%, transparent 80%)'};
   }
   &:disabled {
-    background: var(--color-elevated);
-    color: var(--text-disabled);
-    border-color: var(--color-primary);
+    background: var(--c-bg-elevated);
+    color: var(--c-text-secondary);
+    border-color: var(--c-border);
     cursor: not-allowed;
   }
   &:focus {
-    border-color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--color-primary)')};
+    border-color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
     box-shadow: 0 0 0 2px
       ${({ $error }) =>
         $error
-          ? 'var(--color-error)'
-          : 'color-mix(in srgb, var(--color-primary) 40%, transparent 60%)'};
+          ? 'var(--c-error)'
+          : 'color-mix(in srgb, var(--c-border-focus) 40%, transparent 60%)'};
   }
   /* Hide number arrows for type=number */
   &[type='number']::-webkit-outer-spin-button,
@@ -94,13 +94,13 @@ const EyeButton = styled.button`
   align-items: center;
   justify-content: center;
   z-index: 3;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   height: 24px;
   width: 24px;
 `;
 
 const HelperText = styled.div<{ $error?: boolean }>`
-  color: ${({ $error }) => ($error ? 'var(--color-error)' : 'var(--text-secondary)')};
+  color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-text-secondary)')};
   font-size: var(--font-size-small);
   min-height: 1.2em;
   margin-top: 0.1em;

@@ -23,8 +23,8 @@ const styles = {
   demoCard: {
     padding: '24px',
     borderRadius: '12px',
-    border: '1px solid var(--color-border)',
-    backgroundColor: 'var(--color-surface)',
+    border: '1px solid var(--c-border)',
+    backgroundColor: 'var(--c-bg-elevated)',
   } as React.CSSProperties,
 
   buttonGroup: {
@@ -268,7 +268,7 @@ export const ModalSubmitDemo: React.FC = () => {
             required
           />
         </div>
-        <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+        <p style={{ fontSize: '14px', color: 'var(--c-text-secondary)' }}>
           Кнопка "Войти" активируется только после заполнения всех полей.
         </p>
       </ModalSubmit>

@@ -10,7 +10,7 @@ const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
   height: ${({ $height }) => $height || 'max-content'};
   overflow-y: auto;
   overflow-x: hidden;
-  background: var(--color-elevated);
+  background: var(--c-bg-elevated);
 `;
 
 const SectionTitle = styled.div`
@@ -19,7 +19,7 @@ const SectionTitle = styled.div`
   justify-content: space-between;
   padding: var(--spacing-small);
   padding-right: 0;
-  color: var(--text-heading);
+  color: var(--c-text-primary);
   font-size: var(--font-size-medium);
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -41,16 +41,17 @@ const SidebarItem = styled.li<{ selected: boolean }>`
   position: relative;
   padding: var(--spacing-small) var(--spacing-medium);
   cursor: pointer;
-  background: ${({ selected }) => (selected ? 'var(--color-elevated-active)' : 'transparent')};
-  color: ${({ selected }) => (selected ? 'var(--text-heading)' : 'var(--text-secondary)')};
+  background: ${({ selected }) =>
+    selected ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
+  color: ${({ selected }) => (selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
   border-radius: var(--radius-medium);
   margin-bottom: var(--spacing-small);
   font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
   font-size: var(--font-size-medium);
   transition: background var(--transition-fast), color var(--transition-fast);
   &:hover {
-    background: color-mix(in srgb, var(--color-elevated-active) 80%, white 20%);
-    color: var(--text-heading);
+    background: color-mix(in srgb, var(--c-accent) 5%, transparent 95%);
+    color: var(--c-text-primary);
   }
   &:last-child {
     margin-bottom: 0;
@@ -65,7 +66,7 @@ const SidebarItem = styled.li<{ selected: boolean }>`
     width: 4px;
     height: 60%;
     border-radius: 2px;
-    background: var(--color-primary);
+    background: var(--c-accent);
   }
 `;
 
@@ -196,7 +197,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
                       fontSize: '0.7em',
                       width: 16,
                       display: 'inline-block',
-                      color: 'var(--text-secondary)',
+                      color: 'var(--c-text-secondary)',
                     }}
                   >
                     {collapsed[sectionKey] ? '►' : '▼'}

@@ -80,8 +80,8 @@ const SnackbarRoot = styled.div<{
 const SnackbarContent = styled.div`
   min-width: 288px;
   max-width: 480px;
-  background: var(--color-surface);
-  color: var(--text-body);
+  background: var(--c-bg-elevated);
+  color: var(--c-text-primary);
   border-radius: var(--radius-medium);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   padding: 14px 24px;

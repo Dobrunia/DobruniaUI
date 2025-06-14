@@ -32,12 +32,13 @@ const Item = styled.div<{ $selected?: boolean; $unread?: boolean }>`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: ${({ $selected }) => ($selected ? 'var(--color-secondary)' : 'transparent')};
-  color: var(--text-heading);
+  background: ${({ $selected }) => ($selected ? 'var(--c-accent)' : 'transparent')};
+  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-text-primary)')};
   cursor: pointer;
-  border-bottom: 1px solid var(--color-elevated);
+  border-bottom: 1px solid var(--c-border);
   &:hover {
-    background: var(--color-elevated-active);
+    background: ${({ $selected }) =>
+      $selected ? 'var(--c-accent-hover)' : 'var(--c-bg-elevated)'};
   }
 `;
 
@@ -64,14 +65,14 @@ const Name = styled.span`
 
 const Time = styled.span`
   font-size: 0.9em;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   margin-left: 8px;
   white-space: nowrap;
 `;
 
 const LastMessage = styled.span<{ $unread?: boolean }>`
   font-size: 0.97em;
-  color: ${({ $unread }) => ($unread ? 'var(--color-primary)' : 'var(--text-secondary)')};
+  color: ${({ $unread }) => ($unread ? 'var(--c-accent)' : 'var(--c-text-secondary)')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -80,7 +81,7 @@ const LastMessage = styled.span<{ $unread?: boolean }>`
 const ReadMark = styled.span`
   font-size: 1.1em;
   margin-left: 6px;
-  color: var(--color-primary);
+  color: var(--c-accent);
 `;
 
 /**

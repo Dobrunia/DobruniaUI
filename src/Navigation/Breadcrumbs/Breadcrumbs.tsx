@@ -68,7 +68,7 @@ const BreadcrumbsContainer = styled.nav<{ $size: 'small' | 'medium' | 'large' }>
   align-items: center;
   gap: ${({ $size }) => getSizeStyles($size).gap};
   font-size: ${({ $size }) => getSizeStyles($size).fontSize};
-  color: var(--text-body);
+  color: var(--c-text-primary);
   flex-wrap: wrap;
 `;
 
@@ -88,9 +88,9 @@ const BreadcrumbItem = styled.div<{
   cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
   text-decoration: none;
   color: ${({ $isLast, $isClickable }) => {
-    if ($isLast) return 'var(--text-heading)';
-    if ($isClickable) return 'var(--color-primary)';
-    return 'var(--text-muted)';
+    if ($isLast) return 'var(--c-text-primary)';
+    if ($isClickable) return 'var(--c-accent)';
+    return 'var(--c-text-secondary)';
   }};
   font-weight: ${({ $isLast }) => ($isLast ? '600' : '400')};
 
@@ -102,20 +102,20 @@ const BreadcrumbItem = styled.div<{
         return `
           &:hover {
             text-decoration: underline;
-            color: var(--color-primary-dark);
+            color: color-mix(in srgb, var(--c-accent) 80%, black 20%);
           }
         `;
       case 'pills':
         return `
           &:hover {
-            background-color: var(--color-background-secondary);
-            color: var(--color-primary-dark);
+            background-color: var(--c-bg-elevated);
+            color: color-mix(in srgb, var(--c-accent) 80%, black 20%);
           }
         `;
       default:
         return `
           &:hover {
-            color: var(--color-primary-dark);
+            color: color-mix(in srgb, var(--c-accent) 80%, black 20%);
           }
         `;
     }
@@ -124,10 +124,10 @@ const BreadcrumbItem = styled.div<{
   ${({ $isLast, $variant }) =>
     $isLast && $variant === 'pills'
       ? `
-      background-color: var(--color-primary);
+      background-color: var(--c-accent);
       color: white;
       &:hover {
-        background-color: var(--color-primary);
+        background-color: var(--c-accent);
         color: white;
       }
     `
@@ -147,7 +147,7 @@ const IconWrapper = styled.span<{ $size: 'small' | 'medium' | 'large' }>`
 `;
 
 const Separator = styled.span<{ $size: 'small' | 'medium' | 'large' }>`
-  color: var(--text-muted);
+  color: var(--c-text-secondary);
   display: flex;
   align-items: center;
   font-size: ${({ $size }) => getSizeStyles($size).fontSize};
@@ -155,14 +155,14 @@ const Separator = styled.span<{ $size: 'small' | 'medium' | 'large' }>`
 `;
 
 const CollapsedIndicator = styled.span`
-  color: var(--text-muted);
+  color: var(--c-text-secondary);
   cursor: pointer;
   padding: 2px 8px;
   border-radius: var(--radius-small);
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--color-background-secondary);
+    background-color: var(--c-bg-elevated);
   }
 `;
 

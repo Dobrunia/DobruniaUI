@@ -84,7 +84,7 @@ export const UndoSnackbar: React.FC<UndoSnackbarProps> = ({
           variant='ghost'
           onClick={handleUndo}
           style={{
-            color: 'var(--color-primary)',
+            color: 'var(--c-accent)',
             textTransform: 'uppercase',
             fontWeight: 500,
             fontSize: 'var(--font-size-small)',

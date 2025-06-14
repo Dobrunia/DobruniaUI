@@ -34,15 +34,15 @@ const CheckboxWrapper = styled.label<{ $disabled?: boolean }>`
   gap: var(--spacing-small);
   cursor: pointer;
   font-size: var(--font-size-medium);
-  color: var(--text-body);
+  color: var(--c-text-primary);
   user-select: none;
   position: relative;
   opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 
   &:hover .custom-checkbox-box {
-    border-color: ${({ $disabled }) =>
-      $disabled ? 'var(--color-primary)' : 'var(--color-primary)'};
-    background: ${({ $disabled }) => ($disabled ? 'inherit' : 'var(--color-elevated-active)')};
+    border-color: ${({ $disabled }) => ($disabled ? 'var(--c-accent)' : 'var(--c-accent)')};
+    background: ${({ $disabled }) =>
+      $disabled ? 'inherit' : 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)'};
   }
 `;
 
@@ -56,9 +56,9 @@ const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
 const CustomBox = styled.span<{ checked: boolean; disabled?: boolean }>`
   width: 1.1em;
   height: 1.1em;
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--c-accent);
   border-radius: var(--radius-medium);
-  background: ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-surface)')};
+  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
   display: inline-flex;
   align-items: center;
   justify-content: center;

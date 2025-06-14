@@ -24,8 +24,8 @@ const BadgeCircle = styled.span<{ $variant?: string }>`
           min-width: 0;
           height: auto;
           padding: var(--spacing-small) var(--spacing-large);
-          background: var(--color-elevated-active);
-          color: var(--text-heading);
+          background: var(--c-bg-elevated);
+          color: var(--c-text-primary);
           border-radius: var(--radius-large);
           display: flex;
           align-items: center;
@@ -43,8 +43,8 @@ const BadgeCircle = styled.span<{ $variant?: string }>`
           min-width: 18px;
           height: 18px;
           padding: 0 5px;
-          background: var(--color-primary);
-          color: #fff;
+          background: var(--c-accent);
+          color: var(--c-text-inverse);
           border-radius: 999px;
           display: flex;
           align-items: center;

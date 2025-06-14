@@ -25,13 +25,11 @@ const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
 const Track = styled.div<{ checked: boolean }>`
   width: ${TRACK_WIDTH}px;
   height: ${TRACK_HEIGHT}px;
-  background: ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-elevated)')};
+  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-elevated)')};
   border-radius: ${TRACK_HEIGHT / 2}px;
   position: relative;
-  box-shadow: 0 0 2px
-    ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-elevated)')};
-  border: 2px solid
-    ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--color-elevated-active)')};
+  box-shadow: 0 0 2px ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-elevated)')};
+  border: 2px solid ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-border)')};
   transition: background 0.4s cubic-bezier(0.4, 2, 0.6, 1),
     box-shadow 0.4s cubic-bezier(0.4, 2, 0.6, 1), border-color 0.4s cubic-bezier(0.4, 2, 0.6, 1);
 `;
@@ -56,7 +54,7 @@ const Thumb = styled.div<{ checked: boolean }>`
 const Icon = styled.svg<{ checked: boolean }>`
   width: 18px;
   height: 18px;
-  stroke: ${({ checked }) => (checked ? 'var(--color-primary)' : 'var(--text-heading)')};
+  stroke: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-text-primary)')};
   stroke-width: 2.5px;
   stroke-linecap: round;
   fill: none;

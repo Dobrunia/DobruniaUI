@@ -69,7 +69,7 @@ export const ChatListDemo: React.FC = () => {
     <div
       style={{
         maxWidth: 340,
-        background: 'var(--color-elevated)',
+        background: 'var(--c-bg-elevated)',
         borderRadius: 8,
         overflow: 'hidden',
       }}

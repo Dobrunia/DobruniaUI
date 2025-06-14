@@ -133,8 +133,8 @@ const Menu = styled.div<{
 }>`
   min-width: ${({ $size }) => getSizeStyles($size).minWidth};
   max-width: ${({ $maxWidth }) => ($maxWidth ? `${$maxWidth}px` : '320px')};
-  background: var(--color-surface);
-  border: 1px solid var(--color-elevated);
+  background: var(--c-bg-elevated);
+  border: 1px solid var(--c-border);
   border-radius: var(--radius-medium);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
@@ -157,14 +157,14 @@ const MenuGroup = styled.div`
   &:not(:last-child) {
     margin-bottom: 4px;
     padding-bottom: 4px;
-    border-bottom: 1px solid var(--color-elevated);
+    border-bottom: 1px solid var(--c-border);
   }
 `;
 
 const GroupTitle = styled.div<{ $size: 'small' | 'medium' | 'large' }>`
   font-size: var(--font-size-small);
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   padding: 6px 14px 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -192,19 +192,19 @@ const MenuButton = styled.button<{
 
   /* Цвета в зависимости от типа */
   color: ${({ $type, $disabled }) => {
-    if ($disabled) return 'var(--text-disabled)';
-    if ($type === 'destructive') return 'var(--color-error)';
-    if ($type === 'primary') return 'var(--color-primary)';
-    return 'var(--text-body)';
+    if ($disabled) return 'var(--c-text-secondary)';
+    if ($type === 'destructive') return 'var(--c-error)';
+    if ($type === 'primary') return 'var(--c-accent)';
+    return 'var(--c-text-primary)';
   }};
 
   opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
 
   &:hover:not(:disabled) {
     background: ${({ $type }) => {
-      if ($type === 'destructive') return 'rgba(212, 76, 74, 0.1)';
-      if ($type === 'primary') return 'rgba(78, 147, 245, 0.1)';
-      return 'var(--color-elevated)';
+      if ($type === 'destructive') return 'var(--c-error)20';
+      if ($type === 'primary') return 'var(--c-accent)20';
+      return 'var(--c-bg-elevated)';
     }};
 
     transform: translateY(-1px);
@@ -213,18 +213,18 @@ const MenuButton = styled.button<{
   &:active:not(:disabled) {
     transform: translateY(0);
     background: ${({ $type }) => {
-      if ($type === 'destructive') return 'rgba(212, 76, 74, 0.15)';
-      if ($type === 'primary') return 'rgba(78, 147, 245, 0.15)';
-      return 'var(--color-elevated-active)';
+      if ($type === 'destructive') return 'var(--c-error)30';
+      if ($type === 'primary') return 'var(--c-accent)30';
+      return 'var(--c-accent)20';
     }};
   }
 
   &:focus-visible {
     box-shadow: 0 0 0 2px
       ${({ $type }) => {
-        if ($type === 'destructive') return 'var(--color-error)';
-        if ($type === 'primary') return 'var(--color-primary)';
-        return 'var(--color-accent)';
+        if ($type === 'destructive') return 'var(--c-error)';
+        if ($type === 'primary') return 'var(--c-accent)';
+        return 'var(--c-border-focus)';
       }}40;
   }
 `;
@@ -253,9 +253,9 @@ const IconWrapper = styled.span<{ $size: 'small' | 'medium' | 'large' }>`
 
 const Shortcut = styled.span`
   font-size: var(--font-size-small);
-  color: var(--text-secondary);
+  color: var(--c-text-secondary);
   font-weight: 500;
-  background: var(--color-elevated);
+  background: var(--c-bg-subtle);
   padding: 2px 6px;
   border-radius: calc(var(--radius-medium) / 2);
   margin-left: auto;

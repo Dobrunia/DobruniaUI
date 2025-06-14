@@ -128,7 +128,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
   return (
     <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
-      <h1 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>Breadcrumbs Demo</h1>
+      <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>Breadcrumbs Demo</h1>
 
       <div
         style={{
@@ -141,12 +141,12 @@ export const BreadcrumbsDemo: React.FC = () => {
         <div
           style={{
             padding: '32px',
-            border: '2px solid var(--color-primary)',
+            border: '2px solid var(--c-accent)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: 'var(--c-bg-default)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             🧭 Настраиваемый компонент
           </h3>
 
@@ -161,7 +161,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           >
             {/* Размер */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Размер:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Размер:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {sizes.map((size) => (
                   <label
@@ -191,7 +191,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Вариант */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Стиль:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Стиль:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {variants.map((variant) => (
                   <label
@@ -221,7 +221,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Разделитель */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Разделитель:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Разделитель:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {separators.map((sep) => (
                   <label
@@ -249,7 +249,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Настройки */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--text-heading)' }}>Настройки:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Настройки:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label
                   style={{
@@ -274,7 +274,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                       display: 'block',
                       marginBottom: '4px',
                       fontSize: 'var(--font-size-small)',
-                      color: 'var(--text-body)',
+                      color: 'var(--c-text-primary)',
                     }}
                   >
                     Макс. элементов:
@@ -290,7 +290,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                     }
                     style={{
                       padding: '4px 8px',
-                      border: '1px solid var(--color-border)',
+                      border: '1px solid var(--c-border)',
                       borderRadius: 'var(--radius-small)',
                       width: '120px',
                     }}
@@ -304,7 +304,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           <div
             style={{
               padding: '24px',
-              backgroundColor: 'var(--color-background-secondary)',
+              backgroundColor: 'var(--c-bg-subtle)',
               borderRadius: 'var(--radius-medium)',
               marginBottom: '16px',
             }}
@@ -320,7 +320,7 @@ export const BreadcrumbsDemo: React.FC = () => {
             />
           </div>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-small)' }}>
+          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
             Попробуйте разные настройки выше для изменения внешнего вида
           </p>
         </div>
@@ -329,24 +329,24 @@ export const BreadcrumbsDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '24px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
             📚 Примеры использования
           </h3>
 
           <div style={{ display: 'grid', gap: '24px' }}>
             {/* Базовый пример */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Базовая навигация (E-commerce)
               </h4>
               <div
                 style={{
                   padding: '16px',
-                  backgroundColor: 'var(--color-background-secondary)',
+                  backgroundColor: 'var(--c-bg-subtle)',
                   borderRadius: 'var(--radius-small)',
                 }}
               >
@@ -356,7 +356,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-muted)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Классический пример для интернет-магазина
@@ -365,13 +365,13 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Длинный путь */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Длинный путь с ограничением (maxItems=5)
               </h4>
               <div
                 style={{
                   padding: '16px',
-                  backgroundColor: 'var(--color-background-secondary)',
+                  backgroundColor: 'var(--c-bg-subtle)',
                   borderRadius: 'var(--radius-small)',
                 }}
               >
@@ -381,7 +381,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-muted)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Автоматическое сворачивание с возможностью раскрытия (кликните на "...")
@@ -390,13 +390,13 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* SPA навигация */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 SPA навигация с обработчиками onClick
               </h4>
               <div
                 style={{
                   padding: '16px',
-                  backgroundColor: 'var(--color-background-secondary)',
+                  backgroundColor: 'var(--c-bg-subtle)',
                   borderRadius: 'var(--radius-small)',
                 }}
               >
@@ -411,7 +411,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   marginTop: '8px',
                   fontSize: 'var(--font-size-small)',
-                  color: 'var(--text-muted)',
+                  color: 'var(--c-text-secondary)',
                 }}
               >
                 Использование onClick вместо href для SPA. Кликните на элементы!
@@ -420,7 +420,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Различные стили */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Различные варианты отображения
               </h4>
 
@@ -428,7 +428,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -447,7 +447,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -466,7 +466,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -486,7 +486,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Кастомные разделители */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Кастомные разделители
               </h4>
 
@@ -494,7 +494,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -513,7 +513,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -532,7 +532,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -552,7 +552,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Разные размеры */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--text-heading)' }}>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
                 Размеры компонента
               </h4>
 
@@ -560,7 +560,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -579,7 +579,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -598,7 +598,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: 'var(--color-background-secondary)',
+                    backgroundColor: 'var(--c-bg-subtle)',
                     borderRadius: 'var(--radius-small)',
                   }}
                 >
@@ -623,7 +623,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           <div
             style={{
               padding: '24px',
-              border: '1px solid var(--color-border)',
+              border: '1px solid var(--c-border)',
               borderRadius: 'var(--radius-medium)',
             }}
           >
@@ -635,7 +635,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 marginBottom: '16px',
               }}
             >
-              <h3 style={{ color: 'var(--text-heading)', margin: 0 }}>📝 История кликов</h3>
+              <h3 style={{ color: 'var(--c-text-primary)', margin: 0 }}>📝 История кликов</h3>
               <Button variant='secondary' size='small' onClick={() => setClickHistory([])}>
                 Очистить
               </Button>
@@ -645,7 +645,7 @@ export const BreadcrumbsDemo: React.FC = () => {
               style={{
                 maxHeight: '200px',
                 overflowY: 'auto',
-                backgroundColor: 'var(--color-background-secondary)',
+                backgroundColor: 'var(--c-bg-subtle)',
                 padding: '12px',
                 borderRadius: 'var(--radius-small)',
                 fontSize: 'var(--font-size-small)',
@@ -658,13 +658,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '4px 0',
                     borderBottom:
-                      index < clickHistory.length - 1 ? '1px solid var(--color-border)' : 'none',
+                      index < clickHistory.length - 1 ? '1px solid var(--c-border)' : 'none',
                   }}
                 >
-                  <span style={{ color: 'var(--text-muted)' }}>
+                  <span style={{ color: 'var(--c-text-secondary)' }}>
                     [{new Date().toLocaleTimeString()}]
                   </span>{' '}
-                  <span style={{ color: 'var(--text-body)' }}>{entry}</span>
+                  <span style={{ color: 'var(--c-text-primary)' }}>{entry}</span>
                 </div>
               ))}
             </div>
@@ -675,18 +675,18 @@ export const BreadcrumbsDemo: React.FC = () => {
         <div
           style={{
             padding: '24px',
-            border: '1px solid var(--color-border)',
+            border: '1px solid var(--c-border)',
             borderRadius: 'var(--radius-medium)',
-            backgroundColor: 'var(--color-background-secondary)',
+            backgroundColor: 'var(--c-bg-subtle)',
           }}
         >
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px' }}>
+          <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
             💡 Практические советы
           </h3>
 
           <ul
             style={{
-              color: 'var(--text-body)',
+              color: 'var(--c-text-primary)',
               fontSize: 'var(--font-size-small)',
               lineHeight: '1.6',
               paddingLeft: '20px',
