@@ -363,7 +363,7 @@ export const ActionsMenuDemo = () => {
                 <div
                   style={{
                     background: 'var(--c-accent)',
-                    color: 'white',
+                    color: 'var(--c-text-inverse)',
                     padding: '12px 16px',
                     borderRadius: 'var(--radius-medium)',
                     maxWidth: '300px',

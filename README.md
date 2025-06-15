@@ -11,6 +11,12 @@ DobruniaUI - это комплексная библиотека React компо
 
 **[Попробуйте все компоненты в интерактивном плейграунде →](https://dobrunia.github.io/DobruniaUI/)**
 
+## ☕ Поддержать
+
+Вы можете поддержать развитие библиотеки:
+
+[![Boosty](https://img.shields.io/badge/Boosty-Поддержать-orange?logo=buymeacoffee)](https://boosty.to/sentryez/donate)
+
 ## 📦 Установка
 
 ```bash
@@ -902,3 +908,4 @@ MIT © [Dobrunia](https://github.com/Dobrunia)
 - [🎮 Интерактивное демо](https://dobrunia.github.io/DobruniaUI/)
 - [📖 Документация](https://github.com/Dobrunia/dobruniaui#readme)
 - [🐛 Сообщить об ошибке](https://github.com/Dobrunia/dobruniaui/issues)
+- [![Boosty](https://img.shields.io/badge/Boosty-Поддержать-orange?logo=buymeacoffee)](https://boosty.to/sentryez/donate)
