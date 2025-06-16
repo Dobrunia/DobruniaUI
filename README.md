@@ -842,19 +842,13 @@ DobruniaUI использует современную систему CSS ток
 
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/Dobrunia/dobruniaui.git
+git clone https://github.com/Dobrunia/DobruniaUI.git
 
 # Установить зависимости
-yarn install
+npm install
 
 # Запустить dev server
-yarn dev
-
-# Собрать библиотеку
-yarn build
-
-# Запустить линтер
-yarn lint
+npm run dev
 ```
 
 ## 📋 TypeScript
