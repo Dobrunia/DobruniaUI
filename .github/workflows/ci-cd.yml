@@ -8,6 +8,7 @@ on:
 
 env:
   NODE_VERSION: '20'
+  CI: 'true'
 
 jobs:
   # Проверка билда и линтинга
@@ -24,15 +25,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline
+        env:
+          CI: true
 
       - name: Run linting
         run: npm run lint
 
       - name: Build library
         run: npm run build
+        env:
+          CI: true
 
       - name: Upload library build artifacts
         uses: actions/upload-artifact@v4
@@ -45,6 +51,8 @@ jobs:
 
       - name: Build demo app
         run: npm run build:demo
+        env:
+          CI: true
 
       - name: Upload demo build artifacts
         uses: actions/upload-artifact@v4
@@ -72,10 +80,13 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline
+        env:
+          CI: true
 
       - name: Download library build artifacts
         uses: actions/download-artifact@v4

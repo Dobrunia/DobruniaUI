@@ -19,16 +19,18 @@ export default defineConfig(({ command, mode }) => {
       ...(isLib ? [dts()] : []),
     ],
 
-    // Оптимизация зависимостей для CI/CD
+    // Оптимизация зависимостей
     optimizeDeps: {
       include: ['react', 'react-dom', 'styled-components'],
     },
+
     resolve: {
       alias: {
         '@DobruniaUI': path.resolve(__dirname, 'src/index.ts'),
         '@DobruniaUI/': path.resolve(__dirname, 'src'),
       },
     },
+
     // если это сборка библиотеки — подключаем lib-опции,
     // иначе (в dev) Vite просто игнорирует build-секцию
     ...(isLib && {
@@ -51,11 +53,6 @@ export default defineConfig(({ command, mode }) => {
               'styled-components': 'styled',
             },
           },
-          // Исправление проблемы с нативными модулями в CI
-          onwarn(warning, warn) {
-            if (warning.code === 'MODULE_NOT_FOUND') return;
-            warn(warning);
-          },
         },
       },
     }),
@@ -66,13 +63,6 @@ export default defineConfig(({ command, mode }) => {
         outDir: 'dist',
         emptyOutDir: true,
         sourcemap: false,
-        rollupOptions: {
-          // Исправление проблемы с нативными модулями в CI
-          onwarn(warning, warn) {
-            if (warning.code === 'MODULE_NOT_FOUND') return;
-            warn(warning);
-          },
-        },
       },
     }),
   };

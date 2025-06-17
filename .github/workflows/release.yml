@@ -31,15 +31,20 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline
+        env:
+          CI: true
 
       - name: Run tests and build
         run: |
           npm run lint
           npm run build
+        env:
+          CI: true
 
       - name: Configure Git
         run: |
