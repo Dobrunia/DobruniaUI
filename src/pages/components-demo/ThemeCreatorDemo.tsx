@@ -191,8 +191,8 @@ const hexToHSL = (hex: string) => {
   const max = Math.max(r, g, b),
     min = Math.min(r, g, b);
   let h = 0,
-    s = 0,
-    l = (max + min) / 2;
+    s = 0;
+  const l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -215,9 +215,9 @@ const hexToHSL = (hex: string) => {
 const hslToHex = (h: number, s: number, l: number) => {
   s /= 100;
   l /= 100;
-  let c = (1 - Math.abs(2 * l - 1)) * s;
-  let x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  let m = l - c / 2;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
   let r = 0,
     g = 0,
     b = 0;
@@ -425,8 +425,8 @@ const HSLConstructorSection: React.FC<{
   baseColor: string;
   hue: number;
   generatedPalette: Record<string, string>;
-  onUpdateBaseColor: (color: string, isFinal?: boolean) => void;
-  onUpdateHue: (hue: number, isFinal?: boolean) => void;
+  onUpdateBaseColor: (color: string) => void;
+  onUpdateHue: (hue: number) => void;
 }> = ({ baseColor, hue, generatedPalette, onUpdateBaseColor, onUpdateHue }) => (
   <section className='section'>
     <h2>🎛️ Конструктор тем на HSL</h2>
