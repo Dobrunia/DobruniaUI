@@ -6,6 +6,7 @@ interface TabbarProps {
   tabs: TabData[];
   selectedId: string | number;
   onTabPress: (id: string | number) => void;
+  className?: string;
 }
 
 const Container = styled.div`
@@ -29,8 +30,9 @@ const Container = styled.div`
  * @param {TabData[]} tabs - массив объектов с данными для каждой вкладки
  * @param {string | number} selectedId - id выбранной вкладки
  * @param {(id: string | number) => void} onTabPress - функция обработки нажатия на вкладку
+ * @param {string} className - дополнительный CSS класс для кастомизации
  */
-export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress }) => {
+export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, className }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   // drag-scroll state
   const isDragging = React.useRef(false);
@@ -70,6 +72,7 @@ export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress }) 
   return (
     <Container
       ref={containerRef}
+      className={className}
       onMouseDown={onMouseDown}
       onMouseLeave={onMouseLeave}
       onMouseUp={onMouseUp}

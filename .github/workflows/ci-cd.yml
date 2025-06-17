@@ -23,16 +23,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run linting
-        run: yarn lint
+        run: npm run lint
 
       - name: Build library
-        run: yarn build
+        run: npm run build
 
       - name: Upload library build artifacts
         uses: actions/upload-artifact@v4
@@ -44,7 +44,7 @@ jobs:
         run: rm -rf dist
 
       - name: Build demo app
-        run: yarn build:demo
+        run: npm run build:demo
 
       - name: Upload demo build artifacts
         uses: actions/upload-artifact@v4
@@ -71,11 +71,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Download library build artifacts
         uses: actions/download-artifact@v4
@@ -110,7 +110,7 @@ jobs:
         if: steps.version-check.outputs.version-changed == 'false'
         run: |
           echo "Auto-bumping patch version..."
-          yarn version --patch --no-git-tag-version
+          npm version patch --no-git-tag-version
 
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "New version: $NEW_VERSION"
@@ -147,7 +147,7 @@ jobs:
 
       - name: Publish to NPM
         if: steps.npm-check.outputs.exists == 'false'
-        run: yarn publish --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -167,8 +167,6 @@ jobs:
             ### 📦 Установка
             ```bash
             npm install dobruniaui@${{ steps.final-version.outputs.version }}
-            # или
-            yarn add dobruniaui@${{ steps.final-version.outputs.version }}
             ```
 
             ### 🎮 Демо

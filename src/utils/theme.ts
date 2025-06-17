@@ -619,16 +619,31 @@ export const getSystemTheme = (): Theme => {
 };
 
 /**
+ * Проверяет, является ли строка валидной темой
+ * @param themeName - имя темы для проверки
+ * @returns true если тема существует
+ */
+const isValidTheme = (themeName: string): themeName is Theme => {
+  return getThemeConfig(themeName) !== undefined;
+};
+
+/**
  * Инициализирует систему тем
  */
 export const initThemeSystem = (): void => {
   if (typeof window === 'undefined') return;
 
   const savedTheme = getTheme();
-  if (savedTheme) {
+  if (savedTheme && isValidTheme(savedTheme)) {
+    // Применяем сохранённую тему только если она существует
     setTheme(savedTheme);
   } else {
-    // Если нет сохранённой темы, используем светлую
+    // Если нет сохранённой темы или она недействительна, используем светлую
+    if (savedTheme && !isValidTheme(savedTheme)) {
+      console.warn(`Saved theme "${savedTheme}" not found, falling back to light theme`);
+      // Очищаем недействительную тему из localStorage
+      localStorage.removeItem('dobrunia-theme');
+    }
     setTheme('light');
   }
 };

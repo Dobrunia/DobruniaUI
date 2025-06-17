@@ -15,9 +15,7 @@ tsconfig*.json
 .prettierrc*
 
 # Dev зависимости
-yarn.lock
 package-lock.json
-.yarnrc
 .npmrc
 
 # IDE и редакторы

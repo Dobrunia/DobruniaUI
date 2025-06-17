@@ -20,7 +20,6 @@ DobruniaUI - это комплексная библиотека React компо
 ## 📦 Установка
 
 ```bash
-# npm
 npm install dobruniaui styled-components react react-dom
 ```
 
@@ -648,14 +647,19 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Tabbar** - Вкладки
 
+- Горизонтальный скролл с поддержкой drag-scroll
+- Поддержка кастомизации через `className` prop
+- Адаптивное поведение на мобильных устройствах
+
 ```tsx
 <Tabbar
   tabs={[
-    { key: 'tab1', label: 'Вкладка 1' },
-    { key: 'tab2', label: 'Вкладка 2' },
+    { id: 'tab1', label: 'Вкладка 1' },
+    { id: 'tab2', label: 'Вкладка 2' },
   ]}
-  active='tab1'
-  onTabChange={handleTabChange}
+  selectedId='tab1'
+  onTabPress={handleTabPress}
+  className='custom-tabbar' // для кастомной стилизации
 />
 ```
 
