@@ -304,8 +304,8 @@ const useThemeConfig = () => {
     setTheme('light');
   };
 
-  const applyTheme = () => {
-    const themeConfig: ThemeConfig = { ...themeInfo, variables };
+  const applyTheme = (customVariables?: Record<string, string>) => {
+    const themeConfig: ThemeConfig = { ...themeInfo, variables: customVariables || variables };
     registerTheme(themeConfig);
     setTheme(themeInfo.name as Theme);
     setAppliedTheme(themeInfo.name);
@@ -680,8 +680,10 @@ export const ThemeCreatorDemo: React.FC = () => {
   const handleApply = () => {
     if (editorMode === 'hsl') {
       updateVariables(generatedPalette);
+      applyTheme(generatedPalette);
+    } else {
+      applyTheme();
     }
-    applyTheme();
   };
 
   // Определяем переменные для превью в зависимости от режима
