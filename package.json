@@ -1,6 +1,6 @@
 {
   "name": "dobruniaui",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "React UI библиотека компонентов с современным дизайном",
   "keywords": [
     "react",
@@ -64,8 +64,5 @@
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^5.1.4"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.28.1"
   }
 }
