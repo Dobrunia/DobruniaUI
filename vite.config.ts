@@ -18,6 +18,11 @@ export default defineConfig(({ command, mode }) => {
       // генерим .d.ts только в режиме сборки библиотеки
       ...(isLib ? [dts()] : []),
     ],
+
+    // Оптимизация зависимостей для CI/CD
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'styled-components'],
+    },
     resolve: {
       alias: {
         '@DobruniaUI': path.resolve(__dirname, 'src/index.ts'),
@@ -46,6 +51,11 @@ export default defineConfig(({ command, mode }) => {
               'styled-components': 'styled',
             },
           },
+          // Исправление проблемы с нативными модулями в CI
+          onwarn(warning, warn) {
+            if (warning.code === 'MODULE_NOT_FOUND') return;
+            warn(warning);
+          },
         },
       },
     }),
@@ -56,6 +66,13 @@ export default defineConfig(({ command, mode }) => {
         outDir: 'dist',
         emptyOutDir: true,
         sourcemap: false,
+        rollupOptions: {
+          // Исправление проблемы с нативными модулями в CI
+          onwarn(warning, warn) {
+            if (warning.code === 'MODULE_NOT_FOUND') return;
+            warn(warning);
+          },
+        },
       },
     }),
   };
