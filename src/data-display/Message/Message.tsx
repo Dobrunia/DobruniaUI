@@ -58,6 +58,7 @@ const MessageRoot = styled.div<{ $type: MessageType }>`
   align-items: flex-start;
   margin: 12px 0;
   width: 100%;
+  padding: ${(p) => (p.$type === 'outgoing' ? '0 30px 0 0' : '0 0 0 30px')};
   ${(p) =>
     p.$type === 'outgoing' &&
     css`
@@ -113,7 +114,7 @@ const Bubble = styled.div<{ $type: MessageType; $hasInteraction?: boolean }>`
 const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
   position: absolute;
   bottom: -6px;
-  ${(p) => (p.$type === 'outgoing' ? 'right: -24px;' : 'left: -24px;')}
+  ${(p) => (p.$type === 'outgoing' ? 'right: -30px;' : 'left: -30px;')}
   background: transparent;
 `;
 
@@ -169,10 +170,13 @@ const ReadIcon = styled.span<{ $type: MessageType; $isRead?: boolean }>`
 
 const BubbleTail = styled.div<{ $type: MessageType }>`
   position: absolute;
-  bottom: 0;
-  ${(p) => (p.$type === 'outgoing' ? 'right: -10px;' : 'left: -10px;')}
-  width: 16px;
-  height: 16px;
+  bottom: 0px;
+  ${(p) => (p.$type === 'outgoing' ? 'right: -15px;' : 'left: -15px;')}
+  width: 20px;
+  height: 18px;
+  pointer-events: none;
+
+  /* Основной треугольник */
   &::after {
     content: '';
     position: absolute;
@@ -180,13 +184,31 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
     bottom: 0;
     width: 0;
     height: 0;
-    border-top: 10px solid transparent;
+    border-top: 14px solid transparent;
     border-bottom: 0 solid transparent;
     ${(p) =>
       p.$type === 'outgoing'
-        ? 'border-left: 12px solid var(--c-accent);'
-        : 'border-right: 12px solid color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%);'}
+        ? 'border-left: 16px solid var(--c-accent);'
+        : 'border-right: 16px solid color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%);'}
   }
+
+  /* Обводка для входящих сообщений */
+  ${(p) =>
+    p.$type === 'incoming' &&
+    css`
+      &::before {
+        content: '';
+        position: absolute;
+        left: -1px;
+        bottom: -1px;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 0 solid transparent;
+        border-right: 17px solid color-mix(in srgb, var(--c-border) 60%, var(--c-text-primary) 40%);
+        z-index: -1;
+      }
+    `}
 `;
 
 const ReactionMenu = styled.div<{ $type: MessageType }>`
