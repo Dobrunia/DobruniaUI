@@ -65,7 +65,6 @@ const ScrollToBottomBtn = styled.button`
   font-size: 28px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  z-index: 10;
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;

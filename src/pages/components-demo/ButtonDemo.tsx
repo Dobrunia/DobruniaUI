@@ -1,39 +1,39 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 const DemoContainer = styled.div`
-  padding: var(--spacing-large);
-  max-width: var(--layout-content-width);
+  padding: ${DESIGN_TOKENS.spacing.large};
   margin: 0 auto;
 `;
 
 const Section = styled.section`
-  margin-bottom: var(--spacing-large);
+  margin-bottom: ${DESIGN_TOKENS.spacing.large};
 `;
 
 const SectionTitle = styled.h2`
   color: var(--c-text-primary);
-  font-size: var(--font-size-large);
-  margin-bottom: var(--spacing-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.large};
+  margin-bottom: ${DESIGN_TOKENS.spacing.medium};
 `;
 
 const ButtonGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--spacing-medium);
-  margin-bottom: var(--spacing-medium);
+  gap: ${DESIGN_TOKENS.spacing.medium};
+  margin-bottom: ${DESIGN_TOKENS.spacing.medium};
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-small);
+  gap: ${DESIGN_TOKENS.spacing.small};
 `;
 
 const ButtonLabel = styled.span`
   color: var(--c-text-secondary);
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
 `;
 
 export const ButtonDemo: React.FC = () => {

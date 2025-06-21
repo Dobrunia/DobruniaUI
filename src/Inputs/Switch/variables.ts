@@ -4,14 +4,15 @@ export const TRACK_HEIGHT = 22;
 export const THUMB_SIZE = 18;
 export const TRACK_PADDING = 0;
 
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 export const SwitchWrapper = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-small);
+  gap: ${DESIGN_TOKENS.spacing.small};
   cursor: pointer;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-primary);
   user-select: none;
   position: relative;

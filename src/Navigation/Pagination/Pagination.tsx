@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface PaginationProps {
   page: number;
@@ -26,7 +27,7 @@ const PageBtn = styled.button<{ $active?: boolean }>`
     $active ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
   color: ${({ $active }) => ($active ? 'var(--c-accent)' : 'var(--c-text-primary)')};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   outline: none;
@@ -40,7 +41,7 @@ const Dots = styled.span`
   min-width: 32px;
   text-align: center;
   color: var(--c-text-secondary);
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
 `;
 
 const IconBtn = styled(PageBtn)`

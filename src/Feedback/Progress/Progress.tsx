@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 // --- Circular Progress ---
 interface CircularProgressWithLabelProps {
@@ -23,7 +24,7 @@ const CircleLabel = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-accent);
   font-weight: 500;
 `;
@@ -103,7 +104,7 @@ const indeterminateAnim = keyframes`
 
 const LinearBar = styled.div<{ $height: number }>`
   width: 100%;
-  background: var(--c-bg-elevated);
+  background: var(--c-bg-default);
   border-radius: 999px;
   overflow: hidden;
   height: ${({ $height }) => $height}px;

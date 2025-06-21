@@ -4,7 +4,7 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    font-family: var(--font-family);
+    font-family: 'Rubik', sans-serif;
 }
 
 body {

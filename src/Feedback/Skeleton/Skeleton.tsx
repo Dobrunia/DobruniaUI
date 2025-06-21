@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 interface SkeletonProps {
@@ -20,12 +21,12 @@ const getBorderRadius = (variant: SkeletonVariant) => {
     case 'circular':
       return '50%';
     case 'rounded':
-      return 'var(--radius-medium)';
+      return DESIGN_TOKENS.radius.medium;
     case 'rectangular':
       return '0';
     case 'text':
     default:
-      return 'var(--radius-medium)';
+      return DESIGN_TOKENS.radius.medium;
   }
 };
 

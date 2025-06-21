@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumbs, Button, type BreadcrumbItem } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 // Простые иконки для демо
 const HomeIcon = () => (
@@ -127,7 +128,7 @@ export const BreadcrumbsDemo: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
+    <div style={{ padding: '32px' }}>
       <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>Breadcrumbs Demo</h1>
 
       <div
@@ -142,7 +143,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           style={{
             padding: '32px',
             border: '2px solid var(--c-accent)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-default)',
           }}
         >
@@ -171,7 +172,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -191,7 +192,7 @@ export const BreadcrumbsDemo: React.FC = () => {
 
             {/* Вариант */}
             <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Стиль:</h4>
+              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Стиль при наведении:</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {variants.map((variant) => (
                   <label
@@ -201,7 +202,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -231,7 +232,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -257,7 +258,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                     alignItems: 'center',
                     gap: '8px',
                     cursor: 'pointer',
-                    fontSize: 'var(--font-size-small)',
+                    fontSize: DESIGN_TOKENS.fontSize.small,
                   }}
                 >
                   <input
@@ -273,7 +274,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                     style={{
                       display: 'block',
                       marginBottom: '4px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       color: 'var(--c-text-primary)',
                     }}
                   >
@@ -291,7 +292,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                     style={{
                       padding: '4px 8px',
                       border: '1px solid var(--c-border)',
-                      borderRadius: 'var(--radius-small)',
+                      borderRadius: DESIGN_TOKENS.radius.small,
                       width: '120px',
                     }}
                   />
@@ -305,7 +306,7 @@ export const BreadcrumbsDemo: React.FC = () => {
             style={{
               padding: '24px',
               backgroundColor: 'var(--c-bg-subtle)',
-              borderRadius: 'var(--radius-medium)',
+              borderRadius: DESIGN_TOKENS.radius.medium,
               marginBottom: '16px',
             }}
           >
@@ -320,7 +321,12 @@ export const BreadcrumbsDemo: React.FC = () => {
             />
           </div>
 
-          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
+          <p
+            style={{
+              color: 'var(--c-text-secondary)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
+            }}
+          >
             Попробуйте разные настройки выше для изменения внешнего вида
           </p>
         </div>
@@ -330,7 +336,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
@@ -347,7 +353,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   padding: '16px',
                   backgroundColor: 'var(--c-bg-subtle)',
-                  borderRadius: 'var(--radius-small)',
+                  borderRadius: DESIGN_TOKENS.radius.small,
                 }}
               >
                 <Breadcrumbs items={ecommerceItems} />
@@ -355,7 +361,7 @@ export const BreadcrumbsDemo: React.FC = () => {
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -372,7 +378,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   padding: '16px',
                   backgroundColor: 'var(--c-bg-subtle)',
-                  borderRadius: 'var(--radius-small)',
+                  borderRadius: DESIGN_TOKENS.radius.small,
                 }}
               >
                 <Breadcrumbs items={longPathItems} maxItems={5} />
@@ -380,7 +386,7 @@ export const BreadcrumbsDemo: React.FC = () => {
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -397,7 +403,7 @@ export const BreadcrumbsDemo: React.FC = () => {
                 style={{
                   padding: '16px',
                   backgroundColor: 'var(--c-bg-subtle)',
-                  borderRadius: 'var(--radius-small)',
+                  borderRadius: DESIGN_TOKENS.radius.small,
                 }}
               >
                 <Breadcrumbs
@@ -410,7 +416,7 @@ export const BreadcrumbsDemo: React.FC = () => {
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -429,13 +435,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -448,13 +454,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -467,13 +473,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -495,13 +501,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -514,13 +520,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -533,13 +539,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -561,13 +567,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -580,13 +586,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -599,13 +605,13 @@ export const BreadcrumbsDemo: React.FC = () => {
                   style={{
                     padding: '12px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
@@ -624,7 +630,7 @@ export const BreadcrumbsDemo: React.FC = () => {
             style={{
               padding: '24px',
               border: '1px solid var(--c-border)',
-              borderRadius: 'var(--radius-medium)',
+              borderRadius: DESIGN_TOKENS.radius.medium,
             }}
           >
             <div
@@ -647,8 +653,8 @@ export const BreadcrumbsDemo: React.FC = () => {
                 overflowY: 'auto',
                 backgroundColor: 'var(--c-bg-subtle)',
                 padding: '12px',
-                borderRadius: 'var(--radius-small)',
-                fontSize: 'var(--font-size-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
+                fontSize: DESIGN_TOKENS.fontSize.small,
                 fontFamily: 'monospace',
               }}
             >
@@ -676,7 +682,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-subtle)',
           }}
         >
@@ -687,7 +693,7 @@ export const BreadcrumbsDemo: React.FC = () => {
           <ul
             style={{
               color: 'var(--c-text-primary)',
-              fontSize: 'var(--font-size-small)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
               lineHeight: '1.6',
               paddingLeft: '20px',
             }}

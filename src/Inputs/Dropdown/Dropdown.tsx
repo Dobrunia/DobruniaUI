@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 interface DropdownOption {
@@ -22,7 +23,6 @@ interface DropdownProps {
 const Wrapper = styled.div<{ $labelLength?: number }>`
   display: flex;
   flex-direction: column;
-  font-family: var(--font-family);
   width: fit-content;
   min-width: ${({ $labelLength }) => ($labelLength ? Math.max(80, $labelLength * 8 + 60) : 80)}px;
   max-width: 320px;
@@ -40,13 +40,13 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   width: 100%;
   height: 40px;
   padding: 10px ${({ $clearable }) => ($clearable ? '50px' : '30px')} 0px 10px;
-  font-size: var(--font-size-medium);
-  font-family: var(--font-family);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-primary);
   background: var(--c-bg-subtle);
   border: 2px solid ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
-  border-radius: var(--radius-medium);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
+  transition: border-color ${DESIGN_TOKENS.transition.fast},
+    box-shadow ${DESIGN_TOKENS.transition.fast};
   outline: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   appearance: none;
@@ -73,8 +73,7 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   option {
     background: var(--c-bg-subtle);
     color: var(--c-text-primary);
-    padding: var(--spacing-small);
-    font-family: var(--font-family);
+    padding: ${DESIGN_TOKENS.spacing.small};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -92,12 +91,11 @@ const FloatingLabel = styled.label<{
   top: ${({ $floating }) => ($floating ? '2px' : '50%')};
   transform: translateY(${({ $floating }) => ($floating ? '0' : '-50%')});
   font-size: ${({ $floating }) =>
-    $floating ? 'var(--font-size-small)' : 'var(--font-size-medium)'};
+    $floating ? DESIGN_TOKENS.fontSize.small : DESIGN_TOKENS.fontSize.medium};
   color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
   background: transparent;
   pointer-events: none;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -117,12 +115,11 @@ const ClearButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
   color: var(--c-text-secondary);
   height: 18px;
   width: 18px;
   border-radius: 50%;
-  transition: all var(--transition-fast);
+  transition: all ${DESIGN_TOKENS.transition.fast};
 
   &:hover {
     background: color-mix(in srgb, var(--c-accent) 10%, transparent 90%);
@@ -148,13 +145,12 @@ const DropdownArrow = styled.div<{ disabled?: boolean; $error?: boolean }>`
     ${({ disabled, $error }) =>
       disabled ? 'var(--c-text-secondary)' : $error ? 'var(--c-error)' : 'var(--c-accent)'};
   pointer-events: none;
-  transition: all var(--transition-fast);
-  z-index: 3;
+  transition: all ${DESIGN_TOKENS.transition.fast};
 `;
 
 const ErrorText = styled.div`
   color: var(--c-error);
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   min-height: 1.2em;
   margin-top: 0.1em;
   max-width: 320px;

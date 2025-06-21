@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 // SVG-иконки (заглушки)
 const PaperclipIcon = () => (
@@ -75,7 +76,7 @@ const InputBar = styled.div`
   display: flex;
   align-items: flex-end;
   background: var(--c-bg-elevated);
-  padding: var(--spacing-small);
+  padding: ${DESIGN_TOKENS.spacing.small};
   min-height: 32px;
   gap: 8px;
   width: 100%;
@@ -89,7 +90,7 @@ const IconBtn = styled.button`
   justify-content: center;
   cursor: pointer;
   color: var(--c-text-secondary);
-  font-size: var(--font-size-large);
+  font-size: ${DESIGN_TOKENS.fontSize.large};
   width: 32px;
   height: 32px;
   min-width: 32px;
@@ -105,8 +106,8 @@ const StyledInput = styled.input`
   background: transparent;
   border: none;
   color: var(--c-text-primary);
-  font-size: var(--font-size-medium);
-  padding: var(--spacing-small) 0;
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  padding: ${DESIGN_TOKENS.spacing.small} 0;
   outline: none;
   &:hover {
     &::placeholder {
@@ -119,7 +120,7 @@ const StyledTextarea = styled.textarea`
   background: transparent;
   border: none;
   color: var(--c-text-primary);
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   outline: none;
   resize: none;
   min-height: 32px;
@@ -134,7 +135,7 @@ const StyledTextarea = styled.textarea`
     line-height: 32px;
     vertical-align: middle;
     opacity: 1;
-    transition: color var(--transition-fast);
+    transition: color ${DESIGN_TOKENS.transition.fast};
   }
   &:hover {
     &::placeholder {
@@ -169,7 +170,7 @@ const FileThumb = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   border: 1.5px solid var(--c-accent);
 `;
 
@@ -179,11 +180,10 @@ const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
   bottom: calc(100% + 8px);
   ${(p) => (p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;')}
   background: var(--c-bg-elevated);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
   border: 1px solid var(--c-border);
   padding: 4px;
-  z-index: 1000;
   min-width: 180px;
   max-width: 220px;
   max-height: 220px;
@@ -216,8 +216,8 @@ const EmojiButton = styled.button`
   padding: 2px;
   cursor: pointer;
   font-size: 20px;
-  border-radius: var(--radius-small);
-  transition: background var(--transition-fast);
+  border-radius: ${DESIGN_TOKENS.radius.small};
+  transition: background ${DESIGN_TOKENS.transition.fast};
   width: 32px;
   height: 32px;
   display: flex;
@@ -236,7 +236,6 @@ const EmojiButtonWrapper = styled.div`
 // Lightbox для предпросмотра изображений
 const ImageModalOverlay = styled.div`
   position: fixed;
-  z-index: 2000;
   left: 0;
   top: 0;
   width: 100vw;
@@ -249,7 +248,7 @@ const ImageModalOverlay = styled.div`
 const ImageModalImg = styled.img`
   max-width: 90vw;
   max-height: 90vh;
-  border-radius: var(--radius-large);
+  border-radius: ${DESIGN_TOKENS.radius.large};
   box-shadow: 0 8px 32px #0008;
   background: #fff;
 `;
@@ -387,10 +386,10 @@ const EmojiPicker: React.FC<{
 const SearchBar = styled(InputBar)`
   background: var(--c-bg-elevated);
   border-radius: 999px;
-  padding: 0 var(--spacing-medium);
+  padding: 0 ${DESIGN_TOKENS.spacing.medium};
   min-height: 32px;
   box-shadow: none;
-  transition: box-shadow var(--transition-fast);
+  transition: box-shadow ${DESIGN_TOKENS.transition.fast};
   &:hover {
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 20%, transparent 80%);
   }
@@ -398,13 +397,13 @@ const SearchBar = styled(InputBar)`
 const SearchInputField = styled(StyledInput)`
   background: transparent;
   border: none;
-  font-size: var(--font-size-medium);
-  padding: var(--spacing-small) 0;
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  padding: ${DESIGN_TOKENS.spacing.small} 0;
   border-radius: 999px;
   &::placeholder {
     color: var(--c-text-secondary);
     opacity: 1;
-    transition: color var(--transition-fast);
+    transition: color ${DESIGN_TOKENS.transition.fast};
   }
   &:hover {
     &::placeholder {
@@ -415,7 +414,6 @@ const SearchInputField = styled(StyledInput)`
 
 const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
   position: relative;
-  z-index: 1;
   overflow: visible;
   width: 32px;
   height: 32px;
@@ -440,7 +438,6 @@ const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
     background: var(--c-accent);
     opacity: 0.25;
     animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    z-index: 0;
   }
   @keyframes mic-pulse {
     0% {

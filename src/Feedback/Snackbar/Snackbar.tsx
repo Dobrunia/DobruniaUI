@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export type SnackbarOrigin = {
   vertical: 'top' | 'bottom';
@@ -82,14 +83,14 @@ const SnackbarContent = styled.div`
   max-width: 480px;
   background: var(--c-bg-elevated);
   color: var(--c-text-primary);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   padding: 14px 24px;
   margin: 0 16px;
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   pointer-events: auto;
 `;
 

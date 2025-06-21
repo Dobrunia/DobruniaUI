@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 // Global state for managing open selects
 let globalOpenSelect: string | null = null;
@@ -65,10 +66,10 @@ const SelectButton = styled.button<{ $isOpen: boolean; $disabled: boolean }>`
   padding-right: 60px; /* Space for actions */
   background: var(--c-bg-subtle);
   border: 2px solid var(--c-border);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-  transition: all var(--transition-fast);
-  font-size: var(--font-size-medium);
+  transition: all ${DESIGN_TOKENS.transition.fast};
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   text-align: left;
   opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 
@@ -113,7 +114,7 @@ const DropdownArrow = styled.div<{ $isOpen: boolean }>`
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid var(--c-text-secondary);
-  transition: transform var(--transition-fast);
+  transition: transform ${DESIGN_TOKENS.transition.fast};
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
@@ -125,7 +126,7 @@ const OptionsList = styled.div<{ $isSubmenu?: boolean }>`
   min-width: ${({ $isSubmenu }) => ($isSubmenu ? '250px' : '100%')};
   background: var(--c-bg-subtle);
   border: 2px solid var(--c-border-focus);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   overflow: hidden;
   z-index: 9999;
   box-shadow: var(--shadow-large);
@@ -148,7 +149,7 @@ const Option = styled.div<{ $isSelected: boolean; $hasSubmenu?: boolean }>`
   gap: 12px;
   padding: 12px;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: background ${DESIGN_TOKENS.transition.fast};
   border-bottom: 1px solid color-mix(in srgb, var(--c-border-focus) 20%, transparent);
 
   &:last-child {
@@ -182,7 +183,7 @@ const SubmenuArrow = styled.div`
   border-left: 5px solid var(--c-text-secondary);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
-  transition: color var(--transition-fast);
+  transition: color ${DESIGN_TOKENS.transition.fast};
 `;
 
 const OptionIcon = styled.span`
@@ -209,7 +210,7 @@ const OptionLabel = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
 `;
 
 const OptionDescription = styled.span`

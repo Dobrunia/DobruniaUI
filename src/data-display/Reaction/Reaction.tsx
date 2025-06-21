@@ -70,7 +70,6 @@ const AvatarWrapper = styled.div`
   &:first-child {
     margin-left: 0;
   }
-  z-index: 1;
 `;
 
 /**

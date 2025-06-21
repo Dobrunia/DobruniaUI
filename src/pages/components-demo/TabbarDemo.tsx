@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Tabbar, type TabData } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const TabbarDemo: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | number>('main');
@@ -38,16 +39,15 @@ export const TabbarDemo: React.FC = () => {
   return (
     <div
       style={{
-        padding: 'var(--spacing-large)',
-        maxWidth: 'var(--layout-content-width)',
+        padding: DESIGN_TOKENS.spacing.large,
         margin: '0 auto',
       }}
     >
       <h2
         style={{
           color: 'var(--c-text-primary)',
-          marginBottom: 'var(--spacing-large)',
-          fontSize: 'var(--font-size-large)',
+          marginBottom: DESIGN_TOKENS.spacing.large,
+          fontSize: DESIGN_TOKENS.fontSize.large,
         }}
       >
         Tabbar Demo
@@ -55,37 +55,43 @@ export const TabbarDemo: React.FC = () => {
       <div
         style={{
           background: 'var(--c-bg-elevated)',
-          borderRadius: 'var(--radius-large)',
-          padding: 'var(--spacing-large)',
+          borderRadius: DESIGN_TOKENS.radius.large,
+          padding: DESIGN_TOKENS.spacing.large,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-          marginBottom: 'var(--spacing-large)',
+          marginBottom: DESIGN_TOKENS.spacing.large,
         }}
       >
-        <b>Много вкладок (тест скролла):</b>
+        <div style={{ fontWeight: 'bold', marginBottom: DESIGN_TOKENS.spacing.medium }}>
+          Много вкладок (тест скролла):
+        </div>
         <Tabbar tabs={manyTabs} selectedId={selectedId} onTabPress={setSelectedId} />
       </div>
       <div
         style={{
           background: 'var(--c-bg-elevated)',
-          borderRadius: 'var(--radius-large)',
-          padding: 'var(--spacing-large)',
+          borderRadius: DESIGN_TOKENS.radius.large,
+          padding: DESIGN_TOKENS.spacing.large,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-          marginBottom: 'var(--spacing-large)',
+          marginBottom: DESIGN_TOKENS.spacing.large,
         }}
       >
-        <b>Слева аватар, справа уведомления:</b>
+        <div style={{ fontWeight: 'bold', marginBottom: DESIGN_TOKENS.spacing.medium }}>
+          Слева аватар, справа уведомления:
+        </div>
         <Tabbar tabs={tabs} selectedId={selectedId} onTabPress={setSelectedId} />
       </div>
       <div
         style={{
           background: 'var(--c-bg-elevated)',
-          borderRadius: 'var(--radius-large)',
-          padding: 'var(--spacing-large)',
+          borderRadius: DESIGN_TOKENS.radius.large,
+          padding: DESIGN_TOKENS.spacing.large,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-          marginBottom: 'var(--spacing-large)',
+          marginBottom: DESIGN_TOKENS.spacing.large,
         }}
       >
-        <b>Только уведомления:</b>
+        <div style={{ fontWeight: 'bold', marginBottom: DESIGN_TOKENS.spacing.medium }}>
+          Только уведомления:
+        </div>
         <Tabbar
           tabs={tabs.map((tab) => ({
             id: tab.id,
@@ -99,12 +105,14 @@ export const TabbarDemo: React.FC = () => {
       <div
         style={{
           background: 'var(--c-bg-elevated)',
-          borderRadius: 'var(--radius-large)',
-          padding: 'var(--spacing-large)',
+          borderRadius: DESIGN_TOKENS.radius.large,
+          padding: DESIGN_TOKENS.spacing.large,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <b>Обычный Tabbar без слотов:</b>
+        <div style={{ fontWeight: 'bold', marginBottom: DESIGN_TOKENS.spacing.medium }}>
+          Обычный Tabbar без слотов:
+        </div>
         <Tabbar
           tabs={tabs.map((tab) => ({ id: tab.id, label: tab.label }))}
           selectedId={selectedId}
@@ -113,7 +121,7 @@ export const TabbarDemo: React.FC = () => {
       </div>
       <div
         style={{
-          marginTop: 'var(--spacing-large)',
+          marginTop: DESIGN_TOKENS.spacing.large,
           color: 'var(--c-text-primary)',
         }}
       >

@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 interface RadioProps {
@@ -14,9 +15,9 @@ interface RadioProps {
 const RadioWrapper = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-small);
+  gap: ${DESIGN_TOKENS.spacing.small};
   cursor: pointer;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-primary);
   user-select: none;
   position: relative;
@@ -45,7 +46,8 @@ const CustomCircle = styled.span<{ checked: boolean; disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background ${DESIGN_TOKENS.transition.fast},
+    border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   margin-right: 0.5em;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

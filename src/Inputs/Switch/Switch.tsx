@@ -8,6 +8,7 @@ import {
   SwitchWrapper,
   LabelText,
 } from './variables';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface SwitchProps {
   checked: boolean;
@@ -33,7 +34,8 @@ const CustomTrack = styled.span<{ checked: boolean; disabled?: boolean }>`
   border: 2px solid ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-border)')};
   display: flex;
   align-items: center;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background ${DESIGN_TOKENS.transition.fast},
+    border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   position: relative;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -57,7 +59,7 @@ const CustomThumb = styled.span<{ checked: boolean }>`
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  transition: left var(--transition-fast), background var(--transition-fast);
+  transition: left ${DESIGN_TOKENS.transition.fast}, background ${DESIGN_TOKENS.transition.fast};
   border: 1.5px solid var(--c-border);
 `;
 

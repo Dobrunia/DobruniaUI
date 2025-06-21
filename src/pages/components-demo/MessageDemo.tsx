@@ -32,18 +32,6 @@ const DeleteIcon = () => (
   </svg>
 );
 
-const SelectIcon = () => (
-  <svg viewBox='0 0 24 24' fill='currentColor'>
-    <path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' />
-  </svg>
-);
-
-const PinIcon = () => (
-  <svg viewBox='0 0 24 24' fill='currentColor'>
-    <path d='M14,4V10.5L12,9L10,10.5V4H14M16,2H8V13L12,10L16,13V2Z' />
-  </svg>
-);
-
 const userMe = {
   id: 'me',
   name: 'Я',
@@ -80,7 +68,7 @@ const initialMessages: Array<{
   {
     id: 'msg-1',
     type: 'incoming',
-    text: 'Привет! Как дела?',
+    text: 'Привет! Как дела? (Это сообщение с обычным набором эмодзи)',
     time: '8:10',
     reactions: [
       { emoji: '❤️', users: [userMe, userOther] },
@@ -94,7 +82,7 @@ const initialMessages: Array<{
   {
     id: 'msg-2',
     type: 'outgoing',
-    text: 'Все отлично, спасибо! 😊',
+    text: 'Все отлично, спасибо! 😊 (Сообщение с 2 эмодзи)',
     time: '8:10',
     reactions: [{ emoji: '❤️', users: [userMe, userOther] }],
     sender: userMe,
@@ -163,7 +151,7 @@ const initialMessages: Array<{
   {
     id: 'msg-8',
     type: 'outgoing',
-    text: 'Все отлично, спасибо! 😊',
+    text: '🚀 ТЕСТ: Много эмодзи! Попробуй добавить реакцию - должен появиться скролл!',
     time: '8:16',
     reactions: [
       { emoji: '❤️', users: [userMe, userOther] },
@@ -177,7 +165,7 @@ const initialMessages: Array<{
   {
     id: 'msg-9',
     type: 'outgoing',
-    text: 'В',
+    text: '⚡ Компактные действия - тест ActionsMenu с минимальным набором',
     time: '8:17',
     reactions: [],
     sender: userMe,
@@ -211,54 +199,74 @@ const initialMessages: Array<{
       sender: { name: 'Аня' },
     },
   },
+  {
+    id: 'msg-12',
+    type: 'incoming',
+    text: '📝 Это сообщение БЕЗ меню действий и реакций - просто обычный текст',
+    time: '1:05',
+    reactions: [],
+    sender: userOther,
+    isRead: true,
+  },
 ];
 
-// Действия для контекстного меню сообщений (Telegram-style)
-const actionsDemo: ActionsMenuAction[] = [
+// Разные наборы действий для тестирования ActionsMenu
+const fullActionsDemo: ActionsMenuAction[] = [
   {
     label: 'Ответить',
     icon: <ReplyIcon />,
-    onClick: () => alert('Ответить на сообщение'),
+    onClick: () => alert('🔄 Действие: Ответить на сообщение'),
     shortcut: '⌘R',
   },
   {
-    label: 'Копировать текст',
+    label: 'Копировать',
     icon: <CopyIcon />,
-    onClick: () => {
-      navigator.clipboard?.writeText('Текст сообщения скопирован!');
-      alert('Текст скопирован в буфер обмена!');
-    },
+    onClick: () => alert('📋 Действие: Копировать текст сообщения'),
     shortcut: '⌘C',
   },
   {
     label: 'Переслать',
     icon: <ForwardIcon />,
-    onClick: () => alert('Сообщение переслано'),
-    shortcut: '⌘F',
-  },
-  {
-    label: 'Выбрать',
-    icon: <SelectIcon />,
-    onClick: () => alert('Сообщение выбрано для группового действия'),
-  },
-  {
-    label: 'Закрепить',
-    icon: <PinIcon />,
-    onClick: () => alert('Сообщение закреплено'),
-    type: 'primary',
+    onClick: () => alert('📤 Действие: Переслать сообщение'),
   },
   {
     label: 'Удалить',
     icon: <DeleteIcon />,
-    onClick: () => {
-      if (confirm('Вы уверены, что хотите удалить это сообщение?')) {
-        alert('Сообщение удалено');
-      }
-    },
+    onClick: () => alert('🗑️ Действие: Удалить сообщение'),
     type: 'destructive',
-    shortcut: '⌫',
   },
 ];
+
+// Компактные действия (меньше опций)
+const compactActions: ActionsMenuAction[] = [
+  {
+    label: 'Копировать',
+    icon: <CopyIcon />,
+    onClick: () => alert('📋 Компактное действие: Копировать'),
+    shortcut: '⌘C',
+  },
+  {
+    label: 'Удалить',
+    icon: <DeleteIcon />,
+    onClick: () => alert('🗑️ Компактное действие: Удалить'),
+    type: 'destructive',
+  },
+];
+
+// Только основные действия
+const basicActions: ActionsMenuAction[] = [
+  {
+    label: 'Ответить',
+    icon: <ReplyIcon />,
+    onClick: () => alert('🔄 Базовое действие: Ответить'),
+    type: 'primary',
+  },
+];
+
+// Большой набор эмодзи для тестирования горизонтального скролла
+const manyEmojis = ['❤️', '😂', '👍', '🔥', '😍', '😢', '😮', '😡', '🎉', '💯', '🚀', '⭐'];
+const standardEmojis = ['❤️', '😂', '👍', '🔥'];
+const basicEmojis = ['❤️', '👍'];
 
 export const MessageDemo = () => {
   const [messages, setMessages] = useState(initialMessages);
@@ -310,7 +318,6 @@ export const MessageDemo = () => {
   return (
     <MessageContainer
       style={{
-        maxWidth: 720,
         margin: '40px auto',
         background: 'var(--c-bg-elevated)',
         padding: 24,
@@ -324,16 +331,42 @@ export const MessageDemo = () => {
       }
     >
       <Badge variant='message-date' date={new Date()} locale='ru' />
-      {messages.map((msg, idx) => (
-        <Message
-          key={msg.id}
-          {...msg}
-          onReaction={(emoji: string) => handleReaction(idx, emoji)}
-          currentUserId={userMe.id}
-          actions={actionsDemo}
-          onForwardedClick={msg.forwardedFrom ? handleForwardedClick : undefined}
-        />
-      ))}
+      {messages.map((msg, idx) => {
+        // Разные наборы эмодзи и действий для тестирования
+        let reactionEmojis = standardEmojis;
+        let actions = fullActionsDemo;
+
+        if (msg.id === 'msg-8') {
+          // Сообщение с большим количеством эмодзи для тестирования скролла
+          reactionEmojis = manyEmojis;
+        } else if (msg.id === 'msg-2') {
+          // Сообщение с минимальными эмодзи
+          reactionEmojis = basicEmojis;
+          actions = basicActions;
+        } else if (msg.id === 'msg-9') {
+          // Сообщение с компактными действиями
+          actions = compactActions;
+        } else if (msg.id === 'msg-12') {
+          // Сообщение БЕЗ меню действий и реакций
+          reactionEmojis = [];
+          actions = [];
+        }
+
+        return (
+          <Message
+            key={msg.id}
+            {...msg}
+            onReaction={
+              reactionEmojis.length > 0 ? (emoji: string) => handleReaction(idx, emoji) : undefined
+            }
+            currentUserId={userMe.id}
+            actions={actions.length > 0 ? actions : undefined}
+            reactionEmojis={reactionEmojis}
+            showActionsOnClick={actions.length > 0}
+            onForwardedClick={msg.forwardedFrom ? handleForwardedClick : undefined}
+          />
+        );
+      })}
     </MessageContainer>
   );
 };

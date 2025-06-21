@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css } from 'styled-components';
 
 type AvatarSize = 'xxs' | 'sm' | 'md' | 'lg';
@@ -12,10 +13,10 @@ const sizeMap: Record<AvatarSize, number> = {
 };
 
 const statusVarMap: Record<AvatarStatus, string> = {
-  online: 'var(--avatar-status-online)',
-  offline: 'var(--avatar-status-offline)',
-  dnd: 'var(--avatar-status-dnd)',
-  invisible: 'var(--avatar-status-offline)',
+  online: '#4cd964',
+  offline: '#b0b8c9',
+  dnd: '#d44c4a',
+  invisible: '#b0b8c9',
 };
 
 const AvatarRoot = styled.div<{ $size: AvatarSize }>`
@@ -54,7 +55,7 @@ const AvatarImg = styled.img`
 const StatusDot = styled.span<{ $size: AvatarSize; $status: AvatarStatus }>`
   position: absolute;
   right: 0px;
-  bottom: ${({ $size }) => ($size === 'xxs' ? 0 : $size === 'sm' ? 4 : 6)}px;
+  bottom: ${({ $size }) => ($size === 'xxs' ? 0 : $size === 'sm' ? 0 : 2)}px;
   border-radius: 50%;
   border: 1px solid var(--c-bg-default);
   background: ${({ $status }) => statusVarMap[$status]};
@@ -76,11 +77,10 @@ const StatusMenu = styled.div`
   top: 110%;
   // transform: translateX(-50%);
   background: var(--c-bg-elevated);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
   border: 1px solid var(--c-border);
   padding: 6px 0;
-  z-index: 100;
   min-width: 120px;
 `;
 const StatusMenuItem = styled.button<{ active?: boolean }>`
@@ -88,7 +88,7 @@ const StatusMenuItem = styled.button<{ active?: boolean }>`
   background: none;
   border: none;
   color: var(--c-text-primary);
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   padding: 8px 16px;
   text-align: left;
   cursor: pointer;
@@ -212,7 +212,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   const rootRef = useRef<HTMLDivElement>(null);
 
   // Закрытие меню при клике вне
-  React.useEffect(() => {
+  useEffect(() => {
     if (!menuOpen) return;
     const handle = (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) {

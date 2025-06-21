@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 export interface BreadcrumbItem {
@@ -41,21 +42,21 @@ const getSizeStyles = (size: 'small' | 'medium' | 'large') => {
   switch (size) {
     case 'small':
       return {
-        fontSize: 'var(--font-size-small)',
+        fontSize: DESIGN_TOKENS.fontSize.small,
         padding: '4px 8px',
         gap: '4px',
         iconSize: '14px',
       };
     case 'large':
       return {
-        fontSize: 'var(--font-size-large)',
+        fontSize: DESIGN_TOKENS.fontSize.large,
         padding: '8px 12px',
         gap: '8px',
         iconSize: '20px',
       };
     default:
       return {
-        fontSize: 'var(--font-size-medium)',
+        fontSize: DESIGN_TOKENS.fontSize.medium,
         padding: '6px 10px',
         gap: '6px',
         iconSize: '16px',
@@ -83,7 +84,7 @@ const BreadcrumbItem = styled.div<{
   gap: 4px;
   padding: ${({ $variant, $size }) =>
     $variant === 'pills' ? getSizeStyles($size).padding : '2px 4px'};
-  border-radius: ${({ $variant }) => ($variant === 'pills' ? 'var(--radius-small)' : '0')};
+  border-radius: ${({ $variant }) => ($variant === 'pills' ? DESIGN_TOKENS.radius.small : '0')};
   transition: all 0.2s ease;
   cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
   text-decoration: none;
@@ -158,7 +159,7 @@ const CollapsedIndicator = styled.span`
   color: var(--c-text-secondary);
   cursor: pointer;
   padding: 2px 8px;
-  border-radius: var(--radius-small);
+  border-radius: ${DESIGN_TOKENS.radius.small};
   transition: background-color 0.2s ease;
 
   &:hover {

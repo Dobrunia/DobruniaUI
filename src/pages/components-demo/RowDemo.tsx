@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Button, Avatar, Switch, Badge, TextField, ToggleButton } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const RowDemo: React.FC = () => {
   const [notifications, setNotifications] = useState(true);
@@ -306,7 +307,7 @@ export const RowDemo: React.FC = () => {
 
         .seamless-rows {
           border: 1px solid var(--c-border);
-          border-radius: var(--radius-medium);
+          border-radius: ${DESIGN_TOKENS.radius.medium};
           overflow: hidden;
           background: var(--c-bg-subtle);
         }

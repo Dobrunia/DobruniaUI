@@ -8,6 +8,7 @@ import {
   SwitchWrapper,
   LabelText,
 } from './variables';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface YinYangSwitchProps {
   checked: boolean;
@@ -23,7 +24,6 @@ const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
   opacity: 0;
   width: 0;
   height: 0;
-  z-index: 2;
 
   &:active + label {
     transform: scale(1.05);
@@ -41,7 +41,7 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
   border-radius: ${TRACK_HEIGHT / 2}px;
   box-shadow: 0px 4px 16px 0px rgba(51, 51, 51, 0.08);
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-  transition: var(--transition-slow);
+  transition: ${DESIGN_TOKENS.transition.slow};
   user-select: none;
   overflow: hidden;
 
@@ -53,8 +53,7 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
     width: ${({ $checked }) => ($checked ? '100%' : '0')};
     background: var(--c-accent);
     border-radius: inherit;
-    z-index: 1;
-    transition: var(--transition-slow);
+    transition: ${DESIGN_TOKENS.transition.slow};
   }
 
   &::before,
@@ -65,7 +64,6 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
     width: ${THUMB_SIZE - 2}px;
     height: ${THUMB_SIZE - 2}px;
     border-radius: 50%;
-    z-index: 2;
   }
   &::before {
     left: ${TRACK_PADDING}px;

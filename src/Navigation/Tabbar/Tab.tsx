@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 export interface TabData {
@@ -20,17 +21,17 @@ const TabButton = styled.button<{ $selected: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-small) 0;
+  padding: ${DESIGN_TOKENS.spacing.small} 0;
   background: none;
   border: none;
   cursor: pointer;
   position: relative;
   color: ${(props) => (props.$selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   font-weight: 500;
-  transition: color var(--transition-fast);
+  transition: color ${DESIGN_TOKENS.transition.fast};
   outline: none;
-  gap: var(--spacing-tiny);
+  gap: ${DESIGN_TOKENS.spacing.tiny};
   line-height: 1;
 
   &:hover,
@@ -55,7 +56,7 @@ const LeftSlotWrapper = styled.span`
 
 const RightSlotWrapper = styled.span`
   height: 100%;
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   color: var(--c-text-secondary);
 `;
 
@@ -73,7 +74,7 @@ const Underline = styled.div`
   width: 100%;
   height: 2px;
   background-color: var(--c-accent);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
 `;
 
 export const Tab: React.FC<TabProps> = ({ tab, selected, onClick }) => {

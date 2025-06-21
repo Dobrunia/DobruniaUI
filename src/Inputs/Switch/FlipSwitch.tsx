@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface FlipSwitchProps {
   checked: boolean;
@@ -37,12 +38,12 @@ const FlipLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: var(--radius-medium);
+    border-radius: ${DESIGN_TOKENS.radius.medium};
     color: #fff;
     text-align: center;
     line-height: 40px;
     backface-visibility: hidden;
-    transition: all 0.4s var(--transition-slow);
+    transition: all 0.4s ${DESIGN_TOKENS.transition.slow};
     pointer-events: none;
   }
   &::before {

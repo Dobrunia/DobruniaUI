@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Reaction, Avatar, ActionsMenu, type ActionsMenuAction } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export type MessageType = 'incoming' | 'outgoing';
 
@@ -46,9 +47,12 @@ interface MessageProps {
     sender?: { name: string };
   };
   id?: string;
+  /** Открывать ActionsMenu сразу при клике на сообщение (вместе с реакциями) */
+  showActionsOnClick?: boolean;
 }
 
 const MessageRoot = styled.div<{ $type: MessageType }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -78,7 +82,7 @@ const Bubble = styled.div<{ $type: MessageType }>`
     p.$type === 'incoming'
       ? '1px solid color-mix(in srgb, var(--c-border) 60%, var(--c-text-primary) 40%)'
       : 'none'};
-  border-radius: var(--radius-large);
+  border-radius: ${DESIGN_TOKENS.radius.large};
   ${(p) =>
     p.$type === 'outgoing'
       ? css`
@@ -90,7 +94,7 @@ const Bubble = styled.div<{ $type: MessageType }>`
   padding: 12px 16px 8px 16px;
   max-width: 340px;
   min-width: 48px;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   box-shadow: ${(p) =>
     p.$type === 'incoming'
       ? '0 2px 8px color-mix(in srgb, var(--c-text-primary) 20%, transparent 80%)'
@@ -103,7 +107,6 @@ const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
   position: absolute;
   bottom: -6px;
   ${(p) => (p.$type === 'outgoing' ? 'right: -24px;' : 'left: -24px;')}
-  z-index: 2;
   background: transparent;
 `;
 
@@ -121,6 +124,7 @@ const BottomBar = styled.div`
   align-items: center;
   gap: 8px;
   margin-top: 6px;
+  flex-wrap: wrap;
 `;
 
 const BubbleMeta = styled.div`
@@ -133,13 +137,13 @@ const BubbleMeta = styled.div`
 `;
 
 const SendTime = styled.span`
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
 `;
 
 const ReadIcon = styled.span`
   display: inline-flex;
   align-items: flex-end;
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   svg {
     display: block;
     vertical-align: bottom;
@@ -152,7 +156,6 @@ const BubbleTail = styled.div<{ $type: MessageType }>`
   ${(p) => (p.$type === 'outgoing' ? 'right: -10px;' : 'left: -10px;')}
   width: 16px;
   height: 16px;
-  z-index: 1;
   &::after {
     content: '';
     position: absolute;
@@ -175,12 +178,41 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   ${(p) => (p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;')}
   transform: none;
   display: flex;
-  gap: 8px;
+  gap: ${DESIGN_TOKENS.spacing.small};
   background: var(--c-bg-elevated);
-  border-radius: var(--radius-large);
-  box-shadow: 0 2px 8px #0002;
-  padding: 6px 12px;
-  z-index: 10;
+  border: 1px solid var(--c-border);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.medium};
+  z-index: 1000;
+  max-width: 280px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  /* Кастомный скроллбар */
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--c-bg-subtle);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--c-border);
+    border-radius: 2px;
+
+    &:hover {
+      background: var(--c-text-secondary);
+    }
+  }
+
+  /* Для темной темы добавляем дополнительный border */
+  @media (prefers-color-scheme: dark) {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const AttachmentContainer = styled.div`
@@ -193,7 +225,7 @@ const AttachmentContainer = styled.div`
 const ImageAttachment = styled.img`
   max-width: 100%;
   max-height: 200px;
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   object-fit: cover;
 `;
 
@@ -203,10 +235,10 @@ const FileAttachment = styled.a`
   gap: 8px;
   padding: 8px 12px;
   background: color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-text-primary) 20%);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   color: var(--c-text-primary);
   text-decoration: none;
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   border: 1px solid var(--c-border);
 
   &:hover {
@@ -231,7 +263,7 @@ const ImageModalOverlay = styled.div`
 const ImageModalImg = styled.img`
   max-width: 90vw;
   max-height: 90vh;
-  border-radius: var(--radius-large);
+  border-radius: ${DESIGN_TOKENS.radius.large};
   box-shadow: 0 8px 32px #0008;
   background: #fff;
   cursor: default;
@@ -243,9 +275,9 @@ const AudioAttachment = styled.div`
   gap: 8px;
   padding: 8px 12px;
   background: color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-text-primary) 20%);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   color: var(--c-text-primary);
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   width: 100%;
   max-width: 300px;
   border: 1px solid var(--c-border);
@@ -302,9 +334,9 @@ const ForwardedBlock = styled.div`
   display: flex;
   flex-direction: column;
   background: color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-accent) 15%);
-  font-size: var(--font-size-small-plus);
+  font-size: ${DESIGN_TOKENS.fontSize.smallPlus};
   border-left: 3px solid var(--c-accent);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   padding: 4px 12px;
   margin-bottom: 4px;
   cursor: pointer;
@@ -321,9 +353,9 @@ const ReplyBlock = styled.div`
   display: flex;
   flex-direction: column;
   background: color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-accent) 15%);
-  font-size: var(--font-size-small-plus);
+  font-size: ${DESIGN_TOKENS.fontSize.smallPlus};
   border-left: 3px solid var(--c-accent);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   padding: 4px 12px;
   margin-bottom: 4px;
   cursor: pointer;
@@ -349,6 +381,13 @@ const ReplyText = styled.span`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+`;
+
+const StyledActionsMenu = styled(ActionsMenu)<{ $type: MessageType }>`
+  position: absolute;
+  top: 34px;
+  ${(p) => (p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;')}
+  z-index: 1001;
 `;
 
 /**
@@ -379,6 +418,7 @@ const ReplyText = styled.span`
  *   - attachments?: { type: 'image'|'file'|'audio'; name?: string }[] - вложения
  *   - sender?: { name: string } - отправитель
  * @param {string} [id] - ID сообщения
+ * @param {boolean} [showActionsOnClick=false] - показывать ActionsMenu сразу при клике вместе с реакциями
  *
  * Особенности:
  * - Поддержка входящих и исходящих сообщений
@@ -429,6 +469,20 @@ const ReplyText = styled.span`
  *     sender: { name: "John" }
  *   }}
  * />
+ *
+ * // Сообщение с ActionsMenu при клике
+ * <Message
+ *   type="incoming"
+ *   text="Сообщение с меню действий"
+ *   time="12:33"
+ *   showActionsOnClick={true}
+ *   actions={[
+ *     { label: "Ответить", icon: <ReplyIcon />, onClick: () => {} },
+ *     { label: "Переслать", icon: <ForwardIcon />, onClick: () => {} },
+ *     { label: "Удалить", icon: <DeleteIcon />, onClick: () => {}, type: "destructive" }
+ *   ]}
+ *   onReaction={(emoji) => handleReaction(emoji)}
+ * />
  */
 export const Message: React.FC<MessageProps> = ({
   type,
@@ -447,24 +501,36 @@ export const Message: React.FC<MessageProps> = ({
   onForwardedClick,
   replyTo,
   id,
+  showActionsOnClick = false,
 }) => {
-  const [showReactions, setShowReactions] = React.useState(false);
-  const [previewImage, setPreviewImage] = React.useState<string | null>(null);
-  const [audioProgress, setAudioProgress] = React.useState<Record<string, number>>({});
-  const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
-  const audioRefs = React.useRef<Record<string, HTMLAudioElement>>({});
-  const bubbleRef = React.useRef<HTMLDivElement>(null);
+  const [showReactions, setShowReactions] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [audioProgress, setAudioProgress] = useState<Record<string, number>>({});
+  const [isPlaying, setIsPlaying] = useState<Record<string, boolean>>({});
+  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const reactionMenuRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (!showReactions) return;
+  useEffect(() => {
+    if (!showReactions && !showActions) return;
     const handle = (e: MouseEvent) => {
-      if (bubbleRef.current && !bubbleRef.current.contains(e.target as Node)) {
-        setShowReactions(false);
+      const target = e.target as Node;
+
+      // Не закрывать если клик внутри bubble или ReactionMenu
+      if (
+        (bubbleRef.current && bubbleRef.current.contains(target)) ||
+        (reactionMenuRef.current && reactionMenuRef.current.contains(target))
+      ) {
+        return;
       }
+
+      setShowReactions(false);
+      setShowActions(false);
     };
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
-  }, [showReactions]);
+  }, [showReactions, showActions]);
 
   const formatTime = (seconds: number) => {
     if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) return '...';
@@ -558,12 +624,28 @@ export const Message: React.FC<MessageProps> = ({
           <Bubble
             $type={type}
             ref={bubbleRef}
-            onClick={onReaction ? () => setShowReactions((v) => !v) : undefined}
+            onClick={
+              (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0)
+                ? () => {
+                    if (showActionsOnClick && actions && actions.length > 0) {
+                      setShowActions((v) => !v);
+                    }
+                    if (onReaction && reactionEmojis.length > 0) {
+                      setShowReactions((v) => !v);
+                    }
+                  }
+                : undefined
+            }
             onContextMenu={(e) => {
               e.preventDefault();
-              if (onReaction) setShowReactions((v) => !v);
+              if (onReaction && reactionEmojis.length > 0) setShowReactions((v) => !v);
+              if (actions && actions.length > 0) setShowActions((v) => !v);
             }}
-            style={onReaction ? { cursor: 'pointer' } : undefined}
+            style={
+              (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0)
+                ? { cursor: 'pointer' }
+                : undefined
+            }
           >
             {replyTo && (
               <ReplyBlock onClick={handleReplyClick} title='Go to replied message'>
@@ -587,51 +669,6 @@ export const Message: React.FC<MessageProps> = ({
               </ForwardedBlock>
             )}
             {!sender && <BubbleTail $type={type} />}
-            {onReaction && showReactions && (
-              <>
-                <ReactionMenu $type={type}>
-                  {reactionEmojis.map((emoji) => (
-                    <span
-                      key={emoji}
-                      style={{
-                        fontSize: 24,
-                        cursor: 'pointer',
-                        userSelect: 'none',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onReaction(emoji);
-                        setShowReactions(false);
-                      }}
-                    >
-                      {emoji}
-                    </span>
-                  ))}
-                </ReactionMenu>
-                {Array.isArray(actions) && actions.length > 0 && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 36,
-                      [type === 'outgoing' ? 'right' : 'left']: 0,
-                      zIndex: 20,
-                    }}
-                  >
-                    <ActionsMenu
-                      items={actions.map((action) => ({
-                        ...action,
-                        onClick: () => {
-                          action.onClick();
-                          setShowReactions(false);
-                        },
-                      }))}
-                      size='small'
-                      animationOrigin={type === 'outgoing' ? 'right' : 'left'}
-                    />
-                  </div>
-                )}
-              </>
-            )}
             <div>{text}</div>
             {attachments && attachments.length > 0 && (
               <AttachmentContainer>
@@ -784,6 +821,57 @@ export const Message: React.FC<MessageProps> = ({
         <ImageModalOverlay onClick={() => setPreviewImage(null)}>
           <ImageModalImg src={previewImage} alt='preview' />
         </ImageModalOverlay>
+      )}
+      {(showReactions || showActions) && (
+        <>
+          {onReaction && showReactions && reactionEmojis.length > 0 && (
+            <ReactionMenu
+              $type={type}
+              ref={reactionMenuRef}
+              onWheel={(e) => e.stopPropagation()}
+              onScroll={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+            >
+              {reactionEmojis.map((emoji) => (
+                <span
+                  key={emoji}
+                  style={{
+                    fontSize: 24,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '4px',
+                    borderRadius: '6px',
+                    transition: 'background 0.15s ease',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onReaction(emoji);
+                    setShowReactions(false);
+                    setShowActions(false);
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--c-bg-subtle)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  {emoji}
+                </span>
+              ))}
+            </ReactionMenu>
+          )}
+          {Array.isArray(actions) &&
+            actions.length > 0 &&
+            (showActions || (showActionsOnClick && showReactions)) && (
+              <StyledActionsMenu $type={type} items={actions} />
+            )}
+        </>
       )}
     </MessageRoot>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css } from 'styled-components';
 
 interface BadgeProps {
@@ -23,14 +24,14 @@ const BadgeCircle = styled.span<{ $variant?: string }>`
           position: static;
           min-width: 0;
           height: auto;
-          padding: var(--spacing-small) var(--spacing-large);
-          background: var(--c-bg-elevated);
+          padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.large};
+          background: color-mix(in srgb, var(--c-bg-elevated) 70%, var(--c-text-primary) 30%);
           color: var(--c-text-primary);
-          border-radius: var(--radius-large);
+          border-radius: ${DESIGN_TOKENS.radius.large};
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: var(--font-size-medium);
+          font-size: ${DESIGN_TOKENS.fontSize.medium};
           font-weight: 500;
           box-shadow: none;
           margin: 16px auto;
@@ -49,9 +50,8 @@ const BadgeCircle = styled.span<{ $variant?: string }>`
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: var(--font-size-small);
+          font-size: ${DESIGN_TOKENS.fontSize.small};
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-          z-index: 1;
           pointer-events: none;
         `}
 `;

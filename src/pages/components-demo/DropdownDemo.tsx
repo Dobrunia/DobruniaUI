@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 const fruitOptions = [
   { value: 'apple', label: 'Яблоко' },
@@ -42,14 +43,14 @@ export const DropdownDemo: React.FC = () => {
   return (
     <div
       style={{
-        padding: 'var(--spacing-large)',
+        padding: DESIGN_TOKENS.spacing.large,
         maxWidth: 600,
         margin: '0 auto',
         background: 'var(--c-bg-default)',
-        borderRadius: 'var(--radius-large)',
+        borderRadius: DESIGN_TOKENS.radius.large,
         display: 'flex',
         flexDirection: 'column',
-        gap: 'var(--spacing-large)',
+        gap: DESIGN_TOKENS.spacing.large,
       }}
     >
       <h2 style={{ color: 'var(--c-text-primary)', marginBottom: 0 }}>Dropdown Demo</h2>
@@ -59,8 +60,8 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Базовый Dropdown
@@ -73,9 +74,9 @@ export const DropdownDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {basicValue || 'ничего не выбрано'}
@@ -87,8 +88,8 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           С кнопкой очистки
@@ -102,9 +103,9 @@ export const DropdownDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {clearableValue || 'ничего не выбрано'}
@@ -116,8 +117,8 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           С ошибкой
@@ -133,9 +134,9 @@ export const DropdownDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {errorValue || 'ничего не выбрано'}
@@ -147,8 +148,8 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Заблокированный
@@ -163,9 +164,9 @@ export const DropdownDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {categoryValue}
@@ -177,8 +178,8 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Длинные тексты (ellipsis)
@@ -192,9 +193,9 @@ export const DropdownDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {longValue || 'ничего не выбрано'}
@@ -206,13 +207,13 @@ export const DropdownDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Разные размеры
         </h3>
-        <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: DESIGN_TOKENS.spacing.medium, flexWrap: 'wrap' }}>
           <Dropdown
             options={[
               { value: 'xs', label: 'XS' },

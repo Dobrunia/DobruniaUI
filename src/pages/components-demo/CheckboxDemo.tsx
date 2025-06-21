@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 /**
  * CheckboxDemo - демонстрация компонента Checkbox
@@ -10,11 +11,15 @@ export const CheckboxDemo: React.FC = () => {
   const [checked2, setChecked2] = useState(true);
 
   return (
-    <div style={{ padding: 'var(--spacing-large)' }}>
-      <h2 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-large)' }}>
+    <div style={{ padding: DESIGN_TOKENS.spacing.large }}>
+      <h2
+        style={{ color: 'var(--c-text-primary)', marginBottom: DESIGN_TOKENS.spacing.large }}
+      >
         Checkbox Demo
       </h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-large)' }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: DESIGN_TOKENS.spacing.large }}
+      >
         <Checkbox checked={checked} onChange={setChecked} label='Я согласен с условиями' />
         <Checkbox
           checked={checked2}
@@ -23,7 +28,7 @@ export const CheckboxDemo: React.FC = () => {
         />
         <Checkbox checked={false} onChange={() => {}} label='Отключённый чекбокс' disabled />
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние первого чекбокса:</b> {checked ? 'отмечен' : 'не отмечен'}
       </div>
     </div>

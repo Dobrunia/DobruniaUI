@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import { ActionsMenu, Button, type ActionsMenuAction, type ActionsMenuGroup } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
+import styled from 'styled-components';
+
+// Статичная версия ActionsMenu для демо (убираем position: absolute)
+const DemoActionsMenu = styled(ActionsMenu)`
+  position: static !important;
+`;
 
 // Простые SVG иконки для демо
 const ReplyIcon = () => (
@@ -51,10 +58,6 @@ const SelectIcon = () => (
 // );
 
 export const ActionsMenuDemo = () => {
-  const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium');
-  const [selectedAnimation, setSelectedAnimation] = useState<
-    'left' | 'right' | 'top' | 'bottom' | 'center'
-  >('center');
   const [showSimpleMenu, setShowSimpleMenu] = useState(true);
   const [actionHistory, setActionHistory] = useState<string[]>([]);
 
@@ -158,22 +161,8 @@ export const ActionsMenuDemo = () => {
     },
   ];
 
-  const sizes = [
-    { value: 'small' as const, label: 'Small' },
-    { value: 'medium' as const, label: 'Medium' },
-    { value: 'large' as const, label: 'Large' },
-  ];
-
-  const animations = [
-    { value: 'left' as const, label: 'Left' },
-    { value: 'right' as const, label: 'Right' },
-    { value: 'top' as const, label: 'Top' },
-    { value: 'bottom' as const, label: 'Bottom' },
-    { value: 'center' as const, label: 'Center' },
-  ];
-
   return (
-    <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
+    <div style={{ padding: '32px' }}>
       <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>ActionsMenu Demo</h1>
 
       <div
@@ -188,7 +177,7 @@ export const ActionsMenuDemo = () => {
           style={{
             padding: '32px',
             border: '2px solid var(--c-accent)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-elevated)',
           }}
         >
@@ -205,68 +194,6 @@ export const ActionsMenuDemo = () => {
               marginBottom: '32px',
             }}
           >
-            {/* Размер */}
-            <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Размер:</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {sizes.map((size) => (
-                  <label
-                    key={size.value}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
-                    }}
-                  >
-                    <input
-                      type='radio'
-                      name='size'
-                      value={size.value}
-                      checked={selectedSize === size.value}
-                      onChange={(e) =>
-                        setSelectedSize(e.target.value as 'small' | 'medium' | 'large')
-                      }
-                    />
-                    <span>{size.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Анимация */}
-            <div>
-              <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Анимация:</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {animations.map((animation) => (
-                  <label
-                    key={animation.value}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
-                    }}
-                  >
-                    <input
-                      type='radio'
-                      name='animation'
-                      value={animation.value}
-                      checked={selectedAnimation === animation.value}
-                      onChange={(e) =>
-                        setSelectedAnimation(
-                          e.target.value as 'left' | 'right' | 'top' | 'bottom' | 'center'
-                        )
-                      }
-                    />
-                    <span>{animation.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
             {/* Тип меню */}
             <div>
               <h4 style={{ marginBottom: '8px', color: 'var(--c-text-primary)' }}>Тип меню:</h4>
@@ -277,7 +204,7 @@ export const ActionsMenuDemo = () => {
                     alignItems: 'center',
                     gap: '8px',
                     cursor: 'pointer',
-                    fontSize: 'var(--font-size-small)',
+                    fontSize: DESIGN_TOKENS.fontSize.small,
                   }}
                 >
                   <input
@@ -294,7 +221,7 @@ export const ActionsMenuDemo = () => {
                     alignItems: 'center',
                     gap: '8px',
                     cursor: 'pointer',
-                    fontSize: 'var(--font-size-small)',
+                    fontSize: DESIGN_TOKENS.fontSize.small,
                   }}
                 >
                   <input
@@ -314,21 +241,23 @@ export const ActionsMenuDemo = () => {
             style={{
               padding: '48px',
               backgroundColor: 'var(--c-bg-elevated)',
-              borderRadius: 'var(--radius-medium)',
+              borderRadius: DESIGN_TOKENS.radius.medium,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: '16px',
+              position: 'relative',
             }}
           >
-            <ActionsMenu
-              items={showSimpleMenu ? simpleActions : messageActions}
-              size={selectedSize}
-              animationOrigin={selectedAnimation}
-            />
+            <DemoActionsMenu items={showSimpleMenu ? simpleActions : messageActions} />
           </div>
 
-          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
+          <p
+            style={{
+              color: 'var(--c-text-secondary)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
+            }}
+          >
             Попробуйте разные настройки выше. Кликайте на действия в меню!
           </p>
         </div>
@@ -338,7 +267,7 @@ export const ActionsMenuDemo = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-bg-elevated)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
@@ -349,7 +278,7 @@ export const ActionsMenuDemo = () => {
             {/* Контекстное меню сообщения */}
             <div>
               <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
-                Контекстное меню сообщения (Telegram-style)
+                Контекстное меню сообщения
               </h4>
 
               <div
@@ -365,17 +294,17 @@ export const ActionsMenuDemo = () => {
                     background: 'var(--c-accent)',
                     color: 'var(--c-text-inverse)',
                     padding: '12px 16px',
-                    borderRadius: 'var(--radius-medium)',
+                    borderRadius: DESIGN_TOKENS.radius.medium,
                     maxWidth: '300px',
                     position: 'relative',
                   }}
                 >
-                  <p style={{ margin: 0, fontSize: 'var(--font-size-medium)' }}>
+                  <p style={{ margin: 0, fontSize: DESIGN_TOKENS.fontSize.medium }}>
                     Привет! Как дела? Это тестовое сообщение для демонстрации контекстного меню.
                   </p>
                   <div
                     style={{
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       opacity: 0.8,
                       marginTop: '4px',
                     }}
@@ -385,13 +314,13 @@ export const ActionsMenuDemo = () => {
                 </div>
 
                 {/* Контекстное меню */}
-                <ActionsMenu items={messageActions} size='medium' animationOrigin='left' />
+                <DemoActionsMenu items={messageActions} />
               </div>
 
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -399,75 +328,30 @@ export const ActionsMenuDemo = () => {
               </p>
             </div>
 
-            {/* Разные размеры */}
+            {/* Компактное меню */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>Размеры меню</h4>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
+                Компактное меню
+              </h4>
 
-              <div
+              <DemoActionsMenu items={compactActions} />
+
+              <p
                 style={{
-                  display: 'flex',
-                  gap: '24px',
-                  alignItems: 'flex-start',
-                  flexWrap: 'wrap',
+                  marginTop: '8px',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
+                  color: 'var(--c-text-secondary)',
                 }}
               >
-                <div style={{ textAlign: 'center' }}>
-                  <p
-                    style={{
-                      marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
-                      fontWeight: '600',
-                    }}
-                  >
-                    Small
-                  </p>
-                  <ActionsMenu
-                    items={compactActions}
-                    size='small'
-                    animationOrigin='center'
-                    maxWidth={160}
-                  />
-                </div>
-
-                <div style={{ textAlign: 'center' }}>
-                  <p
-                    style={{
-                      marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
-                      fontWeight: '600',
-                    }}
-                  >
-                    Medium
-                  </p>
-                  <ActionsMenu
-                    items={simpleActions.slice(0, 3)}
-                    size='medium'
-                    animationOrigin='center'
-                  />
-                </div>
-
-                <div style={{ textAlign: 'center' }}>
-                  <p
-                    style={{
-                      marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
-                      fontWeight: '600',
-                    }}
-                  >
-                    Large
-                  </p>
-                  <ActionsMenu
-                    items={simpleActions.slice(0, 3)}
-                    size='large'
-                    animationOrigin='center'
-                  />
-                </div>
-              </div>
+                Минимальный набор действий для быстрого доступа
+              </p>
             </div>
 
             {/* Типы действий */}
             <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>Типы действий</h4>
+              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
+                Типы действий
+              </h4>
 
               <div
                 style={{
@@ -481,13 +365,13 @@ export const ActionsMenuDemo = () => {
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
                     Default
                   </p>
-                  <ActionsMenu
+                  <DemoActionsMenu
                     items={[
                       {
                         label: 'Обычное действие',
@@ -495,8 +379,6 @@ export const ActionsMenuDemo = () => {
                         onClick: () => logAction('Default action'),
                       },
                     ]}
-                    size='medium'
-                    animationOrigin='center'
                   />
                 </div>
 
@@ -504,13 +386,13 @@ export const ActionsMenuDemo = () => {
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
                     Primary
                   </p>
-                  <ActionsMenu
+                  <DemoActionsMenu
                     items={[
                       {
                         label: 'Важное действие',
@@ -519,8 +401,6 @@ export const ActionsMenuDemo = () => {
                         type: 'primary',
                       },
                     ]}
-                    size='medium'
-                    animationOrigin='center'
                   />
                 </div>
 
@@ -528,13 +408,13 @@ export const ActionsMenuDemo = () => {
                   <p
                     style={{
                       marginBottom: '8px',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                       fontWeight: '600',
                     }}
                   >
                     Destructive
                   </p>
-                  <ActionsMenu
+                  <DemoActionsMenu
                     items={[
                       {
                         label: 'Удаление',
@@ -543,46 +423,8 @@ export const ActionsMenuDemo = () => {
                         type: 'destructive',
                       },
                     ]}
-                    size='medium'
-                    animationOrigin='center'
                   />
                 </div>
-              </div>
-            </div>
-
-            {/* Направления анимации */}
-            <div>
-              <h4 style={{ marginBottom: '12px', color: 'var(--c-text-primary)' }}>
-                Направления анимации
-              </h4>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                  gap: '16px',
-                  alignItems: 'center',
-                }}
-              >
-                {animations.map((animation) => (
-                  <div key={animation.value} style={{ textAlign: 'center' }}>
-                    <p
-                      style={{
-                        marginBottom: '8px',
-                        fontSize: 'var(--font-size-small)',
-                        fontWeight: '600',
-                      }}
-                    >
-                      {animation.label}
-                    </p>
-                    <ActionsMenu
-                      items={compactActions}
-                      size='small'
-                      animationOrigin={animation.value}
-                      maxWidth={140}
-                    />
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -594,7 +436,7 @@ export const ActionsMenuDemo = () => {
             style={{
               padding: '24px',
               border: '1px solid var(--c-bg-elevated)',
-              borderRadius: 'var(--radius-medium)',
+              borderRadius: DESIGN_TOKENS.radius.medium,
             }}
           >
             <div
@@ -617,8 +459,8 @@ export const ActionsMenuDemo = () => {
                 overflowY: 'auto',
                 backgroundColor: 'var(--c-bg-elevated)',
                 padding: '12px',
-                borderRadius: 'var(--radius-medium)',
-                fontSize: 'var(--font-size-small)',
+                borderRadius: DESIGN_TOKENS.radius.medium,
+                fontSize: DESIGN_TOKENS.fontSize.small,
                 fontFamily: 'monospace',
               }}
             >
@@ -644,7 +486,7 @@ export const ActionsMenuDemo = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-bg-elevated)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-elevated)',
           }}
         >
@@ -655,7 +497,7 @@ export const ActionsMenuDemo = () => {
           <ul
             style={{
               color: 'var(--c-text-primary)',
-              fontSize: 'var(--font-size-small)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
               lineHeight: '1.6',
               paddingLeft: '20px',
             }}
@@ -671,12 +513,8 @@ export const ActionsMenuDemo = () => {
               <strong>Горячие клавиши:</strong> Добавляйте <code>shortcut</code> для улучшения UX
             </li>
             <li style={{ marginBottom: '8px' }}>
-              <strong>Анимации:</strong> Выбирайте направление анимации в зависимости от позиции
-              триггера
-            </li>
-            <li style={{ marginBottom: '8px' }}>
-              <strong>Размеры:</strong> <code>small</code> для компактных интерфейсов,{' '}
-              <code>large</code> для touch-устройств
+              <strong>Позиционирование:</strong> Меню использует <code>position: absolute</code>,
+              требует relative контейнер
             </li>
             <li>
               <strong>Accessibility:</strong> Все элементы поддерживают навигацию с клавиатуры и

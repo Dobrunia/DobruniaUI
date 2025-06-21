@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 interface CheckboxProps {
@@ -31,9 +32,9 @@ interface CheckboxProps {
 const CheckboxWrapper = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-small);
+  gap: ${DESIGN_TOKENS.spacing.small};
   cursor: pointer;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-primary);
   user-select: none;
   position: relative;
@@ -57,12 +58,13 @@ const CustomBox = styled.span<{ checked: boolean; disabled?: boolean }>`
   width: 1.1em;
   height: 1.1em;
   border: 2px solid var(--c-accent);
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background ${DESIGN_TOKENS.transition.fast},
+    border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   margin-right: 0.5em;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

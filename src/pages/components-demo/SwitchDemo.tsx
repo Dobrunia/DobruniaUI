@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Switch, RollingSwitch, YinYangSwitch, FlipSwitch, PowerSwitch } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const SwitchDemo: React.FC = () => {
   const [checked, setChecked] = useState(false);
@@ -12,21 +13,22 @@ export const SwitchDemo: React.FC = () => {
   return (
     <div
       style={{
-        padding: 'var(--spacing-large)',
-        maxWidth: 'var(--layout-content-width)',
+        padding: DESIGN_TOKENS.spacing.large,
         margin: '0 auto',
       }}
     >
       <h2
         style={{
           color: 'var(--c-text-primary)',
-          marginBottom: 'var(--spacing-large)',
-          fontSize: 'var(--font-size-large)',
+          marginBottom: DESIGN_TOKENS.spacing.large,
+          fontSize: DESIGN_TOKENS.fontSize.large,
         }}
       >
         Switch Demo
       </h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-large)' }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: `${DESIGN_TOKENS.spacing.large}` }}
+      >
         <Switch checked={checked} onChange={setChecked} label='Включить уведомления' id='switch1' />
         <Switch
           checked={checked2}
@@ -52,22 +54,22 @@ export const SwitchDemo: React.FC = () => {
           <PowerSwitch checked={power} onChange={setPower} />
         </div>
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние первого переключателя:</b> {checked ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние rolling toggle:</b> {rolling ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние Yin Yang Switch:</b> {yinYang ? 'включен' : 'выключен'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние Flip Switch:</b> {flip ? 'Yeah!' : 'Nope'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние Flip Switch:</b> {flip ? 'On' : 'Off'}
       </div>
-      <div style={{ marginTop: 'var(--spacing-large)', color: 'var(--c-text-primary)' }}>
+      <div style={{ marginTop: DESIGN_TOKENS.spacing.large, color: 'var(--c-text-primary)' }}>
         <b>Состояние Power Switch:</b> {power ? 'On' : 'Off'}
       </div>
     </div>

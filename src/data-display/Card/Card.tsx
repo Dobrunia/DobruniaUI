@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css } from 'styled-components';
 
 interface CardProps {
@@ -35,7 +36,7 @@ const CardContainer = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius-large);
+  border-radius: ${DESIGN_TOKENS.radius.large};
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -101,7 +102,7 @@ const CardHeader = styled.div<{ $hasSubtitle: boolean }>`
 
 const CardTitle = styled.h3`
   margin: 0 0 4px 0;
-  font-size: var(--font-size-large);
+  font-size: ${DESIGN_TOKENS.fontSize.large};
   font-weight: 600;
   color: var(--c-text-primary);
   line-height: 1.3;
@@ -109,7 +110,7 @@ const CardTitle = styled.h3`
 
 const CardSubtitle = styled.p`
   margin: 0 0 12px 0;
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-secondary);
   line-height: 1.4;
 `;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Select, type SelectOption } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 const basicOptions: SelectOption[] = [
   { value: 'apple', label: 'Яблоко' },
@@ -164,14 +165,14 @@ export const SelectDemo: React.FC = () => {
   return (
     <div
       style={{
-        padding: 'var(--spacing-large)',
+        padding: DESIGN_TOKENS.spacing.large,
         maxWidth: 800,
         margin: '0 auto',
         background: 'var(--c-bg-default)',
-        borderRadius: 'var(--radius-large)',
+        borderRadius: DESIGN_TOKENS.radius.large,
         display: 'flex',
         flexDirection: 'column',
-        gap: 'var(--spacing-large)',
+        gap: DESIGN_TOKENS.spacing.large,
       }}
     >
       <h2 style={{ color: 'var(--c-text-primary)', marginBottom: 0 }}>Select Demo</h2>
@@ -181,23 +182,28 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Режимы работы (Click vs Hover)
         </h3>
 
-        <div style={{ marginBottom: 'var(--spacing-large)' }}>
-          <h4 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-medium)' }}>
+        <div style={{ marginBottom: DESIGN_TOKENS.spacing.large }}>
+          <h4
+            style={{
+              color: 'var(--c-text-primary)',
+              marginBottom: DESIGN_TOKENS.spacing.medium,
+            }}
+          >
             Click режим (по умолчанию)
           </h4>
-          <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: DESIGN_TOKENS.spacing.medium, flexWrap: 'wrap' }}>
             <div>
               <div
                 style={{
-                  marginBottom: 'var(--spacing-small)',
-                  fontSize: 'var(--font-size-small)',
+                  marginBottom: DESIGN_TOKENS.spacing.small,
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -213,9 +219,9 @@ export const SelectDemo: React.FC = () => {
               />
               <div
                 style={{
-                  marginTop: 'var(--spacing-small)',
+                  marginTop: DESIGN_TOKENS.spacing.small,
                   color: 'var(--c-text-secondary)',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Выбрано: {basicValue || 'ничего'}
@@ -225,8 +231,8 @@ export const SelectDemo: React.FC = () => {
             <div>
               <div
                 style={{
-                  marginBottom: 'var(--spacing-small)',
-                  fontSize: 'var(--font-size-small)',
+                  marginBottom: DESIGN_TOKENS.spacing.small,
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -242,9 +248,9 @@ export const SelectDemo: React.FC = () => {
               />
               <div
                 style={{
-                  marginTop: 'var(--spacing-small)',
+                  marginTop: DESIGN_TOKENS.spacing.small,
                   color: 'var(--c-text-secondary)',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Выбрано: {menuValue || 'ничего'}
@@ -254,15 +260,20 @@ export const SelectDemo: React.FC = () => {
         </div>
 
         <div>
-          <h4 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-medium)' }}>
+          <h4
+            style={{
+              color: 'var(--c-text-primary)',
+              marginBottom: DESIGN_TOKENS.spacing.medium,
+            }}
+          >
             Hover режим
           </h4>
-          <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: DESIGN_TOKENS.spacing.medium, flexWrap: 'wrap' }}>
             <div>
               <div
                 style={{
-                  marginBottom: 'var(--spacing-small)',
-                  fontSize: 'var(--font-size-small)',
+                  marginBottom: DESIGN_TOKENS.spacing.small,
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -279,9 +290,9 @@ export const SelectDemo: React.FC = () => {
               />
               <div
                 style={{
-                  marginTop: 'var(--spacing-small)',
+                  marginTop: DESIGN_TOKENS.spacing.small,
                   color: 'var(--c-text-secondary)',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Выбрано: {hoverBasicValue || 'ничего'}
@@ -291,8 +302,8 @@ export const SelectDemo: React.FC = () => {
             <div>
               <div
                 style={{
-                  marginBottom: 'var(--spacing-small)',
-                  fontSize: 'var(--font-size-small)',
+                  marginBottom: DESIGN_TOKENS.spacing.small,
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -309,9 +320,9 @@ export const SelectDemo: React.FC = () => {
               />
               <div
                 style={{
-                  marginTop: 'var(--spacing-small)',
+                  marginTop: DESIGN_TOKENS.spacing.small,
                   color: 'var(--c-text-secondary)',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Выбрано: {hoverMenuValue || 'ничего'}
@@ -321,8 +332,8 @@ export const SelectDemo: React.FC = () => {
             <div>
               <div
                 style={{
-                  marginBottom: 'var(--spacing-small)',
-                  fontSize: 'var(--font-size-small)',
+                  marginBottom: DESIGN_TOKENS.spacing.small,
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -339,9 +350,9 @@ export const SelectDemo: React.FC = () => {
               />
               <div
                 style={{
-                  marginTop: 'var(--spacing-small)',
+                  marginTop: DESIGN_TOKENS.spacing.small,
                   color: 'var(--c-text-secondary)',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Выбрано: {hoverCategoryValue || 'ничего'}
@@ -352,22 +363,27 @@ export const SelectDemo: React.FC = () => {
 
         <div
           style={{
-            marginTop: 'var(--spacing-medium)',
-            padding: 'var(--spacing-medium)',
+            marginTop: DESIGN_TOKENS.spacing.medium,
+            padding: DESIGN_TOKENS.spacing.medium,
             backgroundColor: 'var(--c-bg-elevated)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             border: '1px solid var(--c-border)',
           }}
         >
-          <h5 style={{ color: 'var(--c-text-primary)', marginBottom: 'var(--spacing-small)' }}>
+          <h5
+            style={{
+              color: 'var(--c-text-primary)',
+              marginBottom: DESIGN_TOKENS.spacing.small,
+            }}
+          >
             Особенности режимов:
           </h5>
           <ul
             style={{
               color: 'var(--c-text-secondary)',
-              fontSize: 'var(--font-size-small)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
               margin: 0,
-              paddingLeft: 'var(--spacing-medium)',
+              paddingLeft: DESIGN_TOKENS.spacing.medium,
             }}
           >
             <li>
@@ -396,18 +412,18 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Базовый Select
         </h3>
-        <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: DESIGN_TOKENS.spacing.medium, flexWrap: 'wrap' }}>
           <div>
             <div
               style={{
-                marginBottom: 'var(--spacing-small)',
-                fontSize: 'var(--font-size-small)',
+                marginBottom: DESIGN_TOKENS.spacing.small,
+                fontSize: DESIGN_TOKENS.fontSize.small,
                 color: 'var(--c-text-secondary)',
               }}
             >
@@ -422,9 +438,9 @@ export const SelectDemo: React.FC = () => {
             />
             <div
               style={{
-                marginTop: 'var(--spacing-small)',
+                marginTop: DESIGN_TOKENS.spacing.small,
                 color: 'var(--c-text-secondary)',
-                fontSize: 'var(--font-size-small)',
+                fontSize: DESIGN_TOKENS.fontSize.small,
               }}
             >
               Выбрано: {basicValue || 'ничего не выбрано'}
@@ -434,8 +450,8 @@ export const SelectDemo: React.FC = () => {
           <div>
             <div
               style={{
-                marginBottom: 'var(--spacing-small)',
-                fontSize: 'var(--font-size-small)',
+                marginBottom: DESIGN_TOKENS.spacing.small,
+                fontSize: DESIGN_TOKENS.fontSize.small,
                 color: 'var(--c-text-secondary)',
               }}
             >
@@ -451,9 +467,9 @@ export const SelectDemo: React.FC = () => {
             />
             <div
               style={{
-                marginTop: 'var(--spacing-small)',
+                marginTop: DESIGN_TOKENS.spacing.small,
                 color: 'var(--c-text-secondary)',
-                fontSize: 'var(--font-size-small)',
+                fontSize: DESIGN_TOKENS.fontSize.small,
               }}
             >
               Кнопка × появляется при выборе
@@ -467,8 +483,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Select с иконками
@@ -476,9 +492,9 @@ export const SelectDemo: React.FC = () => {
         <Select options={iconOptions} value={iconValue} onChange={setIconValue} width={250} />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {iconOptions.find((opt) => opt.value === iconValue)?.label}
@@ -490,8 +506,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Select с подменю - Меню приложения
@@ -505,9 +521,9 @@ export const SelectDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {menuValue || 'ничего не выбрано'}
@@ -519,8 +535,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Select с подменю - Категории товаров
@@ -534,9 +550,9 @@ export const SelectDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {categoryValue || 'ничего не выбрано'}
@@ -548,8 +564,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Select с описаниями
@@ -562,9 +578,9 @@ export const SelectDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Выбрано: {detailedOptions.find((opt) => opt.value === detailedValue)?.label}
@@ -576,8 +592,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Выбор статуса
@@ -585,9 +601,9 @@ export const SelectDemo: React.FC = () => {
         <Select options={statusOptions} value={statusValue} onChange={setStatusValue} width={200} />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Статус: {statusOptions.find((opt) => opt.value === statusValue)?.label}
@@ -599,8 +615,8 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Заблокированный Select
@@ -617,9 +633,9 @@ export const SelectDemo: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 'var(--spacing-small)',
+            marginTop: DESIGN_TOKENS.spacing.small,
             color: 'var(--c-text-secondary)',
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           Этот Select заблокирован
@@ -631,13 +647,13 @@ export const SelectDemo: React.FC = () => {
         <h3
           style={{
             color: 'var(--c-text-primary)',
-            marginBottom: 'var(--spacing-medium)',
-            fontSize: 'var(--font-size-large)',
+            marginBottom: DESIGN_TOKENS.spacing.medium,
+            fontSize: DESIGN_TOKENS.fontSize.large,
           }}
         >
           Разные размеры
         </h3>
-        <div style={{ display: 'flex', gap: 'var(--spacing-medium)', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: DESIGN_TOKENS.spacing.medium, flexWrap: 'wrap' }}>
           <Select
             options={basicOptions}
             value=''

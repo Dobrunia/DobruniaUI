@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
   list-style: none;
-  padding: var(--spacing-small);
+  padding: ${DESIGN_TOKENS.spacing.small};
   margin: 0;
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   width: ${({ $width }) => $width || '100%'};
   height: ${({ $height }) => $height || 'max-content'};
   overflow-y: auto;
@@ -17,13 +18,13 @@ const SectionTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-small);
+  padding: ${DESIGN_TOKENS.spacing.small};
   padding-right: 0;
   color: var(--c-text-primary);
-  font-size: var(--font-size-medium);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   font-weight: 600;
   letter-spacing: 0.01em;
-  margin-top: var(--spacing-small);
+  margin-top: ${DESIGN_TOKENS.spacing.small};
   margin-bottom: 0.25em;
   user-select: none;
   cursor: pointer;
@@ -34,21 +35,21 @@ const SectionTitle = styled.div`
 `;
 
 const ItemsWrapper = styled.div<{ $noIndent?: boolean }>`
-  padding-left: ${({ $noIndent }) => ($noIndent ? '0' : 'var(--spacing-medium)')};
+  padding-left: ${({ $noIndent }) => ($noIndent ? '0' : DESIGN_TOKENS.spacing.medium)};
 `;
 
 const SidebarItem = styled.li<{ selected: boolean }>`
   position: relative;
-  padding: var(--spacing-small) var(--spacing-medium);
+  padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.medium};
   cursor: pointer;
   background: ${({ selected }) =>
     selected ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
   color: ${({ selected }) => (selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
-  border-radius: var(--radius-medium);
-  margin-bottom: var(--spacing-small);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
+  margin-bottom: ${DESIGN_TOKENS.spacing.small};
   font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
-  font-size: var(--font-size-medium);
-  transition: background var(--transition-fast), color var(--transition-fast);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  transition: background ${DESIGN_TOKENS.transition.fast}, color ${DESIGN_TOKENS.transition.fast};
   &:hover {
     background: color-mix(in srgb, var(--c-accent) 5%, transparent 95%);
     color: var(--c-text-primary);

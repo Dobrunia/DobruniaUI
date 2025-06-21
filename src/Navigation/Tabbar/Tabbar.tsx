@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab, type TabData } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface TabbarProps {
   tabs: TabData[];
@@ -12,14 +13,15 @@ interface TabbarProps {
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  gap: var(--spacing-medium);
-  background-color: var(--c-bg-subtle);
-  padding: var(--spacing-medium) 0;
-  border-bottom: 1px solid var(--c-border);
+  gap: ${DESIGN_TOKENS.spacing.medium};
+  background: inherit;
+  padding: 0 ${DESIGN_TOKENS.spacing.medium};
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
   user-select: none;
+  transition: all ${DESIGN_TOKENS.transition.fast} ease;
+
   &::-webkit-scrollbar {
     display: none;
   }

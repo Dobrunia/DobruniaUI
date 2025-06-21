@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Avatar, Badge, Switch, ToggleButton } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const CardDemo: React.FC = () => {
   const [liked, setLiked] = useState(false);
@@ -199,7 +200,7 @@ export const CardDemo: React.FC = () => {
               style={{
                 height: '120px',
                 background: 'var(--c-bg-elevated)',
-                borderRadius: 'var(--radius-medium)',
+                borderRadius: DESIGN_TOKENS.radius.medium,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

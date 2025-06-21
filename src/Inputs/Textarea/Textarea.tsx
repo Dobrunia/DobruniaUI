@@ -1,5 +1,6 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -20,7 +21,7 @@ const Wrapper = styled.div<{ width?: string }>`
 
 const Label = styled.label<{ $error?: boolean }>`
   color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-accent)')};
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   margin-bottom: 0.15em;
 `;
 
@@ -29,12 +30,13 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
   min-height: 80px;
   resize: ${({ $resize }) => $resize};
   padding: 16px;
-  border-radius: var(--radius-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
   border: 2px solid ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
   background: var(--c-bg-subtle);
   color: var(--c-text-primary);
-  font-size: var(--font-size-medium);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  transition: border-color ${DESIGN_TOKENS.transition.fast},
+    box-shadow ${DESIGN_TOKENS.transition.fast};
   outline: none;
   box-sizing: border-box;
   &:hover {
@@ -63,7 +65,7 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
 
 const HelperText = styled.div<{ $error?: boolean }>`
   color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-text-secondary)')};
-  font-size: var(--font-size-small);
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   min-height: 1.2em;
   margin-top: 0.1em;
 `;

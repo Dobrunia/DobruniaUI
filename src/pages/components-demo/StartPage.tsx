@@ -13,7 +13,6 @@ export const StartPage: React.FC = () => {
         textAlign: 'center',
         background: 'var(--c-bg-default)',
         color: 'var(--c-text-primary)',
-        fontFamily: 'var(--font-family)',
       }}
     >
       <h1

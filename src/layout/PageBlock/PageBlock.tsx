@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
 interface PageBlockProps {
@@ -30,7 +31,7 @@ const Content = styled.div<{ $stretched?: boolean }>`
   overflow-y: auto;
   flex-grow: 1;
   min-width: 0;
-  padding: var(--spacing-large) var(--spacing-medium);
+  padding: ${DESIGN_TOKENS.spacing.large} ${DESIGN_TOKENS.spacing.medium};
   box-sizing: border-box;
 
   ${({ $stretched }) =>
@@ -48,12 +49,12 @@ const Content = styled.div<{ $stretched?: boolean }>`
 `;
 
 const Sidebar = styled.div`
-  width: var(--layout-sidebar-width);
-  min-width: var(--layout-sidebar-width);
+  width: ${DESIGN_TOKENS.layout.sidebar.desktop};
+  min-width: ${DESIGN_TOKENS.layout.sidebar.desktop};
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-  padding: var(--spacing-large) var(--spacing-medium);
+  padding: ${DESIGN_TOKENS.spacing.large} ${DESIGN_TOKENS.spacing.medium};
   position: sticky;
   top: 0;
   align-self: flex-start;
@@ -63,6 +64,16 @@ const Sidebar = styled.div`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 1200px) {
+    width: ${DESIGN_TOKENS.layout.sidebar.tablet};
+    min-width: ${DESIGN_TOKENS.layout.sidebar.tablet};
+  }
+
+  @media (max-width: 900px) {
+    width: ${DESIGN_TOKENS.layout.sidebar.mobile};
+    min-width: ${DESIGN_TOKENS.layout.sidebar.mobile};
   }
 `;
 

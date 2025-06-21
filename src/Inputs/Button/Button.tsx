@@ -1,4 +1,5 @@
 import React from 'react';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css, keyframes } from 'styled-components';
 
 const rotate = keyframes`
@@ -68,21 +69,21 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
           width: 32px;
           height: 32px;
           padding: 0;
-          font-size: var(--font-size-small);
+          font-size: ${DESIGN_TOKENS.fontSize.small};
         `;
       case 'large':
         return css`
           width: 48px;
           height: 48px;
           padding: 0;
-          font-size: var(--font-size-large);
+          font-size: ${DESIGN_TOKENS.fontSize.large};
         `;
       default:
         return css`
           width: 40px;
           height: 40px;
           padding: 0;
-          font-size: var(--font-size-medium);
+          font-size: ${DESIGN_TOKENS.fontSize.medium};
         `;
     }
   }
@@ -93,39 +94,39 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
           width: 32px;
           height: 32px;
           padding: 0;
-          font-size: var(--font-size-small);
+          font-size: ${DESIGN_TOKENS.fontSize.small};
         `;
       case 'large':
         return css`
           width: 48px;
           height: 48px;
           padding: 0;
-          font-size: var(--font-size-large);
+          font-size: ${DESIGN_TOKENS.fontSize.large};
         `;
       default:
         return css`
           width: 40px;
           height: 40px;
           padding: 0;
-          font-size: var(--font-size-medium);
+          font-size: ${DESIGN_TOKENS.fontSize.medium};
         `;
     }
   }
   switch (size) {
     case 'small':
       return css`
-        padding: var(--spacing-tiny) var(--spacing-small);
-        font-size: var(--font-size-small);
+        padding: ${DESIGN_TOKENS.spacing.tiny} ${DESIGN_TOKENS.spacing.small};
+        font-size: ${DESIGN_TOKENS.fontSize.small};
       `;
     case 'large':
       return css`
-        padding: var(--spacing-medium) var(--spacing-large);
-        font-size: var(--font-size-large);
+        padding: ${DESIGN_TOKENS.spacing.medium} ${DESIGN_TOKENS.spacing.large};
+        font-size: ${DESIGN_TOKENS.fontSize.large};
       `;
     default:
       return css`
-        padding: var(--spacing-small) var(--spacing-medium);
-        font-size: var(--font-size-medium);
+        padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.medium};
+        font-size: ${DESIGN_TOKENS.fontSize.medium};
       `;
   }
 };
@@ -257,16 +258,16 @@ const StyledButton = styled.button<StyledButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-small);
+  gap: ${DESIGN_TOKENS.spacing.small};
   border-radius: ${({ $shape, $variant }) =>
     ($shape as ButtonShape) === 'circle' ||
     ($variant === 'close' && ($shape as ButtonShape) === 'circle')
       ? '50%'
       : $shape === 'square'
-      ? 'var(--radius-medium)'
-      : 'var(--radius-medium)'};
+      ? DESIGN_TOKENS.radius.medium
+      : DESIGN_TOKENS.radius.medium};
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all ${DESIGN_TOKENS.transition.fast};
   width: ${({ $fullWidth, $variant, $shape }) =>
     $variant === 'send'
       ? '24px'

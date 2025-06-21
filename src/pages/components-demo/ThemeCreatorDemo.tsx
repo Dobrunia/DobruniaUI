@@ -770,19 +770,11 @@ export const ThemeCreatorDemo: React.FC = () => {
         /* Стилизация обертки таббара */
         .editor-tabs {
           margin-bottom: 24px;
-          padding: 4px;
+          padding: 8px;
           background: var(--c-bg-elevated);
           border: 1px solid var(--c-border);
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        /* Переопределяем стили внутреннего таббара */
-        .editor-tabs > * {
-          background: transparent !important;
-          border: none !important;
-          border-radius: 8px !important;
-          overflow: hidden;
         }
 
         .hsl-controls {

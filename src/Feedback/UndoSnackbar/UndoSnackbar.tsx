@@ -2,6 +2,7 @@ import React from 'react';
 import { Snackbar } from '../Snackbar/Snackbar';
 import type { SnackbarOrigin } from '../Snackbar/Snackbar';
 import { Button } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 interface UndoSnackbarProps {
   open: boolean;
@@ -87,7 +88,7 @@ export const UndoSnackbar: React.FC<UndoSnackbarProps> = ({
             color: 'var(--c-accent)',
             textTransform: 'uppercase',
             fontWeight: 500,
-            fontSize: 'var(--font-size-small)',
+            fontSize: DESIGN_TOKENS.fontSize.small,
           }}
         >
           {undoText}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LoadingSpinner, Button, type SpinnerVariant, type SpinnerSize } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const LoadingSpinnerDemo: React.FC = () => {
   const [selectedVariant, setSelectedVariant] = useState<SpinnerVariant>('classic');
@@ -37,7 +38,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
+    <div style={{ padding: '32px' }}>
       <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>LoadingSpinner Demo</h1>
 
       <div
@@ -52,7 +53,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           style={{
             padding: '32px',
             border: '2px solid var(--c-accent)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-default)',
             textAlign: 'center',
           }}
@@ -82,7 +83,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -112,7 +113,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -140,7 +141,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                       alignItems: 'center',
                       gap: '8px',
                       cursor: 'pointer',
-                      fontSize: 'var(--font-size-small)',
+                      fontSize: DESIGN_TOKENS.fontSize.small,
                     }}
                   >
                     <input
@@ -163,14 +164,19 @@ export const LoadingSpinnerDemo: React.FC = () => {
             style={{
               padding: '48px',
               backgroundColor: 'var(--c-bg-subtle)',
-              borderRadius: 'var(--radius-medium)',
+              borderRadius: DESIGN_TOKENS.radius.medium,
               marginBottom: '16px',
             }}
           >
             <LoadingSpinner variant={selectedVariant} size={selectedSize} color={selectedColor} />
           </div>
 
-          <p style={{ color: 'var(--c-text-secondary)', fontSize: 'var(--font-size-small)' }}>
+          <p
+            style={{
+              color: 'var(--c-text-secondary)',
+              fontSize: DESIGN_TOKENS.fontSize.small,
+            }}
+          >
             Попробуйте разные комбинации настроек выше
           </p>
         </div>
@@ -180,7 +186,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
@@ -200,7 +206,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 style={{
                   padding: '16px',
                   border: '1px solid var(--c-border)',
-                  borderRadius: 'var(--radius-small)',
+                  borderRadius: DESIGN_TOKENS.radius.small,
                   textAlign: 'center',
                 }}
               >
@@ -210,7 +216,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 <p
                   style={{
                     marginBottom: '16px',
-                    fontSize: 'var(--font-size-small)',
+                    fontSize: DESIGN_TOKENS.fontSize.small,
                     color: 'var(--c-text-secondary)',
                   }}
                 >
@@ -220,7 +226,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                   style={{
                     padding: '16px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <LoadingSpinner variant={variant.value} />
@@ -235,7 +241,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
@@ -260,7 +266,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                   style={{
                     padding: '16px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <LoadingSpinner variant='waves' size={size.value} />
@@ -275,7 +281,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
@@ -298,7 +304,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                   style={{
                     padding: '16px',
                     backgroundColor: 'var(--c-bg-subtle)',
-                    borderRadius: 'var(--radius-small)',
+                    borderRadius: DESIGN_TOKENS.radius.small,
                   }}
                 >
                   <LoadingSpinner variant='dots' color={color.value} />
@@ -313,7 +319,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
           }}
         >
           <h3 style={{ color: 'var(--c-text-primary)', marginBottom: '16px' }}>
@@ -334,7 +340,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                 gap: '16px',
                 padding: '16px',
                 backgroundColor: 'var(--c-bg-subtle)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
               }}
             >
               <LoadingSpinner variant='classic' size='small' />
@@ -357,7 +363,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
               style={{
                 padding: '16px',
                 border: '1px solid var(--c-border)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
                 textAlign: 'center',
               }}
             >
@@ -368,7 +374,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >
@@ -381,7 +387,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
               style={{
                 padding: '16px',
                 border: '1px solid var(--c-border)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
                 textAlign: 'center',
                 position: 'relative',
               }}
@@ -394,7 +400,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
                   position: 'relative',
                   padding: '24px',
                   backgroundColor: 'var(--c-bg-subtle)',
-                  borderRadius: 'var(--radius-small)',
+                  borderRadius: DESIGN_TOKENS.radius.small,
                   opacity: 0.6,
                 }}
               >
@@ -417,7 +423,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
               style={{
                 padding: '16px',
                 border: '1px solid var(--c-border)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
                 textAlign: 'center',
               }}
             >
@@ -428,7 +434,7 @@ export const LoadingSpinnerDemo: React.FC = () => {
               <p
                 style={{
                   marginTop: '8px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                   color: 'var(--c-text-secondary)',
                 }}
               >

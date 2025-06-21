@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Textarea } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 const DemoContainer = styled.div`
-  padding: var(--spacing-large);
+  padding: ${DESIGN_TOKENS.spacing.large};
   max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-large);
+  gap: ${DESIGN_TOKENS.spacing.large};
 `;
 
 export const TextareaDemo: React.FC = () => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Snackbar, UndoSnackbar } from '@DobruniaUI';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export const UndoSnackbarDemo: React.FC = () => {
   const [fileDeleteSnackbar, setFileDeleteSnackbar] = useState(false);
@@ -112,7 +113,7 @@ export const UndoSnackbarDemo: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '32px', fontFamily: 'var(--font-family)' }}>
+    <div style={{ padding: '32px' }}>
       <h1 style={{ color: 'var(--c-text-primary)', marginBottom: '24px' }}>
         Snackbar Demo (стекинг встроен в базовый компонент)
       </h1>
@@ -129,7 +130,7 @@ export const UndoSnackbarDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '2px solid var(--c-accent)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-default)',
           }}
         >
@@ -156,7 +157,7 @@ export const UndoSnackbarDemo: React.FC = () => {
           style={{
             padding: '24px',
             border: '2px solid var(--c-accent)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             backgroundColor: 'var(--c-bg-default)',
           }}
         >
@@ -181,8 +182,8 @@ export const UndoSnackbarDemo: React.FC = () => {
               marginTop: '16px',
               padding: '12px',
               backgroundColor: 'var(--c-bg-subtle)',
-              borderRadius: 'var(--radius-small)',
-              fontSize: 'var(--font-size-small)',
+              borderRadius: DESIGN_TOKENS.radius.small,
+              fontSize: DESIGN_TOKENS.fontSize.small,
               color: 'var(--c-text-secondary)',
             }}
           >
@@ -219,7 +220,7 @@ export const UndoSnackbarDemo: React.FC = () => {
         <details
           style={{
             border: '1px solid var(--c-border)',
-            borderRadius: 'var(--radius-medium)',
+            borderRadius: DESIGN_TOKENS.radius.medium,
             padding: '16px',
           }}
         >
@@ -232,7 +233,7 @@ export const UndoSnackbarDemo: React.FC = () => {
               style={{
                 padding: '16px',
                 border: '1px solid var(--c-border)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
               }}
             >
               <h4 style={{ color: 'var(--c-text-primary)', marginBottom: '8px' }}>
@@ -242,7 +243,7 @@ export const UndoSnackbarDemo: React.FC = () => {
                 style={{
                   color: 'var(--c-text-primary)',
                   marginBottom: '12px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Стекинг теперь встроен в базовый Snackbar через пропс <code>enableStacking</code>.
@@ -254,7 +255,7 @@ export const UndoSnackbarDemo: React.FC = () => {
               style={{
                 padding: '16px',
                 border: '1px solid var(--c-border)',
-                borderRadius: 'var(--radius-small)',
+                borderRadius: DESIGN_TOKENS.radius.small,
               }}
             >
               <h4 style={{ color: 'var(--c-text-primary)', marginBottom: '8px' }}>
@@ -264,7 +265,7 @@ export const UndoSnackbarDemo: React.FC = () => {
                 style={{
                   color: 'var(--c-text-primary)',
                   marginBottom: '12px',
-                  fontSize: 'var(--font-size-small)',
+                  fontSize: DESIGN_TOKENS.fontSize.small,
                 }}
               >
                 Snackbar'ы группируются по позиции (top-right, bottom-center, etc.). Каждая группа

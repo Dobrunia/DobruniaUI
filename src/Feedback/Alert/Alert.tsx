@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export type AlertType = 'success' | 'info' | 'warning' | 'error';
 
@@ -41,8 +42,8 @@ const AlertWrapper = styled.div<{
   align-items: flex-start;
   gap: 10px;
   padding: 12px 16px;
-  border-radius: var(--radius-medium);
-  font-size: var(--font-size-medium);
+  border-radius: ${DESIGN_TOKENS.radius.medium};
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   font-weight: 400;
   margin-bottom: 16px;
   line-height: 1.5;
