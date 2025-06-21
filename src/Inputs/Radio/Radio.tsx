@@ -37,12 +37,12 @@ const HiddenInput = styled.input.attrs({ type: 'radio' })`
   height: 0;
 `;
 
-const CustomCircle = styled.span<{ checked: boolean; disabled?: boolean }>`
+const CustomCircle = styled.span<{ $checked: boolean; $disabled?: boolean }>`
   width: 1.1em;
   height: 1.1em;
   border: 2px solid var(--c-accent);
   border-radius: 50%;
-  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
+  background: ${({ $checked }) => ($checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +50,7 @@ const CustomCircle = styled.span<{ checked: boolean; disabled?: boolean }>`
     border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   margin-right: 0.5em;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 
   &.custom-radio-box {
     /* для hover через родителя */
@@ -61,9 +61,44 @@ const CustomCircle = styled.span<{ checked: boolean; disabled?: boolean }>`
  * Radio component - компонент для выбора одного варианта из нескольких
  * @param {boolean} checked - состояние выбора (true - выбран, false - не выбран)
  * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {string} label - текст подписи
- * @param {boolean} disabled - флаг, указывающий, выключен ли радиобаттон
- * @param {string} id - уникальный идентификатор
+ * @param {string} [label] - текст подписи
+ * @param {boolean} [disabled] - флаг, указывающий, выключен ли радиобаттон
+ * @param {string} [id] - уникальный идентификатор
+ * @param {string} [name] - имя группы для связывания радиокнопок
+ * @param {string} [className] - дополнительные CSS классы
+ *
+ * @example
+ * // Группа радиокнопок
+ * const [selectedOption, setSelectedOption] = useState('option1');
+ *
+ * <Radio
+ *   name="options"
+ *   checked={selectedOption === 'option1'}
+ *   onChange={() => setSelectedOption('option1')}
+ *   label="Вариант 1"
+ * />
+ * <Radio
+ *   name="options"
+ *   checked={selectedOption === 'option2'}
+ *   onChange={() => setSelectedOption('option2')}
+ *   label="Вариант 2"
+ * />
+ *
+ * // Отключенная радиокнопка
+ * <Radio
+ *   checked={false}
+ *   onChange={() => {}}
+ *   label="Недоступный вариант"
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <Radio
+ *   checked={isSelected}
+ *   onChange={setIsSelected}
+ *   label="Кастомная радиокнопка"
+ *   className="custom-radio"
+ * />
  */
 export const Radio: React.FC<RadioProps> = ({
   checked,
@@ -83,7 +118,7 @@ export const Radio: React.FC<RadioProps> = ({
         disabled={disabled}
         name={name}
       />
-      <CustomCircle checked={checked} disabled={disabled} className='custom-radio-box' />
+      <CustomCircle $checked={checked} $disabled={disabled} className='custom-radio-box' />
       {label && <span>{label}</span>}
     </RadioWrapper>
   );

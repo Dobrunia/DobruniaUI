@@ -42,9 +42,6 @@ export const DESIGN_TOKENS = {
     medium: '1rem',
     large: '1.2rem',
   },
-
-  // Font family
-  fontFamily: "'Rubik', sans-serif",
 } as const;
 
 // Responsive breakpoints

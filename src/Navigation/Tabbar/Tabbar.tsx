@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Tab, type TabData } from '@DobruniaUI';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
@@ -41,6 +41,22 @@ export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, cl
   const startX = React.useRef(0);
   const scrollLeft = React.useRef(0);
 
+  // Фикс для preventDefault в wheel событии
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY * 0.5;
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, []);
+
   const onMouseDown = (e: React.MouseEvent) => {
     if (containerRef.current) {
       isDragging.current = true;
@@ -64,12 +80,6 @@ export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, cl
     const walk = x - startX.current;
     containerRef.current.scrollLeft = scrollLeft.current - walk;
   };
-  const onWheel = (e: React.WheelEvent) => {
-    if (containerRef.current && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      containerRef.current.scrollLeft += e.deltaY * 0.5;
-    }
-  };
 
   return (
     <Container
@@ -79,7 +89,6 @@ export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, cl
       onMouseLeave={onMouseLeave}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
-      onWheel={onWheel}
     >
       {tabs.map((tab) => (
         <Tab key={tab.id} tab={tab} selected={tab.id === selectedId} onClick={onTabPress} />

@@ -1,3 +1,4 @@
+import { DESIGN_TOKENS } from './styles/designTokens';
 /**
  * Auto-inject styles
  */
@@ -90,3 +91,5 @@ export {
  * Theme Components
  */
 export { ThemeSelect } from './Theme/ThemeSelect';
+
+export { DESIGN_TOKENS } from './styles/designTokens';

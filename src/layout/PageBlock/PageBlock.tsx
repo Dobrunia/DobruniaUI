@@ -7,6 +7,7 @@ interface PageBlockProps {
   left?: React.ReactNode;
   right?: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
 }
 
 const Container = styled.div<{ $stretched?: boolean }>`
@@ -83,6 +84,7 @@ const Sidebar = styled.div`
  * @param {React.ReactNode} [left] - содержимое левой боковой панели
  * @param {React.ReactNode} [right] - содержимое правой боковой панели
  * @param {React.ReactNode} children - основной контент страницы
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
  * // Базовое использование
@@ -107,15 +109,21 @@ const Sidebar = styled.div`
  * <PageBlock left={<div>Левая панель</div>}>
  *   <div>Основной контент</div>
  * </PageBlock>
+ *
+ * // С кастомными стилями
+ * <PageBlock className="custom-page-layout">
+ *   <div>Контент с кастомными стилями</div>
+ * </PageBlock>
  */
 export const PageBlock: React.FC<PageBlockProps> = ({
   stretched = false,
   left,
   right,
   children,
+  className,
 }) => {
   return (
-    <Container $stretched={stretched}>
+    <Container $stretched={stretched} className={className}>
       <Sidebar>{left && left}</Sidebar>
       <Content $stretched={stretched}>{children}</Content>
       <Sidebar>{right && right}</Sidebar>

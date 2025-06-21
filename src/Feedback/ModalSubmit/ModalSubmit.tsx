@@ -15,6 +15,7 @@ export interface ModalSubmitProps {
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   preventCloseOnSubmit?: boolean;
+  className?: string;
 }
 
 // Styled Components
@@ -45,6 +46,30 @@ const Actions = styled.div`
  * @param {boolean} [disabled] - флаг блокировки кнопки подтверждения
  * @param {'small' | 'medium' | 'large'} [size] - размер модального окна
  * @param {boolean} [preventCloseOnSubmit] - не закрывать модал автоматически после submit
+ * @param {string} [className] - дополнительные CSS классы
+ *
+ * @example
+ * // Базовое использование
+ * <ModalSubmit
+ *   isOpen={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   onSubmit={handleSubmit}
+ *   title="Подтвердите действие"
+ * >
+ *   <p>Вы уверены, что хотите продолжить?</p>
+ * </ModalSubmit>
+ *
+ * // С кастомными стилями
+ * <ModalSubmit
+ *   isOpen={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   onSubmit={handleSubmit}
+ *   title="Удалить файл"
+ *   submitVariant="warning"
+ *   className="custom-modal"
+ * >
+ *   <p>Это действие нельзя отменить</p>
+ * </ModalSubmit>
  */
 export const ModalSubmit: React.FC<ModalSubmitProps> = ({
   isOpen,
@@ -59,6 +84,7 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
   disabled = false,
   size = 'medium',
   preventCloseOnSubmit = false,
+  className,
 }) => {
   const handleSubmit = async () => {
     try {
@@ -82,6 +108,7 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
       closeable={!isLoading}
       closeOnBackdropClick={!isLoading}
       closeOnEscape={!isLoading}
+      className={className}
     >
       <Content>
         <div>{children}</div>

@@ -11,11 +11,12 @@ export const SwitchWrapper = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: ${DESIGN_TOKENS.spacing.small};
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   font-size: ${DESIGN_TOKENS.fontSize.medium};
   color: var(--c-text-primary);
   user-select: none;
   position: relative;
+  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 `;
 
 export const LabelText = styled.span`

@@ -24,7 +24,7 @@ const clickAnimation = keyframes`
   100% { transform: scale(1); }
 `;
 
-const PowerSwitchWrapper = styled.div`
+const PowerSwitchWrapper = styled.div<{ $disabled?: boolean }>`
   --color-invert: #ffffff;
   --width: 40px;
   --height: 40px;
@@ -34,14 +34,16 @@ const PowerSwitchWrapper = styled.div`
   align-items: center;
   width: var(--width);
   height: var(--height);
+  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+  pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
 `;
 
-const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
+const HiddenInput = styled.input.attrs({ type: 'checkbox' })<{ $disabled?: boolean }>`
   position: absolute;
   height: 100%;
   width: 100%;
   z-index: 2;
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   opacity: 0;
 
   &:checked + div:after {
@@ -142,12 +144,34 @@ const Button = styled.div`
 `;
 
 /**
- * PowerSwitch - компонент переключателя с анимацией
+ * PowerSwitch - компонент переключателя с анимацией кнопки питания
  * @param {boolean} checked - состояние переключателя
  * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} disabled - флаг, указывающий, переключатель отключен
- * @param {string} id - id для input (если нужно связать с label)
- * @param {string} className - класс для обертки
+ * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
+ * @param {string} [id] - id для input (если нужно связать с label)
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ *
+ * @example
+ * // Базовое использование
+ * <PowerSwitch
+ *   checked={isPowered}
+ *   onChange={setIsPowered}
+ * />
+ *
+ * // Отключенная кнопка питания
+ * <PowerSwitch
+ *   checked={false}
+ *   onChange={() => {}}
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями и ID
+ * <PowerSwitch
+ *   checked={systemOn}
+ *   onChange={setSystemOn}
+ *   className="system-power-button"
+ *   id="system-power"
+ * />
  */
 export const PowerSwitch: React.FC<PowerSwitchProps> = ({
   checked,
@@ -157,12 +181,12 @@ export const PowerSwitch: React.FC<PowerSwitchProps> = ({
   className,
 }) => {
   return (
-    <PowerSwitchWrapper className={className}>
+    <PowerSwitchWrapper className={className} $disabled={disabled}>
       <HiddenInput
         id={id}
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        disabled={disabled}
+        $disabled={disabled}
       />
       <Button>
         <svg className='power-off' viewBox='0 0 150 150'>

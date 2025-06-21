@@ -39,6 +39,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: React.ReactNode;
   outlined?: boolean;
   shape?: ButtonShape;
+  className?: string;
 }
 
 const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVariant) => {
@@ -369,6 +370,7 @@ const CloseIcon = ({ color }: { color?: string }) => (
  * @param {ReactNode} [rightIcon] - иконка справа
  * @param {boolean} [outlined] - outline кнопка
  * @param {('default'|'circle'|'square')} [shape='default'] - форма кнопки
+ * @param {string} [className] - дополнительные CSS классы
  * @param {ButtonHTMLAttributes<HTMLButtonElement>} props - остальные пропсы кнопки
  * @example
  * // Primary button
@@ -386,6 +388,11 @@ const CloseIcon = ({ color }: { color?: string }) => (
  *
  * // Circle close button
  * <Button variant="close" shape="circle" />
+ *
+ * // With custom styles
+ * <Button className="custom-button">
+ *   Custom Button
+ * </Button>
  */
 export const Button: React.FC<ButtonProps> = ({
   children,
@@ -397,6 +404,7 @@ export const Button: React.FC<ButtonProps> = ({
   rightIcon,
   outlined: outlinedProp,
   shape: shapeProp,
+  className,
   ...props
 }) => {
   let outlined = outlinedProp;
@@ -433,6 +441,7 @@ export const Button: React.FC<ButtonProps> = ({
       $isLoading={isLoading}
       $outlined={outlined}
       $shape={shape}
+      className={className}
       {...props}
     >
       <ButtonContent $isLoading={isLoading}>

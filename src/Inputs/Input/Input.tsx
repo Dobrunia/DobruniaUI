@@ -81,6 +81,7 @@ const InputBar = styled.div`
   gap: 8px;
   width: 100%;
 `;
+
 const IconBtn = styled.button`
   background: none;
   border: none;
@@ -101,6 +102,7 @@ const IconBtn = styled.button`
     color: var(--c-accent);
   }
 `;
+
 const StyledInput = styled.input`
   flex: 1;
   background: transparent;
@@ -115,6 +117,7 @@ const StyledInput = styled.input`
     }
   }
 `;
+
 const StyledTextarea = styled.textarea`
   flex: 1;
   background: transparent;
@@ -154,31 +157,43 @@ const StyledTextarea = styled.textarea`
     border-radius: 8px;
   }
 `;
+
 const FilePreview = styled.div`
   display: flex;
   gap: 12px;
   background: var(--c-bg-elevated);
 `;
+
 const FileThumbWrapper = styled.div`
   position: relative;
   width: 56px;
   height: 56px;
 `;
-const FileThumb = styled.img`
-  width: 32px;
-  height: 32px;
+
+const FileThumb = styled.img<{ $clickable?: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: ${DESIGN_TOKENS.radius.medium};
   border: 1.5px solid var(--c-accent);
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
+`;
+
+const HiddenFileInput = styled.input.attrs({ type: 'file' })`
+  display: none;
+`;
+
+const FileCloseButton = styled(Button)`
+  position: absolute;
+  top: -8px;
+  right: -8px;
 `;
 
 // Emoji Picker Component
-const EmojiPickerWrapper = styled.div<{ align?: 'left' | 'right' }>`
+const EmojiPickerWrapper = styled.div<{ $align?: 'left' | 'right' }>`
   position: absolute;
   bottom: calc(100% + 8px);
-  ${(p) => (p.align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;')}
+  ${(p) => (p.$align === 'left' ? 'left: 0; right: auto;' : 'right: 0; left: auto;')}
   background: var(--c-bg-elevated);
   border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
@@ -245,12 +260,113 @@ const ImageModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const ImageModalImg = styled.img`
   max-width: 90vw;
   max-height: 90vh;
   border-radius: ${DESIGN_TOKENS.radius.large};
   box-shadow: 0 8px 32px #0008;
   background: #fff;
+`;
+
+const SearchBar = styled(InputBar)`
+  background: var(--c-bg-elevated);
+  border-radius: 999px;
+  padding: 0 ${DESIGN_TOKENS.spacing.medium};
+  min-height: 32px;
+  box-shadow: none;
+  transition: box-shadow ${DESIGN_TOKENS.transition.fast};
+  &:hover {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 20%, transparent 80%);
+  }
+`;
+
+const SearchInputField = styled(StyledInput)`
+  background: transparent;
+  border: none;
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  padding: ${DESIGN_TOKENS.spacing.small} 0;
+  border-radius: 999px;
+  &::placeholder {
+    color: var(--c-text-secondary);
+    opacity: 1;
+    transition: color ${DESIGN_TOKENS.transition.fast};
+  }
+  &:hover {
+    &::placeholder {
+      color: var(--c-accent);
+    }
+  }
+`;
+
+const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
+  position: relative;
+  overflow: visible;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  &::before {
+    content: '';
+    display: ${({ $recording }) => ($recording ? 'block' : 'none')};
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--c-accent);
+    opacity: 0.25;
+    animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  @keyframes mic-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.25;
+    }
+    70% {
+      transform: translate(-50%, -50%) scale(1.8);
+      opacity: 0.12;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.2);
+      opacity: 0;
+    }
+  }
+`;
+
+const SmileBtn = styled(IconBtn)`
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+`;
+
+// Для кнопки отправки
+const SendBtn = styled(Button)`
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // Типы
@@ -267,6 +383,7 @@ export interface InputProps {
   onEmojiSelect?: (emoji: string) => void;
   onAudioRecord?: (audio: Blob) => void;
   files?: File[];
+  className?: string;
 }
 
 const EmojiPicker: React.FC<{
@@ -367,7 +484,7 @@ const EmojiPicker: React.FC<{
   ];
   if (!visible) return null;
   return (
-    <EmojiPickerWrapper align={align} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <EmojiPickerWrapper $align={align} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <EmojiGrid>
         {emojis.map((emoji, index) => (
           <EmojiButton
@@ -383,105 +500,6 @@ const EmojiPicker: React.FC<{
   );
 };
 
-const SearchBar = styled(InputBar)`
-  background: var(--c-bg-elevated);
-  border-radius: 999px;
-  padding: 0 ${DESIGN_TOKENS.spacing.medium};
-  min-height: 32px;
-  box-shadow: none;
-  transition: box-shadow ${DESIGN_TOKENS.transition.fast};
-  &:hover {
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 20%, transparent 80%);
-  }
-`;
-const SearchInputField = styled(StyledInput)`
-  background: transparent;
-  border: none;
-  font-size: ${DESIGN_TOKENS.fontSize.medium};
-  padding: ${DESIGN_TOKENS.spacing.small} 0;
-  border-radius: 999px;
-  &::placeholder {
-    color: var(--c-text-secondary);
-    opacity: 1;
-    transition: color ${DESIGN_TOKENS.transition.fast};
-  }
-  &:hover {
-    &::placeholder {
-      color: var(--c-accent);
-    }
-  }
-`;
-
-const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
-  position: relative;
-  overflow: visible;
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  max-width: 32px;
-  max-height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  &::before {
-    content: '';
-    display: ${({ $recording }) => ($recording ? 'block' : 'none')};
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 32px;
-    height: 32px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: var(--c-accent);
-    opacity: 0.25;
-    animation: mic-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-  @keyframes mic-pulse {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.25;
-    }
-    70% {
-      transform: translate(-50%, -50%) scale(1.8);
-      opacity: 0.12;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(2.2);
-      opacity: 0;
-    }
-  }
-`;
-
-const SmileBtn = styled(IconBtn)`
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  max-width: 32px;
-  max-height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-`;
-
-// Для кнопки отправки
-const SendBtn = styled(Button)`
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  max-width: 32px;
-  max-height: 32px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 /**
  * Input component - универсальный компонент ввода с различными типами
  * @param {('message'|'search'|'file'|'emoji'|'audio')} type - тип инпута
@@ -494,6 +512,7 @@ const SendBtn = styled(Button)`
  * @param {(emoji: string) => void} [onEmojiSelect] - обработчик выбора эмодзи (для type="emoji")
  * @param {(audio: Blob) => void} [onAudioRecord] - обработчик записи аудио (для type="audio")
  * @param {File[]} [files] - массив файлов (для контролируемого компонента с type="file")
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
  * // Поиск
@@ -529,6 +548,13 @@ const SendBtn = styled(Button)`
  *   type="audio"
  *   onAudioRecord={(audio) => console.log(audio)}
  * />
+ *
+ * // С кастомными стилями
+ * <Input
+ *   type="message"
+ *   placeholder="Ваше сообщение..."
+ *   className="custom-input"
+ * />
  */
 export const Input: React.FC<InputProps> = ({
   type,
@@ -541,6 +567,7 @@ export const Input: React.FC<InputProps> = ({
   onEmojiSelect,
   onAudioRecord,
   files: filesProp,
+  className,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [files, setFiles] = useState<File[]>([]);
@@ -684,7 +711,7 @@ export const Input: React.FC<InputProps> = ({
   // Render
   if (type === 'search') {
     return (
-      <SearchBar>
+      <SearchBar className={className}>
         <SearchInputField
           type='text'
           placeholder={placeholder || 'Поиск'}
@@ -700,17 +727,11 @@ export const Input: React.FC<InputProps> = ({
   }
   if (type === 'file') {
     return (
-      <div>
+      <div className={className}>
         <IconBtn type='button' onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
         </IconBtn>
-        <input
-          ref={fileInputRef}
-          type='file'
-          multiple
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
+        <HiddenFileInput ref={fileInputRef} multiple onChange={handleFileChange} />
         {filesToShow.length > 0 && (
           <FilePreview>
             {filesToShow.map((file, i) => (
@@ -719,19 +740,18 @@ export const Input: React.FC<InputProps> = ({
                   <FileThumb
                     src={URL.createObjectURL(file)}
                     alt={file.name}
-                    style={{ cursor: 'pointer' }}
+                    $clickable
                     onClick={() => handlePreview(file)}
                   />
                 ) : (
                   <span>{file.name}</span>
                 )}
-                <Button
+                <FileCloseButton
                   variant='close'
                   shape='circle'
                   size='small'
                   aria-label='Удалить'
                   onClick={() => handleRemoveFile(i)}
-                  style={{ position: 'absolute', top: -8, right: -8 }}
                 />
               </FileThumbWrapper>
             ))}
@@ -747,7 +767,7 @@ export const Input: React.FC<InputProps> = ({
   }
   if (type === 'emoji') {
     return (
-      <EmojiButtonWrapper>
+      <EmojiButtonWrapper className={className}>
         <SmileBtn type='button' onMouseEnter={showEmojiPicker} onMouseLeave={hideEmojiPicker}>
           <SmileIcon />
         </SmileBtn>
@@ -766,6 +786,7 @@ export const Input: React.FC<InputProps> = ({
   if (type === 'audio') {
     return (
       <MicBtn
+        className={className}
         type='button'
         $recording={recording}
         onMouseDown={startRecording}
@@ -781,7 +802,7 @@ export const Input: React.FC<InputProps> = ({
   }
   // message (default)
   return (
-    <>
+    <div className={className}>
       {filesToShow.length > 0 && (
         <FilePreview>
           {filesToShow.map((file, i) => (
@@ -790,19 +811,18 @@ export const Input: React.FC<InputProps> = ({
                 <FileThumb
                   src={URL.createObjectURL(file)}
                   alt={file.name}
-                  style={{ cursor: 'pointer' }}
+                  $clickable
                   onClick={() => handlePreview(file)}
                 />
               ) : (
                 <span>{file.name}</span>
               )}
-              <Button
+              <FileCloseButton
                 variant='close'
                 shape='circle'
                 size='small'
                 aria-label='Удалить'
                 onClick={() => handleRemoveFile(i)}
-                style={{ position: 'absolute', top: -8, right: -8 }}
               />
             </FileThumbWrapper>
           ))}
@@ -817,13 +837,7 @@ export const Input: React.FC<InputProps> = ({
         <IconBtn type='button' onClick={() => fileInputRef.current?.click()}>
           <PaperclipIcon />
         </IconBtn>
-        <input
-          ref={fileInputRef}
-          type='file'
-          multiple
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
+        <HiddenFileInput ref={fileInputRef} multiple onChange={handleFileChange} />
         <StyledTextarea
           ref={textareaRef}
           placeholder={placeholder}
@@ -868,6 +882,6 @@ export const Input: React.FC<InputProps> = ({
           </MicBtn>
         )}
       </InputBar>
-    </>
+    </div>
   );
 };

@@ -36,7 +36,7 @@ const SelectWrapper = styled.div`
   overflow: hidden;
 `;
 
-const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?: boolean }>`
+const Select = styled.select<{ $disabled?: boolean; $error?: boolean; $clearable?: boolean }>`
   width: 100%;
   height: 40px;
   padding: 10px ${({ $clearable }) => ($clearable ? '50px' : '30px')} 0px 10px;
@@ -48,7 +48,7 @@ const Select = styled.select<{ disabled?: boolean; $error?: boolean; $clearable?
   transition: border-color ${DESIGN_TOKENS.transition.fast},
     box-shadow ${DESIGN_TOKENS.transition.fast};
   outline: none;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -132,7 +132,7 @@ const ClearButton = styled.button`
   }
 `;
 
-const DropdownArrow = styled.div<{ disabled?: boolean; $error?: boolean }>`
+const DropdownArrow = styled.div<{ $disabled?: boolean; $error?: boolean }>`
   position: absolute;
   right: 8px;
   top: 50%;
@@ -142,8 +142,8 @@ const DropdownArrow = styled.div<{ disabled?: boolean; $error?: boolean }>`
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid
-    ${({ disabled, $error }) =>
-      disabled ? 'var(--c-text-secondary)' : $error ? 'var(--c-error)' : 'var(--c-accent)'};
+    ${({ $disabled, $error }) =>
+      $disabled ? 'var(--c-text-secondary)' : $error ? 'var(--c-error)' : 'var(--c-accent)'};
   pointer-events: none;
   transition: all ${DESIGN_TOKENS.transition.fast};
 `;
@@ -176,13 +176,63 @@ const ClearIcon: React.FC = () => (
  * @param {DropdownOption[]} options - массив опций
  * @param {string} value - текущее значение
  * @param {(value: string) => void} onChange - функция обработки изменения значения
- * @param {string} label - текст подписи (также используется как tooltip)
- * @param {boolean} disabled - флаг, указывающий, что выпадающий список отключен
- * @param {boolean} error - флаг ошибки
- * @param {string} errorText - текст ошибки
- * @param {boolean} clearable - возможность сброса выбора (по умолчанию false)
- * @param {string} id - уникальный идентификатор элемента
- * @param {string} className - класс для обертки
+ * @param {string} [label] - текст подписи (также используется как tooltip)
+ * @param {boolean} [disabled] - флаг, указывающий, что выпадающий список отключен
+ * @param {boolean} [error] - флаг ошибки
+ * @param {string} [errorText] - текст ошибки
+ * @param {boolean} [clearable=false] - возможность сброса выбора
+ * @param {string} [id] - уникальный идентификатор элемента
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ *
+ * @example
+ * // Базовое использование
+ * <Dropdown
+ *   options={[
+ *     { value: '1', label: 'Вариант 1' },
+ *     { value: '2', label: 'Вариант 2' },
+ *     { value: '3', label: 'Вариант 3' }
+ *   ]}
+ *   value={selectedValue}
+ *   onChange={setSelectedValue}
+ *   label="Выберите опцию"
+ * />
+ *
+ * // С возможностью очистки
+ * <Dropdown
+ *   options={options}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   label="Выберите опцию"
+ *   clearable
+ * />
+ *
+ * // С ошибкой
+ * <Dropdown
+ *   options={options}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   label="Обязательное поле"
+ *   error={hasError}
+ *   errorText="Поле обязательно для заполнения"
+ * />
+ *
+ * // Отключенный dropdown
+ * <Dropdown
+ *   options={options}
+ *   value=""
+ *   onChange={() => {}}
+ *   label="Недоступно"
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <Dropdown
+ *   options={options}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   label="Кастомный dropdown"
+ *   className="custom-dropdown"
+ * />
  */
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
@@ -222,7 +272,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           id={selectId}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          disabled={disabled}
+          $disabled={disabled}
           $error={error}
           $clearable={clearable && hasValue}
           onFocus={() => setIsFocused(true)}
@@ -241,7 +291,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             <ClearIcon />
           </ClearButton>
         )}
-        <DropdownArrow disabled={disabled} $error={error} />
+        <DropdownArrow $disabled={disabled} $error={error} />
         {label && (
           <FloatingLabel $floating={floating} $error={error} htmlFor={selectId}>
             {label}

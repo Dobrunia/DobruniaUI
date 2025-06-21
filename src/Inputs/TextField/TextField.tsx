@@ -8,6 +8,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorText?: string;
   helperText?: string;
   width?: string;
+  className?: string;
 }
 
 const Wrapper = styled.div<{ $width?: string }>`
@@ -147,6 +148,7 @@ const EyeIcon = ({ open }: { open: boolean }) =>
  *   - 'phone' - телефон (с валидацией)
  *   - 'number' - число (с валидацией)
  *   - другие HTML5 типы input
+ * @param {string} [className] - дополнительные CSS классы
  * @param {React.InputHTMLAttributes<HTMLInputElement>} props - остальные пропсы input
  *
  * @example
@@ -183,6 +185,12 @@ const EyeIcon = ({ open }: { open: boolean }) =>
  *   min={0}
  *   max={120}
  * />
+ *
+ * // С кастомными стилями
+ * <TextField
+ *   label="Имя"
+ *   className="custom-field"
+ * />
  */
 export const TextField: React.FC<TextFieldProps> = ({
   label,
@@ -197,6 +205,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onFocus,
   onBlur,
   onChange,
+  className,
   ...props
 }) => {
   const autoId = React.useId();
@@ -226,7 +235,7 @@ export const TextField: React.FC<TextFieldProps> = ({
     type === 'password' ? (showPassword ? 'text' : 'password') : type === 'phone' ? 'tel' : type;
 
   return (
-    <Wrapper $width={width}>
+    <Wrapper $width={width} className={className}>
       <FieldWrapper>
         <Input
           id={inputId}

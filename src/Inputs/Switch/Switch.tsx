@@ -26,34 +26,34 @@ const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
   height: 0;
 `;
 
-const CustomTrack = styled.span<{ checked: boolean; disabled?: boolean }>`
+const CustomTrack = styled.span<{ $checked: boolean; $disabled?: boolean }>`
   width: ${TRACK_WIDTH}px;
   height: ${TRACK_HEIGHT}px;
   border-radius: ${TRACK_HEIGHT / 2}px;
-  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-elevated)')};
-  border: 2px solid ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-border)')};
+  background: ${({ $checked }) => ($checked ? 'var(--c-accent)' : 'var(--c-bg-elevated)')};
+  border: 2px solid ${({ $checked }) => ($checked ? 'var(--c-accent)' : 'var(--c-border)')};
   display: flex;
   align-items: center;
   transition: background ${DESIGN_TOKENS.transition.fast},
     border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   position: relative;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
-    background: ${({ checked, disabled }) =>
-      !disabled && !checked
+    background: ${({ $checked, $disabled }) =>
+      !$disabled && !$checked
         ? 'color-mix(in srgb, var(--c-bg-elevated) 80%, var(--c-accent) 20%)'
         : undefined};
-    border-color: ${({ checked, disabled }) =>
-      !disabled && !checked ? 'var(--c-accent)' : undefined};
+    border-color: ${({ $checked, $disabled }) =>
+      !$disabled && !$checked ? 'var(--c-accent)' : undefined};
   }
 `;
 
-const CustomThumb = styled.span<{ checked: boolean }>`
+const CustomThumb = styled.span<{ $checked: boolean }>`
   position: absolute;
   top: ${TRACK_PADDING}px;
-  left: ${({ checked }) => (checked ? `${THUMB_SIZE}px` : `${TRACK_PADDING}px`)};
+  left: ${({ $checked }) => ($checked ? `${THUMB_SIZE}px` : `${TRACK_PADDING}px`)};
   width: ${THUMB_SIZE}px;
   height: ${THUMB_SIZE}px;
   border-radius: 50%;
@@ -67,10 +67,41 @@ const CustomThumb = styled.span<{ checked: boolean }>`
  * Switch component - компонент для переключения состояния
  * @param {boolean} checked - состояние переключателя
  * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {string} label - текст подписи
- * @param {boolean} disabled - флаг, указывающий, переключатель отключен
- * @param {string} id - id для input (если нужно связать с label)
- * @param {string} className - класс для обертки
+ * @param {string} [label] - текст подписи
+ * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
+ * @param {string} [id] - id для input (если нужно связать с label)
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ *
+ * @example
+ * // Базовое использование
+ * <Switch
+ *   checked={isEnabled}
+ *   onChange={setIsEnabled}
+ * />
+ *
+ * // С подписью
+ * <Switch
+ *   checked={darkMode}
+ *   onChange={setDarkMode}
+ *   label="Темная тема"
+ * />
+ *
+ * // Отключенный переключатель
+ * <Switch
+ *   checked={false}
+ *   onChange={() => {}}
+ *   label="Недоступная опция"
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <Switch
+ *   checked={notifications}
+ *   onChange={setNotifications}
+ *   className="notification-switch"
+ *   id="notifications-toggle"
+ *   label="Уведомления"
+ * />
  */
 export const Switch: React.FC<SwitchProps> = ({
   checked,
@@ -88,8 +119,8 @@ export const Switch: React.FC<SwitchProps> = ({
         onChange={(e) => onChange(e.target.checked)}
         disabled={disabled}
       />
-      <CustomTrack checked={checked} disabled={disabled}>
-        <CustomThumb checked={checked} />
+      <CustomTrack $checked={checked} $disabled={disabled}>
+        <CustomThumb $checked={checked} />
       </CustomTrack>
       {label && <LabelText>{label}</LabelText>}
     </SwitchWrapper>

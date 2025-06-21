@@ -242,77 +242,162 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Button** - Кнопки
 
-- 6 вариантов: `primary`, `secondary`, `ghost`, `warning`, `send`, `close`
-- 3 размера: `small`, `medium`, `large`
-- 3 формы: `default`, `circle`, `square`
-- Поддержка: loading состояние, иконки, outline стиль
+**Пропсы:**
+
+- `variant?: 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'close'` - стиль кнопки
+- `size?: 'small' | 'medium' | 'large'` - размер кнопки
+- `shape?: 'default' | 'circle' | 'square'` - форма кнопки
+- `isLoading?: boolean` - состояние загрузки
+- `disabled?: boolean` - заблокированное состояние
+- `onClick?: () => void` - обработчик клика
+- `children?: React.ReactNode` - содержимое кнопки
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-<Button variant="primary" size="large" isLoading>
+<Button variant='primary' size='large' isLoading onClick={() => console.log('Clicked')}>
   Отправить
 </Button>
-<Button variant="close" shape="circle" />
 ```
 
 #### **TextField** - Текстовые поля с floating label
 
-- Типы: `text`, `password`, `email`, `phone`, `number`
-- Автоматическая валидация
-- Floating label анимация
-- Показ/скрытие пароля
+**Пропсы:**
+
+- `label?: string` - метка поля
+- `type?: 'text' | 'password' | 'email' | 'phone' | 'number'` - тип поля
+- `value?: string` - значение поля
+- `placeholder?: string` - placeholder текст
+- `error?: boolean` - состояние ошибки
+- `errorText?: string` - текст ошибки
+- `disabled?: boolean` - заблокированное состояние
+- `onChange?: (value: string) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-<TextField label='Email' type='email' errorText='Введите корректный email' />
+<TextField
+  label='Email'
+  type='email'
+  value={email}
+  onChange={setEmail}
+  error={!isValidEmail}
+  errorText='Введите корректный email'
+/>
 ```
 
-#### **Input** - Базовые поля ввода
+#### **Input** - Универсальный ввод
+
+**Пропсы:**
+
+- `type: 'message' | 'search' | 'file' | 'emoji' | 'audio'` - тип инпута
+- `placeholder?: string` - placeholder текст
+- `value?: string` - значение инпута
+- `onChange?: (value: string) => void` - обработчик изменения
+- `onSend?: () => void` - обработчик отправки (для message)
+- `onSearch?: (value: string) => void` - обработчик поиска (для search)
+- `onFilesChange?: (files: File[]) => void` - обработчик файлов (для file)
+- `onEmojiSelect?: (emoji: string) => void` - обработчик эмодзи (для emoji)
+- `onAudioRecord?: (audio: Blob) => void` - обработчик аудио (для audio)
+- `files?: File[]` - массив файлов
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-<Input placeholder='Введите текст...' />
+<Input
+  type='message'
+  placeholder='Введите сообщение...'
+  value={message}
+  onChange={setMessage}
+  onSend={handleSend}
+  onEmojiSelect={handleEmojiSelect}
+/>
 ```
 
 #### **Textarea** - Многострочный ввод
 
+**Пропсы:**
+
+- `label?: string` - метка поля
+- `value?: string` - значение поля
+- `placeholder?: string` - placeholder текст
+- `rows?: number` - количество строк
+- `autoHeight?: boolean` - автоматическая высота
+- `disabled?: boolean` - заблокированное состояние
+- `error?: boolean` - состояние ошибки
+- `errorText?: string` - текст ошибки
+- `onChange?: (value: string) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Textarea label='Комментарий' rows={4} />
+<Textarea label='Комментарий' rows={4} autoHeight value={comment} onChange={setComment} />
 ```
 
 #### **Checkbox** - Чекбоксы
 
+**Пропсы:**
+
+- `checked?: boolean` - состояние чекбокса
+- `disabled?: boolean` - заблокированное состояние
+- `onChange?: (checked: boolean) => void` - обработчик изменения
+- `children?: React.ReactNode` - текст рядом с чекбоксом
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Checkbox checked onChange={handleChange}>
+<Checkbox checked={agreed} onChange={setAgreed}>
   Согласен с условиями
 </Checkbox>
 ```
 
 #### **Radio** - Радио кнопки
 
+**Пропсы:**
+
+- `name?: string` - имя группы радио кнопок
+- `value?: string` - значение радио кнопки
+- `checked?: boolean` - состояние выбора
+- `disabled?: boolean` - заблокированное состояние
+- `onChange?: (value: string) => void` - обработчик изменения
+- `children?: React.ReactNode` - текст рядом с радио кнопкой
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Radio name='option' value='1' checked>
+<Radio name='option' value='1' checked={selectedOption === '1'} onChange={setSelectedOption}>
   Вариант 1
 </Radio>
 ```
 
-#### **Switch** - Переключатели (5 вариантов)
+#### **Switch** - Переключатели
 
-- `Switch` - классический
+**Базовый Switch:**
+
+- `checked?: boolean` - состояние переключателя
+- `disabled?: boolean` - заблокированное состояние
+- `onChange?: (checked: boolean) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
+
+**Специальные варианты:**
+
 - `RollingSwitch` - с анимацией качения
-- `YinYangSwitch` - инь-янь дизайн
+- `YinYangSwitch` - в стиле инь-янь
 - `FlipSwitch` - с флип анимацией
 - `PowerSwitch` - кнопка питания
 
 ```tsx
-<Switch checked onChange={handleToggle} />
-<YinYangSwitch checked onChange={handleToggle} />
+<Switch checked={isEnabled} onChange={setIsEnabled} />
+<YinYangSwitch checked={isDarkMode} onChange={setIsDarkMode} />
 ```
 
 #### **Select** - Продвинутые выпадающие списки
 
-- Поддержка подменю (вложенные опции)
-- Два режима открытия: `click` и `hover`
-- Иконки, описания, очистка
-- Портальный рендеринг подменю
-- Глобальное управление состоянием (только один Select открыт)
+**Пропсы:**
+
+- `options: SelectOption[]` - массив опций
+- `value?: string | number` - выбранное значение
+- `placeholder?: string` - placeholder текст
+- `disabled?: boolean` - заблокированное состояние
+- `clearable?: boolean` - возможность очистки
+- `trigger?: 'click' | 'hover'` - способ открытия
+- `width?: number | string` - ширина компонента
+- `onChange?: (value: string | number | null) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Select
@@ -326,23 +411,28 @@ const darkTheme = getThemeConfig('dark');
         { value: 'banana', label: 'Банан', icon: '🍌' },
       ],
     },
-    { value: 'vegetables', label: 'Овощи', icon: '🥕' },
   ]}
   value={selected}
   onChange={setSelected}
   placeholder='Выберите категорию'
-  trigger='click' // или 'hover'
   clearable
-  width={250}
 />
 ```
 
 #### **Dropdown** - Простые выпадающие списки
 
-- Floating label анимация
-- Возможность очистки выбора
-- Обработка длинных текстов с ellipsis
-- Состояния ошибки и отключения
+**Пропсы:**
+
+- `options: DropdownOption[]` - массив опций
+- `value?: string` - выбранное значение
+- `label?: string` - метка поля
+- `placeholder?: string` - placeholder текст
+- `disabled?: boolean` - заблокированное состояние
+- `clearable?: boolean` - возможность очистки
+- `error?: boolean` - состояние ошибки
+- `errorText?: string` - текст ошибки
+- `onChange?: (value: string | null) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Dropdown
@@ -354,69 +444,37 @@ const darkTheme = getThemeConfig('dark');
   onChange={setSelected}
   label='Выберите опцию'
   clearable
-  error={hasError}
-  errorText='Поле обязательно для заполнения'
 />
 ```
 
 #### **ToggleButton** - Переключатели состояний
 
-- Простой цветной индикатор (по умолчанию) или иконки (огонек/круг)
-- 3 размера: `small`, `medium`, `large`
-- Свечение индикатора в активном состоянии
-- Поддержка группировки для radio/checkbox режимов
+**Пропсы:**
+
+- `checked?: boolean` - состояние переключателя
+- `disabled?: boolean` - заблокированное состояние
+- `size?: 'small' | 'medium' | 'large'` - размер кнопки
+- `showIcon?: boolean` - показывать иконку огонька
+- `name?: string` - имя для группировки (radio режим)
+- `value?: string` - значение для radio режима
+- `onChange?: (checked: boolean, value?: string) => void` - обработчик изменения
+- `children?: React.ReactNode` - текст кнопки
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-// Простой переключатель с цветным индикатором
-<ToggleButton checked={isActive} onChange={setIsActive}>
+<ToggleButton checked={isActive} onChange={setIsActive} showIcon>
   Уведомления
 </ToggleButton>
-
-// С иконками огонька и круга
-<ToggleButton showIcon checked={isEnabled} onChange={setIsEnabled}>
-  С огоньком
-</ToggleButton>
-
-// Группа переключателей (множественный выбор)
-<ToggleButton checked={features.darkMode} onChange={handleToggle}>
-  Тёмная тема
-</ToggleButton>
-<ToggleButton checked={features.sounds} onChange={handleToggle}>
-  Звуки
-</ToggleButton>
-
-// Радио-режим (одиночный выбор)
-<ToggleButton
-  name="size"
-  value="small"
-  checked={selectedSize === 'small'}
-  onChange={handleSizeChange}
->
-  Маленький
-</ToggleButton>
-<ToggleButton
-  name="size"
-  value="large"
-  checked={selectedSize === 'large'}
-  onChange={handleSizeChange}
->
-  Большой
-</ToggleButton>
-```
-
-#### **ThemeSelect** - Селектор тем
-
-Готовый компонент для переключения тем:
-
-```tsx
-<ThemeSelect />
 ```
 
 #### **SidebarList** - Списки для сайдбара
 
-- Группировка секций
-- Сворачивание разделов
-- Активные состояния
+**Пропсы:**
+
+- `sections: SidebarSection[]` - массив секций
+- `selected?: string` - выбранный элемент
+- `onSelect?: (key: string) => void` - обработчик выбора
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <SidebarList
@@ -438,34 +496,60 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Avatar** - Аватары пользователей
 
+**Пропсы:**
+
+- `src?: string` - URL изображения
+- `name?: string` - имя пользователя (для инициалов)
+- `size?: 'sm' | 'md' | 'lg' | 'xl'` - размер аватара
+- `status?: 'online' | 'offline' | 'dnd'` - статус пользователя
+- `showStatus?: boolean` - показывать статус
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Avatar src='/avatar.jpg' name='John Doe' size='large' />
+<Avatar src='/avatar.jpg' name='John Doe' size='lg' status='online' showStatus />
 ```
 
 #### **Badge** - Значки и счетчики
 
+**Пропсы:**
+
+- `value?: number | string` - значение бейджа
+- `max?: number` - максимальное значение для числового бейджа
+- `variant?: 'default' | 'message-date'` - вариант отображения
+- `date?: Date | string | number` - дата (для message-date)
+- `locale?: string` - локаль для форматирования даты
+- `children?: React.ReactNode` - элемент для прикрепления бейджа
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Badge count={5} color='red'>
+<Badge value={5} max={99}>
   <Button>Уведомления</Button>
 </Badge>
 ```
 
 #### **Message** - Сообщения чата
 
-Полнофункциональный компонент сообщения с поддержкой всех современных мессенджер-функций:
+**Пропсы:**
 
-- **Типы сообщений**: входящие и исходящие с автоматической стилизацией
-- **Система реакций** с горизонтальным скроллом при большом количестве эмодзи
-- **Вложения**: изображения с превью, файлы для скачивания, аудио с встроенным плеером
-- **Пересланные сообщения** с кликабельной навигацией к оригиналу
-- **Ответы на сообщения** с автоматическим скроллом к исходному сообщению
-- **Временные метки и статусы прочтения** с двойными галочками
-- **Контекстное меню действий** (ActionsMenu) с настраиваемыми действиями
-- **Аватары отправителей** с обводкой и позиционированием
-- **Адаптивное поведение**: клик/контекстное меню для показа реакций и действий
+- `type: 'incoming' | 'outgoing'` - тип сообщения
+- `text?: string` - текст сообщения
+- `time?: string` - время отправки
+- `isRead?: boolean` - прочитано ли сообщение
+- `sender?: MessageSender` - отправитель сообщения
+- `reactions?: MessageReaction[]` - массив реакций
+- `reactionEmojis?: string[]` - доступные эмодзи для реакций
+- `actions?: ActionItem[]` - действия в контекстном меню
+- `attachments?: MessageAttachment[]` - вложения
+- `replyTo?: ReplyMessage` - ответ на сообщение
+- `forwardedFrom?: ForwardedUser` - пересланное от пользователя
+- `currentUserId?: string` - ID текущего пользователя
+- `showActionsOnClick?: boolean` - показывать меню при клике
+- `onReaction?: (emoji: string) => void` - обработчик реакции
+- `onReplyClick?: (messageId: string) => void` - обработчик клика по ответу
+- `onForwardedClick?: (userId: string) => void` - обработчик клика по пересланному
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-// Входящее сообщение с реакциями и стандартным набором эмодзи
 <Message
   type='incoming'
   text='Привет! Как дела?'
@@ -473,7 +557,7 @@ const darkTheme = getThemeConfig('dark');
   sender={{
     id: '1',
     name: 'John Doe',
-    avatar: '/path/to/avatar.jpg',
+    avatar: '/avatar.jpg',
   }}
   reactions={[
     {
@@ -481,101 +565,40 @@ const darkTheme = getThemeConfig('dark');
       users: [{ id: '2', name: 'Jane' }],
     },
   ]}
-  onReaction={(emoji) => handleReaction(emoji)}
-  reactionEmojis={['❤️', '😂', '👍', '🔥']} // стандартный набор
-  currentUserId='currentUser'
-/>
-
-// Исходящее сообщение с большим набором эмодзи (горизонтальный скролл)
-<Message
-  type='outgoing'
-  text='🚀 Тест горизонтального скролла эмодзи!'
-  time='12:31'
-  isRead={true}
-  onReaction={(emoji) => handleReaction(emoji)}
-  reactionEmojis={['❤️', '😂', '👍', '🔥', '😍', '😢', '😮', '😡', '🎉', '💯', '🚀', '⭐']}
-  actions={[
-    {
-      label: 'Ответить',
-      icon: <ReplyIcon />,
-      onClick: () => handleReply(),
-      shortcut: '⌘R',
-    },
-    {
-      label: 'Удалить',
-      icon: <DeleteIcon />,
-      onClick: () => handleDelete(),
-      type: 'destructive',
-    },
-  ]}
-  showActionsOnClick={true} // показывать меню действий при клике
-/>
-
-// Сообщение с вложениями и ответом
-<Message
-  type='incoming'
-  text='Ответ на твое сообщение'
-  time='12:32'
-  replyTo={{
-    id: 'msg-123',
-    text: 'Исходное сообщение',
-    sender: { name: 'John' },
-  }}
-  attachments={[
-    {
-      type: 'image',
-      url: '/path/to/image.jpg',
-      name: 'photo.jpg',
-    },
-    {
-      type: 'audio',
-      url: '/path/to/voice.mp3',
-      duration: 15, // секунды
-    },
-  ]}
-  sender={{
-    id: '1',
-    name: 'John Doe',
-    avatar: '/path/to/avatar.jpg',
-  }}
-/>
-
-// Пересланное сообщение
-<Message
-  type='incoming'
-  text='Пересланное сообщение'
-  time='12:33'
-  forwardedFrom={{ id: 'user123', name: 'Vasya' }}
-  onForwardedClick={(id) => navigateToUser(id)}
-  sender={{
-    id: '1',
-    name: 'John Doe',
-    avatar: '/path/to/avatar.jpg',
-  }}
-/>
-
-// Сообщение без интерактивности (только текст)
-<Message
-  type='incoming'
-  text='Простое сообщение без меню и реакций'
-  time='12:34'
-  // reactionEmojis и actions не переданы = нет интерактивности
+  reactionEmojis={['❤️', '😂', '👍', '🔥']}
+  onReaction={handleReaction}
 />
 ```
 
 #### **ChatList** - Список чатов
 
+**Пропсы:**
+
+- `items?: ChatListItem[]` - массив чатов
+- `loading?: boolean` - состояние загрузки
+- `skeletonCount?: number` - количество skeleton элементов
+- `selectedId?: string` - ID выбранного чата
+- `onSelect?: (id: string) => void` - обработчик выбора чата
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<ChatList chats={chatData} selectedId='chat1' onSelect={handleChatSelect} />
+<ChatList
+  items={chats}
+  selectedId={selectedChatId}
+  onSelect={setSelectedChatId}
+  loading={isLoading}
+/>
 ```
 
 #### **MessageContainer** - Контейнер сообщений
 
-- Вертикальный скролл с красивым скроллбаром
-- Автоматический скролл к новым сообщениям
-- Кнопка "Вниз" при прокрутке вверх с плавной анимацией
-- Программный скролл к конкретному сообщению по ID
-- Поддержка плавной анимации скролла
+**Пропсы:**
+
+- `autoScrollToBottom?: boolean` - автоматический скролл к низу
+- `lastMessageId?: string` - ID последнего сообщения
+- `onScrollToMessage?: (messageId: string) => void` - скролл к сообщению
+- `children: React.ReactNode` - сообщения
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <MessageContainer autoScrollToBottom={true} lastMessageId={messages[messages.length - 1]?.id}>
@@ -587,105 +610,52 @@ const darkTheme = getThemeConfig('dark');
 
 #### **ActionsMenu** - Контекстное меню действий
 
-Современное меню действий в стиле Telegram с поддержкой группировки, типов действий и горячих клавиш:
+**Пропсы:**
 
-- **Группировка действий** с заголовками разделов
-- **Типы действий**: `default`, `primary`, `destructive` с соответствующей стилизацией
-- **Иконки и горячие клавиши** (shortcuts) для каждого действия
-- **Hover эффекты** с подъемом элементов и изменением фона
-- **Accessibility**: полная поддержка навигации с клавиатуры и focus-visible
-- **Автоматическое закрытие** после выбора действия
+- `items: ActionGroup[] | ActionItem[]` - элементы меню
+- `onClose?: () => void` - обработчик закрытия
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-// Простое меню действий
 <ActionsMenu
   items={[
     {
       label: 'Редактировать',
       icon: <EditIcon />,
-      onClick: () => handleEdit(),
+      onClick: handleEdit,
       shortcut: '⌘E',
       type: 'primary',
     },
     {
-      label: 'Копировать',
-      icon: <CopyIcon />,
-      onClick: () => handleCopy(),
-      shortcut: '⌘C',
-    },
-    {
       label: 'Удалить',
       icon: <DeleteIcon />,
-      onClick: () => handleDelete(),
+      onClick: handleDelete,
       type: 'destructive',
-      shortcut: '⌫',
     },
   ]}
   onClose={() => setMenuOpen(false)}
-/>
-
-// Группированное меню (как в Telegram)
-<ActionsMenu
-  items={[
-    {
-      title: 'Основные действия',
-      actions: [
-        {
-          label: 'Ответить',
-          icon: <ReplyIcon />,
-          onClick: () => handleReply(),
-          shortcut: '⌘R',
-        },
-        {
-          label: 'Переслать',
-          icon: <ForwardIcon />,
-          onClick: () => handleForward(),
-          shortcut: '⌘F',
-        },
-      ],
-    },
-    {
-      title: 'Дополнительно',
-      actions: [
-        {
-          label: 'Закрепить',
-          icon: <PinIcon />,
-          onClick: () => handlePin(),
-          type: 'primary',
-        },
-      ],
-    },
-    {
-      actions: [
-        {
-          label: 'Удалить сообщение',
-          icon: <DeleteIcon />,
-          onClick: () => handleDelete(),
-          type: 'destructive',
-        },
-      ],
-    },
-  ]}
 />
 ```
 
 #### **Reaction** - Реакции и эмодзи
 
-- Отображение эмодзи с аватарами пользователей
-- Стэкинг аватаров при множественных реакциях
-- Подсветка активных реакций текущего пользователя
-- Счетчик количества реакций (+N для больших чисел)
-- Плавные анимации и hover эффекты
+**Пропсы:**
+
+- `emoji: string` - эмодзи реакции
+- `users: ReactionUser[]` - пользователи, поставившие реакцию
+- `currentUserId?: string` - ID текущего пользователя
+- `onClick?: (event: React.MouseEvent) => void` - обработчик клика
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Reaction
   emoji='👍'
   users={[
-    { id: '1', name: 'John', avatar: '/path/to/avatar1.jpg' },
-    { id: '2', name: 'Jane', avatar: '/path/to/avatar2.jpg' },
+    { id: '1', name: 'John', avatar: '/avatar1.jpg' },
+    { id: '2', name: 'Jane', avatar: '/avatar2.jpg' },
   ]}
-  onClick={(e) => handleReactionClick(e)}
-  currentUserId='1' // для подсветки активной реакции
+  currentUserId='1'
+  onClick={handleReactionClick}
 />
 ```
 
@@ -693,9 +663,12 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Alert** - Уведомления и оповещения
 
-- 4 типа: `success`, `info`, `warning`, `error`
-- Обычный и outlined стили
-- Богатое содержимое (HTML, ссылки)
+**Пропсы:**
+
+- `type?: 'success' | 'info' | 'warning' | 'error'` - тип уведомления
+- `outlined?: boolean` - контурный стиль
+- `children: React.ReactNode` - содержимое уведомления
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Alert type='success' outlined>
@@ -705,27 +678,65 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Modal** - Модальные окна
 
+**Пропсы:**
+
+- `isOpen: boolean` - состояние открытия
+- `onClose: () => void` - обработчик закрытия
+- `title?: string` - заголовок модального окна
+- `size?: 'small' | 'medium' | 'large'` - размер окна
+- `showCloseButton?: boolean` - показывать кнопку закрытия
+- `closeable?: boolean` - возможность закрытия
+- `closeOnBackdropClick?: boolean` - закрытие при клике на фон
+- `closeOnEscape?: boolean` - закрытие по Escape
+- `children: React.ReactNode` - содержимое модального окна
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Modal isOpen={isOpen} onClose={handleClose}>
-  <h2>Заголовок модального окна</h2>
-  <p>Содержимое...</p>
+<Modal isOpen={isOpen} onClose={handleClose} title='Настройки' size='medium'>
+  <p>Содержимое модального окна</p>
 </Modal>
 ```
 
 #### **ModalSubmit** - Модальные окна с формами
+
+**Пропсы:**
+
+- `isOpen: boolean` - состояние открытия
+- `onClose: () => void` - обработчик закрытия
+- `onSubmit: () => void | Promise<void>` - обработчик отправки
+- `title: string` - заголовок модального окна
+- `submitText?: string` - текст кнопки подтверждения
+- `cancelText?: string` - текст кнопки отмены
+- `submitVariant?: 'primary' | 'warning'` - вариант кнопки подтверждения
+- `isLoading?: boolean` - состояние загрузки
+- `disabled?: boolean` - заблокированное состояние
+- `size?: 'small' | 'medium' | 'large'` - размер окна
+- `preventCloseOnSubmit?: boolean` - не закрывать после отправки
+- `children: React.ReactNode` - содержимое формы
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <ModalSubmit
   isOpen={isOpen}
   onSubmit={handleSubmit}
   onClose={handleClose}
-  title='Создать новый элемент'
+  title='Создать элемент'
+  isLoading={isSubmitting}
 >
   <TextField label='Название' />
 </ModalSubmit>
 ```
 
 #### **Snackbar** - Всплывающие уведомления
+
+**Пропсы:**
+
+- `message: string` - текст уведомления
+- `type?: 'success' | 'info' | 'warning' | 'error'` - тип уведомления
+- `isVisible: boolean` - видимость уведомления
+- `duration?: number` - длительность показа (мс)
+- `onClose?: () => void` - обработчик закрытия
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Snackbar
@@ -738,15 +749,33 @@ const darkTheme = getThemeConfig('dark');
 
 #### **UndoSnackbar** - Snackbar с отменой действия
 
+**Пропсы:**
+
+- `message: string` - текст уведомления
+- `isVisible: boolean` - видимость уведомления
+- `undoText?: string` - текст кнопки отмены
+- `duration?: number` - длительность показа (мс)
+- `onUndo?: () => void` - обработчик отмены
+- `onClose?: () => void` - обработчик закрытия
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<UndoSnackbar message='Элемент удален' onUndo={handleUndo} isVisible={showUndo} />
+<UndoSnackbar
+  message='Элемент удален'
+  onUndo={handleUndo}
+  isVisible={showUndo}
+  onClose={hideUndo}
+/>
 ```
 
 #### **LoadingSpinner** - Индикаторы загрузки
 
-- 5 вариантов анимации
-- 3 размера
-- Настраиваемые цвета
+**Пропсы:**
+
+- `variant?: 'spinner' | 'dots' | 'pulse' | 'bars' | 'wave'` - тип анимации
+- `size?: 'small' | 'medium' | 'large'` - размер индикатора
+- `color?: string` - цвет индикатора
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <LoadingSpinner variant='dots' size='large' />
@@ -754,24 +783,43 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Progress** - Индикаторы прогресса
 
-- Линейный и круговой прогресс
-- С подписями и без
+**Пропсы:**
+
+- `value: number` - значение прогресса (0-100)
+- `variant?: 'linear' | 'circular'` - тип прогресса
+- `size?: 'small' | 'medium' | 'large'` - размер (для circular)
+- `showLabel?: boolean` - показывать процент
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-<LinearProgress value={75} />
-<CircularProgressWithLabel value={60} />
+<Progress value={75} variant="linear" />
+<Progress value={60} variant="circular" showLabel />
 ```
 
 #### **Skeleton** - Скелетоны загрузки
 
+**Пропсы:**
+
+- `variant?: 'text' | 'rectangular' | 'circular' | 'card'` - тип скелетона
+- `width?: number | string` - ширина
+- `height?: number | string` - высота
+- `lines?: number` - количество строк (для text)
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
 <Skeleton variant="text" lines={3} />
-<Skeleton variant="card" />
+<Skeleton variant="circular" width={40} height={40} />
 ```
 
 ### 🧭 Navigation (Навигация)
 
 #### **Breadcrumbs** - Хлебные крошки
+
+**Пропсы:**
+
+- `items: BreadcrumbItem[]` - массив элементов навигации
+- `separator?: string` - разделитель между элементами
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Breadcrumbs
@@ -785,161 +833,160 @@ const darkTheme = getThemeConfig('dark');
 
 #### **Pagination** - Пагинация
 
+**Пропсы:**
+
+- `current: number` - текущая страница
+- `total: number` - общее количество страниц
+- `pageSize?: number` - размер страницы
+- `showSizeChanger?: boolean` - показывать селектор размера
+- `onChange?: (page: number, pageSize?: number) => void` - обработчик изменения
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Pagination current={currentPage} total={totalPages} onChange={handlePageChange} />
+<Pagination current={currentPage} total={totalPages} onChange={handlePageChange} showSizeChanger />
 ```
 
 #### **Tabbar** - Вкладки
 
-- Горизонтальный скролл с поддержкой drag-scroll
-- Поддержка кастомизации через `className` prop
-- Адаптивное поведение на мобильных устройствах
+**Пропсы:**
+
+- `tabs: TabData[]` - массив вкладок
+- `selectedId: string | number` - ID выбранной вкладки
+- `onTabPress: (id: string | number) => void` - обработчик выбора вкладки
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Tabbar
   tabs={[
-    { id: 'tab1', label: 'Вкладка 1' },
+    { id: 'tab1', label: 'Вкладка 1', notification: 5 },
     { id: 'tab2', label: 'Вкладка 2' },
   ]}
   selectedId='tab1'
   onTabPress={handleTabPress}
-  className='custom-tabbar' // для кастомной стилизации
 />
+```
+
+#### **Tab** - Отдельная вкладка
+
+**Пропсы:**
+
+- `tab: TabData` - данные вкладки
+- `selected: boolean` - состояние выбора
+- `onClick: (id: string | number) => void` - обработчик клика
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<Tab tab={{ id: 1, label: 'Home', notification: 3 }} selected={false} onClick={handleTabClick} />
 ```
 
 ### 🏗️ Layout (Макеты)
 
-#### **Row** - Гибкие строки с тремя слотами
+#### **Row** - Гибкие строки
 
-Универсальный компонент для создания горизонтальных макетов с левым, центральным и правым слотами:
+**Пропсы:**
+
+- `left?: React.ReactNode` - левый слот
+- `center?: React.ReactNode` - центральный слот
+- `right?: React.ReactNode` - правый слот
+- `align?: 'start' | 'center' | 'end'` - вертикальное выравнивание
+- `padding?: string` - внутренние отступы
+- `minHeight?: string` - минимальная высота
+- `onClick?: () => void` - обработчик клика
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-// Базовое использование
 <Row
-  left={<Avatar name="John Doe" />}
+  left={<Avatar name='John Doe' />}
   center={<span>Имя пользователя</span>}
-  right={<Button variant="ghost">Действие</Button>}
+  right={<Button variant='ghost'>Действие</Button>}
+  onClick={() => navigate('/profile')}
 />
-
-// Только левый и правый слоты
-<Row
-  left={<h3>Заголовок</h3>}
-  right={<Switch checked={true} />}
-/>
-
-// Кликабельная строка
-<Row
-  left={<span>⚙️</span>}
-  center={<span>Настройки</span>}
-  right={<span>→</span>}
-  onClick={() => navigate('/settings')}
-/>
-
-// Кастомное выравнивание и отступы
-<Row
-  left={<Badge value={5} />}
-  center={<TextField placeholder="Поиск..." />}
-  align="start"
-  padding="20px"
-  minHeight="60px"
-/>
-
-// Бесшовные списки с CSS классом
-<div className="seamless-rows">
-  <Row left="Пункт 1" right="→" />
-  <Row left="Пункт 2" right="→" />
-  <Row left="Пункт 3" right="→" />
-</div>
 ```
 
 #### **Card** - Карточки для контента
 
-Универсальный компонент карточки с заголовком, контентом и футером:
+**Пропсы:**
+
+- `title?: string` - заголовок карточки
+- `subtitle?: string` - подзаголовок карточки
+- `footer?: React.ReactNode` - футер карточки
+- `variant?: 'default' | 'outlined' | 'elevated' | 'flat'` - вариант отображения
+- `clickable?: boolean` - кликабельная карточка
+- `width?: string` - ширина карточки
+- `maxWidth?: string` - максимальная ширина
+- `onClick?: () => void` - обработчик клика
+- `children: React.ReactNode` - содержимое карточки
+- `className?: string` - дополнительные CSS классы
 
 ```tsx
-// Базовая карточка
-<Card title="Заголовок" subtitle="Описание">
-  Основной контент карточки
-</Card>
-
-// Варианты отображения
-<Card variant="outlined">Контурная карточка</Card>
-<Card variant="elevated">Приподнятая с тенью</Card>
-<Card variant="flat">Плоская без границ</Card>
-
-// Кликабельная карточка с футером
 <Card
-  title="Продукт"
-  subtitle="Описание продукта"
-  footer={<Button variant="primary">Купить</Button>}
+  title='Продукт'
+  subtitle='Описание продукта'
+  variant='elevated'
   clickable
   onClick={() => navigate('/product')}
+  footer={<Button variant='primary'>Купить</Button>}
 >
   Детальная информация о продукте
-</Card>
-
-// Карточка без отступов для изображений
-<Card variant="elevated" className="no-padding">
-  <img src="image.jpg" alt="Изображение" />
-  <div style={{ padding: '16px' }}>
-    Контент с кастомными отступами
-  </div>
-</Card>
-
-// Кастомизация через CSS классы
-<Card className="large-padding">
-  Карточка с увеличенными отступами
-</Card>
-
-// Размеры карточек
-<Card width="300px" maxWidth="100%">
-  Карточка с ограниченной шириной
 </Card>
 ```
 
 #### **PageBlock** - Блоки страниц
 
+**Пропсы:**
+
+- `stretched?: boolean` - растянуть на всю ширину
+- `left?: React.ReactNode` - левая боковая панель
+- `right?: React.ReactNode` - правая боковая панель
+- `children: React.ReactNode` - основной контент
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<PageBlock title='Настройки' subtitle='Управление аккаунтом'>
-  <SettingsContent />
+<PageBlock left={<SidebarContent />} right={<AdditionalInfo />} stretched>
+  <MainContent />
 </PageBlock>
 ```
 
 #### **Portal** - Порталы для модальных окон
 
+**Пропсы:**
+
+- `children: React.ReactNode` - контент для портала
+- `container?: HTMLElement | string` - контейнер для портала
+- `disabled?: boolean` - отключить портал
+- `className?: string` - дополнительные CSS классы
+
 ```tsx
-<Portal target='#modal-root'>
+<Portal container='#modal-root'>
   <ModalContent />
 </Portal>
 ```
 
-## 🎨 Настройка тем
+## 🎨 Дизайн токены
 
-DobruniaUI использует гибридную систему дизайн токенов для оптимальной производительности и удобства использования:
+DobruniaUI использует гибридную систему дизайн токенов для оптимальной производительности:
 
 ### Цветовые токены (CSS переменные)
 
 Цветовые токены применяются динамически через JavaScript для поддержки системы тем:
 
 ```css
-/* Применяются через JavaScript при выборе темы */
-
 /* Нейтральные поверхности */
 --c-bg-default: ; /* основной фон */
---c-bg-subtle: ; /* слегка приподнятые блоки / cards */
---c-bg-elevated: ; /* модальные, выпадашки */
+--c-bg-subtle: ; /* слегка приподнятые блоки */
+--c-bg-elevated: ; /* модальные окна, выпадающие списки */
 
 /* Текст */
 --c-text-primary: ; /* основной текст */
 --c-text-secondary: ; /* вторичный текст */
 --c-text-inverse: ; /* текст на тёмных/акцентных кнопках */
 
-/* Бордеры / разделители */
+/* Границы */
 --c-border: ; /* обычные границы */
 --c-border-focus: ; /* границы в фокусе */
 
-/* Акцент (brand) */
---c-accent: ; /* primary / brand цвет */
+/* Акцент */
+--c-accent: ; /* основной акцентный цвет */
 --c-accent-hover: ; /* hover состояние */
 --c-accent-active: ; /* active состояние */
 
@@ -948,6 +995,54 @@ DobruniaUI использует гибридную систему дизайн �
 --c-error: ; /* ошибка */
 --c-warning: ; /* предупреждение */
 --c-info: ; /* информация */
+```
+
+### Статические токены (JavaScript константы)
+
+Статические значения определены в JavaScript для оптимальной производительности:
+
+```tsx
+import { DESIGN_TOKENS, BREAKPOINTS, RESPONSIVE_TOKENS } from 'dobruniaui';
+
+// Отступы
+DESIGN_TOKENS.spacing.tiny; // 0.2rem
+DESIGN_TOKENS.spacing.small; // 0.5rem
+DESIGN_TOKENS.spacing.medium; // 1rem
+DESIGN_TOKENS.spacing.large; // 2rem
+
+// Радиусы скругления
+DESIGN_TOKENS.radius.small; // 4px
+DESIGN_TOKENS.radius.medium; // 6px
+DESIGN_TOKENS.radius.large; // 16px
+
+// Размеры шрифтов
+DESIGN_TOKENS.fontSize.small; // 0.7rem
+DESIGN_TOKENS.fontSize.smallPlus; // 0.8rem
+DESIGN_TOKENS.fontSize.medium; // 1rem
+DESIGN_TOKENS.fontSize.large; // 1.2rem
+
+// Переходы
+DESIGN_TOKENS.transition.fast; // 0.15s
+DESIGN_TOKENS.transition.slow; // 0.3s
+
+// Макеты
+DESIGN_TOKENS.layout.content.desktop; // 1200px
+DESIGN_TOKENS.layout.content.tablet; // 1000px
+DESIGN_TOKENS.layout.content.mobile; // 100vw
+
+DESIGN_TOKENS.layout.sidebar.desktop; // 300px
+DESIGN_TOKENS.layout.sidebar.tablet; // 220px
+DESIGN_TOKENS.layout.sidebar.mobile; // 160px
+
+// Брейкпоинты
+BREAKPOINTS.mobile; // 900px
+BREAKPOINTS.tablet; // 1200px
+
+// Адаптивные токены
+RESPONSIVE_TOKENS.tablet.layout.contentWidth; // 1000px
+RESPONSIVE_TOKENS.tablet.layout.sidebarWidth; // 220px
+RESPONSIVE_TOKENS.mobile.layout.contentWidth; // 100vw
+RESPONSIVE_TOKENS.mobile.layout.sidebarWidth; // 160px
 ```
 
 ## 🔧 Разработка
@@ -961,40 +1056,12 @@ npm install
 
 # Запустить dev server
 npm run dev
-```
 
-## 📋 TypeScript
+# Собрать библиотеку
+npm run build
 
-Все компоненты полностью типизированы. Типы экспортируются вместе с компонентами:
-
-```tsx
-import { Button, type ButtonProps, type ThemeConfig, type SelectOption } from 'dobruniaui';
-
-const MyButton: React.FC<ButtonProps> = (props) => {
-  return <Button {...props} />;
-};
-
-// Типы для системы тем
-const customTheme: ThemeConfig = {
-  name: 'custom',
-  label: 'Кастомная',
-  variables: {
-    // CSS переменные
-  },
-};
-
-// Типы для Select опций
-const selectOptions: SelectOption[] = [
-  {
-    value: 'option1',
-    label: 'Опция 1',
-    icon: '🎯',
-    description: 'Описание опции',
-    submenu: [
-      // Вложенные опции
-    ],
-  },
-];
+# Собрать демо
+npm run build:demo
 ```
 
 ## 🤝 Вклад в проект

@@ -125,7 +125,7 @@ const ToggleText = styled.span`
  * @param {'small'|'medium'|'large'} [size='medium'] - размер кнопки
  * @param {boolean} [showIcon=false] - показывать иконку (огонек/круг) вместо цветного индикатора
  * @param {function} [onChange] - обработчик изменения состояния
- * @param {string} [className] - CSS класс
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
  * // Обычная toggle кнопка с цветным индикатором
@@ -146,6 +146,11 @@ const ToggleText = styled.span`
  * // Отключенная кнопка
  * <ToggleButton disabled checked={false}>
  *   Disabled option
+ * </ToggleButton>
+ *
+ * // С кастомными стилями
+ * <ToggleButton className="custom-toggle" checked={isActive}>
+ *   Custom Toggle
  * </ToggleButton>
  */
 export const ToggleButton: React.FC<ToggleButtonProps> = ({

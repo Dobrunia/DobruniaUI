@@ -62,14 +62,23 @@ const AvatarsStack = styled.div`
   align-items: center;
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled.div<{ $zIndex?: number }>`
   margin-left: -8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: ${({ $zIndex }) => $zIndex || 10};
+
   &:first-child {
     margin-left: 0;
   }
+`;
+
+const UserCount = styled.span<{ $active?: boolean }>`
+  font-size: 12px;
+  margin-left: 4px;
+  color: ${({ $active }) => ($active ? 'var(--c-text-inverse)' : 'var(--c-text-primary)')};
+  font-weight: ${({ $active }) => ($active ? '600' : '400')};
 `;
 
 /**
@@ -132,22 +141,11 @@ export const Reaction: React.FC<ReactionProps> = ({
       <Emoji>{emoji}</Emoji>
       <AvatarsStack>
         {users.slice(0, 3).map((user, idx) => (
-          <AvatarWrapper key={user.id} style={{ zIndex: 10 - idx }}>
+          <AvatarWrapper key={user.id} $zIndex={10 - idx}>
             <Avatar src={user.avatar} name={user.name} size='xxs' showStatus={false} />
           </AvatarWrapper>
         ))}
-        {users.length > 3 && (
-          <span
-            style={{
-              fontSize: '12px',
-              marginLeft: 4,
-              color: isActive ? 'var(--c-text-inverse)' : 'var(--c-text-primary)',
-              fontWeight: isActive ? '600' : '400',
-            }}
-          >
-            +{users.length - 3}
-          </span>
-        )}
+        {users.length > 3 && <UserCount $active={isActive}>+{users.length - 3}</UserCount>}
       </AvatarsStack>
     </ReactionRoot>
   );

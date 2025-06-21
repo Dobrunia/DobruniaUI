@@ -19,6 +19,7 @@ interface ChatListProps {
   skeletonCount?: number;
   onSelect?: (id: string) => void;
   selectedId?: string;
+  className?: string;
 }
 
 const List = styled.div`
@@ -92,9 +93,19 @@ const ReadMark = styled.span`
  * @param {number} [skeletonCount=6] - количество skeleton-элементов при загрузке
  * @param {(id: string) => void} [onSelect] - обработчик выбора чата
  * @param {string} [selectedId] - id выбранного чата
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
+ * // Базовое использование
  * <ChatList items={items} selectedId={selectedId} onSelect={setSelected} />
+ *
+ * // С кастомными стилями
+ * <ChatList
+ *   items={items}
+ *   selectedId={selectedId}
+ *   onSelect={setSelected}
+ *   className="custom-chat-list"
+ * />
  */
 export const ChatList: React.FC<ChatListProps> = ({
   items = [],
@@ -102,10 +113,11 @@ export const ChatList: React.FC<ChatListProps> = ({
   skeletonCount = 6,
   onSelect,
   selectedId,
+  className,
 }) => {
   if (loading) {
     return (
-      <List>
+      <List className={className}>
         {Array.from({ length: skeletonCount }).map((_, i) => (
           <Item key={i}>
             <Skeleton variant='circular' width={44} height={44} />
@@ -122,7 +134,7 @@ export const ChatList: React.FC<ChatListProps> = ({
     );
   }
   return (
-    <List>
+    <List className={className}>
       {items.map((item) => (
         <Item
           key={item.id}

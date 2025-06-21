@@ -11,7 +11,6 @@ import styled from 'styled-components';
 interface MessageContainerProps {
   children: React.ReactNode;
   autoScrollToBottom?: boolean;
-  style?: React.CSSProperties;
   className?: string;
   lastMessageId?: string | number;
 }
@@ -47,7 +46,7 @@ const Container = styled.div`
   }
 `;
 
-const ScrollToBottomBtn = styled.button`
+const ScrollToBottomBtn = styled.button<{ $visible?: boolean }>`
   position: sticky;
   align-self: flex-end;
   bottom: 10px;
@@ -65,20 +64,19 @@ const ScrollToBottomBtn = styled.button`
   font-size: 28px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-  }
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  transform: ${({ $visible }) => ($visible ? 'translateY(0)' : 'translateY(10px)')};
+  pointer-events: ${({ $visible }) => ($visible ? 'all' : 'none')};
 
   &:hover {
     background: color-mix(in srgb, var(--c-accent) 85%, black 15%);
     transform: translateY(-2px);
   }
+`;
+
+const ScrollIcon = styled.svg`
+  width: 28px;
+  height: 28px;
 `;
 
 /**
@@ -87,8 +85,7 @@ const ScrollToBottomBtn = styled.button`
  * @param {React.ReactNode} children — сообщения (обычно <Message />)
  * @param {boolean} [autoScrollToBottom=true] — автоматически прокручивать вниз при появлении новых сообщений
  * @param {string|number} [lastMessageId] — id последнего сообщения (для автоскролла только при новых сообщениях)
- * @param {React.CSSProperties} [style] — стили контейнера
- * @param {string} [className] — CSS-класс
+ * @param {string} [className] — дополнительные CSS классы
  *
  * Особенности:
  * - Запрещён горизонтальный скролл
@@ -102,9 +99,14 @@ const ScrollToBottomBtn = styled.button`
  * <MessageContainer lastMessageId={messages[messages.length-1]?.id}>
  *   {messages.map(msg => <Message {...msg} />)}
  * </MessageContainer>
+ *
+ * // С кастомными стилями
+ * <MessageContainer className="custom-container">
+ *   {messages.map(msg => <Message {...msg} />)}
+ * </MessageContainer>
  */
 export const MessageContainer = forwardRef<MessageContainerRef, MessageContainerProps>(
-  ({ children, autoScrollToBottom = true, style, className }, ref): React.ReactElement => {
+  ({ children, autoScrollToBottom = true, className }, ref): React.ReactElement => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(true);
@@ -200,20 +202,14 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
     };
 
     return (
-      <Container ref={containerRef} style={style} className={className}>
+      <Container ref={containerRef} className={className}>
         {children}
         <ScrollToBottomBtn
           onClick={scrollToBottom}
           title='Scroll to bottom'
-          className={showScrollBtn ? 'visible' : ''}
+          $visible={showScrollBtn}
         >
-          <svg
-            width='28'
-            height='28'
-            viewBox='0 0 28 28'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
+          <ScrollIcon viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <circle cx='14' cy='14' r='14' fill='none' />
             <path
               d='M8 12L14 18L20 12'
@@ -222,7 +218,7 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
               strokeLinecap='round'
               strokeLinejoin='round'
             />
-          </svg>
+          </ScrollIcon>
         </ScrollToBottomBtn>
       </Container>
     );

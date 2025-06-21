@@ -3,6 +3,7 @@ import { Snackbar } from '../Snackbar/Snackbar';
 import type { SnackbarOrigin } from '../Snackbar/Snackbar';
 import { Button } from '@DobruniaUI';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
+import styled from 'styled-components';
 
 interface UndoSnackbarProps {
   open: boolean;
@@ -14,6 +15,13 @@ interface UndoSnackbarProps {
   anchorOrigin?: SnackbarOrigin;
   className?: string;
 }
+
+const UndoButton = styled(Button)`
+  color: var(--c-accent);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
+`;
 
 /**
  * UndoSnackbar component - компонент для отображения уведомлений с возможностью отмены действий
@@ -81,18 +89,9 @@ export const UndoSnackbar: React.FC<UndoSnackbarProps> = ({
       anchorOrigin={anchorOrigin}
       enableStacking={true} // Включаем автоматический стекинг
       action={
-        <Button
-          variant='ghost'
-          onClick={handleUndo}
-          style={{
-            color: 'var(--c-accent)',
-            textTransform: 'uppercase',
-            fontWeight: 500,
-            fontSize: DESIGN_TOKENS.fontSize.small,
-          }}
-        >
+        <UndoButton variant='ghost' onClick={handleUndo}>
           {undoText}
-        </Button>
+        </UndoButton>
       }
       className={className}
     />

@@ -44,45 +44,80 @@ const StyledLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
   transition: ${DESIGN_TOKENS.transition.slow};
   user-select: none;
   overflow: hidden;
+`;
 
-  .fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: ${({ $checked }) => ($checked ? '100%' : '0')};
-    background: var(--c-accent);
-    border-radius: inherit;
-    transition: ${DESIGN_TOKENS.transition.slow};
-  }
+const Fill = styled.span<{ $checked: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: ${({ $checked }) => ($checked ? '100%' : '0')};
+  background: var(--c-accent);
+  border-radius: inherit;
+  transition: ${DESIGN_TOKENS.transition.slow};
+`;
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: ${TRACK_PADDING + 1}px;
-    width: ${THUMB_SIZE - 2}px;
-    height: ${THUMB_SIZE - 2}px;
-    border-radius: 50%;
-  }
-  &::before {
-    left: ${TRACK_PADDING}px;
-    background: var(--c-accent);
-  }
-  &::after {
-    right: ${TRACK_PADDING}px;
-    background: ${({ $checked }) => ($checked ? 'var(--c-bg-elevated)' : 'var(--c-bg-elevated)')};
-  }
+const YinDot = styled.span`
+  content: '';
+  position: absolute;
+  top: ${TRACK_PADDING + 1}px;
+  left: ${TRACK_PADDING}px;
+  width: ${THUMB_SIZE - 2}px;
+  height: ${THUMB_SIZE - 2}px;
+  border-radius: 50%;
+  background: var(--c-accent);
+`;
+
+const YangDot = styled.span<{ $checked: boolean }>`
+  content: '';
+  position: absolute;
+  top: ${TRACK_PADDING + 1}px;
+  right: ${TRACK_PADDING}px;
+  width: ${THUMB_SIZE - 2}px;
+  height: ${THUMB_SIZE - 2}px;
+  border-radius: 50%;
+  background: ${({ $checked }) => ($checked ? 'var(--c-bg-elevated)' : 'var(--c-bg-elevated)')};
 `;
 
 /**
- * YinYangSwitch - компонент переключателя с анимацией
+ * YinYangSwitch - компонент переключателя с анимацией Инь-Ян
  * @param {boolean} checked - состояние переключателя
  * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} disabled - флаг, указывающий, переключатель отключен
- * @param {string} id - id для input (если нужно связать с label)
- * @param {string} className - класс для обертки
- * @param {string} label - текст подписи
+ * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
+ * @param {string} [id] - id для input (если нужно связать с label)
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ * @param {string} [label] - текст подписи
+ *
+ * @example
+ * // Базовое использование
+ * <YinYangSwitch
+ *   checked={balance}
+ *   onChange={setBalance}
+ * />
+ *
+ * // С подписью
+ * <YinYangSwitch
+ *   checked={harmony}
+ *   onChange={setHarmony}
+ *   label="Гармония"
+ * />
+ *
+ * // Отключенный переключатель
+ * <YinYangSwitch
+ *   checked={false}
+ *   onChange={() => {}}
+ *   label="Баланс недоступен"
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <YinYangSwitch
+ *   checked={dualMode}
+ *   onChange={setDualMode}
+ *   className="yin-yang-toggle"
+ *   id="dual-mode-switch"
+ *   label="Двойной режим"
+ * />
  */
 export const YinYangSwitch: React.FC<YinYangSwitchProps> = ({
   checked,
@@ -101,7 +136,9 @@ export const YinYangSwitch: React.FC<YinYangSwitchProps> = ({
         disabled={disabled}
       />
       <StyledLabel htmlFor={id} $checked={checked} $disabled={disabled}>
-        <span className='fill' />
+        <Fill $checked={checked} />
+        <YinDot />
+        <YangDot $checked={checked} />
       </StyledLabel>
       {label && <LabelText>{label}</LabelText>}
     </SwitchWrapper>

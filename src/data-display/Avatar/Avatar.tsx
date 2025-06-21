@@ -19,7 +19,7 @@ const statusVarMap: Record<AvatarStatus, string> = {
   invisible: '#b0b8c9',
 };
 
-const AvatarRoot = styled.div<{ $size: AvatarSize }>`
+const AvatarRoot = styled.div<{ $size: AvatarSize; $hasMenuFocus?: boolean }>`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -41,6 +41,12 @@ const AvatarRoot = styled.div<{ $size: AvatarSize }>`
       ? '1.3rem'
       : '2rem'};
   `}
+
+  ${({ $hasMenuFocus }) =>
+    $hasMenuFocus &&
+    css`
+      outline: 2px solid var(--c-border-focus);
+    `}
 `;
 
 const AvatarImg = styled.img`
@@ -52,8 +58,8 @@ const AvatarImg = styled.img`
   overflow: hidden;
 `;
 
-const StatusDot = styled.span<{ $size: AvatarSize; $status: AvatarStatus }>`
-  position: absolute;
+const StatusDot = styled.span<{ $size: AvatarSize; $status: AvatarStatus; $static?: boolean }>`
+  position: ${({ $static }) => ($static ? 'static' : 'absolute')};
   right: 0px;
   bottom: ${({ $size }) => ($size === 'xxs' ? 0 : $size === 'sm' ? 0 : 2)}px;
   border-radius: 50%;
@@ -75,7 +81,6 @@ const StatusMenu = styled.div`
   position: absolute;
   left: 0;
   top: 110%;
-  // transform: translateX(-50%);
   background: var(--c-bg-elevated);
   border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
@@ -237,16 +242,12 @@ export const Avatar: React.FC<AvatarProps> = ({
   return (
     <AvatarRoot
       $size={size}
+      $hasMenuFocus={onStatusChange && menuOpen}
       className={className}
       title={name}
       ref={rootRef}
       tabIndex={onStatusChange ? 0 : undefined}
       onClick={onStatusChange ? () => setMenuOpen((v) => !v) : undefined}
-      style={
-        onStatusChange
-          ? { outline: menuOpen ? '2px solid var(--c-border-focus)' : undefined }
-          : undefined
-      }
     >
       {src ? <AvatarImg src={src} alt={alt || name || 'avatar'} /> : getInitials(name)}
       {showStatus && status && (
@@ -266,11 +267,7 @@ export const Avatar: React.FC<AvatarProps> = ({
                 onStatusChange(opt.value as AvatarStatus);
               }}
             >
-              <StatusDot
-                $size={size}
-                $status={opt.value as AvatarStatus}
-                style={{ position: 'static' }}
-              >
+              <StatusDot $size={size} $status={opt.value as AvatarStatus} $static>
                 {opt.value === 'invisible' && <EyeSlashIcon />}
               </StatusDot>
               {opt.label}

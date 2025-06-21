@@ -29,6 +29,10 @@ const CircleLabel = styled.div`
   font-weight: 500;
 `;
 
+const ProgressCircle = styled.circle`
+  transition: stroke-dashoffset 0.5s;
+`;
+
 /**
  * CircularProgressWithLabel component - компонент кругового прогресса с отображением процентов
  * @param {number} value - значение прогресса (0-100)
@@ -72,7 +76,7 @@ export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps>
           strokeWidth={strokeWidth}
           fill='none'
         />
-        <circle
+        <ProgressCircle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -82,7 +86,6 @@ export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps>
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap='round'
-          style={{ transition: 'stroke-dashoffset 0.5s' }}
         />
       </svg>
       <CircleLabel>{`${Math.round(safeValue)}%`}</CircleLabel>
@@ -94,7 +97,7 @@ interface LinearProgressProps {
   value?: number; // 0-100, если не задан — indeterminate
   color?: string;
   height?: number;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 const indeterminateAnim = keyframes`
@@ -143,7 +146,7 @@ const LinearProgressContainer = styled.div`
  * @param {number} [value] - значение прогресса (0-100). Если не указано, показывается неопределенный прогресс
  * @param {string} [color='var(--c-accent)'] - цвет полосы прогресса
  * @param {number} [height=6] - высота полосы прогресса в пикселях
- * @param {React.CSSProperties} [style] - дополнительные стили
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
  * // Определенный прогресс
@@ -159,21 +162,21 @@ const LinearProgressContainer = styled.div`
  *   height={8}
  * />
  *
- * // С дополнительными стилями
+ * // С кастомными стилями
  * <LinearProgress
  *   value={25}
- *   style={{ margin: '20px 0' }}
+ *   className="custom-progress"
  * />
  */
 export const LinearProgress: React.FC<LinearProgressProps> = ({
   value,
   color = 'var(--c-accent)',
   height = 6,
-  style,
+  className,
 }) => {
   const indeterminate = value === undefined || value === null;
   return (
-    <LinearProgressContainer style={style}>
+    <LinearProgressContainer className={className}>
       <LinearBar $height={height}>
         <LinearInner $value={value} $color={color} $indeterminate={indeterminate} />
       </LinearBar>

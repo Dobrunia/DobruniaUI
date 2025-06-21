@@ -450,6 +450,68 @@ const Submenu: React.FC<SubmenuProps> = ({
  * @param {'click' | 'hover'} [trigger] - режим открытия: клик или наведение
  * @param {boolean} [clearable] - показывать кнопку очистки
  * @param {() => void} [onClear] - обработчик очистки значения
+ *
+ * @example
+ * // Базовое использование
+ * <Select
+ *   options={[
+ *     { value: 'apple', label: 'Яблоко', icon: '🍎' },
+ *     { value: 'banana', label: 'Банан', icon: '🍌' },
+ *     { value: 'orange', label: 'Апельсин', icon: '🍊' }
+ *   ]}
+ *   value={selectedFruit}
+ *   onChange={setSelectedFruit}
+ *   placeholder="Выберите фрукт"
+ * />
+ *
+ * // С подменю и описаниями
+ * <Select
+ *   options={[
+ *     {
+ *       value: 'fruits',
+ *       label: 'Фрукты',
+ *       icon: '🍎',
+ *       description: 'Свежие фрукты',
+ *       submenu: [
+ *         { value: 'apple', label: 'Яблоко', icon: '🍎' },
+ *         { value: 'banana', label: 'Банан', icon: '🍌' }
+ *       ]
+ *     },
+ *     { value: 'vegetables', label: 'Овощи', icon: '🥕', description: 'Свежие овощи' }
+ *   ]}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   trigger="hover"
+ *   clearable
+ *   width={300}
+ * />
+ *
+ * // С возможностью очистки
+ * <Select
+ *   options={options}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   clearable
+ *   onClear={() => console.log('Cleared!')}
+ * />
+ *
+ * // Отключенный select
+ * <Select
+ *   options={options}
+ *   value=""
+ *   onChange={() => {}}
+ *   disabled
+ *   placeholder="Недоступно"
+ * />
+ *
+ * // С кастомными стилями
+ * <Select
+ *   options={options}
+ *   value={selected}
+ *   onChange={setSelected}
+ *   className="custom-select"
+ *   width="100%"
+ * />
  */
 export const Select: React.FC<SelectProps> = ({
   options,

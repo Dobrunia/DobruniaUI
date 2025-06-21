@@ -10,12 +10,13 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
   width?: string;
   autoHeight?: boolean;
   resize?: 'none' | 'vertical' | 'horizontal' | 'both';
+  className?: string;
 }
 
-const Wrapper = styled.div<{ width?: string }>`
+const Wrapper = styled.div<{ $width?: string }>`
   display: flex;
   flex-direction: column;
-  width: ${({ width }) => width || '100%'};
+  width: ${({ $width }) => $width || '100%'};
   gap: 0.25em;
 `;
 
@@ -25,10 +26,14 @@ const Label = styled.label<{ $error?: boolean }>`
   margin-bottom: 0.15em;
 `;
 
-const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
+const StyledTextarea = styled.textarea<{
+  $error?: boolean;
+  $resize: string;
+  $autoHeight?: boolean;
+}>`
   width: 100%;
   min-height: 80px;
-  resize: ${({ $resize }) => $resize};
+  resize: ${({ $resize, $autoHeight }) => ($autoHeight ? 'none' : $resize)};
   padding: 16px;
   border-radius: ${DESIGN_TOKENS.radius.medium};
   border: 2px solid ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
@@ -39,6 +44,8 @@ const StyledTextarea = styled.textarea<{ $error?: boolean; $resize: string }>`
     box-shadow ${DESIGN_TOKENS.transition.fast};
   outline: none;
   box-sizing: border-box;
+  overflow: ${({ $autoHeight }) => ($autoHeight ? 'hidden' : 'auto')};
+
   &:hover {
     border-color: ${({ $error }) => ($error ? 'var(--c-error)' : 'var(--c-border-focus)')};
     box-shadow: 0 0 0 2px
@@ -82,6 +89,7 @@ const HelperText = styled.div<{ $error?: boolean }>`
  * @param {string} [id] - уникальный идентификатор поля
  * @param {string} [value] - значение поля (для контролируемого компонента)
  * @param {string} [defaultValue] - начальное значение поля
+ * @param {string} [className] - дополнительные CSS классы
  * @param {React.TextareaHTMLAttributes<HTMLTextAreaElement>} props - остальные пропсы textarea
  *
  * @example
@@ -113,6 +121,12 @@ const HelperText = styled.div<{ $error?: boolean }>`
  *   resize="vertical"
  *   width="300px"
  * />
+ *
+ * // С кастомными стилями
+ * <Textarea
+ *   label="Описание"
+ *   className="custom-textarea"
+ * />
  */
 export const Textarea: React.FC<TextareaProps> = ({
   label,
@@ -128,6 +142,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   onFocus,
   onBlur,
   onChange,
+  className,
   ...props
 }) => {
   const autoId = React.useId();
@@ -146,7 +161,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   }, [currentValue, autoHeight]);
 
   return (
-    <Wrapper width={width}>
+    <Wrapper $width={width} className={className}>
       {label && (
         <Label htmlFor={textareaId} $error={error}>
           {label}
@@ -156,8 +171,8 @@ export const Textarea: React.FC<TextareaProps> = ({
         id={textareaId}
         ref={textareaRef}
         $error={error}
-        $resize={autoHeight ? 'none' : resize}
-        style={autoHeight ? { overflow: 'hidden' } : undefined}
+        $resize={resize}
+        $autoHeight={autoHeight}
         value={currentValue}
         onChange={(e) => {
           if (!isControlled) setInnerValue(e.target.value);

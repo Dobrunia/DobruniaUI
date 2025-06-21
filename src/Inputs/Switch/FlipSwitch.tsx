@@ -62,14 +62,44 @@ const FlipLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
 `;
 
 /**
- * FlipSwitch - компонент переключателя с анимацией
+ * FlipSwitch - компонент переключателя с анимацией переворота
  * @param {boolean} checked - состояние переключателя
  * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} disabled - флаг, указывающий, переключатель отключен
- * @param {string} id - id для input (если нужно связать с label)
- * @param {string} className - класс для обертки
- * @param {string} onLabel - текст подписи для состояния "включено"
- * @param {string} offLabel - текст подписи для состояния "выключено"
+ * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
+ * @param {string} [id] - id для input (если нужно связать с label)
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ * @param {string} [onLabel='On'] - текст подписи для состояния "включено"
+ * @param {string} [offLabel='Off'] - текст подписи для состояния "выключено"
+ *
+ * @example
+ * // Базовое использование
+ * <FlipSwitch
+ *   checked={isEnabled}
+ *   onChange={setIsEnabled}
+ * />
+ *
+ * // С кастомными лейблами
+ * <FlipSwitch
+ *   checked={isActive}
+ *   onChange={setIsActive}
+ *   onLabel="ДА"
+ *   offLabel="НЕТ"
+ * />
+ *
+ * // Отключенный переключатель
+ * <FlipSwitch
+ *   checked={false}
+ *   onChange={() => {}}
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <FlipSwitch
+ *   checked={isToggled}
+ *   onChange={setIsToggled}
+ *   className="custom-flip-switch"
+ *   id="my-flip-switch"
+ * />
  */
 export const FlipSwitch: React.FC<FlipSwitchProps> = ({
   checked,

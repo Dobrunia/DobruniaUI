@@ -54,12 +54,12 @@ const HiddenInput = styled.input.attrs({ type: 'checkbox' })`
   height: 0;
 `;
 
-const CustomBox = styled.span<{ checked: boolean; disabled?: boolean }>`
+const CustomBox = styled.span<{ $checked: boolean; $disabled?: boolean }>`
   width: 1.1em;
   height: 1.1em;
   border: 2px solid var(--c-accent);
   border-radius: ${DESIGN_TOKENS.radius.medium};
-  background: ${({ checked }) => (checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
+  background: ${({ $checked }) => ($checked ? 'var(--c-accent)' : 'var(--c-bg-subtle)')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -67,11 +67,11 @@ const CustomBox = styled.span<{ checked: boolean; disabled?: boolean }>`
     border-color ${DESIGN_TOKENS.transition.fast};
   box-sizing: border-box;
   margin-right: 0.5em;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 
   &::after {
     content: '';
-    display: ${({ checked }) => (checked ? 'block' : 'none')};
+    display: ${({ $checked }) => ($checked ? 'block' : 'none')};
     width: 0.5em;
     height: 0.9em;
     border: solid #fff;
@@ -94,7 +94,31 @@ const CustomBox = styled.span<{ checked: boolean; disabled?: boolean }>`
  * @param {string} [label] - подпись
  * @param {boolean} [disabled] - отключен ли чекбокс
  * @param {string} [id] - id для input
- * @param {string} [className] - класс для обертки
+ * @param {string} [className] - дополнительные CSS классы для обертки
+ *
+ * @example
+ * // Базовое использование
+ * <Checkbox
+ *   checked={isChecked}
+ *   onChange={setIsChecked}
+ *   label="Согласен с условиями"
+ * />
+ *
+ * // Отключенный чекбокс
+ * <Checkbox
+ *   checked={false}
+ *   onChange={() => {}}
+ *   label="Недоступная опция"
+ *   disabled
+ * />
+ *
+ * // С кастомными стилями
+ * <Checkbox
+ *   checked={isChecked}
+ *   onChange={setIsChecked}
+ *   label="Кастомный чекбокс"
+ *   className="custom-checkbox"
+ * />
  */
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked,
@@ -112,7 +136,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onChange={(e) => onChange(e.target.checked)}
         disabled={disabled}
       />
-      <CustomBox checked={checked} disabled={disabled} className='custom-checkbox-box' />
+      <CustomBox $checked={checked} $disabled={disabled} className='custom-checkbox-box' />
       {label && <span>{label}</span>}
     </CheckboxWrapper>
   );

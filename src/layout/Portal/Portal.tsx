@@ -5,6 +5,7 @@ export interface PortalProps {
   children: React.ReactNode;
   container?: HTMLElement | string;
   disabled?: boolean;
+  className?: string;
 }
 
 /**
@@ -12,8 +13,30 @@ export interface PortalProps {
  * @param children - Контент для портала
  * @param container - Контейнер для портала
  * @param disabled - Отключить портал
+ * @param className - дополнительные CSS классы
+ *
+ * @example
+ * // Базовое использование
+ * <Portal>
+ *   <div>Контент в портале</div>
+ * </Portal>
+ *
+ * // С кастомным контейнером
+ * <Portal container="#modal-root">
+ *   <div>Модальное окно</div>
+ * </Portal>
+ *
+ * // С кастомными стилями
+ * <Portal className="custom-portal">
+ *   <div>Стилизованный портал</div>
+ * </Portal>
  */
-export const Portal: React.FC<PortalProps> = ({ children, container, disabled = false }) => {
+export const Portal: React.FC<PortalProps> = ({
+  children,
+  container,
+  disabled = false,
+  className,
+}) => {
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -44,7 +67,7 @@ export const Portal: React.FC<PortalProps> = ({ children, container, disabled = 
 
   // Если portal отключен, рендерим детей как обычно
   if (disabled) {
-    return <>{children}</>;
+    return <div className={className}>{children}</div>;
   }
 
   // Если контейнер не готов, не рендерим ничего
@@ -52,5 +75,8 @@ export const Portal: React.FC<PortalProps> = ({ children, container, disabled = 
     return null;
   }
 
-  return createPortal(children, portalContainer);
+  return createPortal(
+    className ? <div className={className}>{children}</div> : children,
+    portalContainer
+  );
 };

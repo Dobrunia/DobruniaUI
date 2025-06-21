@@ -9,12 +9,19 @@ interface BadgeProps {
   variant?: 'default' | 'message-date';
   date?: Date | string | number;
   locale?: string;
+  className?: string;
 }
 
 const BadgeWrapper = styled.span`
   position: relative;
   display: inline-flex;
   align-items: center;
+`;
+
+const MessageDateWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const BadgeCircle = styled.span<{ $variant?: string }>`
@@ -76,6 +83,7 @@ function formatMessageDate(date: Date | string | number, locale: string = 'en') 
  * @param {'default'|'message-date'} [variant='default'] - вариант бейджа: обычный или дата
  * @param {Date|string|number} [date] - дата для варианта 'message-date'
  * @param {string} [locale='en'] - локаль для форматирования даты
+ * @param {string} [className] - дополнительные CSS классы
  *
  * @example
  * // Числовой бейдж
@@ -100,6 +108,11 @@ function formatMessageDate(date: Date | string | number, locale: string = 'en') 
  *
  * // Бейдж-дата между сообщениями
  * <Badge variant="message-date" date="2024-06-01" locale="en" />
+ *
+ * // С кастомными стилями
+ * <Badge value={3} className="custom-badge">
+ *   <Button>Messages</Button>
+ * </Badge>
  */
 export const Badge: React.FC<BadgeProps> = ({
   value,
@@ -108,17 +121,18 @@ export const Badge: React.FC<BadgeProps> = ({
   variant = 'default',
   date,
   locale = 'en',
+  className,
 }) => {
   if (variant === 'message-date') {
     if (!date) return null;
     const formatted = formatMessageDate(date, locale);
     if (!formatted) return null;
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+      <MessageDateWrapper className={className}>
         <BadgeCircle $variant='message-date' data-variant='message-date'>
           {formatted}
         </BadgeCircle>
-      </div>
+      </MessageDateWrapper>
     );
   }
   let displayValue = value;
@@ -126,7 +140,7 @@ export const Badge: React.FC<BadgeProps> = ({
     displayValue = `${max}+`;
   }
   return (
-    <BadgeWrapper>
+    <BadgeWrapper className={className}>
       {children}
       {value !== undefined && value !== null && value !== '' && (
         <BadgeCircle $variant={variant}>{displayValue}</BadgeCircle>

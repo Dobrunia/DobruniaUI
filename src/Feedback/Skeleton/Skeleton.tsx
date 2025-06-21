@@ -7,7 +7,6 @@ interface SkeletonProps {
   variant?: SkeletonVariant;
   width?: number | string;
   height?: number | string;
-  style?: React.CSSProperties;
   className?: string;
 }
 
@@ -79,7 +78,6 @@ const StyledSkeleton = styled.span<{
  *   - rounded: для прямоугольных элементов со скруглением
  * @param {number|string} [width] - ширина компонента (в пикселях или процентах)
  * @param {number|string} [height] - высота компонента (в пикселях или процентах)
- * @param {React.CSSProperties} [style] - дополнительные стили
  * @param {string} [className] - дополнительные CSS классы
  *
  * @example
@@ -99,30 +97,23 @@ const StyledSkeleton = styled.span<{
  * <Skeleton
  *   variant="text"
  *   width={150}
- *   style={{ margin: '10px 0' }}
+ *   className="custom-skeleton"
  * />
  *
  * // Композиция плейсхолдеров
  * <div>
  *   <Skeleton variant="circular" width={50} height={50} />
- *   <Skeleton variant="text" width={200} style={{ marginLeft: 10 }} />
- *   <Skeleton variant="text" width={150} style={{ marginLeft: 10 }} />
+ *   <Skeleton variant="text" width={200} className="text-placeholder" />
+ *   <Skeleton variant="text" width={150} className="text-placeholder" />
  * </div>
  */
 export const Skeleton: React.FC<SkeletonProps> = ({
   variant = 'text',
   width,
   height,
-  style,
   className,
 }) => {
   return (
-    <StyledSkeleton
-      $variant={variant}
-      $width={width}
-      $height={height}
-      style={style}
-      className={className}
-    />
+    <StyledSkeleton $variant={variant} $width={width} $height={height} className={className} />
   );
 };

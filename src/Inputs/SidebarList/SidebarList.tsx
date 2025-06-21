@@ -14,7 +14,7 @@ const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
   background: var(--c-bg-elevated);
 `;
 
-const SectionTitle = styled.div`
+const SectionTitle = styled.div<{ $allowCollapse?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,27 +27,34 @@ const SectionTitle = styled.div`
   margin-top: ${DESIGN_TOKENS.spacing.small};
   margin-bottom: 0.25em;
   user-select: none;
-  cursor: pointer;
+  cursor: ${({ $allowCollapse }) => ($allowCollapse ? 'pointer' : 'default')};
   gap: 0.5em;
   &:first-child {
     margin-top: 0;
   }
 `;
 
+const CollapseIcon = styled.span`
+  font-size: 0.7em;
+  width: 16px;
+  display: inline-block;
+  color: var(--c-text-secondary);
+`;
+
 const ItemsWrapper = styled.div<{ $noIndent?: boolean }>`
   padding-left: ${({ $noIndent }) => ($noIndent ? '0' : DESIGN_TOKENS.spacing.medium)};
 `;
 
-const SidebarItem = styled.li<{ selected: boolean }>`
+const SidebarItem = styled.li<{ $selected: boolean }>`
   position: relative;
   padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.medium};
   cursor: pointer;
-  background: ${({ selected }) =>
-    selected ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
-  color: ${({ selected }) => (selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
+  background: ${({ $selected }) =>
+    $selected ? 'color-mix(in srgb, var(--c-accent) 10%, transparent 90%)' : 'transparent'};
+  color: ${({ $selected }) => ($selected ? 'var(--c-text-primary)' : 'var(--c-text-secondary)')};
   border-radius: ${DESIGN_TOKENS.radius.medium};
   margin-bottom: ${DESIGN_TOKENS.spacing.small};
-  font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+  font-weight: ${({ $selected }) => ($selected ? 'bold' : 'normal')};
   font-size: ${DESIGN_TOKENS.fontSize.medium};
   transition: background ${DESIGN_TOKENS.transition.fast}, color ${DESIGN_TOKENS.transition.fast};
   &:hover {
@@ -59,7 +66,7 @@ const SidebarItem = styled.li<{ selected: boolean }>`
   }
   &::before {
     content: '';
-    display: ${({ selected }) => (selected ? 'block' : 'none')};
+    display: ${({ $selected }) => ($selected ? 'block' : 'none')};
     position: absolute;
     left: 0.5rem;
     top: 50%;
@@ -189,21 +196,10 @@ export const SidebarList: React.FC<SidebarListProps> = ({
               <SectionTitle
                 onClick={() => toggleSection(sectionKey)}
                 className={sectionTitleClassName}
-                style={!allowCollapse ? { cursor: 'default' } : undefined}
+                $allowCollapse={allowCollapse}
               >
                 {section.title}
-                {allowCollapse && (
-                  <span
-                    style={{
-                      fontSize: '0.7em',
-                      width: 16,
-                      display: 'inline-block',
-                      color: 'var(--c-text-secondary)',
-                    }}
-                  >
-                    {collapsed[sectionKey] ? '►' : '▼'}
-                  </span>
-                )}
+                {allowCollapse && <CollapseIcon>{collapsed[sectionKey] ? '►' : '▼'}</CollapseIcon>}
               </SectionTitle>
             )}
             {!collapsed[sectionKey] && (
@@ -211,7 +207,7 @@ export const SidebarList: React.FC<SidebarListProps> = ({
                 {section.items.map((comp) => (
                   <SidebarItem
                     key={comp.key}
-                    selected={selected === comp.key}
+                    $selected={selected === comp.key}
                     onClick={() => onSelect(comp.key)}
                     className={itemClassName}
                   >

@@ -14,6 +14,7 @@ interface TabProps {
   tab: TabData;
   selected: boolean;
   onClick: (id: string | number) => void;
+  className?: string;
 }
 
 const TabButton = styled.button<{ $selected: boolean }>`
@@ -77,9 +78,39 @@ const Underline = styled.div`
   border-radius: ${DESIGN_TOKENS.radius.medium};
 `;
 
-export const Tab: React.FC<TabProps> = ({ tab, selected, onClick }) => {
+/**
+ * Tab component - отдельная вкладка для использования в Tabbar
+ * @param {TabData} tab - данные вкладки
+ * @param {boolean} selected - флаг выбранной вкладки
+ * @param {(id: string | number) => void} onClick - обработчик клика
+ * @param {string} [className] - дополнительные CSS классы
+ *
+ * @example
+ * // Базовое использование
+ * <Tab
+ *   tab={{ id: 1, label: 'Home' }}
+ *   selected={false}
+ *   onClick={handleTabClick}
+ * />
+ *
+ * // С уведомлением
+ * <Tab
+ *   tab={{ id: 2, label: 'Messages', notification: 5 }}
+ *   selected={true}
+ *   onClick={handleTabClick}
+ * />
+ *
+ * // С кастомными стилями
+ * <Tab
+ *   tab={{ id: 3, label: 'Profile' }}
+ *   selected={false}
+ *   onClick={handleTabClick}
+ *   className="custom-tab"
+ * />
+ */
+export const Tab: React.FC<TabProps> = ({ tab, selected, onClick, className }) => {
   return (
-    <TabButton $selected={selected} onClick={() => onClick(tab.id)}>
+    <TabButton $selected={selected} onClick={() => onClick(tab.id)} className={className}>
       <LeftBlock>
         {tab.leftSlot && <LeftSlotWrapper>{tab.leftSlot}</LeftSlotWrapper>}
         <TabText>{tab.label}</TabText>

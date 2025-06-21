@@ -72,7 +72,13 @@ const MessageRow = styled.div<{ $type: MessageType }>`
   ${(p) => (p.$type === 'outgoing' ? 'flex-direction: row-reverse;' : '')}
 `;
 
-const Bubble = styled.div<{ $type: MessageType }>`
+const MessageWrapper = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+`;
+
+const Bubble = styled.div<{ $type: MessageType; $hasInteraction?: boolean }>`
   background: ${(p) =>
     p.$type === 'outgoing'
       ? 'var(--c-accent)'
@@ -101,6 +107,7 @@ const Bubble = styled.div<{ $type: MessageType }>`
       : '0 1px 4px #0001'};
   position: relative;
   backdrop-filter: ${(p) => (p.$type === 'incoming' ? 'brightness(1.1)' : 'none')};
+  cursor: ${(p) => (p.$hasInteraction ? 'pointer' : 'auto')};
 `;
 
 const AvatarBubbleWrapper = styled.div<{ $type: MessageType }>`
@@ -136,14 +143,24 @@ const BubbleMeta = styled.div`
   height: 18px;
 `;
 
-const SendTime = styled.span`
+const SendTime = styled.span<{ $type: MessageType; $isRead?: boolean }>`
   font-size: ${DESIGN_TOKENS.fontSize.small};
+  color: ${(p) => (p.$type === 'outgoing' ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)')};
+  opacity: ${(p) => (p.$type === 'outgoing' ? 0.9 : 1)};
 `;
 
-const ReadIcon = styled.span`
+const ReadIcon = styled.span<{ $type: MessageType; $isRead?: boolean }>`
   display: inline-flex;
   align-items: flex-end;
   font-size: ${DESIGN_TOKENS.fontSize.small};
+  color: ${(p) =>
+    p.$isRead
+      ? 'var(--c-success)'
+      : p.$type === 'outgoing'
+      ? 'var(--c-text-inverse)'
+      : 'var(--c-text-secondary)'};
+  opacity: ${(p) => (p.$type === 'outgoing' && !p.$isRead ? 0.9 : 1)};
+
   svg {
     display: block;
     vertical-align: bottom;
@@ -215,6 +232,24 @@ const ReactionMenu = styled.div<{ $type: MessageType }>`
   }
 `;
 
+const EmojiButton = styled.span`
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+  background: transparent;
+
+  &:hover {
+    background: var(--c-bg-subtle);
+  }
+`;
+
 const AttachmentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -227,6 +262,7 @@ const ImageAttachment = styled.img`
   max-height: 200px;
   border-radius: ${DESIGN_TOKENS.radius.medium};
   object-fit: cover;
+  cursor: pointer;
 `;
 
 const FileAttachment = styled.a`
@@ -388,6 +424,10 @@ const StyledActionsMenu = styled(ActionsMenu)<{ $type: MessageType }>`
   top: 34px;
   ${(p) => (p.$type === 'outgoing' ? 'right: 0; left: auto;' : 'left: 0; right: auto;')}
   z-index: 1001;
+`;
+
+const HiddenAudio = styled.audio`
+  display: none;
 `;
 
 /**
@@ -617,15 +657,19 @@ export const Message: React.FC<MessageProps> = ({
     }
   };
 
+  const hasInteraction =
+    (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0);
+
   return (
     <MessageRoot $type={type} className={className} id={id}>
       <MessageRow $type={type}>
-        <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
+        <MessageWrapper>
           <Bubble
             $type={type}
+            $hasInteraction={hasInteraction}
             ref={bubbleRef}
             onClick={
-              (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0)
+              hasInteraction
                 ? () => {
                     if (showActionsOnClick && actions && actions.length > 0) {
                       setShowActions((v) => !v);
@@ -641,11 +685,6 @@ export const Message: React.FC<MessageProps> = ({
               if (onReaction && reactionEmojis.length > 0) setShowReactions((v) => !v);
               if (actions && actions.length > 0) setShowActions((v) => !v);
             }}
-            style={
-              (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0)
-                ? { cursor: 'pointer' }
-                : undefined
-            }
           >
             {replyTo && (
               <ReplyBlock onClick={handleReplyClick} title='Go to replied message'>
@@ -683,20 +722,18 @@ export const Message: React.FC<MessageProps> = ({
                           e.stopPropagation();
                           setPreviewImage(attachment.url);
                         }}
-                        style={{ cursor: 'pointer' }}
                       />
                     );
                   } else if (attachment.type === 'audio') {
                     return (
                       <AudioAttachment key={index} onClick={(e) => e.stopPropagation()}>
-                        <audio
+                        <HiddenAudio
                           ref={(el) => {
                             if (el) audioRefs.current[attachment.url] = el;
                           }}
                           src={attachment.url}
                           onTimeUpdate={() => handleAudioTimeUpdate(attachment.url)}
                           onEnded={() => handleAudioEnded(attachment.url)}
-                          style={{ display: 'none' }}
                         />
                         <PlayButton
                           onClick={(e) => {
@@ -756,24 +793,10 @@ export const Message: React.FC<MessageProps> = ({
               )}
             </BottomBar>
             <BubbleMeta>
-              <SendTime
-                style={{
-                  color: type === 'outgoing' ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)',
-                  opacity: type === 'outgoing' ? 0.9 : 1,
-                }}
-              >
+              <SendTime $type={type} $isRead={isRead}>
                 {time}
               </SendTime>
-              <ReadIcon
-                style={{
-                  color: isRead
-                    ? 'var(--c-success)'
-                    : type === 'outgoing'
-                    ? 'var(--c-text-inverse)'
-                    : 'var(--c-text-secondary)',
-                  opacity: type === 'outgoing' && !isRead ? 0.9 : 1,
-                }}
-              >
+              <ReadIcon $type={type} $isRead={isRead}>
                 {isRead ? (
                   <>
                     <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
@@ -815,7 +838,7 @@ export const Message: React.FC<MessageProps> = ({
               </AvatarBubbleWrapper>
             )}
           </Bubble>
-        </div>
+        </MessageWrapper>
       </MessageRow>
       {previewImage && (
         <ImageModalOverlay onClick={() => setPreviewImage(null)}>
@@ -834,35 +857,17 @@ export const Message: React.FC<MessageProps> = ({
               onTouchStart={(e) => e.stopPropagation()}
             >
               {reactionEmojis.map((emoji) => (
-                <span
+                <EmojiButton
                   key={emoji}
-                  style={{
-                    fontSize: 24,
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    flexShrink: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '4px',
-                    borderRadius: '6px',
-                    transition: 'background 0.15s ease',
-                  }}
                   onClick={(e) => {
                     e.stopPropagation();
                     onReaction(emoji);
                     setShowReactions(false);
                     setShowActions(false);
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--c-bg-subtle)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                  }}
                 >
                   {emoji}
-                </span>
+                </EmojiButton>
               ))}
             </ReactionMenu>
           )}
