@@ -1,4 +1,3 @@
-import { DESIGN_TOKENS } from './styles/designTokens';
 /**
  * Auto-inject styles
  */
@@ -92,4 +91,7 @@ export {
  */
 export { ThemeSelect } from './Theme/ThemeSelect';
 
+/**
+ * DESIGN_TOKENS
+ */
 export { DESIGN_TOKENS } from './styles/designTokens';
