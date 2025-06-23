@@ -177,20 +177,20 @@ const Content = styled.div<{ $hasHeader: boolean }>`
 `;
 
 /**
- * Modal component - компонент модального окна
- * @param {boolean} isOpen - флаг открытия модального окна
- * @param {() => void} onClose - функция закрытия модального окна
- * @param {React.ReactNode} children - контент модального окна
- * @param {string} [title] - заголовок модального окна
- * @param {boolean} [closeOnBackdropClick] - закрывать модальное окно при клике на бэкдроп
- * @param {boolean} [closeOnEscape] - закрывать модальное окно при нажатии на Escape
- * @param {'small' | 'medium' | 'large' | 'fullscreen'} [size] - размер модального окна
- * @param {boolean} [centered] - центрировать модальное окно
- * @param {string} [className] - дополнительный CSS класс
- * @param {string} [backdropClassName] - дополнительный CSS класс для бэкдропа
- * @param {boolean} [showCloseButton] - показывать кнопку закрытия
- * @param {boolean} [closeable] - закрываемое модальное окно
- * @param {HTMLElement | string} [container] - контейнер для модального окна
+ * Modal - модальное окно с backdrop и управлением фокусом
+ * @param isOpen 'boolean' - флаг открытия модального окна
+ * @param onClose '() => void' - функция закрытия модального окна
+ * @param children 'React.ReactNode' - контент модального окна
+ * @param title 'string' - заголовок модального окна
+ * @param closeOnBackdropClick 'boolean' = true - закрывать при клике на backdrop
+ * @param closeOnEscape 'boolean' = true - закрывать при нажатии Escape
+ * @param size 'small' | 'medium' | 'large' | 'fullscreen' = 'medium' - размер окна
+ * @param centered 'boolean' = true - центрировать модальное окно
+ * @param className 'string' - дополнительный CSS класс
+ * @param backdropClassName 'string' - CSS класс для backdrop
+ * @param showCloseButton 'boolean' = true - показывать кнопку закрытия
+ * @param closeable 'boolean' = true - можно ли закрыть модальное окно
+ * @param container 'HTMLElement | string' - контейнер для портала
  */
 export const Modal: React.FC<ModalProps> = ({
   isOpen,

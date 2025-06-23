@@ -10,7 +10,7 @@ import {
 } from './variables';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface YinYangSwitchProps {
+export interface YinYangSwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
@@ -81,43 +81,12 @@ const YangDot = styled.span<{ $checked: boolean }>`
 
 /**
  * YinYangSwitch - компонент переключателя с анимацией Инь-Ян
- * @param {boolean} checked - состояние переключателя
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
- * @param {string} [id] - id для input (если нужно связать с label)
- * @param {string} [className] - дополнительные CSS классы для обертки
- * @param {string} [label] - текст подписи
- *
- * @example
- * // Базовое использование
- * <YinYangSwitch
- *   checked={balance}
- *   onChange={setBalance}
- * />
- *
- * // С подписью
- * <YinYangSwitch
- *   checked={harmony}
- *   onChange={setHarmony}
- *   label="Гармония"
- * />
- *
- * // Отключенный переключатель
- * <YinYangSwitch
- *   checked={false}
- *   onChange={() => {}}
- *   label="Баланс недоступен"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <YinYangSwitch
- *   checked={dualMode}
- *   onChange={setDualMode}
- *   className="yin-yang-toggle"
- *   id="dual-mode-switch"
- *   label="Двойной режим"
- * />
+ * @param checked 'boolean' - состояние переключателя
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param disabled 'boolean' = false - флаг, указывающий, что переключатель отключен
+ * @param id 'string' = 'yin-yang-switch' - id для input (если нужно связать с label)
+ * @param className 'string' - дополнительные CSS классы для обертки
+ * @param label 'string' - текст подписи
  */
 export const YinYangSwitch: React.FC<YinYangSwitchProps> = ({
   checked,

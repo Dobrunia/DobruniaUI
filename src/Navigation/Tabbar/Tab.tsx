@@ -10,7 +10,7 @@ export interface TabData {
   // можно добавить rightSlot, tooltip, icon и т.д.
 }
 
-interface TabProps {
+export interface TabProps {
   tab: TabData;
   selected: boolean;
   onClick: (id: string | number) => void;
@@ -80,33 +80,11 @@ const Underline = styled.div`
 
 /**
  * Tab component - отдельная вкладка для использования в Tabbar
- * @param {TabData} tab - данные вкладки
- * @param {boolean} selected - флаг выбранной вкладки
- * @param {(id: string | number) => void} onClick - обработчик клика
- * @param {string} [className] - дополнительные CSS классы
  *
- * @example
- * // Базовое использование
- * <Tab
- *   tab={{ id: 1, label: 'Home' }}
- *   selected={false}
- *   onClick={handleTabClick}
- * />
- *
- * // С уведомлением
- * <Tab
- *   tab={{ id: 2, label: 'Messages', notification: 5 }}
- *   selected={true}
- *   onClick={handleTabClick}
- * />
- *
- * // С кастомными стилями
- * <Tab
- *   tab={{ id: 3, label: 'Profile' }}
- *   selected={false}
- *   onClick={handleTabClick}
- *   className="custom-tab"
- * />
+ * @param tab 'TabData' - данные вкладки
+ * @param selected 'boolean' - флаг выбранной вкладки
+ * @param onClick '(id: string | number) => void' - обработчик клика
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Tab: React.FC<TabProps> = ({ tab, selected, onClick, className }) => {
   return (

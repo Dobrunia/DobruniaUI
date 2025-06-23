@@ -5,7 +5,7 @@ import { Button } from '@DobruniaUI';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
-interface UndoSnackbarProps {
+export interface UndoSnackbarProps {
   open: boolean;
   message: React.ReactNode;
   onClose: () => void;
@@ -24,46 +24,15 @@ const UndoButton = styled(Button)`
 `;
 
 /**
- * UndoSnackbar component - компонент для отображения уведомлений с возможностью отмены действий
- * Использует базовый Snackbar с включенным автоматическим стекингом
- * @param {boolean} open - флаг видимости уведомления
- * @param {React.ReactNode} message - содержимое уведомления
- * @param {() => void} onClose - функция закрытия уведомления
- * @param {() => void} onUndo - функция отмены действия
- * @param {number} [autoHideDuration=6000] - время автоматического закрытия в миллисекундах (0 для отключения)
- * @param {string} [undoText="Отменить"] - текст кнопки отмены
- * @param {SnackbarOrigin} [anchorOrigin={ vertical: 'top', horizontal: 'right' }] - позиция уведомления
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Базовое использование
- * <UndoSnackbar
- *   open={isOpen}
- *   message="Файл удален"
- *   onClose={() => setIsOpen(false)}
- *   onUndo={() => {
- *     // логика отмены удаления
- *     setIsOpen(false);
- *   }}
- * />
- *
- * // С кастомным текстом кнопки
- * <UndoSnackbar
- *   open={isOpen}
- *   message="3 элемента перемещены в корзину"
- *   onClose={() => setIsOpen(false)}
- *   onUndo={() => restoreItems()}
- *   undoText="Восстановить"
- * />
- *
- * // С увеличенным временем показа
- * <UndoSnackbar
- *   open={isOpen}
- *   message="Изменения сохранены"
- *   onClose={() => setIsOpen(false)}
- *   onUndo={() => revertChanges()}
- *   autoHideDuration={10000}
- * />
+ * UndoSnackbar - уведомление с кнопкой отмены действия (автостекинг включен)
+ * @param open 'boolean' - флаг видимости уведомления
+ * @param message 'React.ReactNode' - содержимое уведомления
+ * @param onClose '() => void' - функция закрытия уведомления
+ * @param onUndo '() => void' - функция отмены действия
+ * @param autoHideDuration 'number' = 6000 - время автоскрытия в мс (0 для отключения)
+ * @param undoText 'string' = 'Отменить' - текст кнопки отмены
+ * @param anchorOrigin 'SnackbarOrigin' = top-right - позиция уведомления
+ * @param className 'string' - дополнительные CSS классы
  */
 export const UndoSnackbar: React.FC<UndoSnackbarProps> = ({
   open,

@@ -13,7 +13,7 @@ export interface ChatListItem {
   status?: 'online' | 'offline' | 'dnd';
 }
 
-interface ChatListProps {
+export interface ChatListProps {
   items?: ChatListItem[];
   loading?: boolean;
   skeletonCount?: number;
@@ -86,26 +86,13 @@ const ReadMark = styled.span`
 `;
 
 /**
- * ChatList - компонент для отображения списка чатов с аватаром, именем, последним сообщением, временем, статусом пользователя и skeleton-режимом.
- *
- * @param {ChatListItem[]} [items] - массив чатов
- * @param {boolean} [loading] - отображать skeleton вместо чатов
- * @param {number} [skeletonCount=6] - количество skeleton-элементов при загрузке
- * @param {(id: string) => void} [onSelect] - обработчик выбора чата
- * @param {string} [selectedId] - id выбранного чата
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Базовое использование
- * <ChatList items={items} selectedId={selectedId} onSelect={setSelected} />
- *
- * // С кастомными стилями
- * <ChatList
- *   items={items}
- *   selectedId={selectedId}
- *   onSelect={setSelected}
- *   className="custom-chat-list"
- * />
+ * ChatList - список чатов с аватарами, статусами и skeleton-режимом
+ * @param items 'ChatListItem[]' - массив чатов
+ * @param loading 'boolean' - отображать skeleton вместо чатов
+ * @param skeletonCount 'number' = 6 - количество skeleton-элементов при загрузке
+ * @param onSelect '(id: string) => void' - обработчик выбора чата
+ * @param selectedId 'string' - id выбранного чата
+ * @param className 'string' - дополнительные CSS классы
  */
 export const ChatList: React.FC<ChatListProps> = ({
   items = [],

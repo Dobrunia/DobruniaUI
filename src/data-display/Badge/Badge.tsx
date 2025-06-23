@@ -2,7 +2,7 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css } from 'styled-components';
 
-interface BadgeProps {
+export interface BadgeProps {
   value?: number | string;
   children?: React.ReactNode;
   max?: number;
@@ -76,43 +76,14 @@ function formatMessageDate(date: Date | string | number, locale: string = 'en') 
 }
 
 /**
- * Badge component - компонент для отображения числового, текстового бейджа или даты
- * @param {number|string} [value] - значение бейджа (число или текст)
- * @param {React.ReactNode} children - элемент, к которому прикрепляется бейдж (кроме message-date)
- * @param {number} [max=99] - максимальное значение для числового бейджа
- * @param {'default'|'message-date'} [variant='default'] - вариант бейджа: обычный или дата
- * @param {Date|string|number} [date] - дата для варианта 'message-date'
- * @param {string} [locale='en'] - локаль для форматирования даты
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Числовой бейдж
- * <Badge value={5}>
- *   <IconButton icon={<NotificationIcon />} />
- * </Badge>
- *
- * // Бейдж с превышением максимума
- * <Badge value={150} max={99}>
- *   <IconButton icon={<MessageIcon />} />
- * </Badge>
- *
- * // Текстовый бейдж
- * <Badge value="New">
- *   <Button>Features</Button>
- * </Badge>
- *
- * // Бейдж с нулевым значением (не отображается)
- * <Badge value={0}>
- *   <IconButton icon={<MailIcon />} />
- * </Badge>
- *
- * // Бейдж-дата между сообщениями
- * <Badge variant="message-date" date="2024-06-01" locale="en" />
- *
- * // С кастомными стилями
- * <Badge value={3} className="custom-badge">
- *   <Button>Messages</Button>
- * </Badge>
+ * Badge - бейдж для отображения чисел, текста или дат сообщений
+ * @param value 'number | string' - значение бейджа (число или текст)
+ * @param children 'React.ReactNode' - элемент с бейджем (кроме message-date)
+ * @param max 'number' = 99 - максимальное значение для числового бейджа
+ * @param variant 'default' | 'message-date' = 'default' - вариант бейджа
+ * @param date 'Date | string | number' - дата для варианта message-date
+ * @param locale 'string' = 'en' - локаль для форматирования даты
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Badge: React.FC<BadgeProps> = ({
   value,

@@ -28,7 +28,7 @@ const recalculateStackPositions = (positionKey: string) => {
   });
 };
 
-interface SnackbarProps {
+export interface SnackbarProps {
   open: boolean;
   message: React.ReactNode;
   onClose: () => void;
@@ -102,67 +102,15 @@ const SnackbarAction = styled.div`
 `;
 
 /**
- * Snackbar component - компонент для отображения кратковременных уведомлений
- * @param {boolean} open - флаг видимости уведомления
- * @param {React.ReactNode} message - содержимое уведомления
- * @param {() => void} onClose - функция закрытия уведомления
- * @param {number} [autoHideDuration=4000] - время автоматического закрытия в миллисекундах (0 для отключения)
- * @param {SnackbarOrigin} [anchorOrigin={ vertical: 'bottom', horizontal: 'center' }] - позиция уведомления:
- *   - vertical: 'top' | 'bottom' - вертикальное положение
- *   - horizontal: 'left' | 'center' | 'right' - горизонтальное положение
- * @param {React.ReactNode} [action] - дополнительное действие (кнопка, ссылка и т.д.)
- * @param {string} [className] - дополнительные CSS классы
- * @param {boolean} [enableStacking=false] - включить автоматическое управление стекингом для данной позиции
- *
- * @example
- * // Базовое использование
- * <Snackbar
- *   open={isOpen}
- *   message="Изменения сохранены"
- *   onClose={() => setIsOpen(false)}
- * />
- *
- * // С включенным стекингом
- * <Snackbar
- *   open={isOpen}
- *   message="Файл загружен"
- *   onClose={() => setIsOpen(false)}
- *   enableStacking={true}
- *   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
- * />
- *
- * // С дополнительным действием
- * <Snackbar
- *   open={isOpen}
- *   message="Файл загружен"
- *   onClose={() => setIsOpen(false)}
- *   action={<Button variant="ghost">Открыть</Button>}
- * />
- *
- * // С кастомной позицией
- * <Snackbar
- *   open={isOpen}
- *   message="Уведомление сверху"
- *   onClose={() => setIsOpen(false)}
- *   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
- * />
- *
- * // С увеличенным временем показа
- * <Snackbar
- *   open={isOpen}
- *   message="Длинное сообщение, требующее больше времени для прочтения"
- *   onClose={() => setIsOpen(false)}
- *   autoHideDuration={8000}
- * />
- *
- * // Без автоматического закрытия
- * <Snackbar
- *   open={isOpen}
- *   message="Требует действия пользователя"
- *   onClose={() => setIsOpen(false)}
- *   autoHideDuration={0}
- *   action={<Button variant="ghost">Подтвердить</Button>}
- * />
+ * Snackbar - кратковременное уведомление с поддержкой стекинга и позиционирования
+ * @param open 'boolean' - флаг видимости уведомления
+ * @param message 'React.ReactNode' - содержимое уведомления
+ * @param onClose '() => void' - функция закрытия уведомления
+ * @param autoHideDuration 'number' = 4000 - время автоскрытия в мс (0 для отключения)
+ * @param anchorOrigin 'SnackbarOrigin' = bottom-center - позиция уведомления
+ * @param action 'React.ReactNode' - дополнительное действие (кнопка, ссылка)
+ * @param className 'string' - дополнительные CSS классы
+ * @param enableStacking 'boolean' = false - включить стекинг для позиции
  */
 export const Snackbar: React.FC<SnackbarProps> = ({
   open,

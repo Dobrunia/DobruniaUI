@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextFieldProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'autoComplete'> {
   label?: string;
   error?: boolean;
   errorText?: string;
   helperText?: string;
   width?: string;
+  autoComplete?: string | boolean;
   className?: string;
 }
 
@@ -133,64 +135,16 @@ const EyeIcon = ({ open }: { open: boolean }) =>
 
 /**
  * TextField component - компонент однострочного текстового поля с плавающей меткой
- * @param {string} [label] - текст метки над полем ввода
- * @param {boolean} [error] - флаг ошибки
- * @param {string} [errorText] - текст ошибки
- * @param {string} [helperText] - вспомогательный текст
- * @param {string} [width] - ширина компонента (например: '300px', '100%')
- * @param {string} [id] - уникальный идентификатор поля
- * @param {string} [value] - значение поля (для контролируемого компонента)
- * @param {string} [defaultValue] - начальное значение поля
- * @param {string} [type] - тип поля ввода:
- *   - 'text' - обычный текст
- *   - 'password' - пароль (с кнопкой показать/скрыть)
- *   - 'email' - email (с валидацией)
- *   - 'phone' - телефон (с валидацией)
- *   - 'number' - число (с валидацией)
- *   - другие HTML5 типы input
- * @param {string} [className] - дополнительные CSS классы
- * @param {React.InputHTMLAttributes<HTMLInputElement>} props - остальные пропсы input
- *
- * @example
- * // Базовое использование
- * <TextField
- *   label="Имя"
- *   helperText="Максимум 50 символов"
- * />
- *
- * // Поле с паролем
- * <TextField
- *   label="Пароль"
- *   type="password"
- *   errorText="Минимум 8 символов"
- * />
- *
- * // Поле с email
- * <TextField
- *   label="Email"
- *   type="email"
- *   errorText="Введите корректный email"
- * />
- *
- * // Поле с телефоном
- * <TextField
- *   label="Телефон"
- *   type="phone"
- * />
- *
- * // Поле с числом
- * <TextField
- *   label="Возраст"
- *   type="number"
- *   min={0}
- *   max={120}
- * />
- *
- * // С кастомными стилями
- * <TextField
- *   label="Имя"
- *   className="custom-field"
- * />
+ * @param label 'string' - текст метки над полем ввода
+ * @param error 'boolean' = false - флаг ошибки
+ * @param errorText 'string' - текст ошибки
+ * @param helperText 'string' - вспомогательный текст
+ * @param width 'string' - ширина компонента (например: '300px', '100%')
+ * @param autoComplete 'string | boolean' = true - автозаполнение браузера
+ * @param type 'string' = 'text' - тип поля ввода: 'text' | 'password' | 'email' | 'phone' | 'number'
+ * @param value 'string' - значение поля (для контролируемого компонента)
+ * @param defaultValue 'string' - начальное значение поля
+ * @param className 'string' - дополнительные CSS классы
  */
 export const TextField: React.FC<TextFieldProps> = ({
   label,
@@ -202,6 +156,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   value,
   defaultValue,
   type,
+  autoComplete = true,
   onFocus,
   onBlur,
   onChange,
@@ -234,6 +189,32 @@ export const TextField: React.FC<TextFieldProps> = ({
   const inputType =
     type === 'password' ? (showPassword ? 'text' : 'password') : type === 'phone' ? 'tel' : type;
 
+  // Обработка autoComplete
+  let autoCompleteValue: string | undefined;
+  if (autoComplete === false) {
+    autoCompleteValue = 'off';
+  } else if (typeof autoComplete === 'string') {
+    autoCompleteValue = autoComplete;
+  } else {
+    // autoComplete === true, используем умные значения по умолчанию
+    switch (type) {
+      case 'email':
+        autoCompleteValue = 'email';
+        break;
+      case 'password':
+        autoCompleteValue = 'current-password';
+        break;
+      case 'phone':
+        autoCompleteValue = 'tel';
+        break;
+      case 'number':
+        autoCompleteValue = 'off';
+        break;
+      default:
+        autoCompleteValue = 'on';
+    }
+  }
+
   return (
     <Wrapper $width={width} className={className}>
       <FieldWrapper>
@@ -244,6 +225,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $type={type}
           value={currentValue}
           type={inputType}
+          autoComplete={autoCompleteValue}
           onChange={(e) => {
             if (!isControlled) setInnerValue(e.target.value);
             onChange?.(e);

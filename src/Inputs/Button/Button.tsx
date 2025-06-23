@@ -30,7 +30,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'c
 type ButtonSize = 'small' | 'medium' | 'large';
 type ButtonShape = 'default' | 'circle' | 'square';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
@@ -360,39 +360,18 @@ const CloseIcon = ({ color }: { color?: string }) => (
 );
 
 /**
- * Button component
- * @param {ReactNode} children - текст кнопки
- * @param {('primary'|'secondary'|'ghost'|'warning'|'send'|'close')} [variant='primary'] - тип кнопки
- * @param {('small'|'medium'|'large')} [size='medium'] - размер кнопки
- * @param {boolean} [fullWidth=false] - растянуть кнопку на всю ширину
- * @param {boolean} [isLoading=false] - показать загрузку
- * @param {ReactNode} [leftIcon] - иконка слева
- * @param {ReactNode} [rightIcon] - иконка справа
- * @param {boolean} [outlined] - outline кнопка
- * @param {('default'|'circle'|'square')} [shape='default'] - форма кнопки
- * @param {string} [className] - дополнительные CSS классы
- * @param {ButtonHTMLAttributes<HTMLButtonElement>} props - остальные пропсы кнопки
- * @example
- * // Primary button
- * <Button>Click me</Button>
+ * Button component - универсальная кнопка с различными вариантами оформления
  *
- * // Secondary outlined button with icon
- * <Button variant="secondary" outlined leftIcon={<Icon />}>
- *   With Icon
- * </Button>
- *
- * // Small loading button
- * <Button size="small" isLoading>
- *   Loading
- * </Button>
- *
- * // Circle close button
- * <Button variant="close" shape="circle" />
- *
- * // With custom styles
- * <Button className="custom-button">
- *   Custom Button
- * </Button>
+ * @param children - текст кнопки
+ * @param variant - тип кнопки: 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'close'
+ * @param size - размер кнопки: 'small' | 'medium' | 'large'
+ * @param fullWidth - растянуть кнопку на всю ширину
+ * @param isLoading - показать загрузку
+ * @param leftIcon - иконка слева
+ * @param rightIcon - иконка справа
+ * @param outlined - outline кнопка
+ * @param shape - форма кнопки: 'default' | 'circle' | 'square'
+ * @param className - дополнительные CSS классы
  */
 export const Button: React.FC<ButtonProps> = ({
   children,
@@ -405,7 +384,6 @@ export const Button: React.FC<ButtonProps> = ({
   outlined: outlinedProp,
   shape: shapeProp,
   className,
-  ...props
 }) => {
   let outlined = outlinedProp;
   let shape = shapeProp;
@@ -442,7 +420,6 @@ export const Button: React.FC<ButtonProps> = ({
       $outlined={outlined}
       $shape={shape}
       className={className}
-      {...props}
     >
       <ButtonContent $isLoading={isLoading}>
         {icon}

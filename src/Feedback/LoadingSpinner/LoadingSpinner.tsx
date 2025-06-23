@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 export type SpinnerVariant = 'classic' | 'pulse' | 'dots' | 'ring' | 'bars' | 'waves';
 export type SpinnerSize = 'small' | 'medium' | 'large';
 
-interface LoadingSpinnerProps {
+export interface LoadingSpinnerProps {
   variant?: SpinnerVariant;
   size?: SpinnerSize;
   color?: string;
@@ -223,33 +223,11 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
 `;
 
 /**
- * LoadingSpinner component - компонент для отображения индикатора загрузки
- * @param {SpinnerVariant} [variant='classic'] - тип анимации спиннера:
- *   - 'classic' - классический круговой спиннер
- *   - 'pulse' - пульсирующие кольца
- *   - 'dots' - мигающие точки
- *   - 'ring' - кольцо с бегущей полосой
- *   - 'bars' - анимированные полоски
- *   - 'waves' - волновые полоски с изменением высоты
- * @param {SpinnerSize} [size='medium'] - размер спиннера: 'small' | 'medium' | 'large'
- * @param {string} [color='var(--c-accent)'] - цвет спиннера
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Базовое использование
- * <LoadingSpinner />
- *
- * // Большой пульсирующий спиннер
- * <LoadingSpinner variant="pulse" size="large" />
- *
- * // Маленькие точки с кастомным цветом
- * <LoadingSpinner variant="dots" size="small" color="#ff6b35" />
- *
- * // Волновые полоски
- * <LoadingSpinner variant="waves" size="medium" color="var(--c-accent)" />
- *
- * // Полоски для загрузки контента
- * <LoadingSpinner variant="bars" size="large" />
+ * LoadingSpinner - анимированный индикатор загрузки с 6 вариантами анимации
+ * @param variant 'classic' | 'pulse' | 'dots' | 'ring' | 'bars' | 'waves' = 'classic' - тип анимации
+ * @param size 'small' | 'medium' | 'large' = 'medium' - размер спиннера
+ * @param color 'string' = 'var(--c-accent)' - цвет спиннера
+ * @param className 'string' - дополнительные CSS классы
  */
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   variant = 'classic',

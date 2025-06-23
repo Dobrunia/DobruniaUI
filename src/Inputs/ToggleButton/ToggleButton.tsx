@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-interface ToggleButtonProps {
+export interface ToggleButtonProps {
   /** Текст кнопки */
   children: React.ReactNode;
   /** Активна ли кнопка */
@@ -117,41 +117,15 @@ const ToggleText = styled.span`
 
 /**
  * ToggleButton component - компонент переключателя состояния
- * @param {React.ReactNode} children - текст кнопки
- * @param {boolean} [checked=false] - состояние кнопки
- * @param {boolean} [disabled=false] - отключена ли кнопка
- * @param {string} [name] - имя группы для радио-режима
- * @param {string} [value] - значение кнопки
- * @param {'small'|'medium'|'large'} [size='medium'] - размер кнопки
- * @param {boolean} [showIcon=false] - показывать иконку (огонек/круг) вместо цветного индикатора
- * @param {function} [onChange] - обработчик изменения состояния
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Обычная toggle кнопка с цветным индикатором
- * <ToggleButton checked={isActive} onChange={(checked) => setIsActive(checked)}>
- *   Toggle me
- * </ToggleButton>
- *
- * // С иконками огонька и круга
- * <ToggleButton showIcon checked={isEnabled}>
- *   Enable feature
- * </ToggleButton>
- *
- * // Маленький размер
- * <ToggleButton size="small" checked={showDetails}>
- *   Show details
- * </ToggleButton>
- *
- * // Отключенная кнопка
- * <ToggleButton disabled checked={false}>
- *   Disabled option
- * </ToggleButton>
- *
- * // С кастомными стилями
- * <ToggleButton className="custom-toggle" checked={isActive}>
- *   Custom Toggle
- * </ToggleButton>
+ * @param children 'ReactNode' - текст кнопки
+ * @param checked 'boolean' = false - состояние кнопки
+ * @param disabled 'boolean' = false - отключена ли кнопка
+ * @param name 'string' - имя группы для радио-режима
+ * @param value 'string' - значение кнопки
+ * @param size 'small | medium | large' = 'medium' - размер кнопки
+ * @param showIcon 'boolean' = false - показывать иконку (огонек/круг) вместо цветного индикатора
+ * @param onChange '(checked: boolean, value?: string) => void' - обработчик изменения состояния
+ * @param className 'string' - дополнительные CSS классы
  */
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
   children,

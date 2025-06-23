@@ -2,12 +2,12 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
-interface DropdownOption {
+export interface DropdownOption {
   value: string;
   label: string;
 }
 
-interface DropdownProps {
+export interface DropdownProps {
   options: DropdownOption[];
   value: string;
   onChange: (value: string) => void;
@@ -173,66 +173,17 @@ const ClearIcon: React.FC = () => (
 
 /**
  * Dropdown component - компонент выбора из списка в стиле Material UI с floating label
- * @param {DropdownOption[]} options - массив опций
- * @param {string} value - текущее значение
- * @param {(value: string) => void} onChange - функция обработки изменения значения
- * @param {string} [label] - текст подписи (также используется как tooltip)
- * @param {boolean} [disabled] - флаг, указывающий, что выпадающий список отключен
- * @param {boolean} [error] - флаг ошибки
- * @param {string} [errorText] - текст ошибки
- * @param {boolean} [clearable=false] - возможность сброса выбора
- * @param {string} [id] - уникальный идентификатор элемента
- * @param {string} [className] - дополнительные CSS классы для обертки
  *
- * @example
- * // Базовое использование
- * <Dropdown
- *   options={[
- *     { value: '1', label: 'Вариант 1' },
- *     { value: '2', label: 'Вариант 2' },
- *     { value: '3', label: 'Вариант 3' }
- *   ]}
- *   value={selectedValue}
- *   onChange={setSelectedValue}
- *   label="Выберите опцию"
- * />
- *
- * // С возможностью очистки
- * <Dropdown
- *   options={options}
- *   value={selected}
- *   onChange={setSelected}
- *   label="Выберите опцию"
- *   clearable
- * />
- *
- * // С ошибкой
- * <Dropdown
- *   options={options}
- *   value={selected}
- *   onChange={setSelected}
- *   label="Обязательное поле"
- *   error={hasError}
- *   errorText="Поле обязательно для заполнения"
- * />
- *
- * // Отключенный dropdown
- * <Dropdown
- *   options={options}
- *   value=""
- *   onChange={() => {}}
- *   label="Недоступно"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <Dropdown
- *   options={options}
- *   value={selected}
- *   onChange={setSelected}
- *   label="Кастомный dropdown"
- *   className="custom-dropdown"
- * />
+ * @param options 'DropdownOption[]' - массив опций
+ * @param value 'string' - текущее значение
+ * @param onChange '(value: string) => void' - функция обработки изменения значения
+ * @param label 'string' - текст подписи
+ * @param disabled 'boolean' = false - отключен ли выпадающий список
+ * @param error 'boolean' = false - флаг ошибки
+ * @param errorText 'string' - текст ошибки
+ * @param clearable 'boolean' = false - возможность сброса выбора
+ * @param id 'string' - уникальный идентификатор элемента
+ * @param className 'string' - дополнительные CSS классы для обертки
  */
 export const Dropdown: React.FC<DropdownProps> = ({
   options,

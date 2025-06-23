@@ -88,7 +88,7 @@ export interface SidebarListSection {
   items: SidebarListItem[];
 }
 
-interface SidebarListProps {
+export interface SidebarListProps {
   sections: SidebarListSection[];
   selected: string;
   onSelect: (key: string) => void;
@@ -104,60 +104,16 @@ const getSectionKey = (section: SidebarListSection, i: number) => section.title 
 
 /**
  * SidebarList component - компонент для отображения списка с секциями в сайдбаре
- * @param {Array<{title?: string, items: Array<{key: string, label: string}>}>} sections - массив секций списка
- * @param {string} selected - ключ выбранного элемента
- * @param {(key: string) => void} onSelect - обработчик выбора элемента
- * @param {string} [width] - ширина компонента (например: '300px', '100%')
- * @param {string} [height] - высота компонента (например: '100vh', '500px')
- * @param {boolean} [allowCollapse=true] - разрешить сворачивание секций
- * @param {string} [wrapperClassName] - класс для обертки списка
- * @param {string} [sectionTitleClassName] - класс для заголовков секций
- * @param {string} [itemClassName] - класс для элементов списка
  *
- * @example
- * // Базовый список с секциями
- * <SidebarList
- *   sections={[
- *     {
- *       title: "Секция 1",
- *       items: [
- *         { key: "item1", label: "Элемент 1" },
- *         { key: "item2", label: "Элемент 2" }
- *       ]
- *     },
- *     {
- *       title: "Секция 2",
- *       items: [
- *         { key: "item3", label: "Элемент 3" }
- *       ]
- *     }
- *   ]}
- *   selected="item1"
- *   onSelect={(key) => console.log(key)}
- * />
- *
- * // Список без заголовков секций
- * <SidebarList
- *   sections={[
- *     {
- *       items: [
- *         { key: "item1", label: "Элемент 1" },
- *         { key: "item2", label: "Элемент 2" }
- *       ]
- *     }
- *   ]}
- *   selected="item1"
- *   onSelect={(key) => console.log(key)}
- * />
- *
- * // Список с фиксированной высотой и шириной
- * <SidebarList
- *   sections={[/* ... *\/]}
- *   selected="item1"
- *   onSelect={(key) => console.log(key)}
- *   width="300px"
- *   height="500px"
- * />
+ * @param sections 'SidebarListSection[]' - массив секций списка
+ * @param selected 'string' - ключ выбранного элемента
+ * @param onSelect '(key: string) => void' - обработчик выбора элемента
+ * @param width 'string' - ширина компонента (например: '300px', '100%')
+ * @param height 'string' - высота компонента (например: '100vh', '500px')
+ * @param allowCollapse 'boolean' = true - разрешить сворачивание секций
+ * @param wrapperClassName 'string' - класс для обертки списка
+ * @param sectionTitleClassName 'string' - класс для заголовков секций
+ * @param itemClassName 'string' - класс для элементов списка
  */
 export const SidebarList: React.FC<SidebarListProps> = ({
   sections,

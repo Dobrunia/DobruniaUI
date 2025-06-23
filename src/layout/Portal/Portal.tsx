@@ -9,27 +9,12 @@ export interface PortalProps {
 }
 
 /**
- * Portal
- * @param children - Контент для портала
- * @param container - Контейнер для портала
- * @param disabled - Отключить портал
- * @param className - дополнительные CSS классы
+ * Portal component - компонент для рендеринга контента в другом DOM узле
  *
- * @example
- * // Базовое использование
- * <Portal>
- *   <div>Контент в портале</div>
- * </Portal>
- *
- * // С кастомным контейнером
- * <Portal container="#modal-root">
- *   <div>Модальное окно</div>
- * </Portal>
- *
- * // С кастомными стилями
- * <Portal className="custom-portal">
- *   <div>Стилизованный портал</div>
- * </Portal>
+ * @param children 'ReactNode' - контент для портала
+ * @param container 'HTMLElement | string' - контейнер для портала
+ * @param disabled 'boolean' = false - отключить портал
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Portal: React.FC<PortalProps> = ({
   children,

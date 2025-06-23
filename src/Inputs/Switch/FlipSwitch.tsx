@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface FlipSwitchProps {
+export interface FlipSwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   id?: string;
@@ -63,43 +63,13 @@ const FlipLabel = styled.label<{ $checked: boolean; $disabled?: boolean }>`
 
 /**
  * FlipSwitch - компонент переключателя с анимацией переворота
- * @param {boolean} checked - состояние переключателя
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
- * @param {string} [id] - id для input (если нужно связать с label)
- * @param {string} [className] - дополнительные CSS классы для обертки
- * @param {string} [onLabel='On'] - текст подписи для состояния "включено"
- * @param {string} [offLabel='Off'] - текст подписи для состояния "выключено"
- *
- * @example
- * // Базовое использование
- * <FlipSwitch
- *   checked={isEnabled}
- *   onChange={setIsEnabled}
- * />
- *
- * // С кастомными лейблами
- * <FlipSwitch
- *   checked={isActive}
- *   onChange={setIsActive}
- *   onLabel="ДА"
- *   offLabel="НЕТ"
- * />
- *
- * // Отключенный переключатель
- * <FlipSwitch
- *   checked={false}
- *   onChange={() => {}}
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <FlipSwitch
- *   checked={isToggled}
- *   onChange={setIsToggled}
- *   className="custom-flip-switch"
- *   id="my-flip-switch"
- * />
+ * @param checked 'boolean' - состояние переключателя
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param disabled 'boolean' = false - флаг, указывающий, что переключатель отключен
+ * @param id 'string' = 'flip-switch' - id для input (если нужно связать с label)
+ * @param className 'string' - дополнительные CSS классы для обертки
+ * @param onLabel 'string' = 'On' - текст подписи для состояния "включено"
+ * @param offLabel 'string' = 'Off' - текст подписи для состояния "выключено"
  */
 export const FlipSwitch: React.FC<FlipSwitchProps> = ({
   checked,

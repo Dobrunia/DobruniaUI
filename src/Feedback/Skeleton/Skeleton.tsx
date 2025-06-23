@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
-interface SkeletonProps {
+export interface SkeletonProps {
   variant?: SkeletonVariant;
   width?: number | string;
   height?: number | string;
@@ -70,42 +70,11 @@ const StyledSkeleton = styled.span<{
 `;
 
 /**
- * Skeleton component - компонент для отображения плейсхолдера загрузки с анимацией
- * @param {('text'|'circular'|'rectangular'|'rounded')} [variant='text'] - вариант формы:
- *   - text: для текстового контента (скругленные углы)
- *   - circular: для круглых элементов (аватары, иконки)
- *   - rectangular: для прямоугольных элементов без скругления
- *   - rounded: для прямоугольных элементов со скруглением
- * @param {number|string} [width] - ширина компонента (в пикселях или процентах)
- * @param {number|string} [height] - высота компонента (в пикселях или процентах)
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Текстовый плейсхолдер
- * <Skeleton variant="text" width={200} />
- *
- * // Круглый плейсхолдер (для аватара)
- * <Skeleton variant="circular" width={40} height={40} />
- *
- * // Прямоугольный плейсхолдер
- * <Skeleton variant="rectangular" width={300} height={200} />
- *
- * // Скругленный плейсхолдер
- * <Skeleton variant="rounded" width="100%" height={100} />
- *
- * // Плейсхолдер с кастомными стилями
- * <Skeleton
- *   variant="text"
- *   width={150}
- *   className="custom-skeleton"
- * />
- *
- * // Композиция плейсхолдеров
- * <div>
- *   <Skeleton variant="circular" width={50} height={50} />
- *   <Skeleton variant="text" width={200} className="text-placeholder" />
- *   <Skeleton variant="text" width={150} className="text-placeholder" />
- * </div>
+ * Skeleton - анимированный плейсхолдер с эффектом shimmer для состояния загрузки
+ * @param variant 'text' | 'circular' | 'rectangular' | 'rounded' = 'text' - форма плейсхолдера
+ * @param width 'number | string' - ширина компонента (px или %)
+ * @param height 'number | string' - высота компонента (px или %)
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Skeleton: React.FC<SkeletonProps> = ({
   variant = 'text',

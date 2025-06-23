@@ -142,7 +142,7 @@ const statusTranslations = {
   },
 };
 
-interface AvatarProps {
+export interface AvatarProps {
   src?: string;
   alt?: string;
   name?: string;
@@ -155,52 +155,16 @@ interface AvatarProps {
 }
 
 /**
- * Avatar component - компонент аватара пользователя с поддержкой статуса
- * @param {string} [src] - URL изображения аватара
- * @param {string} [alt] - альтернативный текст для изображения
- * @param {string} [name] - имя пользователя (используется для инициалов, если нет изображения)
- * @param {('xxs'|'sm'|'md'|'lg')} [size='md'] - размер аватара:
- *   - xxs: 20px (для реакций)
- *   - sm: 32px (для отправителя)
- *   - md: 44px (для контактов)
- *   - lg: 72px (для профиля)
- * @param {('online'|'offline'|'dnd'|'invisible')} [status] - статус пользователя
- * @param {boolean} [showStatus=true] - показывать ли индикатор статуса
- * @param {string} [className] - дополнительные CSS классы
- * @param {(status: AvatarStatus) => void} [onStatusChange] - обработчик изменения статуса
- * @param {('ru'|'en')} [language='en'] - язык интерфейса для статусов
- *
- * @example
- * // Базовое использование с изображением
- * <Avatar
- *   src="/path/to/avatar.jpg"
- *   name="John Doe"
- *   size="md"
- *   status="online"
- * />
- *
- * // Аватар с инициалами (без изображения)
- * <Avatar
- *   name="John Doe"
- *   size="lg"
- *   status="offline"
- * />
- *
- * // Маленький аватар для реакций
- * <Avatar
- *   src="/path/to/avatar.jpg"
- *   size="xxs"
- *   showStatus={false}
- * />
- *
- * // Аватар с возможностью изменения статуса
- * <Avatar
- *   src="/path/to/avatar.jpg"
- *   name="John Doe"
- *   status="online"
- *   onStatusChange={(newStatus) => handleStatusChange(newStatus)}
- *   language="ru"
- * />
+ * Avatar - аватар пользователя с поддержкой статуса и выбора языка
+ * @param src 'string' - URL изображения аватара
+ * @param alt 'string' - альтернативный текст для изображения
+ * @param name 'string' - имя пользователя (для инициалов без изображения)
+ * @param size 'xxs' | 'sm' | 'md' | 'lg' = 'md' - размер аватара (20px/32px/44px/72px)
+ * @param status 'online' | 'offline' | 'dnd' | 'invisible' - статус пользователя
+ * @param showStatus 'boolean' = true - показывать индикатор статуса
+ * @param className 'string' - дополнительные CSS классы
+ * @param onStatusChange '(status: AvatarStatus) => void' - обработчик изменения статуса
+ * @param language 'ru' | 'en' = 'en' - язык интерфейса для статусов
  */
 export const Avatar: React.FC<AvatarProps> = ({
   src,
@@ -211,7 +175,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   showStatus = true,
   className,
   onStatusChange,
-  language = 'en', // Default to Russian
+  language = 'en',
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);

@@ -10,7 +10,7 @@ import {
 } from './variables';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface SwitchProps {
+export interface SwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
@@ -65,43 +65,13 @@ const CustomThumb = styled.span<{ $checked: boolean }>`
 
 /**
  * Switch component - компонент для переключения состояния
- * @param {boolean} checked - состояние переключателя
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {string} [label] - текст подписи
- * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
- * @param {string} [id] - id для input (если нужно связать с label)
- * @param {string} [className] - дополнительные CSS классы для обертки
  *
- * @example
- * // Базовое использование
- * <Switch
- *   checked={isEnabled}
- *   onChange={setIsEnabled}
- * />
- *
- * // С подписью
- * <Switch
- *   checked={darkMode}
- *   onChange={setDarkMode}
- *   label="Темная тема"
- * />
- *
- * // Отключенный переключатель
- * <Switch
- *   checked={false}
- *   onChange={() => {}}
- *   label="Недоступная опция"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <Switch
- *   checked={notifications}
- *   onChange={setNotifications}
- *   className="notification-switch"
- *   id="notifications-toggle"
- *   label="Уведомления"
- * />
+ * @param checked 'boolean' - состояние переключателя
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param label 'string' - текст подписи
+ * @param disabled 'boolean' = false - флаг, указывающий, что переключатель отключен
+ * @param id 'string' - id для input (если нужно связать с label)
+ * @param className 'string' - дополнительные CSS классы для обертки
  */
 export const Switch: React.FC<SwitchProps> = ({
   checked,

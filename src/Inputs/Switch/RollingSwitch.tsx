@@ -9,7 +9,7 @@ import {
   LabelText,
 } from './variables';
 
-interface RollingSwitchProps {
+export interface RollingSwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
@@ -64,43 +64,12 @@ const Icon = styled.svg<{ $checked: boolean }>`
 
 /**
  * RollingSwitch - компонент переключателя с анимацией прокрутки
- * @param {boolean} checked - состояние переключателя
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
- * @param {string} [id] - id для input (если нужно связать с label)
- * @param {string} [className] - дополнительные CSS классы для обертки
- * @param {string} [label] - текст подписи
- *
- * @example
- * // Базовое использование
- * <RollingSwitch
- *   checked={isRolling}
- *   onChange={setIsRolling}
- * />
- *
- * // С подписью
- * <RollingSwitch
- *   checked={autoSave}
- *   onChange={setAutoSave}
- *   label="Автосохранение"
- * />
- *
- * // Отключенный переключатель
- * <RollingSwitch
- *   checked={false}
- *   onChange={() => {}}
- *   label="Недоступная функция"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <RollingSwitch
- *   checked={enableFeature}
- *   onChange={setEnableFeature}
- *   className="feature-toggle"
- *   id="feature-switch"
- *   label="Включить функцию"
- * />
+ * @param checked 'boolean' - состояние переключателя
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param disabled 'boolean' = false - флаг, указывающий, что переключатель отключен
+ * @param id 'string' - id для input (если нужно связать с label)
+ * @param className 'string' - дополнительные CSS классы для обертки
+ * @param label 'string' - текст подписи
  */
 export const RollingSwitch: React.FC<RollingSwitchProps> = ({
   checked,

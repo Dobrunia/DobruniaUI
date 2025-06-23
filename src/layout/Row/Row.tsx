@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface RowProps {
+export interface RowProps {
   /** Контент для левого слота */
   left?: React.ReactNode;
   /** Контент для центрального слота */
@@ -78,45 +78,15 @@ const RightSlot = styled.div`
 
 /**
  * Row component - компонент строки с тремя слотами
- * @param {React.ReactNode} [left] - контент для левого слота
- * @param {React.ReactNode} [center] - контент для центрального слота
- * @param {React.ReactNode} [right] - контент для правого слота
- * @param {'start'|'center'|'end'|'stretch'} [align='center'] - вертикальное выравнивание
- * @param {string} [padding='12px 16px'] - отступы внутри строки
- * @param {string} [minHeight] - минимальная высота строки
- * @param {string} [className] - дополнительный CSS класс
- * @param {() => void} [onClick] - обработчик клика по строке
  *
- * @example
- * // Базовое использование
- * <Row
- *   left={<Avatar src="avatar.jpg" />}
- *   center={<span>Имя пользователя</span>}
- *   right={<Button>Действие</Button>}
- * />
- *
- * // Только левый и правый слоты
- * <Row
- *   left={<h3>Заголовок</h3>}
- *   right={<Switch checked={true} />}
- * />
- *
- * // Кликабельная строка
- * <Row
- *   left={<Icon name="settings" />}
- *   center={<span>Настройки</span>}
- *   right={<Icon name="arrow-right" />}
- *   onClick={() => navigate('/settings')}
- * />
- *
- * // Кастомное выравнивание и отступы
- * <Row
- *   left={<Badge value={5} />}
- *   center={<TextField placeholder="Поиск..." />}
- *   align="start"
- *   padding="20px"
- *   minHeight="60px"
- * />
+ * @param left 'ReactNode' - контент для левого слота
+ * @param center 'ReactNode' - контент для центрального слота
+ * @param right 'ReactNode' - контент для правого слота
+ * @param align 'start | center | end | stretch' = 'center' - вертикальное выравнивание
+ * @param padding 'string' = '12px 16px' - отступы внутри строки
+ * @param minHeight 'string' - минимальная высота строки
+ * @param className 'string' - дополнительный CSS класс
+ * @param onClick '() => void' - обработчик клика по строке
  */
 export const Row: React.FC<RowProps> = ({
   left,

@@ -20,16 +20,21 @@ DobruniaUI - это комплексная библиотека React компо
 ## 📦 Установка
 
 ```bash
-npm install dobruniaui styled-components react react-dom
+npm install dobruniaui react react-dom
 ```
 
 ## 🚀 Быстрый старт
 
 ```tsx
-import React from 'react';
-import { Button } from 'dobruniaui';
+import React, { useEffect } from 'react';
+import { Button, initThemeSystem } from 'dobruniaui';
 
 function App() {
+  useEffect(() => {
+    // Инициализируем систему тем при монтировании приложения
+    initThemeSystem();
+  }, []);
+
   return (
     <div
       style={{
@@ -77,7 +82,52 @@ function App() {
 export default App;
 ```
 
-> 🎨 **Автоматические стили**: DobruniaUI автоматически инжектирует CSS стили при импорте любого компонента. Никаких дополнительных CSS файлов подключать не нужно!
+## 🎨 Глобальные стили
+
+Для лучшей интеграции с системой тем добавьте в ваш главный CSS файл:
+
+```css
+/* Базовые стили */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif; /* или ваш предпочитаемый шрифт */
+}
+
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 450px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--c-bg-default);
+  color: var(--c-text-primary);
+}
+
+/* Опциональные utility классы для размеров шрифтов */
+.font-small {
+  font-size: 0.7rem;
+}
+.font-small-plus {
+  font-size: 0.8rem;
+}
+.font-medium {
+  font-size: 1rem;
+}
+.font-large {
+  font-size: 1.2rem;
+}
+```
+
+> 💡 **Совет**: Использование CSS переменных тем (`var(--c-bg-default)`, `var(--c-text-primary)`) обеспечит автоматическое переключение цветов при смене темы.
 
 ## 🎨 Система тем
 
@@ -151,7 +201,7 @@ removeTheme();
 // Получить системную тему пользователя
 const systemTheme = getSystemTheme(); // 'light' | 'dark'
 
-// Инициализировать систему тем (вызывается автоматически при импорте)
+// ⚠️ ОБЯЗАТЕЛЬНО: Инициализируем систему тем при монтировании приложения!
 initThemeSystem();
 ```
 
@@ -161,6 +211,11 @@ initThemeSystem();
 import { ThemeSelect } from 'dobruniaui';
 
 function App() {
+  useEffect(() => {
+    // Инициализируем систему тем при монтировании приложения
+    initThemeSystem();
+  }, []);
+
   return (
     <div>
       <ThemeSelect />
@@ -223,7 +278,7 @@ const darkTheme = getThemeConfig('dark');
 - `toggleTheme()` - переключает между светлой и тёмной темой
 - `removeTheme()` - удаляет сохранённую тему и очищает CSS переменные
 - `getSystemTheme()` - определяет системную тему пользователя ('light' | 'dark')
-- `initThemeSystem()` - инициализирует систему тем (автоматически при импорте)
+- `initThemeSystem()` - инициализирует систему тем (ОБЯЗАТЕЛЬНО Инициализируем систему тем при монтировании приложения!)
 
 **Управление темами:**
 
@@ -247,7 +302,11 @@ const darkTheme = getThemeConfig('dark');
 - `variant?: 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'close'` - стиль кнопки
 - `size?: 'small' | 'medium' | 'large'` - размер кнопки
 - `shape?: 'default' | 'circle' | 'square'` - форма кнопки
+- `fullWidth?: boolean` - растянуть на всю ширину
 - `isLoading?: boolean` - состояние загрузки
+- `leftIcon?: React.ReactNode` - иконка слева
+- `rightIcon?: React.ReactNode` - иконка справа
+- `outlined?: boolean` - контурная кнопка
 - `disabled?: boolean` - заблокированное состояние
 - `onClick?: () => void` - обработчик клика
 - `children?: React.ReactNode` - содержимое кнопки
@@ -266,14 +325,17 @@ const darkTheme = getThemeConfig('dark');
 - `label?: string` - метка поля
 - `type?: 'text' | 'password' | 'email' | 'phone' | 'number'` - тип поля
 - `value?: string` - значение поля
-- `placeholder?: string` - placeholder текст
+- `autoComplete?: string | boolean` - автозаполнение браузера (по умолчанию true)
+- `width?: string` - ширина компонента
 - `error?: boolean` - состояние ошибки
 - `errorText?: string` - текст ошибки
+- `helperText?: string` - вспомогательный текст
 - `disabled?: boolean` - заблокированное состояние
 - `onChange?: (value: string) => void` - обработчик изменения
 - `className?: string` - дополнительные CSS классы
 
 ```tsx
+// Базовое использование с автозаполнением
 <TextField
   label='Email'
   type='email'
@@ -317,7 +379,6 @@ const darkTheme = getThemeConfig('dark');
 
 - `label?: string` - метка поля
 - `value?: string` - значение поля
-- `placeholder?: string` - placeholder текст
 - `rows?: number` - количество строк
 - `autoHeight?: boolean` - автоматическая высота
 - `disabled?: boolean` - заблокированное состояние
@@ -426,7 +487,6 @@ const darkTheme = getThemeConfig('dark');
 - `options: DropdownOption[]` - массив опций
 - `value?: string` - выбранное значение
 - `label?: string` - метка поля
-- `placeholder?: string` - placeholder текст
 - `disabled?: boolean` - заблокированное состояние
 - `clearable?: boolean` - возможность очистки
 - `error?: boolean` - состояние ошибки

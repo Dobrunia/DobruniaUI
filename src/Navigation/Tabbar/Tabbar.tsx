@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Tab, type TabData } from '@DobruniaUI';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface TabbarProps {
+export interface TabbarProps {
   tabs: TabData[];
   selectedId: string | number;
   onTabPress: (id: string | number) => void;
@@ -29,10 +29,11 @@ const Container = styled.div`
 
 /**
  * Tabbar component - компонент для навигации по вкладкам
- * @param {TabData[]} tabs - массив объектов с данными для каждой вкладки
- * @param {string | number} selectedId - id выбранной вкладки
- * @param {(id: string | number) => void} onTabPress - функция обработки нажатия на вкладку
- * @param {string} className - дополнительный CSS класс для кастомизации
+ *
+ * @param tabs 'TabData[]' - массив объектов с данными для каждой вкладки
+ * @param selectedId 'string | number' - id выбранной вкладки
+ * @param onTabPress '(id: string | number) => void' - функция обработки нажатия на вкладку
+ * @param className 'string' - дополнительный CSS класс для кастомизации
  */
 export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, className }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface PaginationProps {
+export interface PaginationProps {
   page: number;
   count: number;
   onChange: (page: number) => void;
@@ -86,44 +86,13 @@ function getPages(page: number, count: number, siblingCount: number, boundaryCou
 
 /**
  * Pagination component - компонент для навигации по страницам
- * @param {number} page - текущая страница
- * @param {number} count - общее количество страниц
- * @param {(page: number) => void} onChange - функция обработки изменения страницы
- * @param {number} [siblingCount=1] - количество соседних страниц, отображаемых с каждой стороны от текущей
- * @param {number} [boundaryCount=1] - количество страниц, отображаемых на границах (в начале и конце)
- * @param {string} [className] - дополнительные CSS классы
  *
- * @example
- * // Базовое использование
- * <Pagination
- *   page={1}
- *   count={10}
- *   onChange={(page) => console.log(page)}
- * />
- *
- * // С большим количеством соседних страниц
- * <Pagination
- *   page={5}
- *   count={20}
- *   onChange={(page) => console.log(page)}
- *   siblingCount={2}
- * />
- *
- * // С большим количеством граничных страниц
- * <Pagination
- *   page={10}
- *   count={30}
- *   onChange={(page) => console.log(page)}
- *   boundaryCount={2}
- * />
- *
- * // С кастомными стилями
- * <Pagination
- *   page={1}
- *   count={5}
- *   onChange={(page) => console.log(page)}
- *   className="custom-pagination"
- * />
+ * @param page 'number' - текущая страница
+ * @param count 'number' - общее количество страниц
+ * @param onChange '(page: number) => void' - функция обработки изменения страницы
+ * @param siblingCount 'number' = 1 - количество соседних страниц, отображаемых с каждой стороны от текущей
+ * @param boundaryCount 'number' = 1 - количество страниц, отображаемых на границах (в начале и конце)
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Pagination: React.FC<PaginationProps> = ({
   page,

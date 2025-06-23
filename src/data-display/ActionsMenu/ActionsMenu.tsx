@@ -24,7 +24,7 @@ export interface ActionsMenuGroup {
   title?: string;
 }
 
-interface ActionsMenuProps {
+export interface ActionsMenuProps {
   /** Массив действий или групп действий */
   items: ActionsMenuAction[] | ActionsMenuGroup[];
   /** CSS классы */
@@ -158,10 +158,10 @@ const Shortcut = styled.span`
 `;
 
 /**
- * ActionsMenu component - компонент контекстного меню действий
- * @param {ActionsMenuAction[] | ActionsMenuGroup[]} items - действия или группы действий
- * @param {string} [className] - CSS классы
- * @param {() => void} [onClose] - обработчик закрытия
+ * ActionsMenu - контекстное меню действий с поддержкой групп и горячих клавиш
+ * @param items 'ActionsMenuAction[] | ActionsMenuGroup[]' - массив действий или групп действий
+ * @param className 'string' - дополнительные CSS классы
+ * @param onClose '() => void' - обработчик закрытия меню
  */
 export const ActionsMenu: React.FC<ActionsMenuProps> = ({ items, className, onClose }) => {
   // Определяем, это простой массив действий или группы

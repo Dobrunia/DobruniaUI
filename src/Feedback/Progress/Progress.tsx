@@ -3,7 +3,7 @@ import styled, { keyframes, css } from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
 // --- Circular Progress ---
-interface CircularProgressWithLabelProps {
+export interface CircularProgressWithLabelProps {
   value: number; // 0-100
   size?: number;
   strokeWidth?: number;
@@ -34,26 +34,11 @@ const ProgressCircle = styled.circle`
 `;
 
 /**
- * CircularProgressWithLabel component - компонент кругового прогресса с отображением процентов
- * @param {number} value - значение прогресса (0-100)
- * @param {number} [size=64] - размер компонента в пикселях
- * @param {number} [strokeWidth=5] - толщина линии прогресса
- * @param {string} [color='var(--c-accent)'] - цвет линии прогресса
- *
- * @example
- * // Базовое использование
- * <CircularProgressWithLabel value={75} />
- *
- * // Кастомный размер и цвет
- * <CircularProgressWithLabel
- *   value={50}
- *   size={100}
- *   strokeWidth={8}
- *   color="#FF0000"
- * />
- *
- * // Полный прогресс
- * <CircularProgressWithLabel value={100} />
+ * CircularProgressWithLabel - круговой прогресс с процентами в центре
+ * @param value 'number' - значение прогресса (0-100)
+ * @param size 'number' = 64 - размер компонента в пикселях
+ * @param strokeWidth 'number' = 5 - толщина линии прогресса
+ * @param color 'string' = 'var(--c-accent)' - цвет линии прогресса
  */
 export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps> = ({
   value,
@@ -93,7 +78,7 @@ export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps>
   );
 };
 // --- Linear Progress ---
-interface LinearProgressProps {
+export interface LinearProgressProps {
   value?: number; // 0-100, если не задан — indeterminate
   color?: string;
   height?: number;
@@ -142,31 +127,11 @@ const LinearProgressContainer = styled.div`
 `;
 
 /**
- * LinearProgress component - компонент линейного прогресса
- * @param {number} [value] - значение прогресса (0-100). Если не указано, показывается неопределенный прогресс
- * @param {string} [color='var(--c-accent)'] - цвет полосы прогресса
- * @param {number} [height=6] - высота полосы прогресса в пикселях
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Определенный прогресс
- * <LinearProgress value={75} />
- *
- * // Неопределенный прогресс (анимация)
- * <LinearProgress />
- *
- * // Кастомный цвет и высота
- * <LinearProgress
- *   value={50}
- *   color="#FF0000"
- *   height={8}
- * />
- *
- * // С кастомными стилями
- * <LinearProgress
- *   value={25}
- *   className="custom-progress"
- * />
+ * LinearProgress - линейный прогресс с определенным и неопределенным состоянием
+ * @param value 'number' - значение прогресса (0-100). Если не указано - неопределенный прогресс
+ * @param color 'string' = 'var(--c-accent)' - цвет полосы прогресса
+ * @param height 'number' = 6 - высота полосы прогресса в пикселях
+ * @param className 'string' - дополнительные CSS классы
  */
 export const LinearProgress: React.FC<LinearProgressProps> = ({
   value,

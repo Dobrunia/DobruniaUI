@@ -2,7 +2,7 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
-interface RadioProps {
+export interface RadioProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
@@ -59,46 +59,14 @@ const CustomCircle = styled.span<{ $checked: boolean; $disabled?: boolean }>`
 
 /**
  * Radio component - компонент для выбора одного варианта из нескольких
- * @param {boolean} checked - состояние выбора (true - выбран, false - не выбран)
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {string} [label] - текст подписи
- * @param {boolean} [disabled] - флаг, указывающий, выключен ли радиобаттон
- * @param {string} [id] - уникальный идентификатор
- * @param {string} [name] - имя группы для связывания радиокнопок
- * @param {string} [className] - дополнительные CSS классы
  *
- * @example
- * // Группа радиокнопок
- * const [selectedOption, setSelectedOption] = useState('option1');
- *
- * <Radio
- *   name="options"
- *   checked={selectedOption === 'option1'}
- *   onChange={() => setSelectedOption('option1')}
- *   label="Вариант 1"
- * />
- * <Radio
- *   name="options"
- *   checked={selectedOption === 'option2'}
- *   onChange={() => setSelectedOption('option2')}
- *   label="Вариант 2"
- * />
- *
- * // Отключенная радиокнопка
- * <Radio
- *   checked={false}
- *   onChange={() => {}}
- *   label="Недоступный вариант"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <Radio
- *   checked={isSelected}
- *   onChange={setIsSelected}
- *   label="Кастомная радиокнопка"
- *   className="custom-radio"
- * />
+ * @param checked 'boolean' - состояние выбора (true - выбран, false - не выбран)
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param label 'string' - текст подписи
+ * @param disabled 'boolean' = false - флаг, указывающий, выключен ли радиобаттон
+ * @param id 'string' - уникальный идентификатор
+ * @param name 'string' - имя группы для связывания радиокнопок
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Radio: React.FC<RadioProps> = ({
   checked,

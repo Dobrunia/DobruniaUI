@@ -502,59 +502,18 @@ const EmojiPicker: React.FC<{
 
 /**
  * Input component - универсальный компонент ввода с различными типами
- * @param {('message'|'search'|'file'|'emoji'|'audio')} type - тип инпута
- * @param {string} [placeholder] - placeholder текст
- * @param {string} [value] - значение инпута (для контролируемого компонента)
- * @param {(value: string) => void} [onChange] - обработчик изменения значения
- * @param {() => void} [onSend] - обработчик отправки сообщения (для type="message")
- * @param {(value: string) => void} [onSearch] - обработчик поиска (для type="search")
- * @param {(files: File[]) => void} [onFilesChange] - обработчик изменения файлов (для type="file")
- * @param {(emoji: string) => void} [onEmojiSelect] - обработчик выбора эмодзи (для type="emoji")
- * @param {(audio: Blob) => void} [onAudioRecord] - обработчик записи аудио (для type="audio")
- * @param {File[]} [files] - массив файлов (для контролируемого компонента с type="file")
- * @param {string} [className] - дополнительные CSS классы
  *
- * @example
- * // Поиск
- * <Input
- *   type="search"
- *   placeholder="Поиск..."
- *   onSearch={(value) => console.log(value)}
- * />
- *
- * // Сообщение с файлами и эмодзи
- * <Input
- *   type="message"
- *   placeholder="Введите сообщение..."
- *   onSend={() => console.log('Отправлено')}
- *   onFilesChange={(files) => console.log(files)}
- *   onEmojiSelect={(emoji) => console.log(emoji)}
- * />
- *
- * // Загрузка файлов
- * <Input
- *   type="file"
- *   onFilesChange={(files) => console.log(files)}
- * />
- *
- * // Выбор эмодзи
- * <Input
- *   type="emoji"
- *   onEmojiSelect={(emoji) => console.log(emoji)}
- * />
- *
- * // Запись аудио
- * <Input
- *   type="audio"
- *   onAudioRecord={(audio) => console.log(audio)}
- * />
- *
- * // С кастомными стилями
- * <Input
- *   type="message"
- *   placeholder="Ваше сообщение..."
- *   className="custom-input"
- * />
+ * @param type 'InputType' - тип инпута: 'message' | 'search' | 'file' | 'emoji' | 'audio'
+ * @param placeholder 'string' - placeholder текст
+ * @param value 'string' - значение инпута (для контролируемого компонента)
+ * @param onChange '(value: string) => void' - обработчик изменения значения
+ * @param onSend '() => void' - обработчик отправки сообщения (для type="message")
+ * @param onSearch '(value: string) => void' - обработчик поиска (для type="search")
+ * @param onFilesChange '(files: File[]) => void' - обработчик изменения файлов (для type="file")
+ * @param onEmojiSelect '(emoji: string) => void' - обработчик выбора эмодзи (для type="emoji")
+ * @param onAudioRecord '(audio: Blob) => void' - обработчик записи аудио (для type="audio")
+ * @param files 'File[]' - массив файлов (для контролируемого компонента с type="file")
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Input: React.FC<InputProps> = ({
   type,

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-interface PowerSwitchProps {
+export interface PowerSwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   id?: string;
@@ -145,33 +145,12 @@ const Button = styled.div`
 
 /**
  * PowerSwitch - компонент переключателя с анимацией кнопки питания
- * @param {boolean} checked - состояние переключателя
- * @param {(checked: boolean) => void} onChange - функция обработки изменения состояния
- * @param {boolean} [disabled] - флаг, указывающий, что переключатель отключен
- * @param {string} [id] - id для input (если нужно связать с label)
- * @param {string} [className] - дополнительные CSS классы для обертки
  *
- * @example
- * // Базовое использование
- * <PowerSwitch
- *   checked={isPowered}
- *   onChange={setIsPowered}
- * />
- *
- * // Отключенная кнопка питания
- * <PowerSwitch
- *   checked={false}
- *   onChange={() => {}}
- *   disabled
- * />
- *
- * // С кастомными стилями и ID
- * <PowerSwitch
- *   checked={systemOn}
- *   onChange={setSystemOn}
- *   className="system-power-button"
- *   id="system-power"
- * />
+ * @param checked 'boolean' - состояние переключателя
+ * @param onChange '(checked: boolean) => void' - функция обработки изменения состояния
+ * @param disabled 'boolean' = false - флаг, указывающий, что переключатель отключен
+ * @param id 'string' = 'power-switch' - id для input (если нужно связать с label)
+ * @param className 'string' - дополнительные CSS классы для обертки
  */
 export const PowerSwitch: React.FC<PowerSwitchProps> = ({
   checked,

@@ -33,43 +33,20 @@ const Actions = styled.div`
 `;
 
 /**
- * ModalSubmit component - модальное окно для действий подтверждения и форм
- * @param {boolean} isOpen - флаг открытия модального окна
- * @param {() => void} onClose - функция закрытия модального окна
- * @param {() => void | Promise<void>} onSubmit - функция отправки/подтверждения
- * @param {string} title - заголовок модального окна
- * @param {React.ReactNode} children - контент модального окна
- * @param {string} [submitText] - текст кнопки подтверждения
- * @param {string} [cancelText] - текст кнопки отмены
- * @param {'primary' | 'warning'} [submitVariant] - вариант кнопки подтверждения
- * @param {boolean} [isLoading] - флаг загрузки
- * @param {boolean} [disabled] - флаг блокировки кнопки подтверждения
- * @param {'small' | 'medium' | 'large'} [size] - размер модального окна
- * @param {boolean} [preventCloseOnSubmit] - не закрывать модал автоматически после submit
- * @param {string} [className] - дополнительные CSS классы
- *
- * @example
- * // Базовое использование
- * <ModalSubmit
- *   isOpen={isOpen}
- *   onClose={() => setIsOpen(false)}
- *   onSubmit={handleSubmit}
- *   title="Подтвердите действие"
- * >
- *   <p>Вы уверены, что хотите продолжить?</p>
- * </ModalSubmit>
- *
- * // С кастомными стилями
- * <ModalSubmit
- *   isOpen={isOpen}
- *   onClose={() => setIsOpen(false)}
- *   onSubmit={handleSubmit}
- *   title="Удалить файл"
- *   submitVariant="warning"
- *   className="custom-modal"
- * >
- *   <p>Это действие нельзя отменить</p>
- * </ModalSubmit>
+ * ModalSubmit - модальное окно с кнопками подтверждения и отмены
+ * @param isOpen 'boolean' - флаг открытия модального окна
+ * @param onClose '() => void' - функция закрытия модального окна
+ * @param onSubmit '() => void | Promise<void>' - функция отправки/подтверждения
+ * @param title 'string' - заголовок модального окна
+ * @param children 'React.ReactNode' - контент модального окна
+ * @param submitText 'string' = 'Подтвердить' - текст кнопки подтверждения
+ * @param cancelText 'string' = 'Отмена' - текст кнопки отмены
+ * @param submitVariant 'primary' | 'warning' = 'primary' - вариант кнопки подтверждения
+ * @param isLoading 'boolean' = false - флаг загрузки
+ * @param disabled 'boolean' = false - блокировка кнопки подтверждения
+ * @param size 'small' | 'medium' | 'large' = 'medium' - размер модального окна
+ * @param preventCloseOnSubmit 'boolean' = false - не закрывать автоматически после submit
+ * @param className 'string' - дополнительные CSS классы
  */
 export const ModalSubmit: React.FC<ModalSubmitProps> = ({
   isOpen,

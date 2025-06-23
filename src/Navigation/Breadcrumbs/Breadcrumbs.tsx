@@ -169,46 +169,15 @@ const CollapsedIndicator = styled.span`
 
 /**
  * Breadcrumbs component - компонент навигационных хлебных крошек
- * @param {BreadcrumbItem[]} items - массив элементов навигации
- * @param {React.ReactNode} [separator='/'] - разделитель между элементами
- * @param {number} [maxItems] - максимальное количество видимых элементов
- * @param {'small' | 'medium' | 'large'} [size='medium'] - размер компонента
- * @param {'default' | 'underlined' | 'pills'} [variant='default'] - вариант отображения
- * @param {boolean} [showIcons=true] - показывать ли иконки
- * @param {string} [className] - CSS классы
- * @param {function} [onItemClick] - обработчик клика по элементу
  *
- * @example
- * // Базовое использование
- * <Breadcrumbs items={[
- *   { label: 'Главная', href: '/' },
- *   { label: 'Категория', href: '/category' },
- *   { label: 'Текущая страница' }
- * ]} />
- *
- * // С кастомным разделителем
- * <Breadcrumbs
- *   items={items}
- *   separator="→"
- *   variant="pills"
- * />
- *
- * // С ограничением количества элементов
- * <Breadcrumbs
- *   items={longPath}
- *   maxItems={4}
- *   size="large"
- * />
- *
- * // С иконками и обработчиком
- * <Breadcrumbs
- *   items={[
- *     { label: 'Home', icon: <HomeIcon />, onClick: () => navigate('/') },
- *     { label: 'Products', onClick: () => navigate('/products') },
- *     { label: 'Details' }
- *   ]}
- *   onItemClick={(item, index) => console.log('Clicked:', item)}
- * />
+ * @param items 'BreadcrumbItem[]' - массив элементов навигации
+ * @param separator 'ReactNode' = '/' - разделитель между элементами
+ * @param maxItems 'number' - максимальное количество видимых элементов
+ * @param size 'small | medium | large' = 'medium' - размер компонента
+ * @param variant 'default | underlined | pills' = 'default' - вариант отображения
+ * @param showIcons 'boolean' = true - показывать ли иконки
+ * @param className 'string' - CSS классы
+ * @param onItemClick '(item: BreadcrumbItem, index: number) => void' - обработчик клика по элементу
  */
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   items,

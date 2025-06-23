@@ -8,7 +8,7 @@ interface User {
   avatar?: string;
 }
 
-interface ReactionProps {
+export interface ReactionProps {
   emoji: string;
   users: User[];
   onClick?: (e: React.MouseEvent) => void;
@@ -82,51 +82,12 @@ const UserCount = styled.span<{ $active?: boolean }>`
 `;
 
 /**
- * Reaction component - компонент реакции на сообщение с отображением пользователей
- * @param {string} emoji - эмодзи реакции
- * @param {User[]} users - массив пользователей, поставивших реакцию:
- *   - id: string - идентификатор пользователя
- *   - name: string - имя пользователя
- *   - avatar?: string - URL аватара
- * @param {(e: React.MouseEvent) => void} [onClick] - обработчик клика по реакции
- * @param {string} [className] - дополнительные CSS классы
- * @param {string} [currentUserId] - ID текущего пользователя (для подсветки активной реакции)
- *
- * @example
- * // Базовая реакция
- * <Reaction
- *   emoji="👍"
- *   users={[
- *     { id: "1", name: "John", avatar: "/path/to/avatar1.jpg" },
- *     { id: "2", name: "Jane", avatar: "/path/to/avatar2.jpg" }
- *   ]}
- * />
- *
- * // Реакция с обработчиком
- * <Reaction
- *   emoji="❤️"
- *   users={users}
- *   onClick={(e) => handleReactionClick(e)}
- * />
- *
- * // Активная реакция текущего пользователя
- * <Reaction
- *   emoji="😂"
- *   users={users}
- *   currentUserId="1"
- * />
- *
- * // Реакция с большим количеством пользователей
- * <Reaction
- *   emoji="🔥"
- *   users={[
- *     { id: "1", name: "John" },
- *     { id: "2", name: "Jane" },
- *     { id: "3", name: "Bob" },
- *     { id: "4", name: "Alice" },
- *     { id: "5", name: "Mike" }
- *   ]}
- * />
+ * Reaction - реакция на сообщение с эмодзи и стеком аватаров пользователей
+ * @param emoji 'string' - эмодзи реакции
+ * @param users 'User[]' - массив пользователей с реакцией (id, name, avatar)
+ * @param onClick '(e: React.MouseEvent) => void' - обработчик клика по реакции
+ * @param className 'string' - дополнительные CSS классы
+ * @param currentUserId 'string' - ID текущего пользователя для подсветки активной реакции
  */
 export const Reaction: React.FC<ReactionProps> = ({
   emoji,

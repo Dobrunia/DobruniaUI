@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-interface MessageContainerProps {
+export interface MessageContainerProps {
   children: React.ReactNode;
   autoScrollToBottom?: boolean;
   className?: string;
@@ -80,30 +80,11 @@ const ScrollIcon = styled.svg`
 `;
 
 /**
- * MessageContainer — компонент для отображения списка сообщений с вертикальным скроллом.
- *
- * @param {React.ReactNode} children — сообщения (обычно <Message />)
- * @param {boolean} [autoScrollToBottom=true] — автоматически прокручивать вниз при появлении новых сообщений
- * @param {string|number} [lastMessageId] — id последнего сообщения (для автоскролла только при новых сообщениях)
- * @param {string} [className] — дополнительные CSS классы
- *
- * Особенности:
- * - Запрещён горизонтальный скролл
- * - Красивый скроллбар
- * - Плавная анимация скролла
- * - Кнопка "Вниз" появляется при прокрутке вверх, плавно скрывается/показывается
- * - Автоматический скролл к новым сообщениям, если пользователь был внизу
- * - Поддержка программного скролла к сообщению по id
- *
- * @example
- * <MessageContainer lastMessageId={messages[messages.length-1]?.id}>
- *   {messages.map(msg => <Message {...msg} />)}
- * </MessageContainer>
- *
- * // С кастомными стилями
- * <MessageContainer className="custom-container">
- *   {messages.map(msg => <Message {...msg} />)}
- * </MessageContainer>
+ * MessageContainer - контейнер для списка сообщений с автоскроллом и кнопкой "вниз"
+ * @param children 'React.ReactNode' - сообщения (обычно Message компоненты)
+ * @param autoScrollToBottom 'boolean' = true - автоматически прокручивать к новым сообщениям
+ * @param lastMessageId 'string | number' - id последнего сообщения для автоскролла
+ * @param className 'string' - дополнительные CSS классы
  */
 export const MessageContainer = forwardRef<MessageContainerRef, MessageContainerProps>(
   ({ children, autoScrollToBottom = true, className }, ref): React.ReactElement => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled, { css } from 'styled-components';
 
-interface CardProps {
+export interface CardProps {
   /** Основной контент карточки */
   children: React.ReactNode;
   /** Заголовок карточки */
@@ -132,53 +132,18 @@ const CardFooter = styled.div`
 `;
 
 /**
- * Card component - компонент карточки для отображения контента
- * @param {React.ReactNode} children - основной контент карточки
- * @param {string} [title] - заголовок карточки
- * @param {string} [subtitle] - подзаголовок или описание
- * @param {React.ReactNode} [footer] - контент в футере карточки
- * @param {'default'|'outlined'|'elevated'|'flat'} [variant='default'] - вариант отображения
- * @param {boolean} [clickable=false] - кликабельная карточка
- * @param {boolean} [disabled=false] - отключенное состояние
- * @param {string|number} [width] - ширина карточки
- * @param {string|number} [maxWidth] - максимальная ширина
- * @param {string} [className] - дополнительный CSS класс
- * @param {() => void} [onClick] - обработчик клика
- *
- * @example
- * // Базовая карточка
- * <Card title="Заголовок" subtitle="Описание">
- *   Основной контент карточки
- * </Card>
- *
- * // Кликабельная карточка с футером
- * <Card
- *   title="Продукт"
- *   subtitle="Описание продукта"
- *   footer={<Button>Купить</Button>}
- *   clickable
- *   onClick={() => navigate('/product')}
- * >
- *   Детальная информация о продукте
- * </Card>
- *
- * // Приподнятая карточка без отступов
- * <Card variant="elevated" padding="none">
- *   <img src="image.jpg" alt="Изображение" />
- *   <div style={{ padding: '16px' }}>
- *     Контент с кастомными отступами
- *   </div>
- * </Card>
- *
- * // Контурная карточка большого размера
- * <Card
- *   variant="outlined"
- *   size="large"
- *   width="400px"
- *   maxWidth="100%"
- * >
- *   Большая карточка с ограниченной шириной
- * </Card>
+ * Card - карточка для отображения контента с заголовком и футером
+ * @param children 'React.ReactNode' - основной контент карточки
+ * @param title 'string' - заголовок карточки
+ * @param subtitle 'string' - подзаголовок или описание
+ * @param footer 'React.ReactNode' - контент в футере карточки
+ * @param variant 'default' | 'outlined' | 'elevated' | 'flat' = 'default' - вариант отображения
+ * @param clickable 'boolean' = false - кликабельная карточка
+ * @param disabled 'boolean' = false - отключенное состояние
+ * @param width 'string | number' - ширина карточки
+ * @param maxWidth 'string | number' - максимальная ширина
+ * @param className 'string' - дополнительный CSS класс
+ * @param onClick '() => void' - обработчик клика
  */
 export const Card: React.FC<CardProps> = ({
   children,

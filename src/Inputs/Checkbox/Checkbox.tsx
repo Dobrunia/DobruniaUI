@@ -2,7 +2,7 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
-interface CheckboxProps {
+export interface CheckboxProps {
   /**
    * Состояние чекбокса (отмечен или нет)
    */
@@ -89,36 +89,12 @@ const CustomBox = styled.span<{ $checked: boolean; $disabled?: boolean }>`
 
 /**
  * Checkbox component - компонент чекбокса
- * @param {boolean} checked - отмечен ли чекбокс
- * @param {(checked: boolean) => void} onChange - обработчик изменения
- * @param {string} [label] - подпись
- * @param {boolean} [disabled] - отключен ли чекбокс
- * @param {string} [id] - id для input
- * @param {string} [className] - дополнительные CSS классы для обертки
- *
- * @example
- * // Базовое использование
- * <Checkbox
- *   checked={isChecked}
- *   onChange={setIsChecked}
- *   label="Согласен с условиями"
- * />
- *
- * // Отключенный чекбокс
- * <Checkbox
- *   checked={false}
- *   onChange={() => {}}
- *   label="Недоступная опция"
- *   disabled
- * />
- *
- * // С кастомными стилями
- * <Checkbox
- *   checked={isChecked}
- *   onChange={setIsChecked}
- *   label="Кастомный чекбокс"
- *   className="custom-checkbox"
- * />
+ * @param checked 'boolean' - отмечен ли чекбокс
+ * @param onChange '(checked: boolean) => void' - обработчик изменения
+ * @param label 'string' - подпись
+ * @param disabled 'boolean' = false - отключен ли чекбокс
+ * @param id 'string' - id для input
+ * @param className 'string' - дополнительные CSS классы для обертки
  */
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked,

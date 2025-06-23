@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: boolean;
   errorText?: string;
@@ -79,54 +79,17 @@ const HelperText = styled.div<{ $error?: boolean }>`
 
 /**
  * Textarea component - компонент многострочного текстового поля
- * @param {string} [label] - текст метки над полем ввода
- * @param {boolean} [error] - флаг ошибки
- * @param {string} [errorText] - текст ошибки
- * @param {string} [helperText] - вспомогательный текст
- * @param {string} [width] - ширина компонента (например: '300px', '100%')
- * @param {boolean} [autoHeight] - автоматическая высота по содержимому
- * @param {('none'|'vertical'|'horizontal'|'both')} [resize='none'] - возможность изменения размера
- * @param {string} [id] - уникальный идентификатор поля
- * @param {string} [value] - значение поля (для контролируемого компонента)
- * @param {string} [defaultValue] - начальное значение поля
- * @param {string} [className] - дополнительные CSS классы
- * @param {React.TextareaHTMLAttributes<HTMLTextAreaElement>} props - остальные пропсы textarea
- *
- * @example
- * // Базовое использование
- * <Textarea
- *   label="Описание"
- *   placeholder="Введите описание..."
- *   helperText="Максимум 500 символов"
- * />
- *
- * // С ошибкой
- * <Textarea
- *   label="Описание"
- *   error
- *   errorText="Обязательное поле"
- * />
- *
- * // С автоматической высотой
- * <Textarea
- *   label="Описание"
- *   autoHeight
- *   value={value}
- *   onChange={(e) => setValue(e.target.value)}
- * />
- *
- * // С возможностью изменения размера
- * <Textarea
- *   label="Описание"
- *   resize="vertical"
- *   width="300px"
- * />
- *
- * // С кастомными стилями
- * <Textarea
- *   label="Описание"
- *   className="custom-textarea"
- * />
+ * @param label 'string' - текст метки над полем ввода
+ * @param error 'boolean' = false - флаг ошибки
+ * @param errorText 'string' - текст ошибки
+ * @param helperText 'string' - вспомогательный текст
+ * @param width 'string' - ширина компонента (например: '300px', '100%')
+ * @param autoHeight 'boolean' = false - автоматическая высота по содержимому
+ * @param resize 'none | vertical | horizontal | both' = 'none' - возможность изменения размера
+ * @param id 'string' - уникальный идентификатор поля
+ * @param value 'string' - значение поля (для контролируемого компонента)
+ * @param defaultValue 'string' - начальное значение поля
+ * @param className 'string' - дополнительные CSS классы
  */
 export const Textarea: React.FC<TextareaProps> = ({
   label,

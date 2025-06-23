@@ -19,7 +19,7 @@ interface ReactionData {
 // Используем ActionsMenuAction напрямую
 type MessageAction = ActionsMenuAction;
 
-interface MessageProps {
+export interface MessageProps {
   type: MessageType;
   text: string;
   time: string;
@@ -453,98 +453,24 @@ const HiddenAudio = styled.audio`
 `;
 
 /**
- * Message component - компонент сообщения в чате с поддержкой реакций и действий
- * @param {('incoming'|'outgoing')} type - тип сообщения (входящее/исходящее)
- * @param {string} text - текст сообщения
- * @param {string} time - время отправки сообщения
- * @param {ReactionData[]} [reactions] - массив реакций на сообщение
- * @param {string} [className] - дополнительные CSS классы
- * @param {User} [sender] - информация об отправителе:
- *   - id: string - идентификатор пользователя
- *   - name: string - имя пользователя
- *   - avatar?: string - URL аватара
- * @param {boolean} [isRead] - флаг прочтения сообщения
- * @param {(emoji: string) => void} [onReaction] - обработчик добавления реакции
- * @param {string[]} [reactionEmojis=['❤️', '😂', '👍', '🔥']] - доступные эмодзи для реакций
- * @param {string} [currentUserId] - ID текущего пользователя
- * @param {MessageAction[]} [actions] - массив действий с сообщением:
- *   - label: string - название действия
- *   - icon: React.ReactNode - иконка действия
- *   - onClick: () => void - обработчик действия
- * @param {('image'|'file'|'audio')[]} [attachments] - массив прикрепленных файлов и изображений
- * @param {User} [forwardedFrom] - информация о пересланном сообщении
- * @param {(id: string) => void} [onForwardedClick] - обработчик клика по пересланному сообщению
- * @param {MessageProps['replyTo']} [replyTo] - информация о ответе на сообщение:
- *   - id: string - ID сообщения, на которое отвечаем
- *   - text?: string - текст сообщения
- *   - attachments?: { type: 'image'|'file'|'audio'; name?: string }[] - вложения
- *   - sender?: { name: string } - отправитель
- * @param {string} [id] - ID сообщения
- * @param {boolean} [showActionsOnClick=false] - показывать ActionsMenu сразу при клике вместе с реакциями
- *
- * Особенности:
- * - Поддержка входящих и исходящих сообщений
- * - Отображение аватара отправителя
- * - Реакции на сообщения с эмодзи
- * - Поддержка вложений (изображения, файлы, аудио)
- * - Пересланные сообщения
- * - Ответы на сообщения с автоматическим скроллом
- * - Меню действий с сообщением
- * - Индикатор прочтения
- *
- * @example
- * // Входящее сообщение
- * <Message
- *   type="incoming"
- *   text="Привет! Как дела?"
- *   time="12:30"
- *   sender={{
- *     id: "1",
- *     name: "John Doe",
- *     avatar: "/path/to/avatar.jpg"
- *   }}
- * />
- *
- * // Исходящее сообщение с реакциями
- * <Message
- *   type="outgoing"
- *   text="Всё отлично!"
- *   time="12:31"
- *   isRead={true}
- *   reactions={[
- *     {
- *       emoji: "👍",
- *       users: [{ id: "2", name: "Jane" }]
- *     }
- *   ]}
- *   onReaction={(emoji) => handleReaction(emoji)}
- * />
- *
- * // Сообщение с ответом
- * <Message
- *   type="outgoing"
- *   text="Ответ на сообщение"
- *   time="12:32"
- *   replyTo={{
- *     id: "msg-1",
- *     text: "Исходное сообщение",
- *     sender: { name: "John" }
- *   }}
- * />
- *
- * // Сообщение с ActionsMenu при клике
- * <Message
- *   type="incoming"
- *   text="Сообщение с меню действий"
- *   time="12:33"
- *   showActionsOnClick={true}
- *   actions={[
- *     { label: "Ответить", icon: <ReplyIcon />, onClick: () => {} },
- *     { label: "Переслать", icon: <ForwardIcon />, onClick: () => {} },
- *     { label: "Удалить", icon: <DeleteIcon />, onClick: () => {}, type: "destructive" }
- *   ]}
- *   onReaction={(emoji) => handleReaction(emoji)}
- * />
+ * Message - сообщение в чате с реакциями, вложениями и меню действий
+ * @param type 'incoming' | 'outgoing' - тип сообщения (входящее/исходящее)
+ * @param text 'string' - текст сообщения
+ * @param time 'string' - время отправки сообщения
+ * @param reactions 'ReactionData[]' - массив реакций на сообщение
+ * @param className 'string' - дополнительные CSS классы
+ * @param sender 'User' - информация об отправителе (id, name, avatar)
+ * @param isRead 'boolean' - флаг прочтения сообщения
+ * @param onReaction '(emoji: string) => void' - обработчик добавления реакции
+ * @param reactionEmojis 'string[]' = ['❤️', '😂', '👍', '🔥'] - доступные эмодзи
+ * @param currentUserId 'string' - ID текущего пользователя
+ * @param actions 'MessageAction[]' - массив действий с сообщением
+ * @param attachments 'AttachmentData[]' - массив вложений (image/file/audio)
+ * @param forwardedFrom 'User' - информация о пересланном сообщении
+ * @param onForwardedClick '(id: string) => void' - обработчик клика по пересланному
+ * @param replyTo 'ReplyData' - информация о сообщении для ответа
+ * @param id 'string' - ID сообщения
+ * @param showActionsOnClick 'boolean' = false - показывать ActionsMenu при клике
  */
 export const Message: React.FC<MessageProps> = ({
   type,

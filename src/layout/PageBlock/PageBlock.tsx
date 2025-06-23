@@ -2,7 +2,7 @@ import React from 'react';
 import { DESIGN_TOKENS } from '../../styles/designTokens';
 import styled from 'styled-components';
 
-interface PageBlockProps {
+export interface PageBlockProps {
   stretched?: boolean;
   left?: React.ReactNode;
   right?: React.ReactNode;
@@ -80,40 +80,12 @@ const Sidebar = styled.div`
 
 /**
  * PageBlock component - компонент для создания макета страницы с боковыми панелями
- * @param {boolean} [stretched=false] - растянуть контент на всю доступную ширину
- * @param {React.ReactNode} [left] - содержимое левой боковой панели
- * @param {React.ReactNode} [right] - содержимое правой боковой панели
- * @param {React.ReactNode} children - основной контент страницы
- * @param {string} [className] - дополнительные CSS классы
  *
- * @example
- * // Базовое использование
- * <PageBlock>
- *   <div>Основной контент</div>
- * </PageBlock>
- *
- * // С боковыми панелями
- * <PageBlock
- *   left={<div>Левая панель</div>}
- *   right={<div>Правая панель</div>}
- * >
- *   <div>Основной контент</div>
- * </PageBlock>
- *
- * // Растянутый контент
- * <PageBlock stretched>
- *   <div>Контент на всю ширину</div>
- * </PageBlock>
- *
- * // Только с левой панелью
- * <PageBlock left={<div>Левая панель</div>}>
- *   <div>Основной контент</div>
- * </PageBlock>
- *
- * // С кастомными стилями
- * <PageBlock className="custom-page-layout">
- *   <div>Контент с кастомными стилями</div>
- * </PageBlock>
+ * @param stretched 'boolean' = false - растянуть контент на всю доступную ширину
+ * @param left 'ReactNode' - содержимое левой боковой панели
+ * @param right 'ReactNode' - содержимое правой боковой панели
+ * @param children 'ReactNode' - основной контент страницы
+ * @param className 'string' - дополнительные CSS классы
  */
 export const PageBlock: React.FC<PageBlockProps> = ({
   stretched = false,
