@@ -2,6 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { Skeleton, Avatar as UserAvatar } from '@DobruniaUI';
 
+// SVG иконка пользователя без фото
+const UserIcon = () => (
+  <svg width='44' height='44' fill='none' viewBox='0 0 44 44'>
+    <circle cx='22' cy='22' r='22' fill='var(--c-bg-elevated)' />
+    <circle cx='22' cy='18' r='6' fill='var(--c-text-secondary)' />
+    <path
+      d='M12 36c0-5.523 4.477-10 10-10s10 4.477 10 10'
+      stroke='var(--c-text-secondary)'
+      strokeWidth='2'
+      strokeLinecap='round'
+    />
+  </svg>
+);
+
 export interface ChatListItem {
   id: string;
   avatar?: string;
@@ -64,25 +78,26 @@ const Name = styled.span`
   text-overflow: ellipsis;
 `;
 
-const Time = styled.span`
+const Time = styled.span<{ $selected?: boolean }>`
   font-size: 0.9em;
-  color: var(--c-text-secondary);
+  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)')};
   margin-left: 8px;
   white-space: nowrap;
 `;
 
-const LastMessage = styled.span<{ $unread?: boolean }>`
+const LastMessage = styled.span<{ $unread?: boolean; $selected?: boolean }>`
   font-size: 0.97em;
-  color: ${({ $unread }) => ($unread ? 'var(--c-accent)' : 'var(--c-text-secondary)')};
+  color: ${({ $unread, $selected }) =>
+    $selected ? 'var(--c-text-inverse)' : $unread ? 'var(--c-accent)' : 'var(--c-text-secondary)'};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-const ReadMark = styled.span`
+const ReadMark = styled.span<{ $selected?: boolean }>`
   font-size: 1.1em;
   margin-left: 6px;
-  color: var(--c-accent);
+  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-accent)')};
 `;
 
 /**
@@ -138,16 +153,18 @@ export const ChatList: React.FC<ChatListProps> = ({
               showStatus={!!item.status}
             />
           ) : (
-            <Skeleton variant='circular' width={44} height={44} />
+            <UserIcon />
           )}
           <Info>
             <NameRow>
               <Name>{item.name}</Name>
-              <Time>{item.time}</Time>
+              <Time $selected={item.id === selectedId}>{item.time}</Time>
             </NameRow>
             <NameRow>
-              <LastMessage $unread={item.unread}>{item.lastMessage}</LastMessage>
-              {item.isRead && <ReadMark>✔✔</ReadMark>}
+              <LastMessage $unread={item.unread} $selected={item.id === selectedId}>
+                {item.lastMessage}
+              </LastMessage>
+              {item.isRead && <ReadMark $selected={item.id === selectedId}>✔✔</ReadMark>}
             </NameRow>
           </Info>
         </Item>

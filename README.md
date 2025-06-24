@@ -408,7 +408,7 @@ const darkTheme = getThemeConfig('dark');
 - `onFilesChange: (files: File[]) => void` - обработчик изменения файлов (обязательный)
 - `placeholder?: string` - placeholder для текстового поля
 - `onSend?: () => void` - обработчик отправки сообщения
-- `onEmojiSelect?: (emoji: string) => void` - обработчик выбора эмодзи
+- `onEmojiSelect?: (emoji: string) => void` - дополнительный обработчик выбора эмодзи (автоматически добавляется в текст)
 - `onAudioRecord?: (audio: Blob) => void` - обработчик записи аудио
 - `disabled?: boolean` - отключить компонент
 - `className?: string` - дополнительные CSS классы

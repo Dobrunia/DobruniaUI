@@ -232,7 +232,7 @@ const ImageModalImg = styled.img`
  * @param files - массив прикрепленных файлов
  * @param onFilesChange - обработчик изменения файлов
  * @param onSend - обработчик отправки сообщения
- * @param onEmojiSelect - обработчик выбора эмодзи
+ * @param onEmojiSelect - дополнительный обработчик выбора эмодзи (опциональный)
  * @param onAudioRecord - обработчик записи аудио
  * @param placeholder - placeholder текста
  * @param disabled - отключить компонент
@@ -380,7 +380,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         />
 
         {/* Эмодзи кнопка */}
-        {onEmojiSelect && <EmojiInput onEmojiSelect={handleEmojiSelect} align='right' />}
+        <EmojiInput onEmojiSelect={handleEmojiSelect} align='right' />
 
         {/* Кнопка отправки или микрофон */}
         {value.trim() || files.length > 0 ? (
