@@ -40,6 +40,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   outlined?: boolean;
   shape?: ButtonShape;
   className?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVariant) => {
@@ -372,6 +373,7 @@ const CloseIcon = ({ color }: { color?: string }) => (
  * @param outlined - outline кнопка
  * @param shape - форма кнопки: 'default' | 'circle' | 'square'
  * @param className - дополнительные CSS классы
+ * @param onClick - (event: React.MouseEvent<HTMLButtonElement>) => void; обработчик клика по кнопке
  */
 export const Button: React.FC<ButtonProps> = ({
   children,
@@ -384,6 +386,7 @@ export const Button: React.FC<ButtonProps> = ({
   outlined: outlinedProp,
   shape: shapeProp,
   className,
+  ...restProps
 }) => {
   let outlined = outlinedProp;
   let shape = shapeProp;
@@ -420,6 +423,7 @@ export const Button: React.FC<ButtonProps> = ({
       $outlined={outlined}
       $shape={shape}
       className={className}
+      {...restProps}
     >
       <ButtonContent $isLoading={isLoading}>
         {icon}

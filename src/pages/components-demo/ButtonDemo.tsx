@@ -50,7 +50,9 @@ export const ButtonDemo: React.FC = () => {
         <SectionTitle>Button Variants</SectionTitle>
         <ButtonGrid>
           <ButtonWrapper>
-            <Button variant='primary'>Primary Button</Button>
+            <Button variant='primary' onClick={() => alert('Primary Button')}>
+              Primary Button
+            </Button>
             <ButtonLabel>Primary</ButtonLabel>
           </ButtonWrapper>
           <ButtonWrapper>
