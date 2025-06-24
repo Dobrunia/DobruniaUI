@@ -36,6 +36,7 @@ import {
   RowDemo,
   CardDemo,
   ThemeSelectDemo,
+  MessageInputDemo,
 } from './components-demo';
 
 const sections = [
@@ -65,6 +66,7 @@ const sections = [
       { key: 'TextField', label: 'TextField' },
       { key: 'Textarea', label: 'Textarea' },
       { key: 'Input', label: 'Input' },
+      { key: 'MessageInput', label: 'MessageInput' },
       { key: 'Checkbox', label: 'Checkbox' },
       { key: 'Radio', label: 'Radio' },
       { key: 'Switch', label: 'Switch' },
@@ -169,6 +171,7 @@ const Playground: React.FC = () => {
       {selected === 'TextField' && <TextFieldDemo />}
       {selected === 'Textarea' && <TextareaDemo />}
       {selected === 'Input' && <InputDemo />}
+      {selected === 'MessageInput' && <MessageInputDemo />}
       {selected === 'Avatar' && <AvatarDemo />}
       {selected === 'Badge' && <BadgeDemo />}
       {selected === 'ChatList' && <ChatListDemo />}

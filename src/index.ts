@@ -8,7 +8,11 @@ import './styles/inject';
  */
 export { Checkbox, type CheckboxProps } from './Inputs/Checkbox/Checkbox';
 export { Button, type ButtonProps } from './Inputs/Button/Button';
-export { Input, type InputProps } from './Inputs/Input/Input';
+export { SearchInput, type SearchInputProps } from './Inputs/Input/SearchInput';
+export { FileInput, type FileInputProps } from './Inputs/Input/FileInput';
+export { EmojiInput, type EmojiInputProps } from './Inputs/Input/EmojiInput';
+export { AudioInput, type AudioInputProps } from './Inputs/Input/AudioInput';
+export { MessageInput, type MessageInputProps } from './Inputs/MessageInput/MessageInput';
 export { Textarea, type TextareaProps } from './Inputs/Textarea/Textarea';
 export {
   SidebarList,

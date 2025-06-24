@@ -24,7 +24,7 @@ export const SkeletonDemo: React.FC = () => {
           margin: '32px 0',
         }}
       >
-        <Skeleton variant='text' style={{ fontSize: '1.2rem', width: '80%' }} />
+        <Skeleton variant='text' height={24} width='80%' />
         <Skeleton variant='circular' width={40} height={40} />
         <Skeleton variant='rectangular' width={210} height={60} />
         <Skeleton variant='rounded' width={210} height={60} />

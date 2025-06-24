@@ -452,6 +452,12 @@ const HiddenAudio = styled.audio`
   display: none;
 `;
 
+const MessageText = styled.div`
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+`;
+
 /**
  * Message - сообщение в чате с реакциями, вложениями и меню действий
  * @param type 'incoming' | 'outgoing' - тип сообщения (входящее/исходящее)
@@ -656,7 +662,7 @@ export const Message: React.FC<MessageProps> = ({
               </ForwardedBlock>
             )}
             {!sender && <BubbleTail $type={type} />}
-            <div>{text}</div>
+            <MessageText>{text}</MessageText>
             {attachments && attachments.length > 0 && (
               <AttachmentContainer>
                 {attachments.map((attachment, index) => {

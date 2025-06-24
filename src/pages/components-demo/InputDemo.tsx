@@ -1,222 +1,94 @@
-import { useState } from 'react';
-import { Input, Message, MessageContainer } from '@DobruniaUI';
+import React, { useState } from 'react';
+import { SearchInput, FileInput, EmojiInput, AudioInput } from '@DobruniaUI';
 
-export const InputDemo = () => {
-  const [message, setMessage] = useState('');
-  const [search, setSearch] = useState('');
-  const [selectedEmoji, setSelectedEmoji] = useState('');
-  const [messages, setMessages] = useState<
-    {
-      text: string;
-      attachments?: {
-        type: 'image' | 'file' | 'audio';
-        url: string;
-        name?: string;
-        size?: number;
-        duration?: number | undefined;
-      }[];
-      reactions: { emoji: string; users: { id: string; name: string }[] }[];
-    }[]
-  >([]);
-  const [messageFiles, setMessageFiles] = useState<File[]>([]);
+export const InputDemo: React.FC = () => {
+  // SearchInput state
+  const [searchValue, setSearchValue] = useState('');
 
-  const handleReaction = (msgIdx: number, emoji: string) => {
-    setMessages((prev) =>
-      prev.map((msg, i) => {
-        if (i !== msgIdx) return msg;
-        const existing = msg.reactions.find(
-          (r) => r.emoji === emoji && r.users.some((u) => u.id === 'me')
-        );
-        if (existing) {
-          return {
-            ...msg,
-            reactions: msg.reactions
-              .map((r) =>
-                r.emoji === emoji ? { ...r, users: r.users.filter((u) => u.id !== 'me') } : r
-              )
-              .filter((r) => r.users.length > 0),
-          };
-        } else {
-          const found = msg.reactions.find((r) => r.emoji === emoji);
-          if (found) {
-            return {
-              ...msg,
-              reactions: msg.reactions.map((r) =>
-                r.emoji === emoji ? { ...r, users: [...r.users, { id: 'me', name: 'Me' }] } : r
-              ),
-            };
-          } else {
-            return {
-              ...msg,
-              reactions: [...msg.reactions, { emoji, users: [{ id: 'me', name: 'Me' }] }],
-            };
-          }
-        }
-      })
-    );
-  };
+  // FileInput state
+  const [files, setFiles] = useState<File[]>([]);
 
-  const handleSend = () => {
-    if (message.trim() || messageFiles.length > 0) {
-      const attachments = messageFiles.map((file) => ({
-        type: file.type.startsWith('image/') ? ('image' as const) : ('file' as const),
-        url: URL.createObjectURL(file),
-        name: file.name,
-        size: file.size,
-      }));
+  // Audio recordings
+  const [audioRecordings, setAudioRecordings] = useState<Blob[]>([]);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: message,
-          attachments: attachments.length > 0 ? attachments : undefined,
-          reactions: [],
-        },
-      ]);
-      setMessage('');
-      setMessageFiles([]);
-    }
+  const handleEmojiSelect = (emoji: string) => {
+    console.log('Selected emoji:', emoji);
+    alert(`Выбран эмодзи: ${emoji}`);
   };
 
   const handleAudioRecord = (audio: Blob) => {
-    const url = URL.createObjectURL(audio);
-    const name = `audio-${Date.now()}.webm`;
-    setMessages((prev) => [
-      ...prev,
-      {
-        text: '',
-        attachments: [
-          {
-            type: 'audio',
-            url,
-            name,
-            duration: 0,
-          },
-        ],
-        reactions: [],
-      },
-    ]);
-    const audioElement = new Audio(url);
-    audioElement.volume = 0; // чтобы не было звука при автопроигрывании
-
-    function updateDuration(duration: number) {
-      setMessages((prev) => {
-        const lastIdx = prev.length - 1;
-        if (lastIdx < 0) return prev;
-        const last = prev[lastIdx];
-        if (!last.attachments || last.attachments[0].url !== url) return prev;
-        return [
-          ...prev.slice(0, lastIdx),
-          {
-            ...last,
-            attachments: [
-              {
-                ...last.attachments[0],
-                duration,
-              },
-            ],
-          },
-        ];
-      });
-    }
-
-    audioElement.addEventListener('loadedmetadata', () => {
-      if (audioElement.duration && isFinite(audioElement.duration) && audioElement.duration > 0.1) {
-        updateDuration(audioElement.duration);
-      } else {
-        // Если duration не определился, проигрываем до конца
-        const onEnded = () => {
-          if (audioElement.duration && isFinite(audioElement.duration)) {
-            updateDuration(audioElement.duration);
-          } else {
-            updateDuration(0);
-          }
-          audioElement.removeEventListener('ended', onEnded);
-          audioElement.removeEventListener('timeupdate', onTimeUpdate);
-        };
-        const onTimeUpdate = () => {
-          if (
-            audioElement.duration &&
-            isFinite(audioElement.duration) &&
-            audioElement.currentTime > 0
-          ) {
-            // Если duration определился в процессе
-            audioElement.pause();
-            updateDuration(audioElement.duration);
-            audioElement.removeEventListener('ended', onEnded);
-            audioElement.removeEventListener('timeupdate', onTimeUpdate);
-          }
-        };
-        audioElement.addEventListener('ended', onEnded);
-        audioElement.addEventListener('timeupdate', onTimeUpdate);
-        audioElement.play().catch(() => {
-          updateDuration(0);
-          audioElement.removeEventListener('ended', onEnded);
-          audioElement.removeEventListener('timeupdate', onTimeUpdate);
-        });
-      }
-    });
+    console.log('Audio recorded:', audio);
+    setAudioRecordings((prev) => [...prev, audio]);
+    alert(`Записано аудио ${audio.size} байт`);
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 32,
-        maxWidth: 400,
-        margin: '40px auto',
-      }}
-    >
-      <h2>Message Input</h2>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <MessageContainer style={{ maxHeight: 320 }}>
-          {messages.map((msg, idx) => (
-            <Message
-              key={idx}
-              type='outgoing'
-              text={msg.text}
-              time={new Date().toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-              reactions={msg.reactions}
-              onReaction={(emoji: string) => handleReaction(idx, emoji)}
-              currentUserId='me'
-              attachments={msg.attachments}
-            />
-          ))}
-        </MessageContainer>
-        <Input
-          type='message'
-          placeholder='Сообщение...'
-          value={message}
-          onChange={setMessage}
-          onSend={handleSend}
-          files={messageFiles}
-          onFilesChange={setMessageFiles}
-          onEmojiSelect={(emoji: string) => console.log('Emoji:', emoji)}
-          onAudioRecord={handleAudioRecord}
-        />
+    <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>
+      <h1>Input Components Demo</h1>
+
+      <div style={{ marginBottom: '32px' }}>
+        <h3>SearchInput - поиск с красивым дизайном</h3>
+        <div style={{ marginBottom: '16px' }}>
+          <SearchInput
+            value={searchValue}
+            onChange={setSearchValue}
+            placeholder='Введите запрос для поиска...'
+          />
+        </div>
+        <p>Текущее значение: "{searchValue}"</p>
       </div>
 
-      <h2>Search Input</h2>
-      <Input
-        type='search'
-        placeholder='Поиск'
-        value={search}
-        onChange={setSearch}
-        onSearch={(v: string) => console.log('Search:', v)}
-      />
+      <div style={{ marginBottom: '32px' }}>
+        <h3>FileInput - выбор файлов с превью</h3>
+        <div style={{ marginBottom: '16px' }}>
+          <FileInput files={files} onFilesChange={setFiles} />
+        </div>
+        <p>Выбрано файлов: {files.length}</p>
+        {files.length > 0 && (
+          <ul>
+            {files.map((file, i) => (
+              <li key={i}>
+                {file.name} ({Math.round(file.size / 1024)} KB)
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
-      <h2>File Input</h2>
-      <Input type='file' onFilesChange={(files: File[]) => console.log('Files:', files)} />
+      <div style={{ marginBottom: '32px' }}>
+        <h3>EmojiInput - выбор эмодзи с hover picker</h3>
+        <div style={{ marginBottom: '16px' }}>
+          <EmojiInput onEmojiSelect={handleEmojiSelect} />
+        </div>
+        <p>Наведите на кнопку эмодзи для отображения селектора</p>
+      </div>
 
-      <h2>Emoji Input</h2>
-      <Input type='emoji' onEmojiSelect={(emoji: string) => setSelectedEmoji(emoji)} />
-      {selectedEmoji && (
-        <div style={{ fontSize: 32, marginTop: 8, textAlign: 'center' }}>{selectedEmoji}</div>
-      )}
+      <div style={{ marginBottom: '32px' }}>
+        <h3>AudioInput - запись аудио</h3>
+        <div style={{ marginBottom: '16px' }}>
+          <AudioInput onAudioRecord={handleAudioRecord} />
+        </div>
+        <p>Нажмите и удерживайте для записи аудио</p>
+        <p>Записано аудиофайлов: {audioRecordings.length}</p>
+      </div>
+
+      <div style={{ marginBottom: '32px' }}>
+        <h3>Комплексный пример</h3>
+        <div
+          style={{
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+            marginBottom: '16px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <SearchInput value={searchValue} onChange={setSearchValue} placeholder='Поиск' />
+          <FileInput files={[]} onFilesChange={() => {}} />
+          <EmojiInput onEmojiSelect={(emoji) => setSearchValue((prev) => prev + emoji)} />
+          <AudioInput onAudioRecord={handleAudioRecord} />
+        </div>
+      </div>
     </div>
   );
 };

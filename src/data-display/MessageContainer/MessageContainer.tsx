@@ -13,13 +13,14 @@ export interface MessageContainerProps {
   autoScrollToBottom?: boolean;
   className?: string;
   lastMessageId?: string | number;
+  maxHeight?: string | number;
 }
 
 export interface MessageContainerRef {
   scrollToMessage: (id: string) => void;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $maxHeight?: string | number }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -27,7 +28,8 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   max-width: 100%;
-  max-height: 100vh;
+  max-height: ${({ $maxHeight }) =>
+    $maxHeight ? (typeof $maxHeight === 'number' ? `${$maxHeight}px` : $maxHeight) : '100vh'};
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--c-bg-default);
@@ -84,10 +86,11 @@ const ScrollIcon = styled.svg`
  * @param children 'React.ReactNode' - сообщения (обычно Message компоненты)
  * @param autoScrollToBottom 'boolean' = true - автоматически прокручивать к новым сообщениям
  * @param lastMessageId 'string | number' - id последнего сообщения для автоскролла
+ * @param maxHeight 'string | number' - максимальная высота контейнера
  * @param className 'string' - дополнительные CSS классы
  */
 export const MessageContainer = forwardRef<MessageContainerRef, MessageContainerProps>(
-  ({ children, autoScrollToBottom = true, className }, ref): React.ReactElement => {
+  ({ children, autoScrollToBottom = true, className, maxHeight }, ref): React.ReactElement => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(true);
@@ -183,7 +186,7 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
     };
 
     return (
-      <Container ref={containerRef} className={className}>
+      <Container ref={containerRef} className={className} $maxHeight={maxHeight}>
         {children}
         <ScrollToBottomBtn
           onClick={scrollToBottom}

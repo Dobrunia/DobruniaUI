@@ -316,14 +316,7 @@ export const MessageDemo = () => {
   };
 
   return (
-    <MessageContainer
-      style={{
-        margin: '40px auto',
-        background: 'var(--c-bg-elevated)',
-        padding: 24,
-        borderRadius: 16,
-        height: 600,
-      }}
+    <MessageContainer maxHeight={600}
       lastMessageId={
         messages.length
           ? messages[messages.length - 1].replyTo?.id || 'msg-' + (messages.length - 1)

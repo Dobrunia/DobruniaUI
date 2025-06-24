@@ -8,7 +8,7 @@ import {
   Avatar,
   Badge,
   Alert,
-  Input,
+  SearchInput,
   Select,
   ToggleButton,
   Skeleton,
@@ -569,7 +569,7 @@ const PreviewSection: React.FC<{
               <Button variant='ghost'>Ghost</Button>
               <Button variant='warning'>Warning</Button>
             </div>
-            <Input type='search' placeholder='Input field' />
+            <SearchInput value='' onChange={() => {}} placeholder='Input field' />
             <Select
               options={[
                 { value: '1', label: 'Опция 1' },

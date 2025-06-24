@@ -4,6 +4,7 @@ export * from './ButtonDemo';
 export * from './TextFieldDemo';
 export * from './TextareaDemo';
 export * from './InputDemo';
+export * from './MessageInputDemo';
 export * from './AvatarDemo';
 export * from './BadgeDemo';
 export * from './AlertDemo';

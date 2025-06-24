@@ -346,30 +346,83 @@ const darkTheme = getThemeConfig('dark');
 />
 ```
 
-#### **Input** - Универсальный ввод
+#### **SearchInput** - Поиск с красивым дизайном
 
 **Пропсы:**
 
-- `type: 'message' | 'search' | 'file' | 'emoji' | 'audio'` - тип инпута
+- `value: string` - значение поиска (обязательный)
+- `onChange: (value: string) => void` - обработчик изменения (обязательный)
 - `placeholder?: string` - placeholder текст
-- `value?: string` - значение инпута
-- `onChange?: (value: string) => void` - обработчик изменения
-- `onSend?: () => void` - обработчик отправки (для message)
-- `onSearch?: (value: string) => void` - обработчик поиска (для search)
-- `onFilesChange?: (files: File[]) => void` - обработчик файлов (для file)
-- `onEmojiSelect?: (emoji: string) => void` - обработчик эмодзи (для emoji)
-- `onAudioRecord?: (audio: Blob) => void` - обработчик аудио (для audio)
-- `files?: File[]` - массив файлов
 - `className?: string` - дополнительные CSS классы
 
 ```tsx
-<Input
-  type='message'
+<SearchInput
+  value={searchQuery}
+  onChange={setSearchQuery}
+  placeholder='Введите запрос для поиска...'
+/>
+```
+
+#### **FileInput** - Выбор файлов с превью
+
+**Пропсы:**
+
+- `files: File[]` - массив выбранных файлов (обязательный)
+- `onFilesChange: (files: File[]) => void` - обработчик изменения файлов (обязательный)
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<FileInput files={selectedFiles} onFilesChange={setSelectedFiles} />
+```
+
+#### **EmojiInput** - Выбор эмодзи с hover picker
+
+**Пропсы:**
+
+- `onEmojiSelect: (emoji: string) => void` - обработчик выбора эмодзи (обязательный)
+- `align?: 'left' | 'right'` - выравнивание picker'а (по умолчанию 'left')
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<EmojiInput onEmojiSelect={(emoji) => setMessage((prev) => prev + emoji)} align='right' />
+```
+
+#### **AudioInput** - Запись аудио с анимацией
+
+**Пропсы:**
+
+- `onAudioRecord: (audio: Blob) => void` - обработчик записи аудио (обязательный)
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<AudioInput onAudioRecord={handleAudioRecord} />
+```
+
+#### **MessageInput** - Комплексный ввод сообщений
+
+**Пропсы:**
+
+- `value: string` - текст сообщения (обязательный)
+- `onChange: (value: string) => void` - обработчик изменения текста (обязательный)
+- `files: File[]` - массив прикрепленных файлов (обязательный)
+- `onFilesChange: (files: File[]) => void` - обработчик изменения файлов (обязательный)
+- `placeholder?: string` - placeholder для текстового поля
+- `onSend?: () => void` - обработчик отправки сообщения
+- `onEmojiSelect?: (emoji: string) => void` - обработчик выбора эмодзи
+- `onAudioRecord?: (audio: Blob) => void` - обработчик записи аудио
+- `disabled?: boolean` - отключить компонент
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<MessageInput
+  value={messageText}
+  onChange={setMessageText}
+  files={attachedFiles}
+  onFilesChange={setAttachedFiles}
   placeholder='Введите сообщение...'
-  value={message}
-  onChange={setMessage}
-  onSend={handleSend}
+  onSend={handleSendMessage}
   onEmojiSelect={handleEmojiSelect}
+  onAudioRecord={handleAudioRecord}
 />
 ```
 
@@ -655,13 +708,17 @@ const darkTheme = getThemeConfig('dark');
 **Пропсы:**
 
 - `autoScrollToBottom?: boolean` - автоматический скролл к низу
-- `lastMessageId?: string` - ID последнего сообщения
-- `onScrollToMessage?: (messageId: string) => void` - скролл к сообщению
+- `lastMessageId?: string | number` - ID последнего сообщения для автоскролла
+- `maxHeight?: string | number` - максимальная высота контейнера
 - `children: React.ReactNode` - сообщения
 - `className?: string` - дополнительные CSS классы
 
 ```tsx
-<MessageContainer autoScrollToBottom={true} lastMessageId={messages[messages.length - 1]?.id}>
+<MessageContainer
+  autoScrollToBottom={true}
+  maxHeight={320}
+  lastMessageId={messages[messages.length - 1]?.id}
+>
   {messages.map((msg) => (
     <Message key={msg.id} {...msg} />
   ))}

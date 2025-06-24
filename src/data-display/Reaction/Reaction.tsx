@@ -67,7 +67,7 @@ const AvatarWrapper = styled.div<{ $zIndex?: number }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: ${({ $zIndex }) => $zIndex || 10};
+  // z-index: ${({ $zIndex }) => $zIndex || 10};
 
   &:first-child {
     margin-left: 0;
