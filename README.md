@@ -694,9 +694,58 @@ const darkTheme = getThemeConfig('dark');
 - `onSelect?: (id: string) => void` - обработчик выбора чата
 - `className?: string` - дополнительные CSS классы
 
+**Типы:**
+
+```tsx
+type MessageStatus = 'unread' | 'read' | 'error';
+
+interface ChatListItem {
+  id: string;
+  avatar?: string;
+  name: string;
+  lastMessage: string;
+  time: string;
+  messageStatus?: MessageStatus;
+  isOutgoing?: boolean; // true - исходящее сообщение, false - входящее
+  status?: 'online' | 'offline' | 'dnd';
+}
+```
+
+**Логика отображения статусов:**
+
+- **Исходящие сообщения** (`isOutgoing: true`):
+
+  - `unread` → ✔✔ серые (собеседник не прочитал)
+  - `read` → ✔✔ синие (собеседник прочитал)
+  - `error` → ! красный (ошибка отправки)
+
+- **Входящие сообщения** (`isOutgoing: false`):
+  - `unread` → текст синий + жирный (я не прочитал)
+  - `read` → текст обычный серый (я прочитал)
+  - `error` → ! красный (ошибка получения)
+
 ```tsx
 <ChatList
-  items={chats}
+  items={[
+    {
+      id: '1',
+      name: 'Алиса',
+      lastMessage: 'Привет!',
+      time: '12:30',
+      messageStatus: 'read',
+      isOutgoing: true, // моё сообщение, прочитанное
+      status: 'online',
+    },
+    {
+      id: '2',
+      name: 'Максим',
+      lastMessage: 'Как дела?',
+      time: '12:25',
+      messageStatus: 'unread',
+      isOutgoing: false, // входящее непрочитанное
+      status: 'offline',
+    },
+  ]}
   selectedId={selectedChatId}
   onSelect={setSelectedChatId}
   loading={isLoading}

@@ -16,14 +16,16 @@ const UserIcon = () => (
   </svg>
 );
 
+export type MessageStatus = 'unread' | 'read' | 'error';
+
 export interface ChatListItem {
   id: string;
   avatar?: string;
   name: string;
   lastMessage: string;
   time: string;
-  unread?: boolean;
-  isRead?: boolean;
+  messageStatus?: MessageStatus;
+  isOutgoing?: boolean;
   status?: 'online' | 'offline' | 'dnd';
 }
 
@@ -42,7 +44,7 @@ const List = styled.div`
   width: 100%;
 `;
 
-const Item = styled.div<{ $selected?: boolean; $unread?: boolean }>`
+const Item = styled.div<{ $selected?: boolean; $messageStatus?: MessageStatus }>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -85,19 +87,38 @@ const Time = styled.span<{ $selected?: boolean }>`
   white-space: nowrap;
 `;
 
-const LastMessage = styled.span<{ $unread?: boolean; $selected?: boolean }>`
+const LastMessage = styled.span<{
+  $messageStatus?: MessageStatus;
+  $selected?: boolean;
+  $isOutgoing?: boolean;
+}>`
   font-size: 0.97em;
-  color: ${({ $unread, $selected }) =>
-    $selected ? 'var(--c-text-inverse)' : $unread ? 'var(--c-accent)' : 'var(--c-text-secondary)'};
+  color: ${({ $messageStatus, $selected, $isOutgoing }) => {
+    if ($selected) return 'var(--c-text-inverse)';
+    if (!$isOutgoing && $messageStatus === 'unread') return 'var(--c-accent)';
+    if ($messageStatus === 'error') return 'var(--c-error)';
+    return 'var(--c-text-secondary)';
+  }};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: ${({ $messageStatus, $isOutgoing }) =>
+    !$isOutgoing && $messageStatus === 'unread' ? '500' : 'normal'};
 `;
 
-const ReadMark = styled.span<{ $selected?: boolean }>`
+const StatusMark = styled.span<{
+  $selected?: boolean;
+  $messageStatus?: MessageStatus;
+  $isOutgoing?: boolean;
+}>`
   font-size: 1.1em;
   margin-left: 6px;
-  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-accent)')};
+  color: ${({ $selected, $messageStatus, $isOutgoing }) => {
+    if ($selected) return 'var(--c-text-inverse)';
+    if ($messageStatus === 'error') return 'var(--c-error)';
+    if ($isOutgoing && $messageStatus === 'read') return 'var(--c-accent)';
+    return 'var(--c-text-secondary)';
+  }};
 `;
 
 /**
@@ -141,7 +162,7 @@ export const ChatList: React.FC<ChatListProps> = ({
         <Item
           key={item.id}
           $selected={item.id === selectedId}
-          $unread={item.unread}
+          $messageStatus={item.messageStatus}
           onClick={() => onSelect?.(item.id)}
         >
           {item.avatar ? (
@@ -161,10 +182,40 @@ export const ChatList: React.FC<ChatListProps> = ({
               <Time $selected={item.id === selectedId}>{item.time}</Time>
             </NameRow>
             <NameRow>
-              <LastMessage $unread={item.unread} $selected={item.id === selectedId}>
+              <LastMessage
+                $messageStatus={item.messageStatus}
+                $selected={item.id === selectedId}
+                $isOutgoing={item.isOutgoing}
+              >
                 {item.lastMessage}
               </LastMessage>
-              {item.isRead && <ReadMark $selected={item.id === selectedId}>✔✔</ReadMark>}
+              {item.isOutgoing && item.messageStatus === 'read' && (
+                <StatusMark
+                  $selected={item.id === selectedId}
+                  $messageStatus={item.messageStatus}
+                  $isOutgoing={item.isOutgoing}
+                >
+                  ✔✔
+                </StatusMark>
+              )}
+              {item.isOutgoing && item.messageStatus === 'unread' && (
+                <StatusMark
+                  $selected={item.id === selectedId}
+                  $messageStatus={item.messageStatus}
+                  $isOutgoing={item.isOutgoing}
+                >
+                  ✔✔
+                </StatusMark>
+              )}
+              {item.messageStatus === 'error' && (
+                <StatusMark
+                  $selected={item.id === selectedId}
+                  $messageStatus={item.messageStatus}
+                  $isOutgoing={item.isOutgoing}
+                >
+                  !
+                </StatusMark>
+              )}
             </NameRow>
           </Info>
         </Item>
