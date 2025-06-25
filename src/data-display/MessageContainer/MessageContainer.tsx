@@ -2,9 +2,9 @@ import React, {
   useRef,
   useEffect,
   useState,
-  useLayoutEffect,
   forwardRef,
   useImperativeHandle,
+  useCallback,
 } from 'react';
 import styled from 'styled-components';
 
@@ -90,106 +90,100 @@ const ScrollIcon = styled.svg`
  * @param className 'string' - дополнительные CSS классы
  */
 export const MessageContainer = forwardRef<MessageContainerRef, MessageContainerProps>(
-  ({ children, autoScrollToBottom = true, className, maxHeight }, ref): React.ReactElement => {
+  (
+    { children, autoScrollToBottom = true, className, maxHeight, lastMessageId },
+    ref
+  ): React.ReactElement => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(true);
-    const prevScrollHeight = useRef<number>(0);
     const isFirstRender = useRef(true);
+    const lastMessageIdRef = useRef(lastMessageId);
 
-    useImperativeHandle(ref, () => ({
-      scrollToMessage: (id: string) => {
-        const element = document.getElementById(id);
-        if (element && containerRef.current) {
-          element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'nearest',
-          });
-        }
-      },
-    }));
+    const scrollToBottom = useCallback((smooth = true) => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: smooth ? 'smooth' : 'auto',
+        });
+        setIsAtBottom(true);
+      }
+    }, []);
 
-    const checkScroll = () => {
+    const checkScroll = useCallback(() => {
       if (!containerRef.current) return;
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
       const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
       setIsAtBottom(isBottom);
-      setShowScrollBtn(!isBottom);
-    };
 
+      const hasScroll = scrollHeight > clientHeight + 8;
+      const isScrolledUp = scrollHeight - scrollTop - clientHeight > 200;
+      setShowScrollBtn(hasScroll && isScrolledUp);
+    }, []);
+
+    const handleScrollToBottomClick = useCallback(() => {
+      scrollToBottom(true);
+      setShowScrollBtn(false);
+    }, [scrollToBottom]);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollToMessage: (id: string) => {
+          const element = document.getElementById(id);
+          if (element && containerRef.current) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'nearest',
+            });
+          }
+        },
+      }),
+      []
+    );
+
+    // Инициализация скролла
     useEffect(() => {
       const el = containerRef.current;
       if (!el) return;
+
       el.addEventListener('scroll', checkScroll);
       checkScroll();
-      return () => el.removeEventListener('scroll', checkScroll);
-    }, []);
 
-    // Отдельный эффект для первого скролла
-    useEffect(() => {
-      if (isFirstRender.current && containerRef.current) {
-        // Небольшая задержка для гарантии полного рендера контента
-        setTimeout(() => {
-          if (containerRef.current) {
-            containerRef.current.scrollTo({
-              top: containerRef.current.scrollHeight,
-            });
-            isFirstRender.current = false;
-          }
-        }, 100);
-      }
-    }, [children]);
-
-    // Сохраняем scrollHeight до рендера новых сообщений
-    useLayoutEffect(() => {
-      if (containerRef.current) {
-        prevScrollHeight.current = containerRef.current.scrollHeight;
-      }
-    }, [children]);
-
-    // После рендера новых сообщений скроллим вниз, если пользователь был внизу
-    useLayoutEffect(() => {
-      if (containerRef.current && !isFirstRender.current) {
-        if (autoScrollToBottom && isAtBottom) {
-          containerRef.current.scrollTo({
-            top: containerRef.current.scrollHeight,
-            behavior: 'smooth',
-          });
-        }
-      }
-    }, [children, autoScrollToBottom, isAtBottom]);
-
-    // Проверяем необходимость показа кнопки при изменении контента
-    useEffect(() => {
-      if (containerRef.current) {
-        const { scrollHeight, clientHeight } = containerRef.current;
-        const hasScroll = scrollHeight > clientHeight + 8;
-        const isScrolledUp =
-          containerRef.current.scrollHeight -
-            containerRef.current.scrollTop -
-            containerRef.current.clientHeight >
-          200;
-        setShowScrollBtn(hasScroll && isScrolledUp);
-      }
-    }, [children]);
-
-    const scrollToBottom = () => {
-      if (containerRef.current) {
-        containerRef.current.scrollTo({
-          top: containerRef.current.scrollHeight,
-          behavior: 'smooth',
+      // Начальный скролл вниз без анимации
+      if (isFirstRender.current) {
+        requestAnimationFrame(() => {
+          scrollToBottom(false);
+          isFirstRender.current = false;
         });
-        setIsAtBottom(true);
-        setShowScrollBtn(false);
       }
-    };
+
+      return () => el.removeEventListener('scroll', checkScroll);
+    }, [checkScroll, scrollToBottom]);
+
+    // Автоскролл при новых сообщениях (отслеживаем по lastMessageId)
+    useEffect(() => {
+      if (
+        !isFirstRender.current &&
+        autoScrollToBottom &&
+        isAtBottom &&
+        lastMessageId !== lastMessageIdRef.current &&
+        lastMessageId !== undefined
+      ) {
+        // Небольшая задержка для завершения рендера
+        requestAnimationFrame(() => {
+          scrollToBottom(true);
+        });
+      }
+      lastMessageIdRef.current = lastMessageId;
+    }, [lastMessageId, autoScrollToBottom, isAtBottom, scrollToBottom]);
 
     return (
       <Container ref={containerRef} className={className} $maxHeight={maxHeight}>
         {children}
         <ScrollToBottomBtn
-          onClick={scrollToBottom}
+          onClick={handleScrollToBottomClick}
           title='Scroll to bottom'
           $visible={showScrollBtn}
         >
