@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Breadcrumbs, Button, type BreadcrumbItem } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Breadcrumbs, Button, type BreadcrumbItem, DESIGN_TOKENS } from '@DobruniaUI';
 
 // Простые иконки для демо
 const HomeIcon = () => (

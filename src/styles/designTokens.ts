@@ -42,6 +42,13 @@ export const DESIGN_TOKENS = {
     medium: '1rem',
     large: '1.2rem',
   },
+
+  // Button heights
+  buttonHeight: {
+    small: '32px',
+    medium: '40px',
+    large: '48px',
+  },
 } as const;
 
 // Responsive breakpoints

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Button, Avatar, Switch, Badge, TextField, ToggleButton } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Row, Button, Avatar, Switch, Badge, TextField, ToggleButton, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const RowDemo: React.FC = () => {
   const [notifications, setNotifications] = useState(true);

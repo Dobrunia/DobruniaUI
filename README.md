@@ -318,6 +318,20 @@ const darkTheme = getThemeConfig('dark');
 </Button>
 ```
 
+#### **ErrorButton** - Кнопка ошибки с tooltip
+
+**Пропсы:**
+
+- `tooltipText?: string` - текст подсказки при наведении
+- `size?: 'small' | 'medium' | 'large'` - размер кнопки
+- `disabled?: boolean` - заблокированное состояние
+- `onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void` - обработчик клика
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<ErrorButton tooltipText='Удалить элемент' size='medium' onClick={() => handleDelete()} />
+```
+
 #### **TextField** - Текстовые поля с floating label
 
 **Пропсы:**
@@ -1186,6 +1200,11 @@ DESIGN_TOKENS.fontSize.small; // 0.7rem
 DESIGN_TOKENS.fontSize.smallPlus; // 0.8rem
 DESIGN_TOKENS.fontSize.medium; // 1rem
 DESIGN_TOKENS.fontSize.large; // 1.2rem
+
+// Высоты кнопок
+DESIGN_TOKENS.buttonHeight.small; // 32px
+DESIGN_TOKENS.buttonHeight.medium; // 40px
+DESIGN_TOKENS.buttonHeight.large; // 48px
 
 // Переходы
 DESIGN_TOKENS.transition.fast; // 0.15s

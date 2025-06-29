@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { TextField } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { TextField, DESIGN_TOKENS } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: ${DESIGN_TOKENS.spacing.large};

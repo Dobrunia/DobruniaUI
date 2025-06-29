@@ -68,22 +68,22 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
     switch (size) {
       case 'small':
         return css`
-          width: 32px;
-          height: 32px;
+          width: ${DESIGN_TOKENS.buttonHeight.small};
+          height: ${DESIGN_TOKENS.buttonHeight.small};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.small};
         `;
       case 'large':
         return css`
-          width: 48px;
-          height: 48px;
+          width: ${DESIGN_TOKENS.buttonHeight.large};
+          height: ${DESIGN_TOKENS.buttonHeight.large};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.large};
         `;
       default:
         return css`
-          width: 40px;
-          height: 40px;
+          width: ${DESIGN_TOKENS.buttonHeight.medium};
+          height: ${DESIGN_TOKENS.buttonHeight.medium};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.medium};
         `;
@@ -93,22 +93,22 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
     switch (size) {
       case 'small':
         return css`
-          width: 32px;
-          height: 32px;
+          width: ${DESIGN_TOKENS.buttonHeight.small};
+          height: ${DESIGN_TOKENS.buttonHeight.small};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.small};
         `;
       case 'large':
         return css`
-          width: 48px;
-          height: 48px;
+          width: ${DESIGN_TOKENS.buttonHeight.large};
+          height: ${DESIGN_TOKENS.buttonHeight.large};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.large};
         `;
       default:
         return css`
-          width: 40px;
-          height: 40px;
+          width: ${DESIGN_TOKENS.buttonHeight.medium};
+          height: ${DESIGN_TOKENS.buttonHeight.medium};
           padding: 0;
           font-size: ${DESIGN_TOKENS.fontSize.medium};
         `;
@@ -117,17 +117,20 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
   switch (size) {
     case 'small':
       return css`
-        padding: ${DESIGN_TOKENS.spacing.tiny} ${DESIGN_TOKENS.spacing.small};
+        height: ${DESIGN_TOKENS.buttonHeight.small};
+        padding: 0 ${DESIGN_TOKENS.spacing.small};
         font-size: ${DESIGN_TOKENS.fontSize.small};
       `;
     case 'large':
       return css`
-        padding: ${DESIGN_TOKENS.spacing.medium} ${DESIGN_TOKENS.spacing.large};
+        height: ${DESIGN_TOKENS.buttonHeight.large};
+        padding: 0 ${DESIGN_TOKENS.spacing.large};
         font-size: ${DESIGN_TOKENS.fontSize.large};
       `;
     default:
       return css`
-        padding: ${DESIGN_TOKENS.spacing.small} ${DESIGN_TOKENS.spacing.medium};
+        height: ${DESIGN_TOKENS.buttonHeight.medium};
+        padding: 0 ${DESIGN_TOKENS.spacing.medium};
         font-size: ${DESIGN_TOKENS.fontSize.medium};
       `;
   }
@@ -280,7 +283,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       : 'max-content'};
   min-width: ${({ $fullWidth, $variant }) =>
     $variant === 'send' ? '0' : $fullWidth ? '100%' : 'min-content'};
-  min-height: ${({ $variant }) => ($variant === 'send' ? '0' : '2.5em')};
+
   opacity: ${({ $isLoading }) => ($isLoading ? 0.7 : 1)};
   pointer-events: ${({ $isLoading }) => ($isLoading ? 'none' : 'auto')};
   position: relative;

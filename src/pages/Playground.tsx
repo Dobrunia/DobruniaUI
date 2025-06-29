@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PageBlock, SidebarList, ToggleButton } from '@DobruniaUI';
-import { getAllThemes, getTheme, setTheme, type Theme } from '../utils/theme';
+import { PageBlock, SidebarList, ToggleButton, getAllThemes, getTheme, setTheme, type Theme } from '@DobruniaUI';
 import {
   PageBlockDemo,
   SidebarListDemo,

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, RollingSwitch, YinYangSwitch, FlipSwitch, PowerSwitch } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Switch, RollingSwitch, YinYangSwitch, FlipSwitch, PowerSwitch, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const SwitchDemo: React.FC = () => {
   const [checked, setChecked] = useState(false);

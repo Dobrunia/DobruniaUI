@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Button, Avatar, Badge, Switch, ToggleButton } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Card, Button, Avatar, Badge, Switch, ToggleButton, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const CardDemo: React.FC = () => {
   const [liked, setLiked] = useState(false);

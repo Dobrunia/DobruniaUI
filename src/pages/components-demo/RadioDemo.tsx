@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Radio } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Radio, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const RadioDemo: React.FC = () => {
   const [value, setValue] = useState('option1');

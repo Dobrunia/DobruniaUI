@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { LoadingSpinner, Button, type SpinnerVariant, type SpinnerSize } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { LoadingSpinner, Button, type SpinnerVariant, type SpinnerSize, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const LoadingSpinnerDemo: React.FC = () => {
   const [selectedVariant, setSelectedVariant] = useState<SpinnerVariant>('classic');

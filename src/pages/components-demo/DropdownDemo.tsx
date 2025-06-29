@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Dropdown } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Dropdown, DESIGN_TOKENS } from '@DobruniaUI';
 
 const fruitOptions = [
   { value: 'apple', label: 'Яблоко' },

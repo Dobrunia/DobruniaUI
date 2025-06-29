@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Message } from '../../data-display/Message/Message';
-import { MessageContainer } from '../../data-display/MessageContainer/MessageContainer';
-import { MessageInput } from '../../Inputs/MessageInput/MessageInput';
+import { Message, MessageContainer, MessageInput } from '@DobruniaUI';
 
 export const MessageInputDemo = () => {
   const [messageText, setMessageText] = useState('');

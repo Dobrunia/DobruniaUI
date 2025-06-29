@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { ActionsMenu, Button, type ActionsMenuAction, type ActionsMenuGroup } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { ActionsMenu, Button, type ActionsMenuAction, type ActionsMenuGroup, DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
 // Статичная версия ActionsMenu для демо (убираем position: absolute)

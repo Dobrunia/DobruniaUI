@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Select, type SelectOption } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Select, type SelectOption, DESIGN_TOKENS } from '@DobruniaUI';
 
 const basicOptions: SelectOption[] = [
   { value: 'apple', label: 'Яблоко' },

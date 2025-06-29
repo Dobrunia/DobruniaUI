@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Checkbox, DESIGN_TOKENS } from '@DobruniaUI';
 
 /**
  * CheckboxDemo - демонстрация компонента Checkbox

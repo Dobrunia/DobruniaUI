@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Button, DESIGN_TOKENS, ErrorButton } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: ${DESIGN_TOKENS.spacing.large};
@@ -180,6 +179,24 @@ export const ButtonDemo: React.FC = () => {
           <ButtonWrapper style={{ gridColumn: '1 / -1' }}>
             <Button fullWidth>Full Width Button</Button>
             <ButtonLabel>Full Width</ButtonLabel>
+          </ButtonWrapper>
+        </ButtonGrid>
+      </Section>
+
+      <Section>
+        <SectionTitle>Error Button with Tooltip</SectionTitle>
+        <ButtonGrid>
+          <ButtonWrapper>
+            <ErrorButton tooltipText='Это подсказка при наведении' />
+            <ButtonLabel>Error with Tooltip</ButtonLabel>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <ErrorButton size='small' tooltipText='Маленькая кнопка с длинным текстом подсказки' />
+            <ButtonLabel>Small Error</ButtonLabel>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <ErrorButton size='large' tooltipText='Большая кнопка ошибки' disabled />
+            <ButtonLabel>Large Disabled</ButtonLabel>
           </ButtonWrapper>
         </ButtonGrid>
       </Section>

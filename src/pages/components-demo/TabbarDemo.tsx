@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Tabbar, type TabData } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Tabbar, type TabData, DESIGN_TOKENS } from '@DobruniaUI';
 
 export const TabbarDemo: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | number>('main');
