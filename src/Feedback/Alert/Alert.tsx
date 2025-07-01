@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 export type AlertType = 'success' | 'info' | 'warning' | 'error';
 

@@ -1,8 +1,6 @@
 import React from 'react';
-import { Snackbar } from '../Snackbar/Snackbar';
 import type { SnackbarOrigin } from '../Snackbar/Snackbar';
-import { Button } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Button, Snackbar, DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
 export interface UndoSnackbarProps {

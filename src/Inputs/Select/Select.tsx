@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 // Global state for managing open selects
 let globalOpenSelect: string | null = null;

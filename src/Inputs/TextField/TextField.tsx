@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 export interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'autoComplete'> {

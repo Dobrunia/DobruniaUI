@@ -1,7 +1,7 @@
 import Playground from './pages/Playground';
 import './App.css';
 import { useEffect } from 'react';
-import { initThemeSystem } from './utils/theme';
+import { initThemeSystem } from '@DobruniaUI';
 
 function App() {
   useEffect(() => {

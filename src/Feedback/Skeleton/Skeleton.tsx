@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 export interface SkeletonProps {

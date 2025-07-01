@@ -8,7 +8,7 @@ import {
   SwitchWrapper,
   LabelText,
 } from './variables';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 export interface SwitchProps {
   checked: boolean;

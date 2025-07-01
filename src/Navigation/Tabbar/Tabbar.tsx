@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Tab, type TabData } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Tab, type TabData, DESIGN_TOKENS } from '@DobruniaUI';
 
 export interface TabbarProps {
   tabs: TabData[];

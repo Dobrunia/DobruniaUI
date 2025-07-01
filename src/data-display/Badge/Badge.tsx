@@ -1,5 +1,5 @@
 import React from 'react';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled, { css } from 'styled-components';
 
 export interface BadgeProps {

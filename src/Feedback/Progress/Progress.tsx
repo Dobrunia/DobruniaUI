@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 
 // --- Circular Progress ---
 export interface CircularProgressWithLabelProps {

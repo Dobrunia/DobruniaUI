@@ -4,7 +4,7 @@ export const TRACK_HEIGHT = 22;
 export const THUMB_SIZE = 18;
 export const TRACK_PADDING = 0;
 
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
 export const SwitchWrapper = styled.label<{ $disabled?: boolean }>`

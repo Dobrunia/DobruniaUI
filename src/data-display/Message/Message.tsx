@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Reaction, Avatar, ActionsMenu, type ActionsMenuAction } from '@DobruniaUI';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { Reaction, Avatar, ActionsMenu, type ActionsMenuAction, DESIGN_TOKENS } from '@DobruniaUI';
 
 export type MessageType = 'incoming' | 'outgoing';
 

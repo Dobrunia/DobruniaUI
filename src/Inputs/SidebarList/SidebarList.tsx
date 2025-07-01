@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DESIGN_TOKENS } from '../../styles/designTokens';
+import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
 const SidebarListWrapper = styled.ul<{ $width?: string; $height?: string }>`
