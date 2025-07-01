@@ -332,6 +332,24 @@ const darkTheme = getThemeConfig('dark');
 <ErrorButton tooltipText='Удалить элемент' size='medium' onClick={() => handleDelete()} />
 ```
 
+#### **IconBtn** - Квадратные кнопки-иконки
+
+**Пропсы:**
+
+- `icon: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit'` - тип иконки (обязательный)
+- `size?: 'small' | 'medium' | 'large'` - размер кнопки
+- `variant?: 'primary' | 'secondary' | 'ghost' | 'warning'` - стиль кнопки
+- `title?: string` - текст для tooltip при наведении
+- `disabled?: boolean` - заблокированное состояние
+- `onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void` - обработчик клика
+- `className?: string` - дополнительные CSS классы
+
+```tsx
+<IconBtn icon='clock' variant='primary' title='Показать время' onClick={() => showTimeMenu()} />
+<IconBtn icon='exclamation' variant='warning' size='large' title='Предупреждение' />
+<IconBtn icon='dots' variant='ghost' title='Меню' onClick={() => openContextMenu()} />
+```
+
 #### **TextField** - Текстовые поля с floating label
 
 **Пропсы:**
