@@ -55,8 +55,7 @@ const getSlotStyles = (
   }
 
   if (outlined) {
-    // Для outlined - внешние границы + внутренние разделители
-    // Цвет границы зависит от варианта кнопки
+    // Для outlined - каждый слот получает полную границу, но соседние перекрываются
     const getBorderColor = () => {
       switch (variant) {
         case 'primary':
@@ -73,19 +72,26 @@ const getSlotStyles = (
     };
 
     const borderColor = getBorderColor();
-    const topBorder = `2px solid ${borderColor}`;
-    const rightBorder =
-      position === 'right' ? `2px solid ${borderColor}` : `1px solid ${borderColor}`;
-    const bottomBorder = `2px solid ${borderColor}`;
-    const leftBorder =
-      position === 'left' ? `2px solid ${borderColor}` : `1px solid ${borderColor}`;
+    const border = `2px solid ${borderColor}`;
 
-    borderStyles = `
-      border-top: ${topBorder};
-      border-right: ${rightBorder};
-      border-bottom: ${bottomBorder};
-      border-left: ${leftBorder};
-    `;
+    // Все слоты получают полную границу
+    borderStyles = `border: ${border};`;
+
+    // Но соседние границы перекрываются через отрицательные margin'ы
+    let marginStyles = '';
+    if (position === 'center') {
+      if (hasLeftSlot && hasRightSlot) {
+        marginStyles = 'margin-left: -2px;';
+      } else if (hasLeftSlot) {
+        marginStyles = 'margin-left: -2px;';
+      } else if (hasRightSlot) {
+        marginStyles = 'margin-right: -2px;';
+      }
+    } else if (position === 'right' && hasLeftSlot) {
+      marginStyles = 'margin-left: -2px;';
+    }
+
+    borderStyles += marginStyles;
   } else {
     // Для solid - базовый фон + разделители только у центрального слота
     const separatorColor = 'var(--c-border)';
