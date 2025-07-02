@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button, DESIGN_TOKENS, ErrorButton, IconBtn } from '@DobruniaUI';
+import { Button, DESIGN_TOKENS, ErrorButton, IconBtn, Checkbox } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: ${DESIGN_TOKENS.spacing.large};
@@ -78,16 +78,6 @@ const Input = styled.input`
     outline: none;
     border-color: var(--c-accent);
   }
-`;
-
-const CheckboxGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${DESIGN_TOKENS.spacing.small};
-`;
-
-const Checkbox = styled.input`
-  accent-color: var(--c-accent);
 `;
 
 const PreviewPanel = styled.div`
@@ -278,41 +268,29 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
-            <CheckboxGroup>
-              <Checkbox
-                type='checkbox'
-                checked={outlined}
-                onChange={(e) => setOutlined(e.target.checked)}
-              />
-              <ControlLabel>Outlined</ControlLabel>
-            </CheckboxGroup>
+            <Checkbox
+              label='Outlined'
+              checked={outlined}
+              onChange={() => setOutlined(!outlined)}
+            />
 
-            <CheckboxGroup>
-              <Checkbox
-                type='checkbox'
-                checked={fullWidth}
-                onChange={(e) => setFullWidth(e.target.checked)}
-              />
-              <ControlLabel>Full Width</ControlLabel>
-            </CheckboxGroup>
+            <Checkbox
+              label='Full Width'
+              checked={fullWidth}
+              onChange={() => setFullWidth(!fullWidth)}
+            />
 
-            <CheckboxGroup>
-              <Checkbox
-                type='checkbox'
-                checked={isLoading}
-                onChange={(e) => setIsLoading(e.target.checked)}
-              />
-              <ControlLabel>Loading</ControlLabel>
-            </CheckboxGroup>
+            <Checkbox
+              label='Loading'
+              checked={isLoading}
+              onChange={() => setIsLoading(!isLoading)}
+            />
 
-            <CheckboxGroup>
-              <Checkbox
-                type='checkbox'
-                checked={disabled}
-                onChange={(e) => setDisabled(e.target.checked)}
-              />
-              <ControlLabel>Disabled</ControlLabel>
-            </CheckboxGroup>
+            <Checkbox
+              label='Disabled'
+              checked={disabled}
+              onChange={() => setDisabled(!disabled)}
+            />
           </ControlsPanel>
 
           <PreviewPanel>
@@ -360,14 +338,11 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
-            <CheckboxGroup>
-              <Checkbox
-                type='checkbox'
-                checked={errorDisabled}
-                onChange={(e) => setErrorDisabled(e.target.checked)}
-              />
-              <ControlLabel>Disabled</ControlLabel>
-            </CheckboxGroup>
+            <Checkbox
+              label='Disabled'
+              checked={errorDisabled}
+              onChange={() => setErrorDisabled(!errorDisabled)}
+            />
           </ControlsPanel>
 
           <PreviewPanel>
@@ -433,14 +408,11 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
-            <CheckboxGroup>
               <Checkbox
-                type='checkbox'
+                label='Disabled'
                 checked={iconDisabled}
-                onChange={(e) => setIconDisabled(e.target.checked)}
+                onChange={() => setIconDisabled(!iconDisabled)}
               />
-              <ControlLabel>Disabled</ControlLabel>
-            </CheckboxGroup>
           </ControlsPanel>
 
           <PreviewPanel>
