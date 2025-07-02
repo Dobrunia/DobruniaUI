@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
+import type { ButtonSize, ButtonVariant } from './variables';
+import { buttonVariantStyles, solidBaseStyles, getSquareButtonSize } from './variables';
 
 type IconType = 'clock' | 'exclamation' | 'question' | 'dots' | 'exit';
-type ButtonSize = 'small' | 'medium' | 'large';
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warning';
 
 export interface IconBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: IconType;
@@ -15,71 +15,11 @@ export interface IconBtnProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   className?: string;
 }
 
-const getButtonSize = (size: ButtonSize) => {
-  switch (size) {
-    case 'small':
-      return css`
-        width: ${DESIGN_TOKENS.buttonHeight.small};
-        height: ${DESIGN_TOKENS.buttonHeight.small};
-        font-size: ${DESIGN_TOKENS.fontSize.small};
-      `;
-    case 'large':
-      return css`
-        width: ${DESIGN_TOKENS.buttonHeight.large};
-        height: ${DESIGN_TOKENS.buttonHeight.large};
-        font-size: ${DESIGN_TOKENS.fontSize.large};
-      `;
-    default:
-      return css`
-        width: ${DESIGN_TOKENS.buttonHeight.medium};
-        height: ${DESIGN_TOKENS.buttonHeight.medium};
-        font-size: ${DESIGN_TOKENS.fontSize.medium};
-      `;
-  }
-};
-
 const getButtonStyles = (variant: ButtonVariant) => {
-  switch (variant) {
-    case 'primary':
-      return css`
-        background: var(--c-accent);
-        color: var(--c-text-inverse);
-        border: none;
-        &:hover:not(:disabled) {
-          background: var(--c-accent-hover);
-        }
-        &:active:not(:disabled) {
-          background: var(--c-accent-active);
-        }
-      `;
-    case 'secondary':
-      return css`
-        background: var(--c-bg-elevated);
-        color: var(--c-text-primary);
-        border: 1px solid var(--c-border);
-        &:hover:not(:disabled) {
-          background: color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-text-primary) 15%);
-        }
-      `;
-    case 'warning':
-      return css`
-        background: var(--c-error);
-        color: var(--c-text-inverse);
-        border: none;
-        &:hover:not(:disabled) {
-          background: color-mix(in srgb, var(--c-error) 85%, black 15%);
-        }
-      `;
-    case 'ghost':
-      return css`
-        background: transparent;
-        color: var(--c-text-primary);
-        border: none;
-        &:hover:not(:disabled) {
-          background: var(--c-bg-elevated);
-        }
-      `;
-  }
+  return css`
+    ${solidBaseStyles}
+    ${buttonVariantStyles[variant](false)}
+  `;
 };
 
 interface StyledIconBtnProps {
@@ -101,7 +41,7 @@ const StyledIconBtn = styled.button<StyledIconBtnProps>`
   box-sizing: border-box;
   position: relative;
 
-  ${({ $size }) => getButtonSize($size)}
+  ${({ $size }) => getSquareButtonSize($size)}
   ${({ $variant }) => getButtonStyles($variant)}
 
   &:disabled {

@@ -10,6 +10,11 @@ export { Checkbox, type CheckboxProps } from './Inputs/Checkbox/Checkbox';
 export { Button, type ButtonProps } from './Inputs/Button/Button';
 export { IconBtn, type IconBtnProps } from './Inputs/Button/IconBtn';
 export { ErrorButton, type ErrorButtonProps } from './Inputs/Button/ErrorButton';
+export {
+  SlottedButton,
+  type SlottedButtonProps,
+  type SlotProps,
+} from './Inputs/Button/SlottedButton';
 export { SearchInput, type SearchInputProps } from './Inputs/Input/SearchInput';
 export { FileInput, type FileInputProps } from './Inputs/Input/FileInput';
 export { EmojiInput, type EmojiInputProps } from './Inputs/Input/EmojiInput';

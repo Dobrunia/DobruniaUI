@@ -350,6 +350,90 @@ const darkTheme = getThemeConfig('dark');
 <IconBtn icon='dots' variant='ghost' title='Меню' onClick={() => openContextMenu()} />
 ```
 
+#### **SlottedButton** - Кнопки с тремя независимыми слотами
+
+**Основные пропсы:**
+
+- `variant?: 'primary' | 'secondary' | 'ghost' | 'warning'` - стиль кнопки (по умолчанию 'primary')
+- `size?: 'small' | 'medium' | 'large'` - размер кнопки (по умолчанию 'medium')
+- `outlined?: boolean` - outlined вариант кнопки (по умолчанию false)
+- `centerSlot: SlotProps` - центральный слот (**ОБЯЗАТЕЛЬНЫЙ**)
+- `leftSlot?: SlotProps` - левый слот (опциональный)
+- `rightSlot?: SlotProps` - правый слот (опциональный)
+- `className?: string` - дополнительные CSS классы
+
+**SlotProps (для каждого слота):**
+
+- `children?: React.ReactNode` - содержимое слота (текст, иконка)
+- `onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void` - обработчик клика по слоту
+- `onMouseEnter?: (event: React.MouseEvent<HTMLButtonElement>) => void` - обработчик наведения
+- `onMouseLeave?: (event: React.MouseEvent<HTMLButtonElement>) => void` - обработчик ухода курсора
+- `disabled?: boolean` - заблокированное состояние конкретного слота
+
+```tsx
+<SlottedButton
+  variant="secondary"
+  leftSlot={{
+    children: "+",
+    onClick: () => handleAdd(),
+  }}
+  centerSlot={{
+    children: "Добавить в планы",
+    onClick: () => handleMain(),
+  }}
+  rightSlot={{
+    children: "▼",
+    onClick: () => handleDropdown(),
+  }}
+/>
+
+<SlottedButton
+  variant="primary"
+  outlined
+  leftSlot={{
+    children: "🔖",
+    onClick: () => handleBookmark(),
+  }}
+  centerSlot={{
+    children: "В просмотренное",
+  }}
+  rightSlot={{
+    children: "📋",
+    onClick: () => handleCopy(),
+  }}
+/>
+
+<SlottedButton
+  variant="ghost"
+  leftSlot={{
+    children: "📱",
+    onClick: () => alert('Icon clicked'),
+  }}
+  centerSlot={{
+    children: "Download App",
+    onClick: () => alert('Text clicked'),
+  }}
+/>
+
+<SlottedButton
+  variant="warning"
+  size="large"
+  leftSlot={{
+    children: "⚠️",
+    onClick: () => alert('Warning clicked'),
+    disabled: false,
+  }}
+  centerSlot={{
+    children: "Delete Project",
+    onClick: () => alert('Delete clicked'),
+  }}
+  rightSlot={{
+    children: "🗑️",
+    onClick: () => alert('Trash clicked'),
+  }}
+/>
+```
+
 #### **TextField** - Текстовые поля с floating label
 
 **Пропсы:**

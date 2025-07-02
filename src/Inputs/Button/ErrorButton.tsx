@@ -1,18 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
+import type { ButtonSize } from './variables';
+import { getSquareButtonSize } from './variables';
 
 export interface ErrorButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   tooltipText?: string;
-  size?: 'small' | 'medium' | 'large';
+  size?: ButtonSize;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 interface IconContainerProps {
-  $size?: 'small' | 'medium' | 'large';
+  $size?: ButtonSize;
 }
 
-const StyledErrorButton = styled.button<{ $size?: 'small' | 'medium' | 'large' }>`
+const StyledErrorButton = styled.button<{ $size?: ButtonSize }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -28,27 +30,16 @@ const StyledErrorButton = styled.button<{ $size?: 'small' | 'medium' | 'large' }
   box-sizing: border-box;
   position: relative;
 
-  ${({ $size }) => {
-    switch ($size) {
-      case 'small':
-        return `
-          width: ${DESIGN_TOKENS.buttonHeight.small};
-          height: ${DESIGN_TOKENS.buttonHeight.small};
-          font-size: ${DESIGN_TOKENS.fontSize.medium};
-        `;
-      case 'large':
-        return `
-          width: ${DESIGN_TOKENS.buttonHeight.large};
-          height: ${DESIGN_TOKENS.buttonHeight.large};
-          font-size: ${DESIGN_TOKENS.fontSize.large};
-        `;
-      default:
-        return `
-          width: ${DESIGN_TOKENS.buttonHeight.medium};
-          height: ${DESIGN_TOKENS.buttonHeight.medium};
-          font-size: ${DESIGN_TOKENS.fontSize.large};
-        `;
+  ${({ $size = 'medium' }) => {
+    const baseStyles = getSquareButtonSize($size);
+    // Override font-size for ErrorButton specific needs
+    if ($size === 'medium') {
+      return css`
+        ${baseStyles}
+        font-size: ${DESIGN_TOKENS.fontSize.large};
+      `;
     }
+    return baseStyles;
   }}
 
   &:hover:not(:disabled) {
@@ -120,20 +111,20 @@ const IconContainer = styled.div<IconContainerProps>`
   color: var(--c-text-inverse);
   transition: all ${DESIGN_TOKENS.transition.fast} ease;
 
-  ${({ $size }) => {
+  ${({ $size = 'medium' }) => {
     switch ($size) {
       case 'small':
-        return `
+        return css`
           width: 20px;
           height: 20px;
         `;
       case 'large':
-        return `
+        return css`
           width: 28px;
           height: 28px;
         `;
       default:
-        return `
+        return css`
           width: 24px;
           height: 24px;
         `;
@@ -141,9 +132,7 @@ const IconContainer = styled.div<IconContainerProps>`
   }}
 `;
 
-const ExclamationIcon: React.FC<{ size?: 'small' | 'medium' | 'large' }> = ({
-  size = 'medium',
-}) => {
+const ExclamationIcon: React.FC<{ size?: ButtonSize }> = ({ size = 'medium' }) => {
   const iconSize = size === 'small' ? '12' : size === 'large' ? '16' : '14';
   return (
     <svg

@@ -1,6 +1,17 @@
 import React from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled, { css, keyframes } from 'styled-components';
+import type { ButtonVariant as BaseButtonVariant, ButtonSize } from './variables';
+import {
+  buttonVariantStyles,
+  buttonSizeStyles,
+  getSquareButtonSize,
+  outlinedBaseStyles,
+  solidBaseStyles,
+} from './variables';
+
+type ButtonVariant = BaseButtonVariant | 'send' | 'close';
+type ButtonShape = 'default' | 'circle' | 'square';
 
 const rotate = keyframes`
   0% {
@@ -26,10 +37,6 @@ const dash = keyframes`
   }
 `;
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warning' | 'send' | 'close';
-type ButtonSize = 'small' | 'medium' | 'large';
-type ButtonShape = 'default' | 'circle' | 'square';
-
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -44,6 +51,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVariant) => {
+  // Special cases for send and close variants
   if (variant === 'send') {
     return css`
       width: 24px;
@@ -64,79 +72,18 @@ const getButtonSize = (size: ButtonSize, shape: ButtonShape, variant?: ButtonVar
       font-size: 16px;
     `;
   }
-  if (shape === 'circle') {
-    switch (size) {
-      case 'small':
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.small};
-          height: ${DESIGN_TOKENS.buttonHeight.small};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.small};
-        `;
-      case 'large':
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.large};
-          height: ${DESIGN_TOKENS.buttonHeight.large};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.large};
-        `;
-      default:
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.medium};
-          height: ${DESIGN_TOKENS.buttonHeight.medium};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.medium};
-        `;
-    }
+
+  // For circle and square shapes, use square button size
+  if (shape === 'circle' || shape === 'square') {
+    return getSquareButtonSize(size);
   }
-  if (shape === 'square') {
-    switch (size) {
-      case 'small':
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.small};
-          height: ${DESIGN_TOKENS.buttonHeight.small};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.small};
-        `;
-      case 'large':
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.large};
-          height: ${DESIGN_TOKENS.buttonHeight.large};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.large};
-        `;
-      default:
-        return css`
-          width: ${DESIGN_TOKENS.buttonHeight.medium};
-          height: ${DESIGN_TOKENS.buttonHeight.medium};
-          padding: 0;
-          font-size: ${DESIGN_TOKENS.fontSize.medium};
-        `;
-    }
-  }
-  switch (size) {
-    case 'small':
-      return css`
-        height: ${DESIGN_TOKENS.buttonHeight.small};
-        padding: 0 ${DESIGN_TOKENS.spacing.small};
-        font-size: ${DESIGN_TOKENS.fontSize.small};
-      `;
-    case 'large':
-      return css`
-        height: ${DESIGN_TOKENS.buttonHeight.large};
-        padding: 0 ${DESIGN_TOKENS.spacing.large};
-        font-size: ${DESIGN_TOKENS.fontSize.large};
-      `;
-    default:
-      return css`
-        height: ${DESIGN_TOKENS.buttonHeight.medium};
-        padding: 0 ${DESIGN_TOKENS.spacing.medium};
-        font-size: ${DESIGN_TOKENS.fontSize.medium};
-      `;
-  }
+
+  // Use base styles from variables for default shape
+  return buttonSizeStyles[size];
 };
 
 const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: ButtonShape) => {
+  // Special cases for send and close variants
   if (variant === 'close' && shape === 'circle') {
     return css`
       background: var(--c-bg-elevated);
@@ -152,7 +99,6 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
     `;
   }
   if (variant === 'send') {
-    // icon-only send button (no bg, no border)
     return css`
       background: none;
       color: var(--c-accent);
@@ -181,73 +127,14 @@ const getButtonStyles = (variant: ButtonVariant, outlined?: boolean, shape?: But
       }
     `;
   }
-  const baseStyles = outlined
-    ? css`
-        background: transparent;
-        border: 2px solid;
-        &:hover:not(:disabled) {
-          background: ${variant === 'warning'
-            ? 'var(--c-error)'
-            : variant === 'primary'
-            ? 'var(--c-accent)'
-            : 'var(--c-bg-elevated)'};
-          color: var(--c-text-inverse);
-        }
-      `
-    : css`
-        border: none;
-      `;
 
-  switch (variant) {
-    case 'primary':
-      return css`
-        ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--c-accent)'};
-        color: ${outlined ? 'var(--c-accent)' : 'var(--c-text-inverse)'};
-        border-color: var(--c-accent);
-        &:hover:not(:disabled) {
-          background: ${outlined
-            ? 'var(--c-accent)'
-            : 'color-mix(in srgb, var(--c-accent) 85%, black 15%)'};
-          color: var(--c-text-inverse);
-        }
-      `;
-    case 'secondary':
-      return css`
-        ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--c-bg-elevated)'};
-        color: ${outlined ? 'var(--c-text-primary)' : 'var(--c-text-primary)'};
-        border-color: var(--c-border);
-        &:hover:not(:disabled) {
-          background: ${outlined
-            ? 'var(--c-bg-elevated)'
-            : 'color-mix(in srgb, var(--c-bg-elevated) 85%, var(--c-text-primary) 15%)'};
-          color: var(--c-text-primary);
-        }
-      `;
-    case 'warning':
-      return css`
-        ${baseStyles}
-        background: ${outlined ? 'transparent' : 'var(--c-error)'};
-        color: ${outlined ? 'var(--c-error)' : 'var(--c-text-inverse)'};
-        border-color: var(--c-error);
-        &:hover:not(:disabled) {
-          background: ${outlined
-            ? 'var(--c-error)'
-            : 'color-mix(in srgb, var(--c-error) 85%, black 15%)'};
-          color: var(--c-text-inverse);
-        }
-      `;
-    case 'ghost':
-      return css`
-        background: transparent;
-        color: var(--c-text-primary);
-        border: none;
-        &:hover:not(:disabled) {
-          background: var(--c-bg-elevated);
-        }
-      `;
-  }
+  // Use styles from variables for base variants (primary, secondary, ghost, warning)
+  const baseStyles = outlined ? outlinedBaseStyles : solidBaseStyles;
+
+  return css`
+    ${baseStyles}
+    ${buttonVariantStyles[variant as BaseButtonVariant](outlined || false)}
+  `;
 };
 
 interface StyledButtonProps {

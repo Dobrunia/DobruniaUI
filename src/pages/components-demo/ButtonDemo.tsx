@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button, DESIGN_TOKENS, ErrorButton, IconBtn, Checkbox } from '@DobruniaUI';
+import { Button, DESIGN_TOKENS, ErrorButton, IconBtn, SlottedButton, Checkbox } from '@DobruniaUI';
 
 const DemoContainer = styled.div`
   padding: ${DESIGN_TOKENS.spacing.large};
@@ -120,7 +120,6 @@ const ExamplesGrid = styled.div`
 
 const ExampleCard = styled.div`
   padding: ${DESIGN_TOKENS.spacing.medium};
-  background: var(--c-bg-elevated);
   border-radius: ${DESIGN_TOKENS.radius.medium};
   border: 1px solid var(--c-border);
   display: flex;
@@ -130,7 +129,6 @@ const ExampleCard = styled.div`
 `;
 
 const ExampleTitle = styled.h4`
-  color: var(--c-text-primary);
   font-size: ${DESIGN_TOKENS.fontSize.small};
   margin: 0;
   text-align: center;
@@ -163,6 +161,19 @@ export const ButtonDemo: React.FC = () => {
   );
   const [iconSize, setIconSize] = useState<'small' | 'medium' | 'large'>('medium');
   const [iconDisabled, setIconDisabled] = useState(false);
+
+  // SlottedButton Playground State
+  const [slottedVariant, setSlottedVariant] = useState<
+    'primary' | 'secondary' | 'ghost' | 'warning'
+  >('primary');
+  const [slottedSize, setSlottedSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [slottedOutlined, setSlottedOutlined] = useState(false);
+  const [leftSlotText, setLeftSlotText] = useState('📱');
+  const [centerSlotText, setCenterSlotText] = useState('Download App');
+  const [rightSlotText, setRightSlotText] = useState('▼');
+  const [hasLeftSlot, setHasLeftSlot] = useState(true);
+  const [hasRightSlot, setHasRightSlot] = useState(true);
+  const [slottedDisabled, setSlottedDisabled] = useState(false);
 
   const generateButtonCode = () => {
     const props = [];
@@ -200,6 +211,36 @@ export const ButtonDemo: React.FC = () => {
 
     const propsString = props.join(' ');
     return `<IconBtn ${propsString} />`;
+  };
+
+  const generateSlottedButtonCode = () => {
+    const props = [];
+    if (slottedVariant !== 'primary') props.push(`variant="${slottedVariant}"`);
+    if (slottedSize !== 'medium') props.push(`size="${slottedSize}"`);
+    if (slottedOutlined) props.push('outlined');
+
+    const leftSlotCode = hasLeftSlot
+      ? `\n  leftSlot={{
+    children: "${leftSlotText}",
+    onClick: () => alert("Left slot clicked!")
+  }}`
+      : '';
+
+    const centerSlotCode = `\n  centerSlot={{
+    children: "${centerSlotText}",
+    onClick: () => alert("Center slot clicked!")
+  }}`;
+
+    const rightSlotCode = hasRightSlot
+      ? `\n  rightSlot={{
+    children: "${rightSlotText}",
+    onClick: () => alert("Right slot clicked!")
+  }}`
+      : '';
+
+    const propsString = props.length > 0 ? ` ${props.join(' ')}` : '';
+
+    return `<SlottedButton${propsString}${leftSlotCode}${centerSlotCode}${rightSlotCode}\n/>`;
   };
 
   return (
@@ -268,11 +309,7 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
-            <Checkbox
-              label='Outlined'
-              checked={outlined}
-              onChange={() => setOutlined(!outlined)}
-            />
+            <Checkbox label='Outlined' checked={outlined} onChange={() => setOutlined(!outlined)} />
 
             <Checkbox
               label='Full Width'
@@ -286,11 +323,7 @@ export const ButtonDemo: React.FC = () => {
               onChange={() => setIsLoading(!isLoading)}
             />
 
-            <Checkbox
-              label='Disabled'
-              checked={disabled}
-              onChange={() => setDisabled(!disabled)}
-            />
+            <Checkbox label='Disabled' checked={disabled} onChange={() => setDisabled(!disabled)} />
           </ControlsPanel>
 
           <PreviewPanel>
@@ -408,11 +441,11 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
-              <Checkbox
-                label='Disabled'
-                checked={iconDisabled}
-                onChange={() => setIconDisabled(!iconDisabled)}
-              />
+            <Checkbox
+              label='Disabled'
+              checked={iconDisabled}
+              onChange={() => setIconDisabled(!iconDisabled)}
+            />
           </ControlsPanel>
 
           <PreviewPanel>
@@ -429,6 +462,131 @@ export const ButtonDemo: React.FC = () => {
         </PlaygroundGrid>
       </PlaygroundSection>
 
+      {/* SlottedButton Playground */}
+      <PlaygroundSection>
+        <SectionTitle>🎯 SlottedButton Playground</SectionTitle>
+        <PlaygroundGrid>
+          <ControlsPanel>
+            <ControlGroup>
+              <ControlLabel>Variant</ControlLabel>
+              <Select
+                value={slottedVariant}
+                onChange={(e) =>
+                  setSlottedVariant(e.target.value as 'primary' | 'secondary' | 'ghost' | 'warning')
+                }
+              >
+                <option value='primary'>Primary</option>
+                <option value='secondary'>Secondary</option>
+                <option value='ghost'>Ghost</option>
+                <option value='warning'>Warning</option>
+              </Select>
+            </ControlGroup>
+
+            <ControlGroup>
+              <ControlLabel>Size</ControlLabel>
+              <Select
+                value={slottedSize}
+                onChange={(e) => setSlottedSize(e.target.value as 'small' | 'medium' | 'large')}
+              >
+                <option value='small'>Small</option>
+                <option value='medium'>Medium</option>
+                <option value='large'>Large</option>
+              </Select>
+            </ControlGroup>
+
+            <Checkbox
+              label='Outlined'
+              checked={slottedOutlined}
+              onChange={() => setSlottedOutlined(!slottedOutlined)}
+            />
+
+            <Checkbox
+              label='Has Left Slot'
+              checked={hasLeftSlot}
+              onChange={() => setHasLeftSlot(!hasLeftSlot)}
+            />
+
+            <Checkbox
+              label='Has Right Slot'
+              checked={hasRightSlot}
+              onChange={() => setHasRightSlot(!hasRightSlot)}
+            />
+
+            <ControlGroup>
+              <ControlLabel>Left Slot Text</ControlLabel>
+              <Input
+                type='text'
+                value={leftSlotText}
+                onChange={(e) => setLeftSlotText(e.target.value)}
+                disabled={!hasLeftSlot}
+              />
+            </ControlGroup>
+
+            <ControlGroup>
+              <ControlLabel>Center Slot Text</ControlLabel>
+              <Input
+                type='text'
+                value={centerSlotText}
+                onChange={(e) => setCenterSlotText(e.target.value)}
+              />
+            </ControlGroup>
+
+            <ControlGroup>
+              <ControlLabel>Right Slot Text</ControlLabel>
+              <Input
+                type='text'
+                value={rightSlotText}
+                onChange={(e) => setRightSlotText(e.target.value)}
+                disabled={!hasRightSlot}
+              />
+            </ControlGroup>
+
+            <Checkbox
+              label='Disabled'
+              checked={slottedDisabled}
+              onChange={() => setSlottedDisabled(!slottedDisabled)}
+            />
+          </ControlsPanel>
+
+          <PreviewPanel>
+            <div style={{ width: '300px', maxWidth: '100%' }}>
+              <SlottedButton
+                variant={slottedVariant}
+                size={slottedSize}
+                outlined={slottedOutlined}
+                leftSlot={
+                  hasLeftSlot
+                    ? {
+                        children: leftSlotText,
+                        onClick: () => alert('Left slot clicked!'),
+                        disabled: slottedDisabled,
+                      }
+                    : undefined
+                }
+                centerSlot={{
+                  children: centerSlotText,
+                  onClick: () => alert('Center slot clicked!'),
+                  disabled: slottedDisabled,
+                }}
+                rightSlot={
+                  hasRightSlot
+                    ? {
+                        children: rightSlotText,
+                        onClick: () => alert('Right slot clicked!'),
+                        disabled: slottedDisabled,
+                      }
+                    : undefined
+                }
+              />
+            </div>
+            <PreviewLabel>
+              SlottedButton Preview (ограничен 300px для демонстрации троеточия)
+            </PreviewLabel>
+            <CodeBlock>{generateSlottedButtonCode()}</CodeBlock>
+          </PreviewPanel>
+        </PlaygroundGrid>
+      </PlaygroundSection>
+
       {/* Quick Examples */}
       <PlaygroundSection>
         <SectionTitle>🚀 Common Examples</SectionTitle>
@@ -438,6 +596,7 @@ export const ButtonDemo: React.FC = () => {
             <Button variant='primary' size='large'>
               Get Started
             </Button>
+            <PreviewLabel>primary + large: синий фон, белый текст, hover затемнение</PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>
@@ -445,11 +604,15 @@ export const ButtonDemo: React.FC = () => {
             <Button variant='secondary' outlined>
               Learn More
             </Button>
+            <PreviewLabel>
+              secondary + outlined: прозрачный фон, серая рамка, hover заливка
+            </PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>
             <ExampleTitle>Warning Action</ExampleTitle>
             <Button variant='warning'>Delete Item</Button>
+            <PreviewLabel>warning: красный фон, белый текст, hover затемнение</PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>
@@ -457,13 +620,15 @@ export const ButtonDemo: React.FC = () => {
             <div style={{ display: 'flex', gap: '8px' }}>
               <IconBtn icon='clock' variant='ghost' />
               <IconBtn icon='dots' variant='ghost' />
-              <IconBtn icon='exit' variant='secondary' />
+              <IconBtn icon='exit' variant='ghost' />
             </div>
+            <PreviewLabel>ghost: прозрачный фон, hover насыщенная заливка</PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>
             <ExampleTitle>Error State</ExampleTitle>
             <ErrorButton tooltipText='Remove item permanently' />
+            <PreviewLabel>специальная кнопка ошибки с tooltip и анимацией</PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>
@@ -471,6 +636,7 @@ export const ButtonDemo: React.FC = () => {
             <Button variant='primary' isLoading>
               Processing...
             </Button>
+            <PreviewLabel>спиннер перекрывает контент, кнопка неактивна</PreviewLabel>
           </ExampleCard>
         </ExamplesGrid>
       </PlaygroundSection>
