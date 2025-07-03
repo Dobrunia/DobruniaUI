@@ -469,13 +469,21 @@ const darkTheme = getThemeConfig('dark');
 - `value: string` - значение поиска (обязательный)
 - `onChange: (value: string) => void` - обработчик изменения (обязательный)
 - `placeholder?: string` - placeholder текст
+- `size?: 'small' | 'medium' | 'large'` - размер поля (по умолчанию 'medium')
 - `className?: string` - дополнительные CSS классы
+
+**Размеры:**
+
+- `small` — min-height: 32px, font-size: 0.7rem
+- `medium` — min-height: 40px, font-size: 1rem (по умолчанию)
+- `large` — min-height: 48px, font-size: 1.2rem
 
 ```tsx
 <SearchInput
   value={searchQuery}
   onChange={setSearchQuery}
   placeholder='Введите запрос для поиска...'
+  size='large' // small | medium | large
 />
 ```
 

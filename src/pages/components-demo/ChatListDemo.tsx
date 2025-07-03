@@ -24,8 +24,8 @@ const demoChats = [
   {
     id: '3',
     avatar: 'https://randomuser.me/api/portraits/men/15.jpg',
-    name: 'Артём Кузнецов',
-    lastMessage: 'Входящее: (прочитано)',
+    name: 'Артём Кузнецовввввввввввввввввввввввввввввввввввв',
+    lastMessage: 'Входящее: (прочитано) (очень длинное сообщение) ',
     time: '10:07',
     messageStatus: 'read' as const,
     isOutgoing: false,

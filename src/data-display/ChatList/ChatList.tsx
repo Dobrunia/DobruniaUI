@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Skeleton, Avatar as UserAvatar } from '@DobruniaUI';
+import { Skeleton, Avatar as UserAvatar, DESIGN_TOKENS } from '@DobruniaUI';
 
 // SVG иконка пользователя без фото
 const UserIcon = () => (
-  <svg width='44' height='44' fill='none' viewBox='0 0 44 44'>
+  <svg
+    width={DESIGN_TOKENS.baseHeight.medium}
+    height={DESIGN_TOKENS.baseHeight.medium}
+    fill='none'
+    viewBox='0 0 44 44'
+  >
     <circle cx='22' cy='22' r='22' fill='var(--c-bg-elevated)' />
     <circle cx='22' cy='18' r='6' fill='var(--c-text-secondary)' />
     <path
@@ -67,24 +72,38 @@ const Info = styled.div`
 `;
 
 const NameRow = styled.div`
+  height: ${DESIGN_TOKENS.baseHeight.tiny};
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
 const Name = styled.span`
-  font-size: 1rem;
-  font-weight: 500;
+  height: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 const Time = styled.span<{ $selected?: boolean }>`
-  font-size: 0.9em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)')};
   margin-left: 8px;
   white-space: nowrap;
+`;
+
+const ArrowSlot = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 32px;
+  max-width: 40px;
+  height: 100%;
+  margin-left: 4px;
 `;
 
 const LastMessage = styled.span<{
@@ -92,7 +111,11 @@ const LastMessage = styled.span<{
   $selected?: boolean;
   $isOutgoing?: boolean;
 }>`
-  font-size: 0.97em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
   color: ${({ $messageStatus, $selected, $isOutgoing }) => {
     if ($selected) return 'var(--c-text-inverse)';
     if (!$isOutgoing && $messageStatus === 'unread') return 'var(--c-accent)';
@@ -111,7 +134,11 @@ const StatusMark = styled.span<{
   $messageStatus?: MessageStatus;
   $isOutgoing?: boolean;
 }>`
-  font-size: 1.1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${DESIGN_TOKENS.fontSize.medium};
   margin-left: 6px;
   color: ${({ $selected, $messageStatus, $isOutgoing }) => {
     if ($selected) return 'var(--c-text-inverse)';
@@ -143,13 +170,17 @@ export const ChatList: React.FC<ChatListProps> = ({
       <List className={className}>
         {Array.from({ length: skeletonCount }).map((_, i) => (
           <Item key={i}>
-            <Skeleton variant='circular' width={44} height={44} />
+            <Skeleton
+              variant='circular'
+              width={DESIGN_TOKENS.baseHeight.medium}
+              height={DESIGN_TOKENS.baseHeight.medium}
+            />
             <Info>
               <NameRow>
-                <Skeleton variant='text' width={120} height={18} />
-                <Skeleton variant='text' width={32} height={14} />
+                <Skeleton variant='text' width={120} height={DESIGN_TOKENS.baseHeight.tiny} />
+                <Skeleton variant='text' width={32} height={DESIGN_TOKENS.baseHeight.tiny} />
               </NameRow>
-              <Skeleton variant='text' width={180} height={16} />
+              <Skeleton variant='text' width={180} height={DESIGN_TOKENS.baseHeight.tiny} />
             </Info>
           </Item>
         ))}
@@ -189,33 +220,35 @@ export const ChatList: React.FC<ChatListProps> = ({
               >
                 {item.lastMessage}
               </LastMessage>
-              {item.isOutgoing && item.messageStatus === 'read' && (
-                <StatusMark
-                  $selected={item.id === selectedId}
-                  $messageStatus={item.messageStatus}
-                  $isOutgoing={item.isOutgoing}
-                >
-                  ✔✔
-                </StatusMark>
-              )}
-              {item.isOutgoing && item.messageStatus === 'unread' && (
-                <StatusMark
-                  $selected={item.id === selectedId}
-                  $messageStatus={item.messageStatus}
-                  $isOutgoing={item.isOutgoing}
-                >
-                  ✔✔
-                </StatusMark>
-              )}
-              {item.messageStatus === 'error' && (
-                <StatusMark
-                  $selected={item.id === selectedId}
-                  $messageStatus={item.messageStatus}
-                  $isOutgoing={item.isOutgoing}
-                >
-                  !
-                </StatusMark>
-              )}
+              <ArrowSlot>
+                {item.isOutgoing && item.messageStatus === 'read' && (
+                  <StatusMark
+                    $selected={item.id === selectedId}
+                    $messageStatus={item.messageStatus}
+                    $isOutgoing={item.isOutgoing}
+                  >
+                    ✔✔
+                  </StatusMark>
+                )}
+                {item.isOutgoing && item.messageStatus === 'unread' && (
+                  <StatusMark
+                    $selected={item.id === selectedId}
+                    $messageStatus={item.messageStatus}
+                    $isOutgoing={item.isOutgoing}
+                  >
+                    ✔✔
+                  </StatusMark>
+                )}
+                {item.messageStatus === 'error' && (
+                  <StatusMark
+                    $selected={item.id === selectedId}
+                    $messageStatus={item.messageStatus}
+                    $isOutgoing={item.isOutgoing}
+                  >
+                    !
+                  </StatusMark>
+                )}
+              </ArrowSlot>
             </NameRow>
           </Info>
         </Item>
