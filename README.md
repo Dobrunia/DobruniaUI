@@ -741,7 +741,7 @@ const darkTheme = getThemeConfig('dark');
 - `size?: 'xxs' | 'sm' | 'md' | 'lg'` - размер аватара (20px/32px/40px/56px)
 - `status?: 'online' | 'offline' | 'dnd' | 'invisible'` - статус пользователя
 - `showStatus?: boolean` - показывать статус
-- `onStatusChange?: (status: AvatarStatus) => void` - обработчик изменения статуса
+- `onStatusChange?: (status: Presence) => void` - обработчик изменения статуса
 - `language?: 'ru' | 'en'` - язык интерфейса для статусов
 - `className?: string` - дополнительные CSS классы
 
@@ -826,6 +826,7 @@ const darkTheme = getThemeConfig('dark');
 
 ```tsx
 type MessageStatus = 'unread' | 'read' | 'error';
+type Presence = 'online' | 'offline' | 'dnd' | 'invisible';
 
 interface ChatListItem {
   id: string;
@@ -835,7 +836,7 @@ interface ChatListItem {
   time: string;
   messageStatus?: MessageStatus;
   isOutgoing?: boolean; // true - исходящее сообщение, false - входящее
-  status?: 'online' | 'offline' | 'dnd';
+  status?: Presence;
 }
 ```
 

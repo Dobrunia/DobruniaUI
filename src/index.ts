@@ -50,12 +50,7 @@ export {
 export { Avatar, type AvatarProps } from './data-display/Avatar/Avatar';
 export { Badge, type BadgeProps } from './data-display/Badge/Badge';
 export { Card, type CardProps } from './data-display/Card/Card';
-export {
-  ChatList,
-  type ChatListProps,
-  type ChatListItem,
-  type MessageStatus,
-} from './data-display/ChatList/ChatList';
+export { ChatList, type ChatListProps, type ChatListItem } from './data-display/ChatList/ChatList';
 export { Message, type MessageProps, type MessageType } from './data-display/Message/Message';
 export {
   MessageContainer,
@@ -120,6 +115,7 @@ export {
   type Theme,
   type ThemeConfig,
 } from './utils/theme';
+export type { Presence, MessageStatus } from './utils/types';
 
 /**
  * Theme Components
