@@ -728,14 +728,18 @@ const darkTheme = getThemeConfig('dark');
 **Пропсы:**
 
 - `src?: string` - URL изображения
+- `alt?: string` - альтернативный текст для изображения
 - `name?: string` - имя пользователя (для инициалов)
-- `size?: 'sm' | 'md' | 'lg' | 'xl'` - размер аватара
-- `status?: 'online' | 'offline' | 'dnd'` - статус пользователя
+- `size?: 'xxs' | 'sm' | 'md' | 'lg'` - размер аватара (20px/32px/40px/56px)
+- `status?: 'online' | 'offline' | 'dnd' | 'invisible'` - статус пользователя
 - `showStatus?: boolean` - показывать статус
+- `onStatusChange?: (status: AvatarStatus) => void` - обработчик изменения статуса
+- `language?: 'ru' | 'en'` - язык интерфейса для статусов
 - `className?: string` - дополнительные CSS классы
 
 ```tsx
 <Avatar src='/avatar.jpg' name='John Doe' size='lg' status='online' showStatus />
+<Avatar name='Иван Иванов' size='md' status='dnd' onStatusChange={setStatus} language='ru' />
 ```
 
 #### **Badge** - Значки и счетчики
@@ -1303,10 +1307,12 @@ DESIGN_TOKENS.fontSize.smallPlus; // 0.8rem
 DESIGN_TOKENS.fontSize.medium; // 1rem
 DESIGN_TOKENS.fontSize.large; // 1.2rem
 
-// Высоты кнопок
-DESIGN_TOKENS.buttonHeight.small; // 32px
-DESIGN_TOKENS.buttonHeight.medium; // 40px
-DESIGN_TOKENS.buttonHeight.large; // 48px
+// Высоты компонентов
+DESIGN_TOKENS.baseHeight.tiny; // 20px
+DESIGN_TOKENS.baseHeight.small; // 32px
+DESIGN_TOKENS.baseHeight.medium; // 40px
+DESIGN_TOKENS.baseHeight.large; // 48px
+DESIGN_TOKENS.baseHeight.extraLarge; // 56px
 
 // Переходы
 DESIGN_TOKENS.transition.fast; // 0.15s

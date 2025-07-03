@@ -73,17 +73,17 @@ export const buttonVariantStyles = {
 // Base button size styles
 export const buttonSizeStyles = {
   small: css`
-    height: ${DESIGN_TOKENS.buttonHeight.small};
+    height: ${DESIGN_TOKENS.baseHeight.small};
     padding: 0 ${DESIGN_TOKENS.spacing.small};
     font-size: ${DESIGN_TOKENS.fontSize.small};
   `,
   medium: css`
-    height: ${DESIGN_TOKENS.buttonHeight.medium};
+    height: ${DESIGN_TOKENS.baseHeight.medium};
     padding: 0 ${DESIGN_TOKENS.spacing.medium};
     font-size: ${DESIGN_TOKENS.fontSize.medium};
   `,
   large: css`
-    height: ${DESIGN_TOKENS.buttonHeight.large};
+    height: ${DESIGN_TOKENS.baseHeight.large};
     padding: 0 ${DESIGN_TOKENS.spacing.large};
     font-size: ${DESIGN_TOKENS.fontSize.large};
   `,
@@ -94,22 +94,22 @@ export const getSquareButtonSize = (size: ButtonSize) => {
   switch (size) {
     case 'small':
       return css`
-        width: ${DESIGN_TOKENS.buttonHeight.small};
-        height: ${DESIGN_TOKENS.buttonHeight.small};
+        width: ${DESIGN_TOKENS.baseHeight.small};
+        height: ${DESIGN_TOKENS.baseHeight.small};
         padding: 0;
         font-size: ${DESIGN_TOKENS.fontSize.small};
       `;
     case 'large':
       return css`
-        width: ${DESIGN_TOKENS.buttonHeight.large};
-        height: ${DESIGN_TOKENS.buttonHeight.large};
+        width: ${DESIGN_TOKENS.baseHeight.large};
+        height: ${DESIGN_TOKENS.baseHeight.large};
         padding: 0;
         font-size: ${DESIGN_TOKENS.fontSize.large};
       `;
     default:
       return css`
-        width: ${DESIGN_TOKENS.buttonHeight.medium};
-        height: ${DESIGN_TOKENS.buttonHeight.medium};
+        width: ${DESIGN_TOKENS.baseHeight.medium};
+        height: ${DESIGN_TOKENS.baseHeight.medium};
         padding: 0;
         font-size: ${DESIGN_TOKENS.fontSize.medium};
       `;

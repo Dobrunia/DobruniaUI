@@ -45,7 +45,6 @@ const AlertWrapper = styled.div<{
   border-radius: ${DESIGN_TOKENS.radius.medium};
   font-size: ${DESIGN_TOKENS.fontSize.medium};
   font-weight: 400;
-  margin-bottom: 16px;
   line-height: 1.5;
   word-break: break-word;
   ${({ $type, $outlined }) => {

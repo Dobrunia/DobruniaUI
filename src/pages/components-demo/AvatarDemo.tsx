@@ -38,7 +38,7 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='xxs' src={demoSrc} name={demoName} status='online' />
           <Label>
-            xxs
+            xxs (20px)
             <br />
             online
           </Label>
@@ -46,7 +46,7 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='sm' src={demoSrc} name={demoName} status='dnd' />
           <Label>
-            sm
+            sm (32px)
             <br />
             dnd
           </Label>
@@ -54,9 +54,17 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='md' src={demoSrc} name={demoName} status='offline' />
           <Label>
-            md
+            md (40px)
             <br />
             offline
+          </Label>
+        </Col>
+        <Col>
+          <Avatar size='lg' src={demoSrc} name={demoName} status='online' />
+          <Label>
+            lg (56px)
+            <br />
+            online
           </Label>
         </Col>
       </Row>
@@ -65,7 +73,7 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='xxs' name={demoName} status='online' />
           <Label>
-            xxs
+            xxs (20px)
             <br />
             online
           </Label>
@@ -73,7 +81,7 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='sm' name={demoName} status='dnd' />
           <Label>
-            sm
+            sm (32px)
             <br />
             dnd
           </Label>
@@ -81,9 +89,17 @@ export const AvatarDemo: React.FC = () => {
         <Col>
           <Avatar size='md' name={demoName} status='offline' />
           <Label>
-            md
+            md (40px)
             <br />
             offline
+          </Label>
+        </Col>
+        <Col>
+          <Avatar size='lg' name={demoName} status='online' />
+          <Label>
+            lg (56px)
+            <br />
+            online
           </Label>
         </Col>
       </Row>

@@ -142,10 +142,10 @@ const StyledSlot = styled.button<StyledSlotProps>`
     if ($position === 'left' || $position === 'right') {
       const height =
         $size === 'small'
-          ? DESIGN_TOKENS.buttonHeight.small
+          ? DESIGN_TOKENS.baseHeight.small
           : $size === 'large'
-          ? DESIGN_TOKENS.buttonHeight.large
-          : DESIGN_TOKENS.buttonHeight.medium;
+          ? DESIGN_TOKENS.baseHeight.large
+          : DESIGN_TOKENS.baseHeight.medium;
 
       return css`
         width: ${height};

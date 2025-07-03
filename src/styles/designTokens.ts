@@ -43,11 +43,13 @@ export const DESIGN_TOKENS = {
     large: '1.2rem',
   },
 
-  // Button heights
-  buttonHeight: {
+  // Base heights
+  baseHeight: {
+    tiny: '20px',
     small: '32px',
     medium: '40px',
     large: '48px',
+    extraLarge: '56px',
   },
 } as const;
 

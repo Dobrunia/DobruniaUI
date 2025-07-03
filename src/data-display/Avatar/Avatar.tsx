@@ -5,11 +5,11 @@ import styled, { css } from 'styled-components';
 type AvatarSize = 'xxs' | 'sm' | 'md' | 'lg';
 type AvatarStatus = 'online' | 'offline' | 'dnd' | 'invisible';
 
-const sizeMap: Record<AvatarSize, number> = {
-  xxs: 20, // супер маленький (реакции)
-  sm: 32, // отправитель
-  md: 44, // контакты
-  lg: 72, // профиль
+const sizeMap: Record<AvatarSize, string> = {
+  xxs: DESIGN_TOKENS.baseHeight.tiny, // 20px
+  sm: DESIGN_TOKENS.baseHeight.small, // 32px
+  md: DESIGN_TOKENS.baseHeight.medium, // 40px
+  lg: DESIGN_TOKENS.baseHeight.extraLarge, // 72px
 };
 
 const statusVarMap: Record<AvatarStatus, string> = {
@@ -31,14 +31,14 @@ const AvatarRoot = styled.div<{ $size: AvatarSize; $hasMenuFocus?: boolean }>`
   user-select: none;
   cursor: pointer;
   ${({ $size }) => css`
-    width: ${sizeMap[$size]}px;
-    height: ${sizeMap[$size]}px;
+    width: ${sizeMap[$size]};
+    height: ${sizeMap[$size]};
     font-size: ${$size === 'xxs'
-      ? '0.8rem'
+      ? DESIGN_TOKENS.fontSize.small
       : $size === 'sm'
-      ? '1rem'
+      ? DESIGN_TOKENS.fontSize.medium
       : $size === 'md'
-      ? '1.3rem'
+      ? DESIGN_TOKENS.fontSize.large
       : '2rem'};
   `}
 
@@ -159,7 +159,7 @@ export interface AvatarProps {
  * @param src 'string' - URL изображения аватара
  * @param alt 'string' - альтернативный текст для изображения
  * @param name 'string' - имя пользователя (для инициалов без изображения)
- * @param size 'xxs' | 'sm' | 'md' | 'lg' = 'md' - размер аватара (20px/32px/44px/72px)
+ * @param size 'xxs' | 'sm' | 'md' | 'lg' = 'md' - размер аватара (20px/32px/40px/56px)
  * @param status 'online' | 'offline' | 'dnd' | 'invisible' - статус пользователя
  * @param showStatus 'boolean' = true - показывать индикатор статуса
  * @param className 'string' - дополнительные CSS классы

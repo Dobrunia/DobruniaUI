@@ -9,7 +9,7 @@ export const AlertDemo: React.FC = () => {
       </h2>
 
       <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Базовые стили</h3>
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Alert type='success'>✨ Операция успешно выполнена! Ваши данные сохранены.</Alert>
         <Alert type='info'>💡 Информация: Система будет обновлена сегодня в 3:00.</Alert>
         <Alert type='warning'>⚠️ Внимание: Несохраненные изменения могут быть потеряны.</Alert>
@@ -17,7 +17,7 @@ export const AlertDemo: React.FC = () => {
       </div>
 
       <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Outlined стили</h3>
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Alert type='success' outlined>
           Файл успешно загружен в систему.
         </Alert>
@@ -33,7 +33,7 @@ export const AlertDemo: React.FC = () => {
       </div>
 
       <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>С богатым содержимым</h3>
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Alert type='info'>
           <strong>Обновление системы:</strong>
           <br />
@@ -68,7 +68,7 @@ export const AlertDemo: React.FC = () => {
       </div>
 
       <h3 style={{ margin: '0 0 16px 0', color: 'var(--c-text-primary)' }}>Практические примеры</h3>
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Alert type='info'>
           <strong>Совет:</strong> Используйте type="success" для подтверждения действий, "info" для
           информирования, "warning" для предупреждений, "error" для ошибок.
