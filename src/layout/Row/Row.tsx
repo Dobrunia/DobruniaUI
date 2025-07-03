@@ -8,8 +8,8 @@ export interface RowProps {
   center?: React.ReactNode;
   /** Контент для правого слота */
   right?: React.ReactNode;
-  /** Вертикальное выравнивание */
-  align?: 'start' | 'center' | 'end' | 'stretch';
+  /** Горизонтальное выравнивание центрального слота */
+  centerJustify?: 'left' | 'center' | 'right';
   /** Отступы внутри строки */
   padding?: string;
   /** Минимальная высота строки */
@@ -21,24 +21,12 @@ export interface RowProps {
 }
 
 const RowContainer = styled.div<{
-  $align: string;
   $padding?: string;
   $minHeight?: string;
   $clickable: boolean;
 }>`
   display: flex;
-  align-items: ${({ $align }) => {
-    switch ($align) {
-      case 'start':
-        return 'flex-start';
-      case 'end':
-        return 'flex-end';
-      case 'stretch':
-        return 'stretch';
-      default:
-        return 'center';
-    }
-  }};
+  align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: ${({ $padding }) => $padding || '12px 16px'};
@@ -50,7 +38,7 @@ const RowContainer = styled.div<{
     $clickable &&
     `
     &:hover {
-      background-color: var(--c-bg-elevated);
+      background-color: color-mix(in srgb, var(--c-bg-elevated) 80%, black 20%);
     }
   `}
 `;
@@ -61,13 +49,22 @@ const LeftSlot = styled.div`
   flex-shrink: 0;
 `;
 
-const CenterSlot = styled.div`
+const CenterSlot = styled.div<{ $centerJustify: string }>`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${({ $centerJustify }) => {
+    switch ($centerJustify) {
+      case 'left':
+        return 'flex-start';
+      case 'right':
+        return 'flex-end';
+      default:
+        return 'center';
+    }
+  }};
   flex: 1;
   margin: 0 16px;
-  min-width: 0; /* Позволяет сжиматься */
+  min-width: 0;
 `;
 
 const RightSlot = styled.div`
@@ -82,7 +79,7 @@ const RightSlot = styled.div`
  * @param left 'ReactNode' - контент для левого слота
  * @param center 'ReactNode' - контент для центрального слота
  * @param right 'ReactNode' - контент для правого слота
- * @param align 'start | center | end | stretch' = 'center' - вертикальное выравнивание
+ * @param centerJustify 'left | center | right' = 'center' - горизонтальное выравнивание центрального слота
  * @param padding 'string' = '12px 16px' - отступы внутри строки
  * @param minHeight 'string' - минимальная высота строки
  * @param className 'string' - дополнительный CSS класс
@@ -92,7 +89,7 @@ export const Row: React.FC<RowProps> = ({
   left,
   center,
   right,
-  align = 'center',
+  centerJustify = 'center',
   padding,
   minHeight,
   className,
@@ -100,7 +97,6 @@ export const Row: React.FC<RowProps> = ({
 }) => {
   return (
     <RowContainer
-      $align={align}
       $padding={padding}
       $minHeight={minHeight}
       $clickable={!!onClick}
@@ -108,7 +104,7 @@ export const Row: React.FC<RowProps> = ({
       onClick={onClick}
     >
       {left && <LeftSlot>{left}</LeftSlot>}
-      {center && <CenterSlot>{center}</CenterSlot>}
+      {center && <CenterSlot $centerJustify={centerJustify}>{center}</CenterSlot>}
       {right && <RightSlot>{right}</RightSlot>}
     </RowContainer>
   );

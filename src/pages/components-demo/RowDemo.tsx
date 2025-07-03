@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Button, Avatar, Switch, Badge, TextField, ToggleButton, DESIGN_TOKENS } from '@DobruniaUI';
+import { Row, Button, Avatar, Switch, Badge, TextField, ToggleButton } from '@DobruniaUI';
 
 export const RowDemo: React.FC = () => {
   const [notifications, setNotifications] = useState(true);
@@ -8,15 +8,15 @@ export const RowDemo: React.FC = () => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
-    <div className='row-demo'>
+    <div>
       <h1>📋 Row Component</h1>
       <p>Компонент строки с тремя слотами: лево, центр, право</p>
 
       {/* Базовые примеры */}
-      <section className='section'>
+      <section>
         <h2>🎯 Базовые примеры</h2>
 
-        <div className='demo-group'>
+        <div>
           <h3>Профиль пользователя</h3>
           <Row
             left={<Avatar name='Иван Петров' size='md' />}
@@ -36,7 +36,7 @@ export const RowDemo: React.FC = () => {
           />
         </div>
 
-        <div className='demo-group'>
+        <div>
           <h3>Только левый и правый слоты</h3>
           <Row
             left={<h3 style={{ margin: 0 }}>Заголовок раздела</h3>}
@@ -44,7 +44,7 @@ export const RowDemo: React.FC = () => {
           />
         </div>
 
-        <div className='demo-group'>
+        <div>
           <h3>Только центральный слот</h3>
           <Row
             center={
@@ -59,12 +59,12 @@ export const RowDemo: React.FC = () => {
       </section>
 
       {/* Бесшовные списки */}
-      <section className='section'>
+      <section>
         <h2>🔗 Бесшовные списки</h2>
 
-        <div className='demo-group'>
+        <div>
           <h3>Список настроек</h3>
-          <div className='seamless-rows'>
+          <div>
             <Row
               left={<span>🔔</span>}
               center={<span>Уведомления</span>}
@@ -92,9 +92,9 @@ export const RowDemo: React.FC = () => {
           </div>
         </div>
 
-        <div className='demo-group'>
+        <div>
           <h3>Список пользователей</h3>
-          <div className='seamless-rows'>
+          <div>
             <Row
               left={<Avatar name='Анна Смирнова' size='sm' />}
               center={
@@ -143,16 +143,16 @@ export const RowDemo: React.FC = () => {
         </div>
       </section>
 
-      {/* Выравнивание */}
-      <section className='section'>
-        <h2>📐 Выравнивание</h2>
+      {/* Горизонтальное выравнивание в center */}
+      <section>
+        <h2>📐 Горизонтальное выравнивание в center</h2>
 
-        <div className='demo-group'>
-          <h3>По верху (align="start")</h3>
+        <div>
+          <h3>По левому краю (centerJustify="left")</h3>
           <Row
             left={<Avatar name='Тест' size='lg' />}
             center={
-              <div style={{ textAlign: 'left', width: '100%' }}>
+              <div>
                 <div>Многострочный</div>
                 <div>контент для</div>
                 <div>демонстрации</div>
@@ -160,17 +160,17 @@ export const RowDemo: React.FC = () => {
               </div>
             }
             right={<Button>Действие</Button>}
-            align='start'
+            centerJustify='left'
             minHeight='100px'
           />
         </div>
 
-        <div className='demo-group'>
-          <h3>По центру (align="center")</h3>
+        <div>
+          <h3>По центру (centerJustify="center")</h3>
           <Row
             left={<Avatar name='Тест' size='lg' />}
             center={
-              <div style={{ textAlign: 'left', width: '100%' }}>
+              <div>
                 <div>Многострочный</div>
                 <div>контент для</div>
                 <div>демонстрации</div>
@@ -178,17 +178,17 @@ export const RowDemo: React.FC = () => {
               </div>
             }
             right={<Button>Действие</Button>}
-            align='center'
+            centerJustify='center'
             minHeight='100px'
           />
         </div>
 
-        <div className='demo-group'>
-          <h3>По низу (align="end")</h3>
+        <div>
+          <h3>По правому краю (centerJustify="right")</h3>
           <Row
             left={<Avatar name='Тест' size='lg' />}
             center={
-              <div style={{ textAlign: 'left', width: '100%' }}>
+              <div>
                 <div>Многострочный</div>
                 <div>контент для</div>
                 <div>демонстрации</div>
@@ -196,19 +196,19 @@ export const RowDemo: React.FC = () => {
               </div>
             }
             right={<Button>Действие</Button>}
-            align='end'
+            centerJustify='right'
             minHeight='100px'
           />
         </div>
       </section>
 
       {/* Интерактивные примеры */}
-      <section className='section'>
+      <section>
         <h2>🎮 Интерактивные примеры</h2>
 
-        <div className='demo-group'>
+        <div>
           <h3>Меню навигации</h3>
-          <div className='seamless-rows'>
+          <div>
             <Row
               left={<span>🏠</span>}
               center={<span>Главная</span>}
@@ -236,9 +236,9 @@ export const RowDemo: React.FC = () => {
           </div>
         </div>
 
-        <div className='demo-group'>
+        <div>
           <h3>Список задач</h3>
-          <div className='seamless-rows'>
+          <div>
             <Row
               left={
                 <ToggleButton size='small' checked={true}>
@@ -277,52 +277,6 @@ export const RowDemo: React.FC = () => {
           </div>
         </div>
       </section>
-
-      <style>{`
-        .row-demo {
-          padding: 20px;
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .section {
-          margin-bottom: 40px;
-        }
-
-        .section h2 {
-          margin-bottom: 20px;
-          color: var(--c-text-primary);
-        }
-
-        .demo-group {
-          margin-bottom: 30px;
-        }
-
-        .demo-group h3 {
-          margin-bottom: 12px;
-          color: var(--c-text-primary);
-          font-size: 16px;
-        }
-
-        .seamless-rows {
-          border: 1px solid var(--c-border);
-          border-radius: ${DESIGN_TOKENS.radius.medium};
-          overflow: hidden;
-          background: var(--c-bg-subtle);
-        }
-
-        .seamless-rows > * {
-          border-bottom: 1px solid var(--c-border);
-        }
-
-        .seamless-rows > *:last-child {
-          border-bottom: none;
-        }
-
-        .seamless-rows > * > div {
-          border-radius: 0 !important;
-        }
-      `}</style>
     </div>
   );
 };

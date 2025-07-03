@@ -139,7 +139,7 @@ const CloseButton = styled(Button)`
   top: 22px;
   right: -26px;
   z-index: 10;
-  background: var(--c-bg-elevated);
+  background: inherit;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   align-self: flex-end;
 

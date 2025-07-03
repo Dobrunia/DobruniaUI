@@ -1182,7 +1182,7 @@ interface ChatListItem {
 - `left?: React.ReactNode` - левый слот
 - `center?: React.ReactNode` - центральный слот
 - `right?: React.ReactNode` - правый слот
-- `align?: 'start' | 'center' | 'end'` - вертикальное выравнивание
+- `centerJustify?: 'left' | 'center' | 'right'` - горизонтальное выравнивание содержимого центра (по умолчанию 'left')
 - `padding?: string` - внутренние отступы
 - `minHeight?: string` - минимальная высота
 - `onClick?: () => void` - обработчик клика
@@ -1193,6 +1193,7 @@ interface ChatListItem {
   left={<Avatar name='John Doe' />}
   center={<span>Имя пользователя</span>}
   right={<Button variant='ghost'>Действие</Button>}
+  centerJustify='center'
   onClick={() => navigate('/profile')}
 />
 ```
