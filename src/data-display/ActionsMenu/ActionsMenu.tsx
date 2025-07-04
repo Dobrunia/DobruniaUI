@@ -2,6 +2,15 @@ import React from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
+/**
+ * ActionsMenuAction - действие в меню
+ * @param label 'string' - текст действия
+ * @param icon 'React.ReactNode' - иконка действия
+ * @param onClick '() => void' - обработчик клика
+ * @param type 'default' | 'destructive' | 'primary' = 'default' - тип действия
+ * @param disabled 'boolean' = false - флаг отключения действия
+ * @param shortcut 'string' - горячая клавиша (отображается справа)
+ */
 export interface ActionsMenuAction {
   /** Отображаемый текст */
   label: string;
@@ -17,6 +26,11 @@ export interface ActionsMenuAction {
   shortcut?: string;
 }
 
+/**
+ * ActionsMenuGroup - группа действий
+ * @param actions 'ActionsMenuAction[]' - массив действий
+ * @param title 'string' - заголовок группы
+ */
 export interface ActionsMenuGroup {
   /** Действия в группе */
   actions: ActionsMenuAction[];
@@ -167,10 +181,10 @@ export const ActionsMenu: React.FC<ActionsMenuProps> = ({ items, className, onCl
   // Определяем, это простой массив действий или группы
   const isSimpleArray = items.length > 0 && 'label' in items[0];
 
-  const handleActionClick = (action: ActionsMenuAction) => {
+  const handleActionClick = async (action: ActionsMenuAction) => {
     if (action.disabled) return;
 
-    action.onClick();
+    await Promise.resolve(action.onClick());
     onClose?.();
   };
 
