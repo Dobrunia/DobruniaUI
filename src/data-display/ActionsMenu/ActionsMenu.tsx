@@ -57,6 +57,7 @@ const Menu = styled.div`
   backdrop-filter: blur(8px);
   padding: ${DESIGN_TOKENS.spacing.small};
   font-size: ${DESIGN_TOKENS.fontSize.medium};
+  z-index: 1;
 
   /* Для темной темы добавляем дополнительный border */
   @media (prefers-color-scheme: dark) {
