@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface PortalProps {
@@ -22,46 +21,32 @@ export const Portal: React.FC<PortalProps> = ({
   disabled = false,
   className,
 }) => {
-  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (disabled) {
-      setPortalContainer(null);
-      return;
-    }
-
-    let element: HTMLElement;
-
-    if (typeof container === 'string') {
-      // Если передан селектор, ищем элемент
-      element = document.querySelector(container) as HTMLElement;
-      if (!element) {
-        console.warn(`Portal: Element with selector "${container}" not found`);
-        element = document.body;
-      }
-    } else if (container instanceof HTMLElement) {
-      // Если передан HTMLElement, используем его
-      element = container;
-    } else {
-      // По умолчанию используем body
-      element = document.body;
-    }
-
-    setPortalContainer(element);
-  }, [container, disabled]);
-
-  // Если portal отключен, рендерим детей как обычно
+  /* 1. если портал отключён – выводим как есть */
   if (disabled) {
     return <div className={className}>{children}</div>;
   }
 
-  // Если контейнер не готов, не рендерим ничего
-  if (!portalContainer) {
-    return null;
+  /* 2. вычисляем целевой элемент «на лету» */
+  if (typeof document === 'undefined') return null; // SSR-гард
+
+  let target: HTMLElement | null = null;
+
+  if (typeof container === 'string') {
+    target = document.querySelector(container);
+    if (!target) {
+      console.warn(`Portal: selector "${container}" not найден, используем <body>`);
+      target = document.body;
+    }
+  } else if (container instanceof HTMLElement) {
+    target = container;
+  } else {
+    target = document.body;
   }
 
-  return createPortal(
-    className ? <div className={className}>{children}</div> : children,
-    portalContainer
-  );
+  if (!target) return null; // крайний случай
+
+  /* 3. сам портал */
+  const node = className ? <div className={className}>{children}</div> : children;
+
+  return createPortal(node, target);
 };
