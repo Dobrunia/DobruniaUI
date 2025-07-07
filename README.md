@@ -26,13 +26,14 @@ npm install dobruniaui react react-dom
 ## 🚀 Быстрый старт
 
 ```tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, initThemeSystem } from 'dobruniaui';
 
-/* ••• вызов сразу при загрузке модуля (только в браузере) ••• */
-if (typeof window !== 'undefined') initThemeSystem();
-
 export default function App() {
+  useEffect(() => {
+    // Инициализируем систему тем при монтировании приложения
+    initThemeSystem();
+  }, []);
   return (
     <div
       style={{
@@ -205,10 +206,13 @@ initThemeSystem();
 
 ```tsx
 import { ThemeSelect } from 'dobruniaui';
-/* ••• вызов сразу при загрузке модуля (только в браузере) ••• */
-if (typeof window !== 'undefined') initThemeSystem();
 
-export default function App() {
+function App() {
+  useEffect(() => {
+    // Инициализируем систему тем при монтировании приложения
+    initThemeSystem();
+  }, []);
+
   return (
     <div>
       <ThemeSelect />

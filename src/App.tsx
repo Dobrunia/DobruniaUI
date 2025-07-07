@@ -1,11 +1,13 @@
 import Playground from './pages/Playground';
 import './App.css';
 import { initThemeSystem } from '@DobruniaUI';
-
-/* ••• вызов сразу при загрузке модуля (только в браузере) ••• */
-if (typeof window !== 'undefined') initThemeSystem();
+import { useEffect } from 'react';
 
 export default function App() {
+  useEffect(() => {
+    // Инициализируем систему тем при монтировании приложения
+    initThemeSystem();
+  }, []);
   return (
     <div style={{ height: '100vh' }}>
       <Playground />
