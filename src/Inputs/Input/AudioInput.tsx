@@ -1,6 +1,53 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
+
+// Кастомный хук для записи аудио
+const useAudioRecorder = (onAudioRecord: (audio: Blob) => void) => {
+  const [recording, setRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+
+  const startRecording = useCallback(async () => {
+    if (recording) return;
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new window.MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunks.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunks.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        onAudioRecord(audioBlob);
+        stream.getTracks().forEach((track) => track.stop());
+        setRecording(false);
+      };
+
+      mediaRecorder.start();
+      setRecording(true);
+    } catch {
+      setRecording(false);
+    }
+  }, [recording, onAudioRecord]);
+
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && recording) {
+      mediaRecorderRef.current.stop();
+    }
+    setRecording(false);
+  }, [recording]);
+
+  return {
+    recording,
+    startRecording,
+    stopRecording,
+  };
+};
 
 export interface AudioInputProps {
   /** Обработчик записи аудио */
@@ -10,7 +57,7 @@ export interface AudioInputProps {
 }
 
 // SVG иконка
-const MicIcon = ({ recording }: { recording?: boolean }) => (
+const MicIcon = React.memo(({ recording }: { recording?: boolean }) => (
   <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
     <rect
       x='7'
@@ -46,7 +93,9 @@ const MicIcon = ({ recording }: { recording?: boolean }) => (
       fill='none'
     />
   </svg>
-);
+));
+
+MicIcon.displayName = 'MicIcon';
 
 // Стили
 const IconBtn = styled.button`
@@ -109,57 +158,44 @@ const MicBtn = styled(IconBtn)<{ $recording?: boolean }>`
  * @param onAudioRecord - обработчик записи аудио
  * @param className - дополнительные CSS классы
  */
-export const AudioInput: React.FC<AudioInputProps> = ({ onAudioRecord, className }) => {
-  const [recording, setRecording] = useState(false);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunks = useRef<Blob[]>([]);
+export const AudioInput: React.FC<AudioInputProps> = React.memo(({ onAudioRecord, className }) => {
+  const { recording, startRecording, stopRecording } = useAudioRecorder(onAudioRecord);
 
-  const startRecording = async () => {
-    if (recording) return;
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new window.MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunks.current = [];
+  const handleMouseDown = useCallback(() => {
+    startRecording();
+  }, [startRecording]);
 
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) audioChunks.current.push(e.data);
-      };
+  const handleMouseUp = useCallback(() => {
+    stopRecording();
+  }, [stopRecording]);
 
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        onAudioRecord(audioBlob);
-        stream.getTracks().forEach((track) => track.stop());
-        setRecording(false);
-      };
+  const handleMouseLeave = useCallback(() => {
+    stopRecording();
+  }, [stopRecording]);
 
-      mediaRecorder.start();
-      setRecording(true);
-    } catch {
-      setRecording(false);
-    }
-  };
+  const handleTouchStart = useCallback(() => {
+    startRecording();
+  }, [startRecording]);
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && recording) {
-      mediaRecorderRef.current.stop();
-    }
-    setRecording(false);
-  };
+  const handleTouchEnd = useCallback(() => {
+    stopRecording();
+  }, [stopRecording]);
 
   return (
     <MicBtn
       className={className}
       type='button'
       $recording={recording}
-      onMouseDown={startRecording}
-      onMouseUp={stopRecording}
-      onMouseLeave={stopRecording}
-      onTouchStart={startRecording}
-      onTouchEnd={stopRecording}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       aria-label={recording ? 'Идёт запись...' : 'Записать аудио'}
     >
       <MicIcon recording={recording} />
     </MicBtn>
   );
-};
+});
+
+AudioInput.displayName = 'AudioInput';

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Button, DESIGN_TOKENS, AudioInput, EmojiInput } from '@DobruniaUI';
+import { Button, DESIGN_TOKENS, AudioInput, EmojiInput, FileInput } from '@DobruniaUI';
 
 export interface MessageInputProps {
   /** Значение текста сообщения */
@@ -25,19 +25,7 @@ export interface MessageInputProps {
   disabled?: boolean;
 }
 
-// SVG иконки
-const PaperclipIcon = () => (
-  <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
-    <path
-      d='M7.5 9.5l5-5a2.121 2.121 0 113 3l-7 7a4 4 0 01-5.657-5.657l7.071-7.07'
-      stroke='currentColor'
-      strokeWidth='1.5'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    />
-  </svg>
-);
-
+// SVG иконка для аудио файлов
 const AudioIcon = () => (
   <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
     <path
@@ -72,6 +60,7 @@ const FilePreview = styled.div`
   background: var(--c-bg-elevated);
   padding: ${DESIGN_TOKENS.spacing.small};
   border-radius: ${DESIGN_TOKENS.radius.medium};
+  flex-wrap: wrap;
 `;
 
 const FileThumbWrapper = styled.div`
@@ -118,27 +107,6 @@ const InputBar = styled.div`
   border-radius: ${DESIGN_TOKENS.radius.large};
 `;
 
-const IconBtn = styled.button`
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--c-text-secondary);
-  font-size: ${DESIGN_TOKENS.fontSize.large};
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  max-width: 32px;
-  max-height: 32px;
-  &:hover {
-    color: var(--c-accent);
-  }
-`;
-
 const StyledTextarea = styled.textarea`
   flex: 1;
   background: transparent;
@@ -177,10 +145,6 @@ const StyledTextarea = styled.textarea`
     background: var(--c-accent);
     border-radius: 8px;
   }
-`;
-
-const HiddenFileInput = styled.input.attrs({ type: 'file' })`
-  display: none;
 `;
 
 const SendBtn = styled(Button)`
@@ -251,7 +215,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   className,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Для авто-роста textarea
@@ -263,14 +226,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   }, [value]);
 
   // File handling
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files ? Array.from(e.target.files) : [];
-    const all = [...files, ...fileList];
+  const handleFileChange = (newFiles: File[]) => {
+    const all = [...files, ...newFiles];
     const unique = all.filter(
       (file, idx, arr) => arr.findIndex((f) => f.name === file.name && f.size === file.size) === idx
     );
     onFilesChange(unique);
-    e.target.value = '';
   };
 
   const handleRemoveFile = (idx: number) => {
@@ -353,15 +314,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       {/* Основной ввод */}
       <InputBar>
         {/* Кнопка прикрепления файлов */}
-        <IconBtn type='button' onClick={() => fileInputRef.current?.click()} disabled={disabled}>
-          <PaperclipIcon />
-        </IconBtn>
-        <HiddenFileInput
-          ref={fileInputRef}
-          multiple
-          onChange={handleFileChange}
-          disabled={disabled}
-        />
+        <FileInput onFilesChange={handleFileChange} disabled={disabled} />
 
         {/* Основное текстовое поле */}
         <StyledTextarea

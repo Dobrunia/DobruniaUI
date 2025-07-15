@@ -1,6 +1,132 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
+
+// Кастомный хук для hover функциональности
+const useHover = (delay: number = 120) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const show = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsHovered(true);
+  }, []);
+
+  const hide = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => setIsHovered(false), delay);
+  }, [delay]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return {
+    isHovered,
+    show,
+    hide,
+  };
+};
+
+// Выносим данные эмодзи за пределы компонента
+const EMOJI_LIST = [
+  '😀',
+  '😃',
+  '😄',
+  '😁',
+  '😆',
+  '😅',
+  '😂',
+  '🤣',
+  '😊',
+  '😇',
+  '🙂',
+  '🙃',
+  '😉',
+  '😌',
+  '😍',
+  '🥰',
+  '😘',
+  '😗',
+  '😙',
+  '😚',
+  '😋',
+  '😛',
+  '😝',
+  '😜',
+  '🤪',
+  '🤨',
+  '🧐',
+  '🤓',
+  '😎',
+  '🤩',
+  '🥳',
+  '😏',
+  '😒',
+  '😞',
+  '😔',
+  '😟',
+  '😕',
+  '🙁',
+  '☹️',
+  '😣',
+  '😖',
+  '😫',
+  '😩',
+  '🥺',
+  '😢',
+  '😭',
+  '😤',
+  '😠',
+  '😡',
+  '🤬',
+  '🤯',
+  '😳',
+  '🥵',
+  '🥶',
+  '😱',
+  '😨',
+  '😰',
+  '😥',
+  '😓',
+  '🤗',
+  '🤔',
+  '🤭',
+  '🤫',
+  '🤥',
+  '😶',
+  '😐',
+  '😑',
+  '😬',
+  '🙄',
+  '😯',
+  '😦',
+  '😧',
+  '😮',
+  '😲',
+  '🥱',
+  '😴',
+  '🤤',
+  '😪',
+  '😵',
+  '🤐',
+  '🥴',
+  '🤢',
+  '🤮',
+  '🤧',
+  '😷',
+  '🤒',
+  '🤕',
+] as const;
 
 export interface EmojiInputProps {
   /** Обработчик выбора эмодзи */
@@ -12,7 +138,7 @@ export interface EmojiInputProps {
 }
 
 // SVG иконка
-const SmileIcon = () => (
+const SmileIcon = React.memo(() => (
   <svg width='20' height='20' fill='none' viewBox='0 0 20 20'>
     <circle cx='10' cy='10' r='8' stroke='currentColor' strokeWidth='1.5' />
     <path
@@ -25,7 +151,9 @@ const SmileIcon = () => (
     <circle cx='7' cy='8.5' r='1' fill='currentColor' />
     <circle cx='13' cy='8.5' r='1' fill='currentColor' />
   </svg>
-);
+));
+
+SmileIcon.displayName = 'SmileIcon';
 
 // Стили
 const IconBtn = styled.button`
@@ -114,106 +242,23 @@ const EmojiPicker: React.FC<{
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   align?: 'left' | 'right';
-}> = ({ onSelect, visible, onMouseEnter, onMouseLeave, align = 'left' }) => {
-  const emojis = [
-    '😀',
-    '😃',
-    '😄',
-    '😁',
-    '😆',
-    '😅',
-    '😂',
-    '🤣',
-    '😊',
-    '😇',
-    '🙂',
-    '🙃',
-    '😉',
-    '😌',
-    '😍',
-    '🥰',
-    '😘',
-    '😗',
-    '😙',
-    '😚',
-    '😋',
-    '😛',
-    '😝',
-    '😜',
-    '🤪',
-    '🤨',
-    '🧐',
-    '🤓',
-    '😎',
-    '🤩',
-    '🥳',
-    '😏',
-    '😒',
-    '😞',
-    '😔',
-    '😟',
-    '😕',
-    '🙁',
-    '☹️',
-    '😣',
-    '😖',
-    '😫',
-    '😩',
-    '🥺',
-    '😢',
-    '😭',
-    '😤',
-    '😠',
-    '😡',
-    '🤬',
-    '🤯',
-    '😳',
-    '🥵',
-    '🥶',
-    '😱',
-    '😨',
-    '😰',
-    '😥',
-    '😓',
-    '🤗',
-    '🤔',
-    '🤭',
-    '🤫',
-    '🤥',
-    '😶',
-    '😐',
-    '😑',
-    '😬',
-    '🙄',
-    '😯',
-    '😦',
-    '😧',
-    '😮',
-    '😲',
-    '🥱',
-    '😴',
-    '🤤',
-    '😪',
-    '😵',
-    '🤐',
-    '🥴',
-    '🤢',
-    '🤮',
-    '🤧',
-    '😷',
-    '🤒',
-    '🤕',
-  ];
+}> = React.memo(({ onSelect, visible, onMouseEnter, onMouseLeave, align = 'left' }) => {
+  const handleEmojiClick = useCallback(
+    (emoji: string) => {
+      onSelect(emoji);
+    },
+    [onSelect]
+  );
 
   if (!visible) return null;
 
   return (
     <EmojiPickerWrapper $align={align} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <EmojiGrid>
-        {emojis.map((emoji, index) => (
+        {EMOJI_LIST.map((emoji, index) => (
           <EmojiButton
-            key={index}
-            onClick={() => onSelect(emoji)}
+            key={`${emoji}-${index}`}
+            onClick={() => handleEmojiClick(emoji)}
             aria-label={`Select emoji ${emoji}`}
           >
             {emoji}
@@ -222,7 +267,9 @@ const EmojiPicker: React.FC<{
       </EmojiGrid>
     </EmojiPickerWrapper>
   );
-};
+});
+
+EmojiPicker.displayName = 'EmojiPicker';
 
 /**
  * EmojiInput - компонент выбора эмодзи с hover picker'ом
@@ -230,36 +277,32 @@ const EmojiPicker: React.FC<{
  * @param onEmojiSelect - обработчик выбора эмодзи
  * @param className - дополнительные CSS классы
  */
-export const EmojiInput: React.FC<EmojiInputProps> = ({
-  onEmojiSelect,
-  align = 'left',
-  className,
-}) => {
-  const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
-  const emojiPickerTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+export const EmojiInput: React.FC<EmojiInputProps> = React.memo(
+  ({ onEmojiSelect, align = 'left', className }) => {
+    const { isHovered, show, hide } = useHover(120);
 
-  const showEmojiPicker = () => {
-    if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
-    setEmojiPickerVisible(true);
-  };
+    const handleEmojiSelect = useCallback(
+      (emoji: string) => {
+        onEmojiSelect(emoji);
+      },
+      [onEmojiSelect]
+    );
 
-  const hideEmojiPicker = () => {
-    if (emojiPickerTimeout.current) clearTimeout(emojiPickerTimeout.current);
-    emojiPickerTimeout.current = setTimeout(() => setEmojiPickerVisible(false), 120);
-  };
+    return (
+      <EmojiButtonWrapper className={className}>
+        <IconBtn type='button' onMouseEnter={show} onMouseLeave={hide}>
+          <SmileIcon />
+        </IconBtn>
+        <EmojiPicker
+          onSelect={handleEmojiSelect}
+          visible={isHovered}
+          onMouseEnter={show}
+          onMouseLeave={hide}
+          align={align}
+        />
+      </EmojiButtonWrapper>
+    );
+  }
+);
 
-  return (
-    <EmojiButtonWrapper className={className}>
-      <IconBtn type='button' onMouseEnter={showEmojiPicker} onMouseLeave={hideEmojiPicker}>
-        <SmileIcon />
-      </IconBtn>
-      <EmojiPicker
-        onSelect={onEmojiSelect}
-        visible={emojiPickerVisible}
-        onMouseEnter={showEmojiPicker}
-        onMouseLeave={hideEmojiPicker}
-        align={align}
-      />
-    </EmojiButtonWrapper>
-  );
-};
+EmojiInput.displayName = 'EmojiInput';

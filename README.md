@@ -484,16 +484,18 @@ const darkTheme = getThemeConfig('dark');
 />
 ```
 
-#### **FileInput** - Выбор файлов с превью
+#### **FileInput** - Простая кнопка для выбора файлов
 
 **Пропсы:**
 
-- `files: File[]` - массив выбранных файлов (обязательный)
 - `onFilesChange: (files: File[]) => void` - обработчик изменения файлов (обязательный)
+- `disabled?: boolean` - отключить компонент
+- `multiple?: boolean` - разрешить множественный выбор (по умолчанию true)
+- `accept?: string` - принимаемые типы файлов
 - `className?: string` - дополнительные CSS классы
 
 ```tsx
-<FileInput files={selectedFiles} onFilesChange={setSelectedFiles} />
+<FileInput onFilesChange={setSelectedFiles} multiple accept="image/*" />
 ```
 
 #### **EmojiInput** - Выбор эмодзи с hover picker

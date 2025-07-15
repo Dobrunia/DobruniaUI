@@ -1,21 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
-export interface SearchInputProps {
-  /** Значение поиска */
-  value: string;
-  /** Обработчик изменения значения */
-  onChange: (value: string) => void;
-  /** Placeholder текст */
-  placeholder?: string;
-  /** Размер поля */
-  size?: 'small' | 'medium' | 'large';
-  /** Дополнительные CSS классы */
-  className?: string;
-}
-
-const sizeMap = {
+// Выносим sizeMap за пределы компонента
+const SIZE_MAP = {
   small: {
     minHeight: DESIGN_TOKENS.baseHeight.small,
     fontSize: DESIGN_TOKENS.fontSize.small,
@@ -31,16 +19,29 @@ const sizeMap = {
     fontSize: DESIGN_TOKENS.fontSize.large,
     padding: `0 ${DESIGN_TOKENS.spacing.large}`,
   },
-};
+} as const;
+
+export interface SearchInputProps {
+  /** Значение поиска */
+  value: string;
+  /** Обработчик изменения значения */
+  onChange: (value: string) => void;
+  /** Placeholder текст */
+  placeholder?: string;
+  /** Размер поля */
+  size?: 'small' | 'medium' | 'large';
+  /** Дополнительные CSS классы */
+  className?: string;
+}
 
 const SearchInputField = styled.input<{ $size: 'small' | 'medium' | 'large' }>`
   display: flex;
   align-items: center;
   background: var(--c-bg-elevated);
   border-radius: 999px;
-  min-height: ${({ $size }) => sizeMap[$size].minHeight};
-  font-size: ${({ $size }) => sizeMap[$size].fontSize};
-  padding: ${({ $size }) => sizeMap[$size].padding};
+  min-height: ${({ $size }) => SIZE_MAP[$size].minHeight};
+  font-size: ${({ $size }) => SIZE_MAP[$size].fontSize};
+  padding: ${({ $size }) => SIZE_MAP[$size].padding};
   box-shadow: none;
   transition: box-shadow ${DESIGN_TOKENS.transition.fast};
   border: none;
@@ -72,21 +73,26 @@ const SearchInputField = styled.input<{ $size: 'small' | 'medium' | 'large' }>`
  * @param size - размер поля ('small' | 'medium' | 'large'), по умолчанию 'medium'
  * @param className - дополнительные CSS классы
  */
-export const SearchInput: React.FC<SearchInputProps> = ({
-  value,
-  onChange,
-  placeholder = 'Поиск',
-  size = 'medium',
-  className,
-}) => {
-  return (
-    <SearchInputField
-      type='text'
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={className}
-      $size={size}
-    />
-  );
-};
+export const SearchInput: React.FC<SearchInputProps> = React.memo(
+  ({ value, onChange, placeholder = 'Поиск', size = 'medium', className }) => {
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.value);
+      },
+      [onChange]
+    );
+
+    return (
+      <SearchInputField
+        type='text'
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChange}
+        className={className}
+        $size={size}
+      />
+    );
+  }
+);
+
+SearchInput.displayName = 'SearchInput';
