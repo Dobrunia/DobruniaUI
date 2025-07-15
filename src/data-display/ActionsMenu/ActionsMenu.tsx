@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
@@ -91,7 +91,7 @@ const MenuButton = styled.button<{
   justify-content: space-between;
   width: 100%;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   font-size: inherit;
   font-family: inherit;
   padding: ${DESIGN_TOKENS.spacing.small};
@@ -117,12 +117,15 @@ const MenuButton = styled.button<{
       if ($type === 'primary') return 'var(--c-accent)20';
       return 'var(--c-bg-elevated)';
     }};
-
-    transform: translateY(-1px);
+    border-color: ${({ $type }) => {
+      if ($type === 'destructive') return 'var(--c-error)';
+      if ($type === 'primary') return 'var(--c-accent)';
+      return 'var(--c-border)';
+    }};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0);
     background: ${({ $type }) => {
       if ($type === 'destructive') return 'var(--c-error)30';
       if ($type === 'primary') return 'var(--c-accent)30';
@@ -172,51 +175,93 @@ const Shortcut = styled.span`
   margin-left: auto;
 `;
 
+// Мемоизированный компонент для действия
+const ActionItem = React.memo<{
+  action: ActionsMenuAction;
+  index: number;
+  onActionClick: (action: ActionsMenuAction) => void;
+}>(({ action, index, onActionClick }) => (
+  <MenuButton
+    key={`action-${index}-${action.label}`}
+    $type={action.type || 'default'}
+    $disabled={action.disabled || false}
+    onClick={() => onActionClick(action)}
+    disabled={action.disabled}
+  >
+    <ButtonContent>
+      <IconWrapper>{action.icon}</IconWrapper>
+      <span>{action.label}</span>
+    </ButtonContent>
+    {action.shortcut && <Shortcut>{action.shortcut}</Shortcut>}
+  </MenuButton>
+));
+
+// Мемоизированный компонент для группы
+const GroupItem = React.memo<{
+  group: ActionsMenuGroup;
+  index: number;
+  onActionClick: (action: ActionsMenuAction) => void;
+}>(({ group, index, onActionClick }) => (
+  <MenuGroup key={`group-${index}-${group.title || 'untitled'}`}>
+    {group.title && <GroupTitle>{group.title}</GroupTitle>}
+    {group.actions.map((action, actionIndex) => (
+      <ActionItem
+        key={`${index}-${actionIndex}-${action.label}`}
+        action={action}
+        index={actionIndex}
+        onActionClick={onActionClick}
+      />
+    ))}
+  </MenuGroup>
+));
+
 /**
  * ActionsMenu - контекстное меню действий с поддержкой групп и горячих клавиш
  * @param items 'ActionsMenuAction[] | ActionsMenuGroup[]' - массив действий или групп действий
  * @param className 'string' - дополнительные CSS классы
  * @param onClose '() => void' - обработчик закрытия меню
  */
-export const ActionsMenu: React.FC<ActionsMenuProps> = ({ items, className, onClose }) => {
-  // Определяем, это простой массив действий или группы
-  const isSimpleArray = items.length > 0 && 'label' in items[0];
+export const ActionsMenu: React.FC<ActionsMenuProps> = React.memo(
+  ({ items, className, onClose }) => {
+    // Мемоизируем определение типа массива
+    const isSimpleArray = useMemo(() => items.length > 0 && 'label' in items[0], [items]);
 
-  const handleActionClick = async (action: ActionsMenuAction) => {
-    if (action.disabled) return;
+    // Стабилизируем обработчик клика
+    const handleActionClick = useCallback(
+      async (action: ActionsMenuAction) => {
+        if (action.disabled) return;
 
-    await Promise.resolve(action.onClick());
-    onClose?.();
-  };
+        await Promise.resolve(action.onClick());
+        onClose?.();
+      },
+      [onClose]
+    );
 
-  const renderAction = (action: ActionsMenuAction, index: number) => (
-    <MenuButton
-      key={index}
-      $type={action.type || 'default'}
-      $disabled={action.disabled || false}
-      onClick={() => handleActionClick(action)}
-      disabled={action.disabled}
-    >
-      <ButtonContent>
-        <IconWrapper>{action.icon}</IconWrapper>
-        <span>{action.label}</span>
-      </ButtonContent>
-      {action.shortcut && <Shortcut>{action.shortcut}</Shortcut>}
-    </MenuButton>
-  );
+    // Мемоизируем рендер содержимого
+    const menuContent = useMemo(() => {
+      if (isSimpleArray) {
+        return (items as ActionsMenuAction[]).map((action, index) => (
+          <ActionItem
+            key={`action-${index}-${action.label}`}
+            action={action}
+            index={index}
+            onActionClick={handleActionClick}
+          />
+        ));
+      } else {
+        return (items as ActionsMenuGroup[]).map((group, index) => (
+          <GroupItem
+            key={`group-${index}-${group.title || 'untitled'}`}
+            group={group}
+            index={index}
+            onActionClick={handleActionClick}
+          />
+        ));
+      }
+    }, [items, isSimpleArray, handleActionClick]);
 
-  const renderGroup = (group: ActionsMenuGroup, index: number) => (
-    <MenuGroup key={index}>
-      {group.title && <GroupTitle>{group.title}</GroupTitle>}
-      {group.actions.map((action, actionIndex) => renderAction(action, actionIndex))}
-    </MenuGroup>
-  );
+    return <Menu className={className}>{menuContent}</Menu>;
+  }
+);
 
-  return (
-    <Menu className={className}>
-      {isSimpleArray
-        ? (items as ActionsMenuAction[]).map((action, index) => renderAction(action, index))
-        : (items as ActionsMenuGroup[]).map((group, index) => renderGroup(group, index))}
-    </Menu>
-  );
-};
+ActionsMenu.displayName = 'ActionsMenu';
