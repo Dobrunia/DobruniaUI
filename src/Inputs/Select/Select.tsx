@@ -245,7 +245,7 @@ const SelectActions = styled.div`
 `;
 
 const ClearButton = styled.button`
-  background: none;
+  background: var(--c-bg-elevated);
   border: none;
   padding: 0;
   cursor: pointer;
@@ -258,6 +258,7 @@ const ClearButton = styled.button`
   width: 20px;
   height: 20px;
   transition: all 0.2s ease;
+  color: var(--c-text-primary);
 
   &:active {
     transform: scale(0.95);
