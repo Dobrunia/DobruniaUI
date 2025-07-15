@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
 export type AlertWithBorderType = 'success' | 'info' | 'warning' | 'error';
