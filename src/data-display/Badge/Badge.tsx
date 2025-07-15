@@ -136,16 +136,14 @@ export const Badge: React.FC<BadgeProps> = React.memo(
   ({ value, children, max = 99, variant = 'default', date, locale = 'en', className }) => {
     // Мемоизируем проверку для message-date варианта
     const isMessageDate = useMemo(() => variant === 'message-date', [variant]);
+    const shouldShowBadge = useMemo(() => {
+      return value !== undefined && value !== null && value !== '';
+    }, [value]);
 
     if (isMessageDate) {
       if (!date) return null;
       return <MessageDateBadge date={date} locale={locale} className={className} />;
     }
-
-    // Проверяем, нужно ли показывать бейдж
-    const shouldShowBadge = useMemo(() => {
-      return value !== undefined && value !== null && value !== '';
-    }, [value]);
 
     if (!shouldShowBadge) {
       return <BadgeWrapper className={className}>{children}</BadgeWrapper>;

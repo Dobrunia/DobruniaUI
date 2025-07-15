@@ -472,11 +472,12 @@ export const Select: React.FC<SelectProps> = ({
   useEffect(() => {
     // Register this select instance
     selectInstances.add(closeSelect);
+    const id = selectId.current;
 
     return () => {
       // Unregister this select instance
       selectInstances.delete(closeSelect);
-      if (globalOpenSelect === selectId.current) {
+      if (globalOpenSelect === id) {
         globalOpenSelect = null;
       }
       if (hoverTimeoutRef.current) {

@@ -574,8 +574,6 @@ const ReactionsComponent = React.memo<{
   currentUserId?: string;
   onReaction?: (emoji: string) => void;
 }>(({ reactions, currentUserId, onReaction }) => {
-  if (!reactions || reactions.length === 0) return null;
-
   const handleReactionClick = useCallback(
     (emoji: string) => (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -583,6 +581,8 @@ const ReactionsComponent = React.memo<{
     },
     [onReaction]
   );
+
+  if (!reactions || reactions.length === 0) return null;
 
   return (
     <>
