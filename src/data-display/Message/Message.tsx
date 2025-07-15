@@ -681,7 +681,7 @@ export const Message: React.FC<MessageProps> = React.memo(
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const bubbleRef = useRef<HTMLDivElement>(null);
-    const reactionMenuRef = useRef<HTMLDivElement>(null);
+    // const reactionMenuRef = useRef<HTMLDivElement>(null);
 
     // Используем кастомные хуки
     const audioPlayer = useAudioPlayer();
