@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Modal, Button } from '@DobruniaUI';
 
@@ -32,6 +32,34 @@ const Actions = styled.div`
   border-top: 1px solid var(--c-border);
 `;
 
+// Мемоизированные подкомпоненты
+const ModalActions = React.memo<{
+  onClose: () => void;
+  onSubmit: () => void;
+  submitText: string;
+  cancelText: string;
+  submitVariant: 'primary' | 'warning';
+  isLoading: boolean;
+  disabled: boolean;
+}>(({ onClose, onSubmit, submitText, cancelText, submitVariant, isLoading, disabled }) => (
+  <Actions>
+    <Button variant='secondary' onClick={onClose} disabled={isLoading} type='button'>
+      {cancelText}
+    </Button>
+
+    <Button
+      variant={submitVariant}
+      onClick={onSubmit}
+      disabled={disabled || isLoading}
+      isLoading={isLoading}
+      type='button'
+    >
+      {submitText}
+    </Button>
+  </Actions>
+));
+ModalActions.displayName = 'ModalActions';
+
 /**
  * ModalSubmit - модальное окно с кнопками подтверждения и отмены
  * @param isOpen 'boolean' - флаг открытия модального окна
@@ -48,7 +76,7 @@ const Actions = styled.div`
  * @param preventCloseOnSubmit 'boolean' = false - не закрывать автоматически после submit
  * @param className 'string' - дополнительные CSS классы
  */
-export const ModalSubmit: React.FC<ModalSubmitProps> = ({
+export const ModalSubmit = React.memo<ModalSubmitProps>(({
   isOpen,
   onClose,
   onSubmit,
@@ -63,7 +91,8 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
   preventCloseOnSubmit = false,
   className,
 }) => {
-  const handleSubmit = async () => {
+  // Стабилизируем обработчики
+  const handleSubmit = useCallback(async () => {
     try {
       await onSubmit();
       if (!preventCloseOnSubmit) {
@@ -73,39 +102,40 @@ export const ModalSubmit: React.FC<ModalSubmitProps> = ({
       console.error('Submit error:', error);
       // Не закрываем модал при ошибке
     }
-  };
+  }, [onSubmit, preventCloseOnSubmit, onClose]);
+
+  // Мемоизируем пропсы для модального окна
+  const modalProps = useMemo(() => ({
+    isOpen,
+    onClose,
+    title,
+    size,
+    showCloseButton: !isLoading,
+    closeable: !isLoading,
+    closeOnBackdropClick: !isLoading,
+    closeOnEscape: !isLoading,
+    className,
+  }), [isOpen, onClose, title, size, isLoading, className]);
+
+  // Мемоизируем пропсы для действий
+  const actionsProps = useMemo(() => ({
+    onClose,
+    onSubmit: handleSubmit,
+    submitText,
+    cancelText,
+    submitVariant,
+    isLoading,
+    disabled,
+  }), [onClose, handleSubmit, submitText, cancelText, submitVariant, isLoading, disabled]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={title}
-      size={size}
-      showCloseButton={!isLoading}
-      closeable={!isLoading}
-      closeOnBackdropClick={!isLoading}
-      closeOnEscape={!isLoading}
-      className={className}
-    >
+    <Modal {...modalProps}>
       <Content>
         <div>{children}</div>
-
-        <Actions>
-          <Button variant='secondary' onClick={onClose} disabled={isLoading} type='button'>
-            {cancelText}
-          </Button>
-
-          <Button
-            variant={submitVariant}
-            onClick={handleSubmit}
-            disabled={disabled || isLoading}
-            isLoading={isLoading}
-            type='button'
-          >
-            {submitText}
-          </Button>
-        </Actions>
+        <ModalActions {...actionsProps} />
       </Content>
     </Modal>
   );
-};
+});
+
+ModalSubmit.displayName = 'ModalSubmit';

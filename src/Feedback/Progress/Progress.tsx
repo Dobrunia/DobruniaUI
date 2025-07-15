@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
@@ -33,6 +33,44 @@ const ProgressCircle = styled.circle`
   transition: stroke-dashoffset 0.5s;
 `;
 
+// Мемоизированные подкомпоненты
+const CircularProgressSVG = React.memo<{
+  size: number;
+  radius: number;
+  strokeWidth: number;
+  color: string;
+  circumference: number;
+  offset: number;
+}>(({ size, radius, strokeWidth, color, circumference, offset }) => (
+  <svg width={size} height={size}>
+    <circle
+      cx={size / 2}
+      cy={size / 2}
+      r={radius}
+      stroke='var(--c-border)'
+      strokeWidth={strokeWidth}
+      fill='none'
+    />
+    <ProgressCircle
+      cx={size / 2}
+      cy={size / 2}
+      r={radius}
+      stroke={color}
+      strokeWidth={strokeWidth}
+      fill='none'
+      strokeDasharray={circumference}
+      strokeDashoffset={offset}
+      strokeLinecap='round'
+    />
+  </svg>
+));
+CircularProgressSVG.displayName = 'CircularProgressSVG';
+
+const CircularProgressLabel = React.memo<{ value: number }>(({ value }) => (
+  <CircleLabel>{`${Math.round(value)}%`}</CircleLabel>
+));
+CircularProgressLabel.displayName = 'CircularProgressLabel';
+
 /**
  * CircularProgressWithLabel - круговой прогресс с процентами в центре
  * @param value 'number' - значение прогресса (0-100)
@@ -40,43 +78,35 @@ const ProgressCircle = styled.circle`
  * @param strokeWidth 'number' = 5 - толщина линии прогресса
  * @param color 'string' = 'var(--c-accent)' - цвет линии прогресса
  */
-export const CircularProgressWithLabel: React.FC<CircularProgressWithLabelProps> = ({
-  value,
-  size = 64,
-  strokeWidth = 5,
-  color = 'var(--c-accent)',
-}) => {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const safeValue = Math.min(Math.max(value, 0), 100);
-  const offset = circumference * (1 - safeValue / 100);
-  return (
-    <CircleWrapper $size={size}>
-      <svg width={size} height={size}>
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke='var(--c-border)'
+export const CircularProgressWithLabel = React.memo<CircularProgressWithLabelProps>(
+  ({ value, size = 64, strokeWidth = 5, color = 'var(--c-accent)' }) => {
+    // Мемоизируем вычисления
+    const { radius, circumference, safeValue, offset } = useMemo(() => {
+      const radius = (size - strokeWidth) / 2;
+      const circumference = 2 * Math.PI * radius;
+      const safeValue = Math.min(Math.max(value, 0), 100);
+      const offset = circumference * (1 - safeValue / 100);
+      return { radius, circumference, safeValue, offset };
+    }, [size, strokeWidth, value]);
+
+    return (
+      <CircleWrapper $size={size}>
+        <CircularProgressSVG
+          size={size}
+          radius={radius}
           strokeWidth={strokeWidth}
-          fill='none'
+          color={color}
+          circumference={circumference}
+          offset={offset}
         />
-        <ProgressCircle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke={color}
-          strokeWidth={strokeWidth}
-          fill='none'
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap='round'
-        />
-      </svg>
-      <CircleLabel>{`${Math.round(safeValue)}%`}</CircleLabel>
-    </CircleWrapper>
-  );
-};
+        <CircularProgressLabel value={safeValue} />
+      </CircleWrapper>
+    );
+  }
+);
+
+CircularProgressWithLabel.displayName = 'CircularProgressWithLabel';
+
 // --- Linear Progress ---
 export interface LinearProgressProps {
   value?: number; // 0-100, если не задан — indeterminate
@@ -126,6 +156,19 @@ const LinearProgressContainer = styled.div`
   width: 100%;
 `;
 
+// Мемоизированный подкомпонент
+const LinearProgressBar = React.memo<{
+  value?: number;
+  color: string;
+  height: number;
+  indeterminate: boolean;
+}>(({ value, color, height, indeterminate }) => (
+  <LinearBar $height={height}>
+    <LinearInner $value={value} $color={color} $indeterminate={indeterminate} />
+  </LinearBar>
+));
+LinearProgressBar.displayName = 'LinearProgressBar';
+
 /**
  * LinearProgress - линейный прогресс с определенным и неопределенным состоянием
  * @param value 'number' - значение прогресса (0-100). Если не указано - неопределенный прогресс
@@ -133,18 +176,22 @@ const LinearProgressContainer = styled.div`
  * @param height 'number' = 6 - высота полосы прогресса в пикселях
  * @param className 'string' - дополнительные CSS классы
  */
-export const LinearProgress: React.FC<LinearProgressProps> = ({
-  value,
-  color = 'var(--c-accent)',
-  height = 6,
-  className,
-}) => {
-  const indeterminate = value === undefined || value === null;
-  return (
-    <LinearProgressContainer className={className}>
-      <LinearBar $height={height}>
-        <LinearInner $value={value} $color={color} $indeterminate={indeterminate} />
-      </LinearBar>
-    </LinearProgressContainer>
-  );
-};
+export const LinearProgress = React.memo<LinearProgressProps>(
+  ({ value, color = 'var(--c-accent)', height = 6, className }) => {
+    // Мемоизируем вычисления
+    const indeterminate = useMemo(() => value === undefined || value === null, [value]);
+
+    return (
+      <LinearProgressContainer className={className}>
+        <LinearProgressBar
+          value={value}
+          color={color}
+          height={height}
+          indeterminate={indeterminate}
+        />
+      </LinearProgressContainer>
+    );
+  }
+);
+
+LinearProgress.displayName = 'LinearProgress';

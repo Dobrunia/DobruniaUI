@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
@@ -71,60 +71,69 @@ const IconWrapper = styled.span<{ $type: AlertType }>`
   flex-shrink: 0;
 `;
 
-const icons: Record<AlertType, React.ReactNode> = {
-  success: (
-    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
-      <circle cx='12' cy='12' r='10' fill='none' />
-      <path
-        d='M7 13l3 3 7-7'
-        stroke='currentColor'
-        strokeWidth='2'
-        fill='none'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </svg>
-  ),
-  info: (
-    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
-      <circle cx='12' cy='12' r='10' fill='none' />
-      <path
-        d='M12 8h.01M12 12v4'
-        stroke='currentColor'
-        strokeWidth='2'
-        fill='none'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </svg>
-  ),
-  warning: (
-    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
-      <circle cx='12' cy='12' r='10' fill='none' />
-      <path
-        d='M12 8v4m0 4h.01'
-        stroke='currentColor'
-        strokeWidth='2'
-        fill='none'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </svg>
-  ),
-  error: (
-    <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
-      <circle cx='12' cy='12' r='10' fill='none' />
-      <path
-        d='M15 9l-6 6M9 9l6 6'
-        stroke='currentColor'
-        strokeWidth='2'
-        fill='none'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </svg>
-  ),
-};
+const AlertIcon = React.memo<{ type: AlertType }>(({ type }) => {
+  const icon = useMemo(() => {
+    const icons: Record<AlertType, React.ReactNode> = {
+      success: (
+        <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+          <circle cx='12' cy='12' r='10' fill='none' />
+          <path
+            d='M7 13l3 3 7-7'
+            stroke='currentColor'
+            strokeWidth='2'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          />
+        </svg>
+      ),
+      info: (
+        <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+          <circle cx='12' cy='12' r='10' fill='none' />
+          <path
+            d='M12 8h.01M12 12v4'
+            stroke='currentColor'
+            strokeWidth='2'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          />
+        </svg>
+      ),
+      warning: (
+        <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+          <circle cx='12' cy='12' r='10' fill='none' />
+          <path
+            d='M12 8v4m0 4h.01'
+            stroke='currentColor'
+            strokeWidth='2'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          />
+        </svg>
+      ),
+      error: (
+        <svg width='22' height='22' fill='none' viewBox='0 0 24 24'>
+          <circle cx='12' cy='12' r='10' fill='none' />
+          <path
+            d='M15 9l-6 6M9 9l6 6'
+            stroke='currentColor'
+            strokeWidth='2'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          />
+        </svg>
+      ),
+    };
+    return icons[type];
+  }, [type]);
+
+  return <IconWrapper $type={type}>{icon}</IconWrapper>;
+});
+
+AlertIcon.displayName = 'AlertIcon';
 
 /**
  * Alert - уведомление с иконкой для отображения статусных сообщений
@@ -133,11 +142,13 @@ const icons: Record<AlertType, React.ReactNode> = {
  * @param outlined 'boolean' - стиль с обводкой вместо цветного фона
  * @param className 'string' - дополнительные CSS классы
  */
-export const Alert: React.FC<AlertProps> = ({ type, children, outlined, className }) => {
+export const Alert = React.memo<AlertProps>(({ type, children, outlined, className }) => {
   return (
     <AlertWrapper $type={type} $outlined={outlined} className={className}>
-      <IconWrapper $type={type}>{icons[type]}</IconWrapper>
+      <AlertIcon type={type} />
       <span>{children}</span>
     </AlertWrapper>
   );
-};
+});
+
+Alert.displayName = 'Alert';

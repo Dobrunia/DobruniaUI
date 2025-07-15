@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 export type SpinnerVariant = 'classic' | 'pulse' | 'dots' | 'ring' | 'bars' | 'waves';
@@ -222,6 +222,57 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
   }
 `;
 
+// Мемоизированные подкомпоненты
+const ClassicSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(
+  ({ size, color }) => <ClassicSpinner $size={size} $color={color} />
+);
+ClassicSpinnerComponent.displayName = 'ClassicSpinnerComponent';
+
+const PulseSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(
+  ({ size, color }) => <PulseSpinner $size={size} $color={color} />
+);
+PulseSpinnerComponent.displayName = 'PulseSpinnerComponent';
+
+const DotsSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(({ size, color }) => (
+  <DotsSpinner $size={size} $color={color} />
+));
+DotsSpinnerComponent.displayName = 'DotsSpinnerComponent';
+
+const RingSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(({ size, color }) => (
+  <RingSpinner $size={size} $color={color} />
+));
+RingSpinnerComponent.displayName = 'RingSpinnerComponent';
+
+const BarsSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(({ size, color }) => {
+  const bars = useMemo(
+    () => [
+      { delay: 0, key: 'bar-0' },
+      { delay: 0.2, key: 'bar-1' },
+      { delay: 0.4, key: 'bar-2' },
+      { delay: 0.6, key: 'bar-3' },
+    ],
+    []
+  );
+
+  return (
+    <BarsContainer $size={size}>
+      {bars.map(({ delay, key }) => (
+        <Bar key={key} $size={size} $color={color} $delay={delay} />
+      ))}
+    </BarsContainer>
+  );
+});
+BarsSpinnerComponent.displayName = 'BarsSpinnerComponent';
+
+const WavesSpinnerComponent = React.memo<{ size: SpinnerSize; color: string }>(
+  ({ size, color }) => (
+    <WavesContainer $size={size}>
+      <WavesSpinner $size={size} $color={color} />
+    </WavesContainer>
+  )
+);
+WavesSpinnerComponent.displayName = 'WavesSpinnerComponent';
+
 /**
  * LoadingSpinner - анимированный индикатор загрузки с 6 вариантами анимации
  * @param variant 'classic' | 'pulse' | 'dots' | 'ring' | 'bars' | 'waves' = 'classic' - тип анимации
@@ -229,44 +280,32 @@ const WavesSpinner = styled.div<{ $size: SpinnerSize; $color: string }>`
  * @param color 'string' = 'var(--c-accent)' - цвет спиннера
  * @param className 'string' - дополнительные CSS классы
  */
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  variant = 'classic',
-  size = 'medium',
-  color = 'var(--c-accent)',
-  className,
-}) => {
-  const renderSpinner = () => {
-    switch (variant) {
-      case 'pulse':
-        return <PulseSpinner $size={size} $color={color} />;
-      case 'dots':
-        return <DotsSpinner $size={size} $color={color} />;
-      case 'ring':
-        return <RingSpinner $size={size} $color={color} />;
-      case 'bars':
-        return (
-          <BarsContainer $size={size}>
-            <Bar $size={size} $color={color} $delay={0} />
-            <Bar $size={size} $color={color} $delay={0.2} />
-            <Bar $size={size} $color={color} $delay={0.4} />
-            <Bar $size={size} $color={color} $delay={0.6} />
-          </BarsContainer>
-        );
-      case 'waves':
-        return (
-          <WavesContainer $size={size}>
-            <WavesSpinner $size={size} $color={color} />
-          </WavesContainer>
-        );
-      case 'classic':
-      default:
-        return <ClassicSpinner $size={size} $color={color} />;
-    }
-  };
+export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
+  ({ variant = 'classic', size = 'medium', color = 'var(--c-accent)', className }) => {
+    const spinnerComponent = useMemo(() => {
+      switch (variant) {
+        case 'pulse':
+          return <PulseSpinnerComponent size={size} color={color} />;
+        case 'dots':
+          return <DotsSpinnerComponent size={size} color={color} />;
+        case 'ring':
+          return <RingSpinnerComponent size={size} color={color} />;
+        case 'bars':
+          return <BarsSpinnerComponent size={size} color={color} />;
+        case 'waves':
+          return <WavesSpinnerComponent size={size} color={color} />;
+        case 'classic':
+        default:
+          return <ClassicSpinnerComponent size={size} color={color} />;
+      }
+    }, [variant, size, color]);
 
-  return (
-    <SpinnerContainer $color={color} className={className}>
-      {renderSpinner()}
-    </SpinnerContainer>
-  );
-};
+    return (
+      <SpinnerContainer $color={color} className={className}>
+        {spinnerComponent}
+      </SpinnerContainer>
+    );
+  }
+);
+
+LoadingSpinner.displayName = 'LoadingSpinner';

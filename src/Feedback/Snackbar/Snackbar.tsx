@@ -1,31 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { Button, DESIGN_TOKENS } from '@DobruniaUI';
-
-export type SnackbarOrigin = {
-  vertical: 'top' | 'bottom';
-  horizontal: 'left' | 'center' | 'right';
-};
-
-// Глобальная система управления стеками Snackbar'ов по позициям
-const snackbarStacks = new Map<
-  string,
-  Map<string, { order: number; setStackIndex: (index: number) => void }>
->();
-let nextOrder = 0;
-
-const getPositionKey = (origin: SnackbarOrigin) => `${origin.vertical}-${origin.horizontal}`;
-
-const recalculateStackPositions = (positionKey: string) => {
-  const stack = snackbarStacks.get(positionKey);
-  if (!stack) return;
-
-  // Сортируем по порядку появления и пересчитываем индексы
-  const sortedEntries = Array.from(stack.entries()).sort((a, b) => a[1].order - b[1].order);
-  sortedEntries.forEach(([, data], index) => {
-    data.setStackIndex(index);
-  });
-};
+import { useSnackbarStack, useAutoHide, type SnackbarOrigin } from '../../utils/hooks';
 
 export interface SnackbarProps {
   open: boolean;
@@ -100,6 +76,23 @@ const SnackbarAction = styled.div`
   gap: 8px;
 `;
 
+// Мемоизированные подкомпоненты
+const SnackbarMessage = React.memo<{ message: React.ReactNode }>(({ message }) => (
+  <span>{message}</span>
+));
+SnackbarMessage.displayName = 'SnackbarMessage';
+
+const SnackbarActions = React.memo<{
+  action?: React.ReactNode;
+  onClose: () => void;
+}>(({ action, onClose }) => (
+  <SnackbarAction>
+    {action}
+    <Button variant='close' onClick={onClose} />
+  </SnackbarAction>
+));
+SnackbarActions.displayName = 'SnackbarActions';
+
 /**
  * Snackbar - кратковременное уведомление с поддержкой стекинга и позиционирования
  * @param open 'boolean' - флаг видимости уведомления
@@ -111,91 +104,59 @@ const SnackbarAction = styled.div`
  * @param className 'string' - дополнительные CSS классы
  * @param enableStacking 'boolean' = false - включить стекинг для позиции
  */
-export const Snackbar: React.FC<SnackbarProps> = ({
-  open,
-  message,
-  onClose,
-  autoHideDuration = 4000,
-  anchorOrigin = { vertical: 'bottom', horizontal: 'center' },
-  action,
-  className,
-  enableStacking = false,
-}) => {
-  const [stackIndex, setStackIndex] = useState(0);
-  const [snackbarId] = useState(() => Math.random().toString(36).substr(2, 9));
+export const Snackbar = React.memo<SnackbarProps>(
+  ({
+    open,
+    message,
+    onClose,
+    autoHideDuration = 4000,
+    anchorOrigin = { vertical: 'bottom', horizontal: 'center' },
+    action,
+    className,
+    enableStacking = false,
+  }) => {
+    const [stackIndex, setStackIndex] = useState(0);
 
-  useEffect(() => {
-    if (!enableStacking) return;
+    // Стабилизируем обработчики
+    const handleSetStackIndex = useCallback((index: number) => {
+      setStackIndex(index);
+    }, []);
 
-    const positionKey = getPositionKey(anchorOrigin);
+    // Используем кастомные хуки
+    useSnackbarStack(open, anchorOrigin, enableStacking, handleSetStackIndex);
+    useAutoHide(open, autoHideDuration, onClose);
 
-    if (open) {
-      // Создаем стек для позиции если его нет
-      if (!snackbarStacks.has(positionKey)) {
-        snackbarStacks.set(positionKey, new Map());
-      }
+    // Мемоизируем пропсы для корневого элемента
+    const rootProps = useMemo(
+      () => ({
+        $origin: anchorOrigin,
+        $open: open,
+        $stackIndex: stackIndex,
+        $enableStacking: enableStacking,
+      }),
+      [anchorOrigin, open, stackIndex, enableStacking]
+    );
 
-      // Регистрируем snackbar в стеке для данной позиции
-      const stack = snackbarStacks.get(positionKey)!;
-      const order = nextOrder++;
-      stack.set(snackbarId, { order, setStackIndex });
+    // Мемоизируем пропсы для действий
+    const actionsProps = useMemo(
+      () => ({
+        action,
+        onClose,
+      }),
+      [action, onClose]
+    );
 
-      // Пересчитываем позиции для данного стека
-      recalculateStackPositions(positionKey);
-    } else {
-      // Удаляем snackbar из стека
-      const stack = snackbarStacks.get(positionKey);
-      if (stack) {
-        stack.delete(snackbarId);
+    return (
+      <SnackbarRoot {...rootProps} className={className}>
+        {open && (
+          <SnackbarContent>
+            <SnackbarMessage message={message} />
+            <SnackbarActions {...actionsProps} />
+          </SnackbarContent>
+        )}
+      </SnackbarRoot>
+    );
+  }
+);
 
-        // Если стек пустой, удаляем его
-        if (stack.size === 0) {
-          snackbarStacks.delete(positionKey);
-        } else {
-          // Пересчитываем позиции для оставшихся snackbar'ов
-          recalculateStackPositions(positionKey);
-        }
-      }
-    }
-
-    return () => {
-      // Очистка при размонтировании
-      const stack = snackbarStacks.get(positionKey);
-      if (stack) {
-        stack.delete(snackbarId);
-        if (stack.size === 0) {
-          snackbarStacks.delete(positionKey);
-        } else {
-          recalculateStackPositions(positionKey);
-        }
-      }
-    };
-  }, [open, snackbarId, enableStacking, anchorOrigin]);
-
-  useEffect(() => {
-    if (!open) return;
-    if (!autoHideDuration) return;
-    const timer = setTimeout(onClose, autoHideDuration);
-    return () => clearTimeout(timer);
-  }, [open, autoHideDuration, onClose]);
-
-  return (
-    <SnackbarRoot
-      $origin={anchorOrigin}
-      $open={open}
-      $stackIndex={stackIndex}
-      $enableStacking={enableStacking}
-      className={className}
-    >
-      {open && (
-        <SnackbarContent>
-          <span>{message}</span>
-          <SnackbarAction>
-            {action}
-            <Button variant='close' onClick={onClose} />
-          </SnackbarAction>
-        </SnackbarContent>
-      )}
-    </SnackbarRoot>
-  );
-};
+Snackbar.displayName = 'Snackbar';

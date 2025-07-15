@@ -1,5 +1,5 @@
-import React from 'react';
-import type { SnackbarOrigin } from '../Snackbar/Snackbar';
+import React, { useCallback, useMemo } from 'react';
+import type { SnackbarOrigin } from '../../utils/hooks';
 import { Button, Snackbar, DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
@@ -21,6 +21,17 @@ const UndoButton = styled(Button)`
   font-size: ${DESIGN_TOKENS.fontSize.small};
 `;
 
+// Мемоизированный подкомпонент
+const UndoAction = React.memo<{
+  onUndo: () => void;
+  undoText: string;
+}>(({ onUndo, undoText }) => (
+  <UndoButton variant='ghost' onClick={onUndo}>
+    {undoText}
+  </UndoButton>
+));
+UndoAction.displayName = 'UndoAction';
+
 /**
  * UndoSnackbar - уведомление с кнопкой отмены действия (автостекинг включен)
  * @param open 'boolean' - флаг видимости уведомления
@@ -32,35 +43,48 @@ const UndoButton = styled(Button)`
  * @param anchorOrigin 'SnackbarOrigin' = top-right - позиция уведомления
  * @param className 'string' - дополнительные CSS классы
  */
-export const UndoSnackbar: React.FC<UndoSnackbarProps> = ({
-  open,
-  message,
-  onClose,
-  onUndo,
-  autoHideDuration = 6000,
-  undoText = 'Отменить',
-  anchorOrigin = { vertical: 'top', horizontal: 'right' },
-  className,
-}) => {
-  const handleUndo = () => {
-    onUndo();
-    onClose();
-  };
+export const UndoSnackbar = React.memo<UndoSnackbarProps>(
+  ({
+    open,
+    message,
+    onClose,
+    onUndo,
+    autoHideDuration = 6000,
+    undoText = 'Отменить',
+    anchorOrigin = { vertical: 'top', horizontal: 'right' },
+    className,
+  }) => {
+    // Стабилизируем обработчики
+    const handleUndo = useCallback(() => {
+      onUndo();
+      onClose();
+    }, [onUndo, onClose]);
 
-  return (
-    <Snackbar
-      open={open}
-      message={message}
-      onClose={onClose}
-      autoHideDuration={autoHideDuration}
-      anchorOrigin={anchorOrigin}
-      enableStacking={true} // Включаем автоматический стекинг
-      action={
-        <UndoButton variant='ghost' onClick={handleUndo}>
-          {undoText}
-        </UndoButton>
-      }
-      className={className}
-    />
-  );
-};
+    // Мемоизируем пропсы для Snackbar
+    const snackbarProps = useMemo(
+      () => ({
+        open,
+        message,
+        onClose,
+        autoHideDuration,
+        anchorOrigin,
+        enableStacking: true, // Включаем автоматический стекинг
+        className,
+      }),
+      [open, message, onClose, autoHideDuration, anchorOrigin, className]
+    );
+
+    // Мемоизируем пропсы для действия
+    const actionProps = useMemo(
+      () => ({
+        onUndo: handleUndo,
+        undoText,
+      }),
+      [handleUndo, undoText]
+    );
+
+    return <Snackbar {...snackbarProps} action={<UndoAction {...actionProps} />} />;
+  }
+);
+
+UndoSnackbar.displayName = 'UndoSnackbar';

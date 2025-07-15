@@ -1,6 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Portal, Button } from '@DobruniaUI';
+import {
+  useModalEscape,
+  useBodyScrollLock,
+  useFocusManagement,
+  useBackdropClick,
+} from '../../utils/hooks';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -176,6 +182,25 @@ const Content = styled.div<{ $hasHeader: boolean }>`
   `}
 `;
 
+// Мемоизированные подкомпоненты
+const ModalHeader = React.memo<{ title: string }>(({ title }) => (
+  <Header>
+    <Title id='modal-title'>{title}</Title>
+  </Header>
+));
+ModalHeader.displayName = 'ModalHeader';
+
+const ModalCloseButton = React.memo<{ onClose: () => void }>(({ onClose }) => (
+  <CloseButton
+    variant='close'
+    shape='circle'
+    onClick={onClose}
+    aria-label='Закрыть модальное окно'
+    type='button'
+  />
+));
+ModalCloseButton.displayName = 'ModalCloseButton';
+
 /**
  * Modal - модальное окно с backdrop и управлением фокусом
  * @param isOpen 'boolean' - флаг открытия модального окна
@@ -192,139 +217,94 @@ const Content = styled.div<{ $hasHeader: boolean }>`
  * @param closeable 'boolean' = true - можно ли закрыть модальное окно
  * @param container 'HTMLElement | string' - контейнер для портала
  */
-export const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  children,
-  title,
-  closeOnBackdropClick = true,
-  closeOnEscape = true,
-  size = 'medium',
-  centered = true,
-  className,
-  backdropClassName,
-  showCloseButton = true,
-  closeable = true,
-  container,
-}) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
-  const mouseDownTargetRef = useRef<EventTarget | null>(null);
+export const Modal = React.memo<ModalProps>(
+  ({
+    isOpen,
+    onClose,
+    children,
+    title,
+    closeOnBackdropClick = true,
+    closeOnEscape = true,
+    size = 'medium',
+    centered = true,
+    className,
+    backdropClassName,
+    showCloseButton = true,
+    closeable = true,
+    container,
+  }) => {
+    const modalRef = useRef<HTMLDivElement>(null);
 
-  // Обработка клавиши Escape
-  useEffect(() => {
-    if (!isOpen || !closeOnEscape || !closeable) return;
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+    // Стабилизируем обработчики
+    const handleCloseClick = useCallback(() => {
+      if (closeable) {
         onClose();
       }
-    };
+    }, [closeable, onClose]);
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, closeOnEscape, closeable, onClose]);
+    // Используем кастомные хуки для DOM-взаимодействий
+    useModalEscape(isOpen, onClose, closeOnEscape && closeable);
+    useBodyScrollLock(isOpen);
+    useFocusManagement(isOpen, modalRef);
 
-  // Блокировка скролла body
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = '';
-      };
-    }
-  }, [isOpen]);
+    const backdropClickHandlers = useBackdropClick(
+      modalRef,
+      onClose,
+      closeOnBackdropClick && closeable
+    );
 
-  // Фокус и возврат фокуса
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      // Сохраняем текущий фокус
-      const previouslyFocusedElement = document.activeElement as HTMLElement;
+    // Мемоизируем вычисления
+    const modalContent = useMemo(() => {
+      if (!isOpen) return null;
 
-      // Фокусируемся на модальном окне
-      modalRef.current.focus();
+      return (
+        <Portal container={container}>
+          <Backdrop
+            className={backdropClassName}
+            onMouseDown={backdropClickHandlers.handleMouseDown}
+            onClick={backdropClickHandlers.handleBackdropClick}
+            data-modal-backdrop
+          >
+            <Container $centered={centered}>
+              <ModalWrapper $size={size}>
+                {/* Close button above modal in top right */}
+                {showCloseButton && closeable && <ModalCloseButton onClose={handleCloseClick} />}
 
-      return () => {
-        // Возвращаем фокус на предыдущий элемент
-        if (previouslyFocusedElement) {
-          previouslyFocusedElement.focus();
-        }
-      };
-    }
-  }, [isOpen]);
+                <ModalContent
+                  ref={modalRef}
+                  $size={size}
+                  className={className}
+                  role='dialog'
+                  aria-modal='true'
+                  aria-labelledby={title ? 'modal-title' : undefined}
+                  tabIndex={-1}
+                >
+                  {title && <ModalHeader title={title} />}
+                  <Content $hasHeader={!!title}>{children}</Content>
+                </ModalContent>
+              </ModalWrapper>
+            </Container>
+          </Backdrop>
+        </Portal>
+      );
+    }, [
+      isOpen,
+      container,
+      backdropClassName,
+      backdropClickHandlers.handleMouseDown,
+      backdropClickHandlers.handleBackdropClick,
+      centered,
+      size,
+      showCloseButton,
+      closeable,
+      handleCloseClick,
+      className,
+      title,
+      children,
+    ]);
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    mouseDownTargetRef.current = event.target;
-  };
-
-  const handleBackdropClick = (event: React.MouseEvent) => {
-    // Проверяем, что mousedown и click произошли на одном и том же элементе
-    // Это позволяет отличить реальный клик от окончания выделения текста
-    if (
-      closeOnBackdropClick &&
-      closeable &&
-      modalRef.current &&
-      mouseDownTargetRef.current === event.target &&
-      !modalRef.current.contains(event.target as Node)
-    ) {
-      onClose();
-    }
-
-    // Сбрасываем target после обработки
-    mouseDownTargetRef.current = null;
-  };
-
-  const handleCloseClick = () => {
-    if (closeable) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) {
-    return null;
+    return modalContent;
   }
+);
 
-  return (
-    <Portal container={container}>
-      <Backdrop
-        ref={backdropRef}
-        className={backdropClassName}
-        onMouseDown={handleMouseDown}
-        onClick={handleBackdropClick}
-        data-modal-backdrop
-      >
-        <Container $centered={centered}>
-          <ModalWrapper $size={size}>
-            {/* Close button above modal in top right */}
-            {showCloseButton && closeable && (
-              <CloseButton
-                variant='close'
-                shape='circle'
-                onClick={handleCloseClick}
-                aria-label='Закрыть модальное окно'
-                type='button'
-              />
-            )}
-
-            <ModalContent
-              ref={modalRef}
-              $size={size}
-              className={className}
-              role='dialog'
-              aria-modal='true'
-              aria-labelledby={title ? 'modal-title' : undefined}
-              tabIndex={-1}
-            >
-              {title && (
-                <Header>
-                  <Title id='modal-title'>{title}</Title>
-                </Header>
-              )}
-              <Content $hasHeader={!!title}>{children}</Content>
-            </ModalContent>
-          </ModalWrapper>
-        </Container>
-      </Backdrop>
-    </Portal>
-  );
-};
+Modal.displayName = 'Modal';
