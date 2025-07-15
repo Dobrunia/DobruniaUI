@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { DESIGN_TOKENS, type Presence } from '@DobruniaUI';
+import { useClickOutside, useKeyPress } from '../../utils/hooks';
 
 type AvatarSize = 'xxs' | 'sm' | 'md' | 'lg';
 
@@ -85,6 +86,7 @@ const Menu = styled.div`
   border: 1px solid var(--c-border);
   border-radius: ${DESIGN_TOKENS.radius.medium};
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.13);
+  z-index: 2;
 `;
 
 const MenuItem = styled.button<{ $active: boolean }>`
@@ -110,13 +112,15 @@ const MenuItem = styled.button<{ $active: boolean }>`
   }
 `;
 
-const EyeSlash = () => (
+const EyeSlash = React.memo(() => (
   <svg width='14' height='14' viewBox='0 0 20 20' fill='none'>
     <path d='M2 2l16 16' stroke='#b0b8c9' strokeWidth='2' />
     <ellipse cx='10' cy='10' rx='7' ry='4' stroke='#b0b8c9' strokeWidth='2' />
     <circle cx='10' cy='10' r='2' fill='#b0b8c9' />
   </svg>
-);
+));
+
+EyeSlash.displayName = 'EyeSlash';
 
 /* ——— helpers ——— */
 const initials = (name?: string) => {
@@ -124,6 +128,40 @@ const initials = (name?: string) => {
   const p = name.trim().split(/\s+/);
   return p.length === 1 ? p[0][0].toUpperCase() : (p[0][0] + p[p.length - 1][0]).toUpperCase();
 };
+
+// Мемоизированный компонент для элемента меню
+const MenuItemComponent = React.memo<{
+  option: { val: string; label: string; icon?: React.ReactNode };
+  status: Presence;
+  size: AvatarSize;
+  onStatusChange: (status: Presence) => void;
+  onClose: () => void;
+}>(({ option, status, size, onStatusChange, onClose }) => {
+  const handleClick = useCallback(() => {
+    onStatusChange(option.val as Presence);
+    onClose();
+  }, [option.val, onStatusChange, onClose]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); // сохраняем focus
+  }, []);
+
+  return (
+    <MenuItem
+      key={`menu-item-${option.val}`}
+      $active={status === option.val}
+      onMouseDown={handleMouseDown}
+      onClick={handleClick}
+    >
+      <Dot $size={size} $presence={option.val as Presence} $static>
+        {option.icon}
+      </Dot>
+      {option.label}
+    </MenuItem>
+  );
+});
+
+MenuItemComponent.displayName = 'MenuItemComponent';
 
 /* ——— component ——— */
 export interface AvatarProps {
@@ -150,66 +188,92 @@ export interface AvatarProps {
  * @param onStatusChange '(status: Presence) => void' - обработчик изменения статуса
  * @param language 'ru' | 'en' = 'en' - язык интерфейса для статусов
  */
-export const Avatar: React.FC<AvatarProps> = ({
-  src,
-  alt,
-  name,
-  size = 'md',
-  status = 'offline',
-  showStatus = true,
-  className,
-  onStatusChange,
-  language = 'en',
-}) => {
-  const [open, setOpen] = useState(false);
+export const Avatar: React.FC<AvatarProps> = React.memo(
+  ({
+    src,
+    alt,
+    name,
+    size = 'md',
+    status = 'offline',
+    showStatus = true,
+    className,
+    onStatusChange,
+    language = 'en',
+  }) => {
+    const [open, setOpen] = React.useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
 
-  const options = useMemo(
-    () => [
-      { val: 'online', label: statusLabels[language].online },
-      { val: 'dnd', label: statusLabels[language].dnd },
-      { val: 'invisible', label: statusLabels[language].invisible, icon: <EyeSlash /> },
-    ],
-    [language]
-  );
+    // Мемоизируем опции меню
+    const options = useMemo(
+      () => [
+        { val: 'online', label: statusLabels[language].online },
+        { val: 'dnd', label: statusLabels[language].dnd },
+        { val: 'invisible', label: statusLabels[language].invisible, icon: <EyeSlash /> },
+      ],
+      [language]
+    );
 
-  const toggleMenu = () => onStatusChange && setOpen((v) => !v);
+    // Стабилизируем обработчики
+    const toggleMenu = useCallback(() => {
+      if (onStatusChange) {
+        setOpen((v) => !v);
+      }
+    }, [onStatusChange]);
 
-  return (
-    <Root
-      $size={size}
-      $focused={open}
-      className={className}
-      tabIndex={onStatusChange ? 0 : undefined}
-      onClick={toggleMenu}
-      onBlur={() => setOpen(false)}
-    >
-      {src ? <Img src={src} alt={alt ?? name ?? 'avatar'} /> : initials(name)}
-      {showStatus && (
-        <Dot $size={size} $presence={status}>
-          {status === 'invisible' && <EyeSlash />}
-        </Dot>
-      )}
+    const closeMenu = useCallback(() => {
+      setOpen(false);
+    }, []);
 
-      {open && onStatusChange && (
+    const handleStatusChange = useCallback(
+      (newStatus: Presence) => {
+        onStatusChange?.(newStatus);
+      },
+      [onStatusChange]
+    );
+
+    // Используем кастомные хуки для DOM-взаимодействий
+    useClickOutside(rootRef, closeMenu);
+    useKeyPress('Escape', closeMenu);
+
+    // Мемоизируем содержимое меню
+    const menuContent = useMemo(() => {
+      if (!open || !onStatusChange) return null;
+
+      return (
         <Menu>
-          {options.map(({ val, label, icon }) => (
-            <MenuItem
-              key={val}
-              $active={status === val}
-              onMouseDown={(e) => e.preventDefault()} // сохраняем focus
-              onClick={() => {
-                onStatusChange(val as Presence);
-                setOpen(false);
-              }}
-            >
-              <Dot $size={size} $presence={val as Presence} $static>
-                {icon}
-              </Dot>
-              {label}
-            </MenuItem>
+          {options.map((option) => (
+            <MenuItemComponent
+              key={`menu-option-${option.val}`}
+              option={option}
+              status={status}
+              size={size}
+              onStatusChange={handleStatusChange}
+              onClose={closeMenu}
+            />
           ))}
         </Menu>
-      )}
-    </Root>
-  );
-};
+      );
+    }, [open, onStatusChange, options, status, size, handleStatusChange, closeMenu]);
+
+    return (
+      <Root
+        ref={rootRef}
+        $size={size}
+        $focused={open}
+        className={className}
+        tabIndex={onStatusChange ? 0 : undefined}
+        onClick={toggleMenu}
+      >
+        {src ? <Img src={src} alt={alt ?? name ?? 'avatar'} /> : initials(name)}
+        {showStatus && (
+          <Dot $size={size} $presence={status}>
+            {status === 'invisible' && <EyeSlash />}
+          </Dot>
+        )}
+        {menuContent}
+      </Root>
+    );
+  }
+);
+
+Avatar.displayName = 'Avatar';
