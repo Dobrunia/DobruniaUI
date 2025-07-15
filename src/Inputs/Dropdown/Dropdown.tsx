@@ -223,7 +223,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           id={selectId}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          $disabled={disabled}
+          disabled={disabled}
           $error={error}
           $clearable={clearable && hasValue}
           onFocus={() => setIsFocused(true)}
