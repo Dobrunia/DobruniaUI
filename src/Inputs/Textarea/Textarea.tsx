@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
@@ -116,7 +116,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Авто-высота
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (autoHeight && textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';

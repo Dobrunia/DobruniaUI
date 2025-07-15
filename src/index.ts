@@ -69,7 +69,8 @@ export {
   type LinearProgressProps,
 } from './Feedback/Progress/Progress';
 export { Skeleton, type SkeletonProps } from './Feedback/Skeleton/Skeleton';
-export { Snackbar, type SnackbarProps, type SnackbarOrigin } from './Feedback/Snackbar/Snackbar';
+export { Snackbar, type SnackbarProps } from './Feedback/Snackbar/Snackbar';
+export type { SnackbarOrigin } from './utils/hooks';
 export { UndoSnackbar, type UndoSnackbarProps } from './Feedback/UndoSnackbar/UndoSnackbar';
 export {
   LoadingSpinner,

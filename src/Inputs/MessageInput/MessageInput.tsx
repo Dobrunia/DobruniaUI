@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button, DESIGN_TOKENS, AudioInput, EmojiInput } from '@DobruniaUI';
 
@@ -255,7 +255,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Для авто-роста textarea
-  React.useLayoutEffect(() => {
+  useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = '26.38px';
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
