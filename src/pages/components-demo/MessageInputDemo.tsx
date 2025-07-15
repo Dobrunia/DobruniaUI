@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Message, MessageContainer, MessageInput } from '@DobruniaUI';
+import { Message, MessageInput } from '@DobruniaUI';
 
 export const MessageInputDemo = () => {
   const [messageText, setMessageText] = useState('');
@@ -154,9 +154,19 @@ export const MessageInputDemo = () => {
         MessageInput Demo Chat
       </div>
 
-      {/* Сообщения */}
-      <div style={{ flex: 1, overflow: 'hidden' }}>
-        <MessageContainer maxHeight='100%' autoScrollToBottom>
+      {/* Объединенный компонент чата */}
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <MessageInput
+          value={messageText}
+          onChange={setMessageText}
+          files={messageFiles}
+          onFilesChange={setMessageFiles}
+          onSend={handleSend}
+          onEmojiSelect={handleEmojiSelect}
+          onAudioRecord={handleAudioRecord}
+          placeholder='Введите сообщение...'
+          maxHeight='100%'
+        >
           {messages.map((msg) => (
             <Message
               key={msg.id}
@@ -171,27 +181,7 @@ export const MessageInputDemo = () => {
               onReaction={(emoji) => handleReaction(msg.id, emoji)}
             />
           ))}
-        </MessageContainer>
-      </div>
-
-      {/* Ввод сообщения */}
-      <div
-        style={{
-          padding: '8px',
-          borderTop: '1px solid var(--c-border)',
-          background: 'var(--c-bg-elevated)',
-        }}
-      >
-        <MessageInput
-          value={messageText}
-          onChange={setMessageText}
-          files={messageFiles}
-          onFilesChange={setMessageFiles}
-          onSend={handleSend}
-          onEmojiSelect={handleEmojiSelect}
-          onAudioRecord={handleAudioRecord}
-          placeholder='Введите сообщение...'
-        />
+        </MessageInput>
       </div>
 
       {/* Информация о компоненте */}
@@ -206,6 +196,7 @@ export const MessageInputDemo = () => {
       >
         <strong>MessageInput features:</strong>
         <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+          <li>Контейнер сообщений с автоскроллом</li>
           <li>Автоматическое изменение высоты текстового поля</li>
           <li>Прикрепление файлов с превью (изображения, файлы, аудио)</li>
           <li>Выбор эмодзи с всплывающим меню</li>

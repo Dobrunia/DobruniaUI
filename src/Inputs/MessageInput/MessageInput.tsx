@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button, DESIGN_TOKENS, AudioInput, EmojiInput, FileInput } from '@DobruniaUI';
+import { useScrollToBottom } from '../../utils/hooks/useScrollToBottom';
+import { useScrollPosition } from '../../utils/hooks/useScrollPosition';
 
 export interface MessageInputProps {
   /** Значение текста сообщения */
@@ -23,6 +25,10 @@ export interface MessageInputProps {
   className?: string;
   /** Отключить компонент */
   disabled?: boolean;
+  /** Дочерние элементы для отображения в контейнере сообщений */
+  children?: React.ReactNode;
+  /** Максимальная высота контейнера сообщений */
+  maxHeight?: string | number;
 }
 
 // SVG иконка для аудио файлов
@@ -46,12 +52,73 @@ const AudioIcon = () => (
 );
 
 // Стили
-const MessageInputContainer = styled.div<{ $disabled?: boolean }>`
+const ChatContainer = styled.div<{ $disabled?: boolean }>`
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
+`;
+
+const MessageContainer = styled.div<{ $maxHeight?: string | number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  max-height: ${({ $maxHeight }) =>
+    $maxHeight ? (typeof $maxHeight === 'number' ? `${$maxHeight}px` : $maxHeight) : '100%'};
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--c-bg-default);
+  padding: 24px 0 24px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-accent) var(--c-bg-default);
+  margin-bottom: 64px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: var(--c-bg-default);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--c-accent);
+    border-radius: 8px;
+  }
+`;
+
+const ScrollToBottomWrapper = styled.div`
+  position: absolute;
+  bottom: 80px;
+  right: 16px;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const InputSection = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   gap: ${DESIGN_TOKENS.spacing.small};
-  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
-  pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
+  border-top: 1px solid var(--c-border);
+  background: var(--c-bg-elevated);
+  padding: ${DESIGN_TOKENS.spacing.small};
+  max-height: 200px; /* Ограничиваем максимальную высоту секции ввода */
 `;
 
 const FilePreview = styled.div`
@@ -61,6 +128,7 @@ const FilePreview = styled.div`
   padding: ${DESIGN_TOKENS.spacing.small};
   border-radius: ${DESIGN_TOKENS.radius.medium};
   flex-wrap: wrap;
+  flex-shrink: 0; /* Предотвращаем сжатие */
 `;
 
 const FileThumbWrapper = styled.div`
@@ -105,6 +173,7 @@ const InputBar = styled.div`
   gap: 8px;
   width: 100%;
   border-radius: ${DESIGN_TOKENS.radius.large};
+  flex-shrink: 0; /* Предотвращаем сжатие */
 `;
 
 const StyledTextarea = styled.textarea`
@@ -116,7 +185,7 @@ const StyledTextarea = styled.textarea`
   outline: none;
   resize: none;
   min-height: 32px;
-  max-height: 144px;
+  max-height: 120px; /* Ограничиваем максимальную высоту textarea */
   line-height: 32px;
   overflow-y: auto;
   padding: 0 4px;
@@ -182,9 +251,10 @@ const ImageModalImg = styled.img`
 `;
 
 /**
- * MessageInput - комплексный компонент ввода сообщений для чата
+ * MessageInput - комплексный компонент чата с контейнером сообщений и вводом
  *
  * Объединяет в себе:
+ * - Контейнер сообщений с автоскроллом
  * - Текстовый ввод с автоматическим изменением высоты
  * - Прикрепление файлов с превью
  * - Выбор эмодзи (EmojiInput)
@@ -200,6 +270,8 @@ const ImageModalImg = styled.img`
  * @param onAudioRecord - обработчик записи аудио
  * @param placeholder - placeholder текста
  * @param disabled - отключить компонент
+ * @param children - сообщения для отображения в контейнере
+ * @param maxHeight - максимальная высота контейнера сообщений
  * @param className - дополнительные CSS классы
  */
 export const MessageInput: React.FC<MessageInputProps> = ({
@@ -212,10 +284,17 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onAudioRecord,
   placeholder = 'Введите сообщение...',
   disabled = false,
+  children,
+  maxHeight,
   className,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
+  // Хуки для скролла
+  const { scrollToBottom, initializeScroll } = useScrollToBottom(messageContainerRef);
+  const { isAtBottom, isScrolledUp } = useScrollPosition(messageContainerRef);
 
   // Для авто-роста textarea
   useEffect(() => {
@@ -224,6 +303,18 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
   }, [value]);
+
+  // Автоскролл при новых сообщениях (если пользователь был внизу)
+  useEffect(() => {
+    if (isAtBottom) {
+      scrollToBottom();
+    }
+  }, [children, isAtBottom, scrollToBottom]);
+
+  // Инициализация скролла при первом рендере
+  useEffect(() => {
+    initializeScroll();
+  }, [initializeScroll]);
 
   // File handling
   const handleFileChange = (newFiles: File[]) => {
@@ -267,81 +358,123 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  const handleScrollToBottom = () => {
+    scrollToBottom();
+  };
+
   return (
-    <MessageInputContainer $disabled={disabled} className={className}>
-      {/* Превью файлов - показываем только если есть файлы */}
-      {files.length > 0 && (
-        <FilePreview>
-          {files.map((file, i) => (
-            <FileThumbWrapper key={i}>
-              {file.type.startsWith('image/') ? (
-                <FileThumb
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                  $clickable
-                  onClick={() => handlePreview(file)}
+    <ChatContainer $disabled={disabled} className={className}>
+      {/* Контейнер сообщений */}
+      <MessageContainer ref={messageContainerRef} $maxHeight={maxHeight}>
+        {children}
+      </MessageContainer>
+
+      {/* Кнопка скролла вниз */}
+      {isScrolledUp && (
+        <ScrollToBottomWrapper className='visible'>
+          <Button
+            variant='secondary'
+            shape='circle'
+            size='small'
+            onClick={handleScrollToBottom}
+            aria-label='Прокрутить вниз'
+          >
+            <svg
+              width='16'
+              height='16'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+            >
+              <path d='M7 13l5 5 5-5' strokeLinecap='round' strokeLinejoin='round' />
+              <path d='M7 6l5 5 5-5' strokeLinecap='round' strokeLinejoin='round' />
+            </svg>
+          </Button>
+        </ScrollToBottomWrapper>
+      )}
+
+      {/* Секция ввода */}
+      <InputSection>
+        {/* Превью файлов - показываем только если есть файлы */}
+        {files.length > 0 && (
+          <FilePreview>
+            {files.map((file, i) => (
+              <FileThumbWrapper key={i}>
+                {file.type.startsWith('image/') ? (
+                  <FileThumb
+                    src={URL.createObjectURL(file)}
+                    alt={file.name}
+                    $clickable
+                    onClick={() => handlePreview(file)}
+                  />
+                ) : file.type.startsWith('audio/') ? (
+                  <AudioFileThumb>
+                    <AudioIcon />
+                  </AudioFileThumb>
+                ) : (
+                  <AudioFileThumb>
+                    <span style={{ fontSize: '10px', textAlign: 'center' }}>
+                      {file.name.split('.').pop()?.toUpperCase()}
+                    </span>
+                  </AudioFileThumb>
+                )}
+                <FileCloseButton
+                  variant='close'
+                  shape='circle'
+                  size='small'
+                  aria-label='Удалить'
+                  onClick={() => handleRemoveFile(i)}
                 />
-              ) : file.type.startsWith('audio/') ? (
-                <AudioFileThumb>
-                  <AudioIcon />
-                </AudioFileThumb>
-              ) : (
-                <AudioFileThumb>
-                  <span style={{ fontSize: '10px', textAlign: 'center' }}>
-                    {file.name.split('.').pop()?.toUpperCase()}
-                  </span>
-                </AudioFileThumb>
-              )}
-              <FileCloseButton
-                variant='close'
-                shape='circle'
-                size='small'
-                aria-label='Удалить'
-                onClick={() => handleRemoveFile(i)}
-              />
-            </FileThumbWrapper>
-          ))}
-        </FilePreview>
-      )}
+              </FileThumbWrapper>
+            ))}
+          </FilePreview>
+        )}
 
-      {/* Lightbox для изображений */}
-      {previewImage && (
-        <ImageModalOverlay onClick={closePreview}>
-          <ImageModalImg src={previewImage} alt='preview' />
-        </ImageModalOverlay>
-      )}
+        {/* Lightbox для изображений */}
+        {previewImage && (
+          <ImageModalOverlay onClick={closePreview}>
+            <ImageModalImg src={previewImage} alt='preview' />
+          </ImageModalOverlay>
+        )}
 
-      {/* Основной ввод */}
-      <InputBar>
-        {/* Кнопка прикрепления файлов */}
-        <FileInput onFilesChange={handleFileChange} disabled={disabled} />
+        {/* Основной ввод */}
+        <InputBar>
+          {/* Кнопка прикрепления файлов */}
+          <FileInput onFilesChange={handleFileChange} disabled={disabled} />
 
-        {/* Основное текстовое поле */}
-        <StyledTextarea
-          ref={textareaRef}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          rows={1}
-          disabled={disabled}
-        />
+          {/* Основное текстовое поле */}
+          <StyledTextarea
+            ref={textareaRef}
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            rows={1}
+            disabled={disabled}
+          />
 
-        {/* Эмодзи кнопка */}
-        <EmojiInput onEmojiSelect={handleEmojiSelect} align='right' />
+          {/* Эмодзи кнопка */}
+          <EmojiInput onEmojiSelect={handleEmojiSelect} align='right' />
 
-        {/* Кнопка отправки или микрофон */}
-        {value.trim() || files.length > 0 ? (
-          <SendBtn variant='send' onClick={handleSend} aria-label='Отправить' disabled={disabled} />
-        ) : onAudioRecord ? (
-          <AudioInput onAudioRecord={onAudioRecord} />
-        ) : null}
-      </InputBar>
-    </MessageInputContainer>
+          {/* Кнопка отправки или микрофон */}
+          {value.trim() || files.length > 0 ? (
+            <SendBtn
+              variant='send'
+              onClick={handleSend}
+              aria-label='Отправить'
+              disabled={disabled}
+            />
+          ) : onAudioRecord ? (
+            <AudioInput onAudioRecord={onAudioRecord} />
+          ) : null}
+        </InputBar>
+      </InputSection>
+    </ChatContainer>
   );
 };

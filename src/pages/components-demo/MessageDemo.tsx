@@ -316,13 +316,7 @@ export const MessageDemo = () => {
   };
 
   return (
-    <MessageContainer maxHeight={600}
-      lastMessageId={
-        messages.length
-          ? messages[messages.length - 1].replyTo?.id || 'msg-' + (messages.length - 1)
-          : undefined
-      }
-    >
+    <MessageContainer maxHeight={600}>
       <Badge variant='message-date' date={new Date()} locale='ru' />
       {messages.map((msg, idx) => {
         // Разные наборы эмодзи и действий для тестирования

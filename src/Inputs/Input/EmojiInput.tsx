@@ -192,6 +192,7 @@ const EmojiPickerWrapper = styled.div<{ $align?: 'left' | 'right' }>`
   overflow-y: auto;
   overflow-x: hidden;
   display: block;
+  z-index: 1; /* Высокий z-index чтобы быть поверх MessageContainer */
   scrollbar-width: thin;
   scrollbar-color: var(--c-accent) var(--c-bg-elevated);
 
@@ -233,6 +234,7 @@ const EmojiButton = styled.button`
 const EmojiButtonWrapper = styled.div`
   position: relative;
   display: inline-block;
+  z-index: 2; /* Создаем контекст позиционирования с высоким z-index */
 `;
 
 // Emoji Picker Component

@@ -52,10 +52,6 @@ export { Badge, type BadgeProps } from './data-display/Badge/Badge';
 export { Card, type CardProps } from './data-display/Card/Card';
 export { ChatList, type ChatListProps, type ChatListItem } from './data-display/ChatList/ChatList';
 export { Message, type MessageProps, type MessageType } from './data-display/Message/Message';
-export {
-  MessageContainer,
-  type MessageContainerProps,
-} from './data-display/MessageContainer/MessageContainer';
 export { Reaction, type ReactionProps } from './data-display/Reaction/Reaction';
 
 /**
@@ -101,7 +97,7 @@ export {
 } from './Navigation/Breadcrumbs/Breadcrumbs';
 
 /**
- * Theme Utils
+ * Utils
  */
 export {
   setTheme,
@@ -117,6 +113,10 @@ export {
   type ThemeConfig,
 } from './utils/theme';
 export type { Presence, MessageStatus } from './utils/types';
+export {
+  MessageContainer,
+  type MessageContainerProps,
+} from './utils/components/MessageContainer/MessageContainer';
 
 /**
  * Theme Components
