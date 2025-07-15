@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
@@ -109,17 +109,14 @@ const HelperText = styled.div<{ $error?: boolean }>`
   margin-top: 0.1em;
 `;
 
-function validateEmail(val: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-}
-function validatePhone(val: string) {
-  return /^\+?\d{6,}$/.test(val.replace(/\D/g, ''));
-}
-function validateNumber(val: string) {
-  return /^-?\d*(\.|,)?\d*$/.test(val);
-}
+// Выносим валидацию за пределы компонента
+const VALIDATORS = {
+  email: (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+  phone: (val: string) => /^\+?\d{6,}$/.test(val.replace(/\D/g, '')),
+  number: (val: string) => /^-?\d*(\.|,)?\d*$/.test(val),
+} as const;
 
-const EyeIcon = ({ open }: { open: boolean }) =>
+const EyeIcon = React.memo(({ open }: { open: boolean }) =>
   open ? (
     <svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <ellipse cx='11' cy='11' rx='8' ry='5' stroke='currentColor' strokeWidth='2' />
@@ -131,7 +128,10 @@ const EyeIcon = ({ open }: { open: boolean }) =>
       <circle cx='11' cy='11' r='2' fill='currentColor' />
       <line x1='4' y1='18' x2='18' y2='4' stroke='currentColor' strokeWidth='2' />
     </svg>
-  );
+  )
+);
+
+EyeIcon.displayName = 'EyeIcon';
 
 /**
  * TextField component - компонент однострочного текстового поля с плавающей меткой
@@ -146,117 +146,144 @@ const EyeIcon = ({ open }: { open: boolean }) =>
  * @param defaultValue 'string' - начальное значение поля
  * @param className 'string' - дополнительные CSS классы
  */
-export const TextField: React.FC<TextFieldProps> = ({
-  label,
-  error: errorProp,
-  errorText,
-  helperText,
-  id,
-  width,
-  value,
-  defaultValue,
-  type,
-  autoComplete = true,
-  onFocus,
-  onBlur,
-  onChange,
-  className,
-  ...props
-}) => {
-  const autoId = React.useId();
-  const inputId = id || autoId;
-  const [focused, setFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [innerValue, setInnerValue] = useState(defaultValue ?? '');
-  const isControlled = value !== undefined;
-  const currentValue = isControlled ? value : innerValue;
-  const [showPassword, setShowPassword] = useState(false);
+export const TextField: React.FC<TextFieldProps> = React.memo(
+  ({
+    label,
+    error: errorProp,
+    errorText,
+    helperText,
+    id,
+    width,
+    value,
+    defaultValue,
+    type,
+    autoComplete = true,
+    onFocus,
+    onBlur,
+    onChange,
+    className,
+    ...props
+  }) => {
+    const autoId = React.useId();
+    const inputId = id || autoId;
+    const [focused, setFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [innerValue, setInnerValue] = useState(defaultValue ?? '');
+    const [showPassword, setShowPassword] = useState(false);
 
-  const hasValue = typeof currentValue === 'string' && currentValue.length > 0;
-  const floating = focused || hasValue;
+    const isControlled = value !== undefined;
+    const currentValue = isControlled ? value : innerValue;
+    const hasValue = typeof currentValue === 'string' && currentValue.length > 0;
+    const floating = focused || hasValue;
 
-  // Автовалидация
-  let error = false;
-  if (typeof errorProp === 'boolean') {
-    error = errorProp;
-  } else {
-    if (type === 'email' && hasValue) error = !validateEmail(currentValue as string);
-    if (type === 'phone' && hasValue) error = !validatePhone(currentValue as string);
-    if (type === 'number' && hasValue) error = !validateNumber(currentValue as string);
+    // Мемоизируем валидацию
+    const error = useMemo(() => {
+      if (typeof errorProp === 'boolean') {
+        return errorProp;
+      }
+
+      if (!hasValue) return false;
+
+      const validator = VALIDATORS[type as keyof typeof VALIDATORS];
+      return validator ? !validator(currentValue as string) : false;
+    }, [errorProp, hasValue, type, currentValue]);
+
+    // Мемоизируем тип input
+    const inputType = useMemo(() => {
+      if (type === 'password') {
+        return showPassword ? 'text' : 'password';
+      }
+      if (type === 'phone') {
+        return 'tel';
+      }
+      return type;
+    }, [type, showPassword]);
+
+    // Мемоизируем autoComplete
+    const autoCompleteValue = useMemo(() => {
+      if (autoComplete === false) {
+        return 'off';
+      }
+      if (typeof autoComplete === 'string') {
+        return autoComplete;
+      }
+
+      const autoCompleteMap: Record<string, string> = {
+        email: 'email',
+        password: 'current-password',
+        phone: 'tel',
+        number: 'off',
+      };
+
+      return autoCompleteMap[type || 'text'] || 'on';
+    }, [autoComplete, type]);
+
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isControlled) {
+          setInnerValue(e.target.value);
+        }
+        onChange?.(e);
+      },
+      [isControlled, onChange]
+    );
+
+    const handleFocus = useCallback(
+      (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocused(true);
+        onFocus?.(e);
+      },
+      [onFocus]
+    );
+
+    const handleBlur = useCallback(
+      (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocused(false);
+        onBlur?.(e);
+      },
+      [onBlur]
+    );
+
+    const togglePassword = useCallback(() => {
+      setShowPassword((v) => !v);
+    }, []);
+
+    return (
+      <Wrapper $width={width} className={className}>
+        <FieldWrapper>
+          <Input
+            id={inputId}
+            ref={inputRef}
+            $error={error}
+            $type={type}
+            value={currentValue}
+            type={inputType}
+            autoComplete={autoCompleteValue}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            {...props}
+          />
+          {type === 'password' && (
+            <EyeButton
+              type='button'
+              tabIndex={-1}
+              aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+              onClick={togglePassword}
+            >
+              <EyeIcon open={showPassword} />
+            </EyeButton>
+          )}
+          {label && (
+            <Label htmlFor={inputId} $floating={floating} $error={error}>
+              {label}
+            </Label>
+          )}
+        </FieldWrapper>
+        <HelperText $error={error}>{error ? errorText : helperText}</HelperText>
+      </Wrapper>
+    );
   }
+);
 
-  // Для пароля показываем/скрываем
-  const inputType =
-    type === 'password' ? (showPassword ? 'text' : 'password') : type === 'phone' ? 'tel' : type;
-
-  // Обработка autoComplete
-  let autoCompleteValue: string | undefined;
-  if (autoComplete === false) {
-    autoCompleteValue = 'off';
-  } else if (typeof autoComplete === 'string') {
-    autoCompleteValue = autoComplete;
-  } else {
-    // autoComplete === true, используем умные значения по умолчанию
-    switch (type) {
-      case 'email':
-        autoCompleteValue = 'email';
-        break;
-      case 'password':
-        autoCompleteValue = 'current-password';
-        break;
-      case 'phone':
-        autoCompleteValue = 'tel';
-        break;
-      case 'number':
-        autoCompleteValue = 'off';
-        break;
-      default:
-        autoCompleteValue = 'on';
-    }
-  }
-
-  return (
-    <Wrapper $width={width} className={className}>
-      <FieldWrapper>
-        <Input
-          id={inputId}
-          ref={inputRef}
-          $error={error}
-          $type={type}
-          value={currentValue}
-          type={inputType}
-          autoComplete={autoCompleteValue}
-          onChange={(e) => {
-            if (!isControlled) setInnerValue(e.target.value);
-            onChange?.(e);
-          }}
-          onFocus={(e) => {
-            setFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setFocused(false);
-            onBlur?.(e);
-          }}
-          {...props}
-        />
-        {type === 'password' && (
-          <EyeButton
-            type='button'
-            tabIndex={-1}
-            aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
-            onClick={() => setShowPassword((v) => !v)}
-          >
-            <EyeIcon open={showPassword} />
-          </EyeButton>
-        )}
-        {label && (
-          <Label htmlFor={inputId} $floating={floating} $error={error}>
-            {label}
-          </Label>
-        )}
-      </FieldWrapper>
-      <HelperText $error={error}>{error ? errorText : helperText}</HelperText>
-    </Wrapper>
-  );
-};
+TextField.displayName = 'TextField';

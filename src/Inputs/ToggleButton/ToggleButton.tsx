@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React, { useCallback } from 'react';
+import styled from 'styled-components';
 
 export interface ToggleButtonProps {
   /** Текст кнопки */
@@ -40,33 +40,32 @@ const StyledToggleButton = styled.button<{
   transition: all 0.2s ease;
   user-select: none;
 
-  ${(p) =>
-    p.$size === 'small' &&
-    css`
-      padding: 6px 10px;
-      font-size: 12px;
-      gap: 6px;
-    `}
+  ${({ $size }) => {
+    switch ($size) {
+      case 'small':
+        return `
+          padding: 6px 10px;
+          font-size: 12px;
+          gap: 6px;
+        `;
+      case 'large':
+        return `
+          padding: 10px 16px;
+          font-size: 16px;
+          gap: 10px;
+        `;
+      default:
+        return `
+          padding: 8px 12px;
+          font-size: 14px;
+          gap: 8px;
+        `;
+    }
+  }}
 
-  ${(p) =>
-    p.$size === 'medium' &&
-    css`
-      padding: 8px 12px;
-      font-size: 14px;
-      gap: 8px;
-    `}
-
-  ${(p) =>
-    p.$size === 'large' &&
-    css`
-      padding: 10px 16px;
-      font-size: 16px;
-      gap: 10px;
-    `}
-
-  ${(p) =>
-    p.$disabled &&
-    css`
+  ${({ $disabled }) =>
+    $disabled &&
+    `
       opacity: 0.5;
       cursor: not-allowed;
     `}
@@ -86,29 +85,28 @@ const ToggleIcon = styled.span<{ $showIcon: boolean; $checked: boolean }>`
   width: 20px;
   height: 20px;
 
-  ${(p) =>
-    p.$showIcon && p.$checked
-      ? css`
-          font-size: 1.2em;
-          filter: drop-shadow(0 0 4px rgba(255, 107, 53, 0.6));
-        `
-      : css`
-          font-size: 0;
+  ${({ $showIcon, $checked }) => {
+    if ($showIcon && $checked) {
+      return `
+        font-size: 1.2em;
+        filter: drop-shadow(0 0 4px rgba(255, 107, 53, 0.6));
+      `;
+    }
+    return `
+      font-size: 0;
 
-          &::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: ${p.$checked ? 'var(--c-accent)' : '#000000'};
-            display: block;
-            transition: all 0.2s ease;
-            ${p.$checked &&
-            css`
-              box-shadow: 0 0 8px var(--c-accent);
-            `}
-          }
-        `}
+      &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: ${$checked ? 'var(--c-accent)' : '#000000'};
+        display: block;
+        transition: all 0.2s ease;
+        ${$checked ? 'box-shadow: 0 0 8px var(--c-accent);' : ''}
+      }
+    `;
+  }}
 `;
 
 const ToggleText = styled.span`
@@ -127,42 +125,46 @@ const ToggleText = styled.span`
  * @param onChange '(checked: boolean, value?: string) => void' - обработчик изменения состояния
  * @param className 'string' - дополнительные CSS классы
  */
-export const ToggleButton: React.FC<ToggleButtonProps> = ({
-  children,
-  checked = false,
-  disabled = false,
-  name,
-  value,
-  size = 'medium',
-  showIcon = false,
-  onChange,
-  className,
-  ...props
-}) => {
-  const handleClick = () => {
-    if (disabled) return;
+export const ToggleButton: React.FC<ToggleButtonProps> = React.memo(
+  ({
+    children,
+    checked = false,
+    disabled = false,
+    name,
+    value,
+    size = 'medium',
+    showIcon = false,
+    onChange,
+    className,
+    ...props
+  }) => {
+    const handleClick = useCallback(() => {
+      if (disabled) return;
 
-    const newChecked = !checked;
-    onChange?.(newChecked, value);
-  };
+      const newChecked = !checked;
+      onChange?.(newChecked, value);
+    }, [disabled, checked, onChange, value]);
 
-  return (
-    <StyledToggleButton
-      type='button'
-      $checked={checked}
-      $disabled={disabled}
-      $size={size}
-      onClick={handleClick}
-      disabled={disabled}
-      data-name={name}
-      data-value={value}
-      className={className}
-      {...props}
-    >
-      <ToggleIcon $showIcon={showIcon} $checked={checked}>
-        {showIcon && checked ? '🔥' : null}
-      </ToggleIcon>
-      <ToggleText>{children}</ToggleText>
-    </StyledToggleButton>
-  );
-};
+    return (
+      <StyledToggleButton
+        type='button'
+        $checked={checked}
+        $disabled={disabled}
+        $size={size}
+        onClick={handleClick}
+        disabled={disabled}
+        data-name={name}
+        data-value={value}
+        className={className}
+        {...props}
+      >
+        <ToggleIcon $showIcon={showIcon} $checked={checked}>
+          {showIcon && checked ? '🔥' : null}
+        </ToggleIcon>
+        <ToggleText>{children}</ToggleText>
+      </StyledToggleButton>
+    );
+  }
+);
+
+ToggleButton.displayName = 'ToggleButton';

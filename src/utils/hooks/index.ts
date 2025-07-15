@@ -11,3 +11,4 @@ export { useSnackbarStack, type SnackbarOrigin } from './useSnackbarStack';
 export { useAutoHide } from './useAutoHide';
 export { useDragScroll } from './useDragScroll';
 export { useWheelScroll } from './useWheelScroll';
+export { useAutoHeight } from './useAutoHeight';

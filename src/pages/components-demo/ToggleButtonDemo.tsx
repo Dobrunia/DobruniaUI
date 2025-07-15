@@ -6,6 +6,7 @@ export const ToggleButtonDemo: React.FC = () => {
   const [basicToggle, setBasicToggle] = useState(false);
   const [iconToggle, setIconToggle] = useState(true);
   const [smallToggle, setSmallToggle] = useState(false);
+  const [mediumToggle, setMediumToggle] = useState(false);
   const [largeToggle, setLargeToggle] = useState(true);
 
   // Состояние для групп переключателей
@@ -69,7 +70,7 @@ export const ToggleButtonDemo: React.FC = () => {
             Маленькая
           </ToggleButton>
 
-          <ToggleButton checked={basicToggle} onChange={setBasicToggle}>
+          <ToggleButton checked={mediumToggle} onChange={setMediumToggle}>
             Средняя
           </ToggleButton>
 

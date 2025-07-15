@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
+import { useAutoHeight } from '../../utils/hooks';
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -91,65 +92,94 @@ const HelperText = styled.div<{ $error?: boolean }>`
  * @param defaultValue 'string' - начальное значение поля
  * @param className 'string' - дополнительные CSS классы
  */
-export const Textarea: React.FC<TextareaProps> = ({
-  label,
-  error,
-  errorText,
-  helperText,
-  id,
-  width,
-  value,
-  defaultValue,
-  autoHeight,
-  resize = 'none',
-  onFocus,
-  onBlur,
-  onChange,
-  className,
-  ...props
-}) => {
-  const autoId = React.useId();
-  const textareaId = id || autoId;
-  const [innerValue, setInnerValue] = useState(defaultValue ?? '');
-  const isControlled = value !== undefined;
-  const currentValue = isControlled ? value : innerValue;
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+export const Textarea: React.FC<TextareaProps> = React.memo(
+  ({
+    label,
+    error,
+    errorText,
+    helperText,
+    id,
+    width,
+    value,
+    defaultValue,
+    autoHeight,
+    resize = 'none',
+    onFocus,
+    onBlur,
+    onChange,
+    className,
+    ...props
+  }) => {
+    const autoId = React.useId();
+    const textareaId = id || autoId;
+    const [innerValue, setInnerValue] = useState(defaultValue ?? '');
 
-  // Авто-высота
-  useEffect(() => {
-    if (autoHeight && textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-    }
-  }, [currentValue, autoHeight]);
+    const isControlled = value !== undefined;
+    const currentValue = isControlled ? value : innerValue;
 
-  return (
-    <Wrapper $width={width} className={className}>
-      {label && (
-        <Label htmlFor={textareaId} $error={error}>
-          {label}
-        </Label>
-      )}
-      <StyledTextarea
-        id={textareaId}
-        ref={textareaRef}
-        $error={error}
-        $resize={resize}
-        $autoHeight={autoHeight}
-        value={currentValue}
-        onChange={(e) => {
-          if (!isControlled) setInnerValue(e.target.value);
-          onChange?.(e);
-        }}
-        onFocus={(e) => {
-          onFocus?.(e);
-        }}
-        onBlur={(e) => {
-          onBlur?.(e);
-        }}
-        {...props}
-      />
-      <HelperText $error={error}>{error ? errorText : helperText}</HelperText>
-    </Wrapper>
-  );
-};
+    // Используем кастомный хук для авто-высоты
+    const textareaRef = useAutoHeight(autoHeight || false, String(currentValue));
+
+    // Создаем стабильные ссылки на колбэки
+    const onChangeRef = useRef(onChange);
+    const onFocusRef = useRef(onFocus);
+    const onBlurRef = useRef(onBlur);
+
+    // Обновляем refs при изменении пропсов
+    useEffect(() => {
+      onChangeRef.current = onChange;
+    }, [onChange]);
+
+    useEffect(() => {
+      onFocusRef.current = onFocus;
+    }, [onFocus]);
+
+    useEffect(() => {
+      onBlurRef.current = onBlur;
+    }, [onBlur]);
+
+    // Стабильные обработчики событий
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (!isControlled) {
+          setInnerValue(e.target.value);
+        }
+        onChangeRef.current?.(e);
+      },
+      [isControlled]
+    );
+
+    const handleFocus = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
+      onFocusRef.current?.(e);
+    }, []);
+
+    const handleBlur = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
+      onBlurRef.current?.(e);
+    }, []);
+
+    return (
+      <Wrapper $width={width} className={className}>
+        {label && (
+          <Label htmlFor={textareaId} $error={error}>
+            {label}
+          </Label>
+        )}
+        <StyledTextarea
+          id={textareaId}
+          ref={textareaRef}
+          $error={error}
+          $resize={resize}
+          $autoHeight={autoHeight}
+          value={currentValue}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...props}
+        />
+        <HelperText $error={error}>{error ? errorText : helperText}</HelperText>
+      </Wrapper>
+    );
+  }
+);
+
+Textarea.displayName = 'Textarea';
