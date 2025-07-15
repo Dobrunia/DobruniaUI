@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled, { css } from 'styled-components';
 
@@ -63,9 +63,11 @@ const BadgeCircle = styled.span<{ $variant?: string }>`
         `}
 `;
 
-function formatMessageDate(date: Date | string | number, locale: string = 'en') {
+// Мемоизированная функция форматирования даты
+const formatMessageDate = (date: Date | string | number, locale: string = 'en'): string => {
   const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
   if (isNaN(d.getTime())) return '';
+
   // Формат: 1 June или June 1 (en), 1 июня (ru), ...
   // Для en: { month: 'long', day: 'numeric' } => June 1
   // Для ru: { day: 'numeric', month: 'long' } => 1 июня
@@ -73,7 +75,52 @@ function formatMessageDate(date: Date | string | number, locale: string = 'en') 
     ? { month: 'long', day: 'numeric' }
     : { day: 'numeric', month: 'long' };
   return d.toLocaleDateString(locale, opts);
-}
+};
+
+// Мемоизированный компонент для бейджа с датой
+const MessageDateBadge = React.memo<{
+  date: Date | string | number;
+  locale: string;
+  className?: string;
+}>(({ date, locale, className }) => {
+  const formatted = useMemo(() => formatMessageDate(date, locale), [date, locale]);
+
+  if (!formatted) return null;
+
+  return (
+    <MessageDateWrapper className={className}>
+      <BadgeCircle $variant='message-date' data-variant='message-date'>
+        {formatted}
+      </BadgeCircle>
+    </MessageDateWrapper>
+  );
+});
+
+MessageDateBadge.displayName = 'MessageDateBadge';
+
+// Мемоизированный компонент для обычного бейджа
+const DefaultBadge = React.memo<{
+  value: number | string;
+  max: number;
+  children?: React.ReactNode;
+  className?: string;
+}>(({ value, max, children, className }) => {
+  const displayValue = useMemo(() => {
+    if (typeof value === 'number' && value > max) {
+      return `${max}+`;
+    }
+    return value;
+  }, [value, max]);
+
+  return (
+    <BadgeWrapper className={className}>
+      {children}
+      <BadgeCircle>{displayValue}</BadgeCircle>
+    </BadgeWrapper>
+  );
+});
+
+DefaultBadge.displayName = 'DefaultBadge';
 
 /**
  * Badge - бейдж для отображения чисел, текста или дат сообщений
@@ -85,37 +132,31 @@ function formatMessageDate(date: Date | string | number, locale: string = 'en') 
  * @param locale 'string' = 'en' - локаль для форматирования даты
  * @param className 'string' - дополнительные CSS классы
  */
-export const Badge: React.FC<BadgeProps> = ({
-  value,
-  children,
-  max = 99,
-  variant = 'default',
-  date,
-  locale = 'en',
-  className,
-}) => {
-  if (variant === 'message-date') {
-    if (!date) return null;
-    const formatted = formatMessageDate(date, locale);
-    if (!formatted) return null;
+export const Badge: React.FC<BadgeProps> = React.memo(
+  ({ value, children, max = 99, variant = 'default', date, locale = 'en', className }) => {
+    // Мемоизируем проверку для message-date варианта
+    const isMessageDate = useMemo(() => variant === 'message-date', [variant]);
+
+    if (isMessageDate) {
+      if (!date) return null;
+      return <MessageDateBadge date={date} locale={locale} className={className} />;
+    }
+
+    // Проверяем, нужно ли показывать бейдж
+    const shouldShowBadge = useMemo(() => {
+      return value !== undefined && value !== null && value !== '';
+    }, [value]);
+
+    if (!shouldShowBadge) {
+      return <BadgeWrapper className={className}>{children}</BadgeWrapper>;
+    }
+
     return (
-      <MessageDateWrapper className={className}>
-        <BadgeCircle $variant='message-date' data-variant='message-date'>
-          {formatted}
-        </BadgeCircle>
-      </MessageDateWrapper>
+      <DefaultBadge value={value!} max={max} className={className}>
+        {children}
+      </DefaultBadge>
     );
   }
-  let displayValue = value;
-  if (typeof value === 'number' && value > max) {
-    displayValue = `${max}+`;
-  }
-  return (
-    <BadgeWrapper className={className}>
-      {children}
-      {value !== undefined && value !== null && value !== '' && (
-        <BadgeCircle $variant={variant}>{displayValue}</BadgeCircle>
-      )}
-    </BadgeWrapper>
-  );
-};
+);
+
+Badge.displayName = 'Badge';
