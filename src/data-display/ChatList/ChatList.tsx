@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import {
   Skeleton,
@@ -140,6 +140,101 @@ const Mark = styled.span<{
   }}
 `;
 
+// Fallback иконка для аватара
+const FallbackAvatar = React.memo(() => (
+  <svg
+    width={DESIGN_TOKENS.baseHeight.medium}
+    height={DESIGN_TOKENS.baseHeight.medium}
+    fill='none'
+    viewBox='0 0 44 44'
+  >
+    <circle cx='22' cy='22' r='22' fill='var(--c-bg-elevated)' />
+    <circle cx='22' cy='18' r='6' fill='var(--c-text-secondary)' />
+    <path
+      d='M12 36c0-5.523 4.477-10 10-10s10 4.477 10 10'
+      stroke='var(--c-text-secondary)'
+      strokeWidth='2'
+      strokeLinecap='round'
+    />
+  </svg>
+));
+
+FallbackAvatar.displayName = 'FallbackAvatar';
+
+// Мемоизированный компонент для skeleton элемента
+const SkeletonItem = React.memo<{ index: number }>(({ index }) => (
+  <Item key={`skeleton-${index}`} $selected={false}>
+    <Skeleton
+      variant='circular'
+      width={DESIGN_TOKENS.baseHeight.medium}
+      height={DESIGN_TOKENS.baseHeight.medium}
+    />
+    <Info>
+      <NameRow>
+        <Skeleton variant='text' width={120} height={DESIGN_TOKENS.baseHeight.tiny} />
+        <Skeleton variant='text' width={32} height={DESIGN_TOKENS.baseHeight.tiny} />
+      </NameRow>
+      <Skeleton variant='text' width={180} height={DESIGN_TOKENS.baseHeight.tiny} />
+    </Info>
+  </Item>
+));
+
+SkeletonItem.displayName = 'SkeletonItem';
+
+// Мемоизированный компонент для элемента чата
+const ChatItem = React.memo<{
+  item: ChatListItem;
+  selected: boolean;
+  onSelect: (id: string) => void;
+}>(({ item, selected, onSelect }) => {
+  const handleClick = useCallback(() => {
+    onSelect(item.id);
+  }, [item.id, onSelect]);
+
+  const mark = useMemo(() => {
+    if (item.messageStatus === 'error') return '!';
+    if (item.isOutgoing) return '✔✔';
+    return null;
+  }, [item.messageStatus, item.isOutgoing]);
+
+  return (
+    <Item key={`chat-${item.id}`} $selected={selected} onClick={handleClick}>
+      {item.avatar ? (
+        <UserAvatar
+          src={item.avatar}
+          name={item.name}
+          size='md'
+          status={item.status}
+          showStatus={Boolean(item.status)}
+        />
+      ) : (
+        <FallbackAvatar />
+      )}
+
+      <Info>
+        <NameRow>
+          <Name>{item.name}</Name>
+          <Time $selected={selected}>{item.time}</Time>
+        </NameRow>
+
+        <NameRow>
+          <LastMessage $msg={item.messageStatus} $selected={selected} $out={item.isOutgoing}>
+            {item.lastMessage}
+          </LastMessage>
+
+          {mark && (
+            <Mark $selected={selected} $msg={item.messageStatus} $out={item.isOutgoing}>
+              {mark}
+            </Mark>
+          )}
+        </NameRow>
+      </Info>
+    </Item>
+  );
+});
+
+ChatItem.displayName = 'ChatItem';
+
 /**
  * ChatList - список чатов с аватарами, статусами и skeleton-режимом
  * @param items 'ChatListItem[]' - массив чатов
@@ -149,94 +244,41 @@ const Mark = styled.span<{
  * @param selectedId 'string' - id выбранного чата
  * @param className 'string' - дополнительные CSS классы
  */
-export const ChatList: React.FC<ChatListProps> = ({
-  items = [],
-  loading,
-  skeletonCount = 6,
-  onSelect,
-  selectedId,
-  className,
-}) => {
-  /* --------- skeleton state --------- */
-  if (loading)
-    return (
-      <List className={className}>
-        {Array.from({ length: skeletonCount }).map((_, i) => (
-          <Item key={i} $selected={false}>
-            <Skeleton
-              variant='circular'
-              width={DESIGN_TOKENS.baseHeight.medium}
-              height={DESIGN_TOKENS.baseHeight.medium}
-            />
-            <Info>
-              <NameRow>
-                <Skeleton variant='text' width={120} height={DESIGN_TOKENS.baseHeight.tiny} />
-                <Skeleton variant='text' width={32} height={DESIGN_TOKENS.baseHeight.tiny} />
-              </NameRow>
-              <Skeleton variant='text' width={180} height={DESIGN_TOKENS.baseHeight.tiny} />
-            </Info>
-          </Item>
-        ))}
-      </List>
+export const ChatList: React.FC<ChatListProps> = React.memo(
+  ({ items = [], loading, skeletonCount = 6, onSelect, selectedId, className }) => {
+    // Стабилизируем обработчик выбора
+    const handleSelect = useCallback(
+      (id: string) => {
+        onSelect?.(id);
+      },
+      [onSelect]
     );
 
-  /* --------- normal list --------- */
-  return (
-    <List className={className}>
-      {items.map((it) => {
-        const selected = it.id === selectedId;
-        const mark = it.messageStatus === 'error' ? '!' : it.isOutgoing ? '✔✔' : null;
+    // Мемоизируем skeleton элементы
+    const skeletonItems = useMemo(() => {
+      if (!loading) return null;
 
-        return (
-          <Item key={it.id} $selected={selected} onClick={() => onSelect?.(it.id)}>
-            {it.avatar ? (
-              <UserAvatar
-                src={it.avatar}
-                name={it.name}
-                size='md'
-                status={it.status}
-                showStatus={Boolean(it.status)}
-              />
-            ) : (
-              /* fallback icon */
-              <svg
-                width={DESIGN_TOKENS.baseHeight.medium}
-                height={DESIGN_TOKENS.baseHeight.medium}
-                fill='none'
-                viewBox='0 0 44 44'
-              >
-                <circle cx='22' cy='22' r='22' fill='var(--c-bg-elevated)' />
-                <circle cx='22' cy='18' r='6' fill='var(--c-text-secondary)' />
-                <path
-                  d='M12 36c0-5.523 4.477-10 10-10s10 4.477 10 10'
-                  stroke='var(--c-text-secondary)'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                />
-              </svg>
-            )}
+      return Array.from({ length: skeletonCount }).map((_, i) => (
+        <SkeletonItem key={`skeleton-${i}`} index={i} />
+      ));
+    }, [loading, skeletonCount]);
 
-            <Info>
-              <NameRow>
-                <Name>{it.name}</Name>
-                <Time $selected={selected}>{it.time}</Time>
-              </NameRow>
+    // Мемоизируем элементы чатов
+    const chatItems = useMemo(() => {
+      if (loading) return null;
 
-              <NameRow>
-                <LastMessage $msg={it.messageStatus} $selected={selected} $out={it.isOutgoing}>
-                  {it.lastMessage}
-                </LastMessage>
+      return items.map((item) => (
+        <ChatItem
+          key={`chat-${item.id}`}
+          item={item}
+          selected={item.id === selectedId}
+          onSelect={handleSelect}
+        />
+      ));
+    }, [items, selectedId, handleSelect, loading]);
 
-                {mark && (
-                  <Mark $selected={selected} $msg={it.messageStatus} $out={it.isOutgoing}>
-                    {mark}
-                  </Mark>
-                )}
-              </NameRow>
-            </Info>
-          </Item>
-        );
-      })}
-    </List>
-  );
-};
+    return <List className={className}>{skeletonItems || chatItems}</List>;
+  }
+);
+
+ChatList.displayName = 'ChatList';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled, { css } from 'styled-components';
 
@@ -131,6 +131,36 @@ const CardFooter = styled.div`
   gap: 12px;
 `;
 
+// Мемоизированный компонент для заголовка карточки
+const CardHeaderComponent = React.memo<{
+  title?: string;
+  subtitle?: string;
+}>(({ title, subtitle }) => {
+  const hasSubtitle = useMemo(() => !!subtitle, [subtitle]);
+
+  if (!title && !subtitle) return null;
+
+  return (
+    <CardHeader $hasSubtitle={hasSubtitle}>
+      {title && <CardTitle>{title}</CardTitle>}
+      {subtitle && <CardSubtitle>{subtitle}</CardSubtitle>}
+    </CardHeader>
+  );
+});
+
+CardHeaderComponent.displayName = 'CardHeaderComponent';
+
+// Мемоизированный компонент для футера карточки
+const CardFooterComponent = React.memo<{
+  footer?: React.ReactNode;
+}>(({ footer }) => {
+  if (!footer) return null;
+
+  return <CardFooter>{footer}</CardFooter>;
+});
+
+CardFooterComponent.displayName = 'CardFooterComponent';
+
 /**
  * Card - карточка для отображения контента с заголовком и футером
  * @param children 'React.ReactNode' - основной контент карточки
@@ -145,41 +175,49 @@ const CardFooter = styled.div`
  * @param className 'string' - дополнительный CSS класс
  * @param onClick '() => void' - обработчик клика
  */
-export const Card: React.FC<CardProps> = ({
-  children,
-  title,
-  subtitle,
-  footer,
-  variant = 'default',
-  clickable = false,
-  disabled = false,
-  width,
-  maxWidth,
-  className,
-  onClick,
-}) => {
-  const hasHeader = title || subtitle;
+export const Card: React.FC<CardProps> = React.memo(
+  ({
+    children,
+    title,
+    subtitle,
+    footer,
+    variant = 'default',
+    clickable = false,
+    disabled = false,
+    width,
+    maxWidth,
+    className,
+    onClick,
+  }) => {
+    // Мемоизируем проверки для предотвращения лишних вычислений
+    const hasHeader = useMemo(() => title || subtitle, [title, subtitle]);
+    const shouldHandleClick = useMemo(() => clickable && !disabled, [clickable, disabled]);
 
-  return (
-    <CardContainer
-      $variant={variant}
-      $clickable={clickable}
-      $disabled={disabled}
-      $width={width}
-      $maxWidth={maxWidth}
-      className={className}
-      onClick={clickable && !disabled ? onClick : undefined}
-    >
-      {hasHeader && (
-        <CardHeader $hasSubtitle={!!subtitle}>
-          {title && <CardTitle>{title}</CardTitle>}
-          {subtitle && <CardSubtitle>{subtitle}</CardSubtitle>}
-        </CardHeader>
-      )}
+    // Стабилизируем обработчик клика
+    const handleClick = useCallback(() => {
+      if (shouldHandleClick && onClick) {
+        onClick();
+      }
+    }, [shouldHandleClick, onClick]);
 
-      <CardContent>{children}</CardContent>
+    return (
+      <CardContainer
+        $variant={variant}
+        $clickable={clickable}
+        $disabled={disabled}
+        $width={width}
+        $maxWidth={maxWidth}
+        className={className}
+        onClick={shouldHandleClick ? handleClick : undefined}
+      >
+        {hasHeader && <CardHeaderComponent title={title} subtitle={subtitle} />}
 
-      {footer && <CardFooter>{footer}</CardFooter>}
-    </CardContainer>
-  );
-};
+        <CardContent>{children}</CardContent>
+
+        <CardFooterComponent footer={footer} />
+      </CardContainer>
+    );
+  }
+);
+
+Card.displayName = 'Card';

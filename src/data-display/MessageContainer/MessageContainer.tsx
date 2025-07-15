@@ -1,12 +1,13 @@
 import React, {
   useRef,
   useEffect,
-  useState,
+  useMemo,
+  useCallback,
   forwardRef,
   useImperativeHandle,
-  useCallback,
 } from 'react';
 import styled from 'styled-components';
+import { useScrollPosition, useScrollToBottom } from '../../utils/hooks';
 
 export interface MessageContainerProps {
   children: React.ReactNode;
@@ -81,6 +82,27 @@ const ScrollIcon = styled.svg`
   height: 28px;
 `;
 
+// Мемоизированный компонент для кнопки скролла вниз
+const ScrollToBottomButton = React.memo<{
+  visible: boolean;
+  onClick: () => void;
+}>(({ visible, onClick }) => (
+  <ScrollToBottomBtn onClick={onClick} title='Scroll to bottom' $visible={visible}>
+    <ScrollIcon viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <circle cx='14' cy='14' r='14' fill='none' />
+      <path
+        d='M8 12L14 18L20 12'
+        stroke='white'
+        strokeWidth='2.2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </ScrollIcon>
+  </ScrollToBottomBtn>
+));
+
+ScrollToBottomButton.displayName = 'ScrollToBottomButton';
+
 /**
  * MessageContainer - контейнер для списка сообщений с автоскроллом и кнопкой "вниз"
  * @param children 'React.ReactNode' - сообщения (обычно Message компоненты)
@@ -95,110 +117,59 @@ export const MessageContainer = forwardRef<MessageContainerRef, MessageContainer
     ref
   ): React.ReactElement => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [showScrollBtn, setShowScrollBtn] = useState(false);
-    const [isAtBottom, setIsAtBottom] = useState(true);
-    const isFirstRender = useRef(true);
     const lastMessageIdRef = useRef(lastMessageId);
 
-    const scrollToBottom = useCallback((smooth = true) => {
-      if (containerRef.current) {
-        containerRef.current.scrollTo({
-          top: containerRef.current.scrollHeight,
-          behavior: smooth ? 'smooth' : 'auto',
-        });
-        setIsAtBottom(true);
-      }
-    }, []);
+    // Используем кастомные хуки
+    const scrollState = useScrollPosition(containerRef);
+    const { scrollToBottom, scrollToMessage, initializeScroll } = useScrollToBottom(containerRef);
 
-    const checkScroll = useCallback(() => {
-      if (!containerRef.current) return;
-      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-      const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
-      setIsAtBottom(isBottom);
+    // Мемоизируем вычисления
+    const showScrollBtn = useMemo(
+      () => scrollState.hasScroll && scrollState.isScrolledUp,
+      [scrollState.hasScroll, scrollState.isScrolledUp]
+    );
 
-      const hasScroll = scrollHeight > clientHeight + 8;
-      const isScrolledUp = scrollHeight - scrollTop - clientHeight > 200;
-      setShowScrollBtn(hasScroll && isScrolledUp);
-    }, []);
-
+    // Стабилизируем обработчики
     const handleScrollToBottomClick = useCallback(() => {
       scrollToBottom(true);
-      setShowScrollBtn(false);
     }, [scrollToBottom]);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        scrollToMessage: (id: string) => {
-          const element = document.getElementById(id);
-          if (element && containerRef.current) {
-            element.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-              inline: 'nearest',
-            });
-          }
-        },
-      }),
-      []
-    );
 
     // Инициализация скролла
     useEffect(() => {
-      const el = containerRef.current;
-      if (!el) return;
+      initializeScroll();
+    }, [initializeScroll]);
 
-      el.addEventListener('scroll', checkScroll);
-      checkScroll();
-
-      // Начальный скролл вниз без анимации
-      if (isFirstRender.current) {
-        requestAnimationFrame(() => {
-          scrollToBottom(false);
-          isFirstRender.current = false;
-        });
-      }
-
-      return () => el.removeEventListener('scroll', checkScroll);
-    }, [checkScroll, scrollToBottom]);
-
-    // Автоскролл при новых сообщениях (отслеживаем по lastMessageId)
+    // Автоскролл при новых сообщениях
     useEffect(() => {
       if (
-        !isFirstRender.current &&
         autoScrollToBottom &&
-        isAtBottom &&
+        scrollState.isAtBottom &&
         lastMessageId !== lastMessageIdRef.current &&
         lastMessageId !== undefined
       ) {
-        // Небольшая задержка для завершения рендера
         requestAnimationFrame(() => {
           scrollToBottom(true);
         });
       }
       lastMessageIdRef.current = lastMessageId;
-    }, [lastMessageId, autoScrollToBottom, isAtBottom, scrollToBottom]);
+    }, [lastMessageId, autoScrollToBottom, scrollState.isAtBottom, scrollToBottom]);
+
+    // Экспортируем методы через ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollToMessage,
+      }),
+      [scrollToMessage]
+    );
 
     return (
       <Container ref={containerRef} className={className} $maxHeight={maxHeight}>
         {children}
-        <ScrollToBottomBtn
-          onClick={handleScrollToBottomClick}
-          title='Scroll to bottom'
-          $visible={showScrollBtn}
-        >
-          <ScrollIcon viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='14' cy='14' r='14' fill='none' />
-            <path
-              d='M8 12L14 18L20 12'
-              stroke='white'
-              strokeWidth='2.2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            />
-          </ScrollIcon>
-        </ScrollToBottomBtn>
+        <ScrollToBottomButton visible={showScrollBtn} onClick={handleScrollToBottomClick} />
       </Container>
     );
   }
 );
+
+MessageContainer.displayName = 'MessageContainer';

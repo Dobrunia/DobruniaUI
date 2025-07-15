@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useCallback, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { Reaction, Avatar, ActionsMenu, type ActionsMenuAction, DESIGN_TOKENS } from '@DobruniaUI';
+import { useClickOutside, useAudioPlayer } from '../../utils/hooks';
 
 export type MessageType = 'incoming' | 'outgoing';
 
@@ -457,6 +458,184 @@ const MessageText = styled.div`
   word-break: break-word;
 `;
 
+// Мемоизированная функция форматирования времени
+const formatTime = (seconds: number) => {
+  if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) return '...';
+  if (seconds === 0) return '...';
+  if (seconds < 10) {
+    // Показываем с одной десятичной для коротких сообщений
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = (seconds % 60).toFixed(1);
+    return `${minutes}:${remainingSeconds.padStart(4, '0')}`;
+  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
+
+// Мемоизированный компонент для аудио вложения
+const AudioAttachmentComponent = React.memo<{
+  attachment: NonNullable<MessageProps['attachments']>[0];
+  audioPlayer: ReturnType<typeof useAudioPlayer>;
+}>(({ attachment, audioPlayer }) => {
+  const handlePlayClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      audioPlayer.handleAudioPlay(attachment.url);
+    },
+    [attachment.url, audioPlayer]
+  );
+
+  const handleProgressClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      audioPlayer.handleAudioProgressClick(attachment.url, e);
+    },
+    [attachment.url, audioPlayer]
+  );
+
+  return (
+    <AudioAttachment onClick={(e) => e.stopPropagation()}>
+      <HiddenAudio
+        ref={(el) => audioPlayer.setAudioRef(attachment.url, el)}
+        src={attachment.url}
+        onTimeUpdate={() => audioPlayer.handleAudioTimeUpdate(attachment.url)}
+        onEnded={() => audioPlayer.handleAudioEnded(attachment.url)}
+      />
+      <PlayButton onClick={handlePlayClick}>
+        {audioPlayer.isPlaying[attachment.url] ? '⏸️' : '▶️'}
+      </PlayButton>
+      <AudioControls>
+        <AudioProgress onClick={handleProgressClick}>
+          <AudioProgressBar $progress={audioPlayer.progress[attachment.url] || 0} />
+        </AudioProgress>
+        <AudioDuration>{formatTime(attachment.duration || 0)}</AudioDuration>
+      </AudioControls>
+    </AudioAttachment>
+  );
+});
+
+AudioAttachmentComponent.displayName = 'AudioAttachmentComponent';
+
+// Мемоизированный компонент для вложений
+const AttachmentsComponent = React.memo<{
+  attachments: MessageProps['attachments'];
+  audioPlayer: ReturnType<typeof useAudioPlayer>;
+  onImageClick: (url: string) => void;
+}>(({ attachments, audioPlayer, onImageClick }) => {
+  if (!attachments || attachments.length === 0) return null;
+
+  return (
+    <AttachmentContainer>
+      {attachments.map((attachment, index) => {
+        if (attachment.type === 'image') {
+          return (
+            <ImageAttachment
+              key={`image-${index}-${attachment.url}`}
+              src={attachment.url}
+              alt={attachment.name || 'Image attachment'}
+              onClick={(e) => {
+                e.stopPropagation();
+                onImageClick(attachment.url);
+              }}
+            />
+          );
+        } else if (attachment.type === 'audio') {
+          return (
+            <AudioAttachmentComponent
+              key={`audio-${index}-${attachment.url}`}
+              attachment={attachment}
+              audioPlayer={audioPlayer}
+            />
+          );
+        } else {
+          return (
+            <FileAttachment
+              key={`file-${index}-${attachment.url}`}
+              href={attachment.url}
+              download={attachment.name}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span>📎</span>
+              <span>{attachment.name || 'File'}</span>
+              {attachment.size && <span>({Math.round(attachment.size / 1024)} KB)</span>}
+            </FileAttachment>
+          );
+        }
+      })}
+    </AttachmentContainer>
+  );
+});
+
+AttachmentsComponent.displayName = 'AttachmentsComponent';
+
+// Мемоизированный компонент для реакций
+const ReactionsComponent = React.memo<{
+  reactions: ReactionData[] | undefined;
+  currentUserId?: string;
+  onReaction?: (emoji: string) => void;
+}>(({ reactions, currentUserId, onReaction }) => {
+  if (!reactions || reactions.length === 0) return null;
+
+  const handleReactionClick = useCallback(
+    (emoji: string) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onReaction?.(emoji);
+    },
+    [onReaction]
+  );
+
+  return (
+    <>
+      {reactions.map((reaction, index) => (
+        <Reaction
+          key={`reaction-${index}-${reaction.emoji}`}
+          emoji={reaction.emoji}
+          users={reaction.users}
+          currentUserId={currentUserId}
+          onClick={onReaction ? handleReactionClick(reaction.emoji) : undefined}
+        />
+      ))}
+    </>
+  );
+});
+
+ReactionsComponent.displayName = 'ReactionsComponent';
+
+// Мемоизированный компонент для меню реакций
+const ReactionMenuComponent = React.memo<{
+  type: MessageType;
+  reactionEmojis: string[];
+  onReaction: (emoji: string) => void;
+  onClose: () => void;
+}>(({ type, reactionEmojis, onReaction, onClose }) => {
+  const handleEmojiClick = useCallback(
+    (emoji: string) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onReaction(emoji);
+      onClose();
+    },
+    [onReaction, onClose]
+  );
+
+  return (
+    <ReactionMenu
+      $type={type}
+      onWheel={(e) => e.stopPropagation()}
+      onScroll={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
+    >
+      {reactionEmojis.map((emoji) => (
+        <EmojiButton key={`emoji-${emoji}`} onClick={handleEmojiClick(emoji)}>
+          {emoji}
+        </EmojiButton>
+      ))}
+    </ReactionMenu>
+  );
+});
+
+ReactionMenuComponent.displayName = 'ReactionMenuComponent';
+
 /**
  * Message - сообщение в чате с реакциями, вложениями и меню действий
  * @param type 'incoming' | 'outgoing' - тип сообщения (входящее/исходящее)
@@ -477,360 +656,243 @@ const MessageText = styled.div`
  * @param id 'string' - ID сообщения
  * @param showActionsOnClick 'boolean' = false - показывать ActionsMenu при клике
  */
-export const Message: React.FC<MessageProps> = ({
-  type,
-  text,
-  time,
-  reactions,
-  className,
-  sender,
-  isRead,
-  onReaction,
-  reactionEmojis = ['❤️', '😂', '👍', '🔥'],
-  currentUserId,
-  actions,
-  attachments,
-  forwardedFrom,
-  onForwardedClick,
-  replyTo,
-  id,
-  showActionsOnClick = false,
-}) => {
-  const [showReactions, setShowReactions] = useState(false);
-  const [showActions, setShowActions] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [audioProgress, setAudioProgress] = useState<Record<string, number>>({});
-  const [isPlaying, setIsPlaying] = useState<Record<string, boolean>>({});
-  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
-  const bubbleRef = useRef<HTMLDivElement>(null);
-  const reactionMenuRef = useRef<HTMLDivElement>(null);
+export const Message: React.FC<MessageProps> = React.memo(
+  ({
+    type,
+    text,
+    time,
+    reactions,
+    className,
+    sender,
+    isRead,
+    onReaction,
+    reactionEmojis = ['❤️', '😂', '👍', '🔥'],
+    currentUserId,
+    actions,
+    attachments,
+    forwardedFrom,
+    onForwardedClick,
+    replyTo,
+    id,
+    showActionsOnClick = false,
+  }) => {
+    const [showReactions, setShowReactions] = useState(false);
+    const [showActions, setShowActions] = useState(false);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!showReactions && !showActions) return;
-    const handle = (e: MouseEvent) => {
-      const target = e.target as Node;
+    const bubbleRef = useRef<HTMLDivElement>(null);
+    const reactionMenuRef = useRef<HTMLDivElement>(null);
 
-      // Не закрывать если клик внутри bubble или ReactionMenu
-      if (
-        (bubbleRef.current && bubbleRef.current.contains(target)) ||
-        (reactionMenuRef.current && reactionMenuRef.current.contains(target))
-      ) {
-        return;
+    // Используем кастомные хуки
+    const audioPlayer = useAudioPlayer();
+
+    // Мемоизируем вычисления
+    const hasInteraction = useMemo(
+      () => (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0),
+      [onReaction, reactionEmojis.length, actions]
+    );
+
+    const getReplyPreview = useCallback((reply?: MessageProps['replyTo']) => {
+      if (!reply) return null;
+      if (reply.text && reply.text.trim()) {
+        let text = reply.text.trim();
+        if (text.length > 80) text = text.slice(0, 80) + '...';
+        return <ReplyText>{text}</ReplyText>;
       }
+      if (reply.attachments && reply.attachments.length > 0) {
+        const att = reply.attachments[0];
+        if (att.type === 'image') return <ReplyText>Photo</ReplyText>;
+        if (att.type === 'audio') return <ReplyText>Audio</ReplyText>;
+        if (att.type === 'file') return <ReplyText>File: {att.name}</ReplyText>;
+      }
+      return <ReplyText>Message</ReplyText>;
+    }, []);
 
+    // Стабилизируем обработчики
+    const handleBubbleClick = useCallback(() => {
+      if (showActionsOnClick && actions && actions.length > 0) {
+        setShowActions((v) => !v);
+      }
+      if (onReaction && reactionEmojis.length > 0) {
+        setShowReactions((v) => !v);
+      }
+    }, [showActionsOnClick, actions, onReaction, reactionEmojis.length]);
+
+    const handleContextMenu = useCallback(
+      (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (onReaction && reactionEmojis.length > 0) setShowReactions((v) => !v);
+        if (actions && actions.length > 0) setShowActions((v) => !v);
+      },
+      [onReaction, reactionEmojis.length, actions]
+    );
+
+    const handleReplyClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (replyTo?.id) {
+          const element = document.getElementById(replyTo.id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      },
+      [replyTo?.id]
+    );
+
+    const handleForwardedClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onForwardedClick?.(forwardedFrom!.id);
+      },
+      [onForwardedClick, forwardedFrom]
+    );
+
+    const handleImageClick = useCallback((url: string) => {
+      setPreviewImage(url);
+    }, []);
+
+    const handleCloseMenus = useCallback(() => {
       setShowReactions(false);
       setShowActions(false);
-    };
-    document.addEventListener('mousedown', handle);
-    return () => document.removeEventListener('mousedown', handle);
-  }, [showReactions, showActions]);
+    }, []);
 
-  const formatTime = (seconds: number) => {
-    if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) return '...';
-    if (seconds === 0) return '...';
-    if (seconds < 10) {
-      // Показываем с одной десятичной для коротких сообщений
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = (seconds % 60).toFixed(1);
-      return `${minutes}:${remainingSeconds.padStart(4, '0')}`;
-    }
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+    const handleReaction = useCallback(
+      (emoji: string) => {
+        onReaction?.(emoji);
+        handleCloseMenus();
+      },
+      [onReaction, handleCloseMenus]
+    );
 
-  const handleAudioPlay = (url: string) => {
-    const audio = audioRefs.current[url];
-    if (!audio) return;
+    // Используем кастомный хук для клика вне элемента
+    useClickOutside(bubbleRef, handleCloseMenus);
 
-    if (isPlaying[url]) {
-      audio.pause();
-      setIsPlaying((prev) => ({ ...prev, [url]: false }));
-    } else {
-      // Stop all other audio
-      Object.values(audioRefs.current).forEach((a) => a.pause());
-      setIsPlaying((prev) =>
-        Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {})
+    // Мемоизируем содержимое
+    const replyContent = useMemo(() => {
+      if (!replyTo) return null;
+      return (
+        <ReplyBlock onClick={handleReplyClick} title='Go to replied message'>
+          {replyTo.sender?.name && <ReplySender>{replyTo.sender.name}</ReplySender>}
+          {getReplyPreview(replyTo)}
+        </ReplyBlock>
       );
+    }, [replyTo, handleReplyClick, getReplyPreview]);
 
-      audio.play();
-      setIsPlaying((prev) => ({ ...prev, [url]: true }));
-    }
-  };
+    const forwardedContent = useMemo(() => {
+      if (!forwardedFrom) return null;
+      return (
+        <ForwardedBlock
+          onClick={onForwardedClick ? handleForwardedClick : undefined}
+          title={`Go to forwarded message`}
+        >
+          Forwarded from {forwardedFrom.name}
+        </ForwardedBlock>
+      );
+    }, [forwardedFrom, onForwardedClick, handleForwardedClick]);
 
-  const handleAudioTimeUpdate = (url: string) => {
-    const audio = audioRefs.current[url];
-    if (!audio) return;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    setAudioProgress((prev) => ({ ...prev, [url]: progress }));
-  };
-
-  const handleAudioEnded = (url: string) => {
-    setIsPlaying((prev) => ({ ...prev, [url]: false }));
-    setAudioProgress((prev) => ({ ...prev, [url]: 0 }));
-  };
-
-  const handleAudioProgressClick = (url: string, e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    const audio = audioRefs.current[url];
-    if (!audio) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = (x / rect.width) * 100;
-    const time = (percentage / 100) * audio.duration;
-
-    audio.currentTime = time;
-    setAudioProgress((prev) => ({ ...prev, [url]: percentage }));
-  };
-
-  function getReplyPreview(reply?: MessageProps['replyTo']) {
-    if (!reply) return null;
-    if (reply.text && reply.text.trim()) {
-      let text = reply.text.trim();
-      if (text.length > 80) text = text.slice(0, 80) + '...';
-      return <ReplyText>{text}</ReplyText>;
-    }
-    if (reply.attachments && reply.attachments.length > 0) {
-      const att = reply.attachments[0];
-      if (att.type === 'image') return <ReplyText>Photo</ReplyText>;
-      if (att.type === 'audio') return <ReplyText>Audio</ReplyText>;
-      if (att.type === 'file') return <ReplyText>File: {att.name}</ReplyText>;
-    }
-    return <ReplyText>Message</ReplyText>;
-  }
-
-  const handleReplyClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (replyTo?.id) {
-      const element = document.getElementById(replyTo.id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  };
-
-  const hasInteraction =
-    (onReaction && reactionEmojis.length > 0) || (actions && actions.length > 0);
-
-  return (
-    <MessageRoot $type={type} className={className} id={id}>
-      <MessageRow $type={type}>
-        <MessageWrapper>
-          <Bubble
-            $type={type}
-            $hasInteraction={hasInteraction}
-            ref={bubbleRef}
-            onClick={
-              hasInteraction
-                ? () => {
-                    if (showActionsOnClick && actions && actions.length > 0) {
-                      setShowActions((v) => !v);
-                    }
-                    if (onReaction && reactionEmojis.length > 0) {
-                      setShowReactions((v) => !v);
-                    }
-                  }
-                : undefined
-            }
-            onContextMenu={(e) => {
-              e.preventDefault();
-              if (onReaction && reactionEmojis.length > 0) setShowReactions((v) => !v);
-              if (actions && actions.length > 0) setShowActions((v) => !v);
-            }}
-          >
-            {replyTo && (
-              <ReplyBlock onClick={handleReplyClick} title='Go to replied message'>
-                {replyTo.sender?.name && <ReplySender>{replyTo.sender.name}</ReplySender>}
-                {getReplyPreview(replyTo)}
-              </ReplyBlock>
-            )}
-            {forwardedFrom && (
-              <ForwardedBlock
-                onClick={
-                  onForwardedClick
-                    ? (e) => {
-                        e.stopPropagation();
-                        onForwardedClick(forwardedFrom.id);
-                      }
-                    : undefined
-                }
-                title={`Go to forwarded message`}
-              >
-                Forwarded from {forwardedFrom.name}
-              </ForwardedBlock>
-            )}
-            {!sender && <BubbleTail $type={type} />}
-            <MessageText>{text}</MessageText>
-            {attachments && attachments.length > 0 && (
-              <AttachmentContainer>
-                {attachments.map((attachment, index) => {
-                  if (attachment.type === 'image') {
-                    return (
-                      <ImageAttachment
-                        key={index}
-                        src={attachment.url}
-                        alt={attachment.name || 'Image attachment'}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setPreviewImage(attachment.url);
-                        }}
-                      />
-                    );
-                  } else if (attachment.type === 'audio') {
-                    return (
-                      <AudioAttachment key={index} onClick={(e) => e.stopPropagation()}>
-                        <HiddenAudio
-                          ref={(el) => {
-                            if (el) audioRefs.current[attachment.url] = el;
-                          }}
-                          src={attachment.url}
-                          onTimeUpdate={() => handleAudioTimeUpdate(attachment.url)}
-                          onEnded={() => handleAudioEnded(attachment.url)}
+    return (
+      <MessageRoot $type={type} className={className} id={id}>
+        <MessageRow $type={type}>
+          <MessageWrapper>
+            <Bubble
+              $type={type}
+              $hasInteraction={hasInteraction}
+              ref={bubbleRef}
+              onClick={hasInteraction ? handleBubbleClick : undefined}
+              onContextMenu={handleContextMenu}
+            >
+              {replyContent}
+              {forwardedContent}
+              {!sender && <BubbleTail $type={type} />}
+              <MessageText>{text}</MessageText>
+              <AttachmentsComponent
+                attachments={attachments}
+                audioPlayer={audioPlayer}
+                onImageClick={handleImageClick}
+              />
+              <BottomBar>
+                <ReactionsComponent
+                  reactions={reactions}
+                  currentUserId={currentUserId}
+                  onReaction={onReaction}
+                />
+              </BottomBar>
+              <BubbleMeta>
+                <SendTime $type={type} $isRead={isRead}>
+                  {time}
+                </SendTime>
+                <ReadIcon $type={type} $isRead={isRead}>
+                  {isRead ? (
+                    <>
+                      <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
+                        <path
+                          d='M3 8.5L7 12.5L13 6.5'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
                         />
-                        <PlayButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAudioPlay(attachment.url);
-                          }}
-                        >
-                          {isPlaying[attachment.url] ? '⏸️' : '▶️'}
-                        </PlayButton>
-                        <AudioControls>
-                          <AudioProgress
-                            onClick={(e) => handleAudioProgressClick(attachment.url, e)}
-                          >
-                            <AudioProgressBar $progress={audioProgress[attachment.url] || 0} />
-                          </AudioProgress>
-                          <AudioDuration>{formatTime(attachment.duration || 0)}</AudioDuration>
-                        </AudioControls>
-                      </AudioAttachment>
-                    );
-                  } else {
-                    return (
-                      <FileAttachment
-                        key={index}
-                        href={attachment.url}
-                        download={attachment.name}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <span>📎</span>
-                        <span>{attachment.name || 'File'}</span>
-                        {attachment.size && <span>({Math.round(attachment.size / 1024)} KB)</span>}
-                      </FileAttachment>
-                    );
-                  }
-                })}
-              </AttachmentContainer>
-            )}
-            <BottomBar>
-              {reactions && reactions.length > 0 && (
-                <>
-                  {reactions.map((r, i) => (
-                    <Reaction
-                      key={i}
-                      emoji={r.emoji}
-                      users={r.users}
-                      currentUserId={currentUserId}
-                      onClick={
-                        onReaction
-                          ? (e) => {
-                              e.stopPropagation();
-                              onReaction(r.emoji);
-                            }
-                          : undefined
-                      }
-                    />
-                  ))}
-                </>
-              )}
-            </BottomBar>
-            <BubbleMeta>
-              <SendTime $type={type} $isRead={isRead}>
-                {time}
-              </SendTime>
-              <ReadIcon $type={type} $isRead={isRead}>
-                {isRead ? (
-                  <>
-                    <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
+                        <path
+                          d='M3 8.5L7 12.5L13 6.5'
+                          transform='translate(4)'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    </>
+                  ) : (
+                    <svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
                       <path
                         d='M3 8.5L7 12.5L13 6.5'
-                        stroke='currentColor'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                      <path
-                        d='M3 8.5L7 12.5L13 6.5'
-                        transform='translate(4)'
                         stroke='currentColor'
                         strokeWidth='1.5'
                         strokeLinecap='round'
                         strokeLinejoin='round'
                       />
                     </svg>
-                  </>
-                ) : (
-                  <svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
-                    <path
-                      d='M3 8.5L7 12.5L13 6.5'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                )}
-              </ReadIcon>
-            </BubbleMeta>
-            {sender && (
-              <AvatarBubbleWrapper $type={type}>
-                <OutlinedAvatar>
-                  <Avatar src={sender.avatar} size='sm' name={sender.name} />
-                </OutlinedAvatar>
-              </AvatarBubbleWrapper>
+                  )}
+                </ReadIcon>
+              </BubbleMeta>
+              {sender && (
+                <AvatarBubbleWrapper $type={type}>
+                  <OutlinedAvatar>
+                    <Avatar src={sender.avatar} size='sm' name={sender.name} />
+                  </OutlinedAvatar>
+                </AvatarBubbleWrapper>
+              )}
+            </Bubble>
+          </MessageWrapper>
+        </MessageRow>
+
+        {previewImage && (
+          <ImageModalOverlay onClick={() => setPreviewImage(null)}>
+            <ImageModalImg src={previewImage} alt='preview' />
+          </ImageModalOverlay>
+        )}
+
+        {(showReactions || showActions) && (
+          <>
+            {onReaction && showReactions && reactionEmojis.length > 0 && (
+              <ReactionMenuComponent
+                type={type}
+                reactionEmojis={reactionEmojis}
+                onReaction={handleReaction}
+                onClose={handleCloseMenus}
+              />
             )}
-          </Bubble>
-        </MessageWrapper>
-      </MessageRow>
-      {previewImage && (
-        <ImageModalOverlay onClick={() => setPreviewImage(null)}>
-          <ImageModalImg src={previewImage} alt='preview' />
-        </ImageModalOverlay>
-      )}
-      {(showReactions || showActions) && (
-        <>
-          {onReaction && showReactions && reactionEmojis.length > 0 && (
-            <ReactionMenu
-              $type={type}
-              ref={reactionMenuRef}
-              onWheel={(e) => e.stopPropagation()}
-              onScroll={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
-            >
-              {reactionEmojis.map((emoji) => (
-                <EmojiButton
-                  key={emoji}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onReaction(emoji);
-                    setShowReactions(false);
-                    setShowActions(false);
-                  }}
-                >
-                  {emoji}
-                </EmojiButton>
-              ))}
-            </ReactionMenu>
-          )}
-          {Array.isArray(actions) &&
-            actions.length > 0 &&
-            (showActions || (showActionsOnClick && showReactions)) && (
-              <StyledActionsMenu $type={type} items={actions} />
-            )}
-        </>
-      )}
-    </MessageRoot>
-  );
-};
+            {Array.isArray(actions) &&
+              actions.length > 0 &&
+              (showActions || (showActionsOnClick && showReactions)) && (
+                <StyledActionsMenu $type={type} items={actions} />
+              )}
+          </>
+        )}
+      </MessageRoot>
+    );
+  }
+);
+
+Message.displayName = 'Message';

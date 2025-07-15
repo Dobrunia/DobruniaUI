@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@DobruniaUI';
 
@@ -81,6 +81,39 @@ const UserCount = styled.span<{ $active?: boolean }>`
   font-weight: ${({ $active }) => ($active ? '600' : '400')};
 `;
 
+// Мемоизированный компонент для аватара пользователя
+const UserAvatar = React.memo<{
+  user: User;
+  index: number;
+}>(({ user, index }) => (
+  <AvatarWrapper key={`avatar-${user.id}`} $zIndex={10 - index}>
+    <Avatar src={user.avatar} name={user.name} size='xxs' showStatus={false} />
+  </AvatarWrapper>
+));
+
+UserAvatar.displayName = 'UserAvatar';
+
+// Мемоизированный компонент для стека аватаров
+const AvatarsStackComponent = React.memo<{
+  users: User[];
+  isActive: boolean;
+}>(({ users, isActive }) => {
+  // Мемоизируем отображаемых пользователей
+  const displayedUsers = useMemo(() => users.slice(0, 3), [users]);
+  const remainingCount = useMemo(() => users.length - 3, [users.length]);
+
+  return (
+    <AvatarsStack>
+      {displayedUsers.map((user, idx) => (
+        <UserAvatar key={`user-${user.id}`} user={user} index={idx} />
+      ))}
+      {remainingCount > 0 && <UserCount $active={isActive}>+{remainingCount}</UserCount>}
+    </AvatarsStack>
+  );
+});
+
+AvatarsStackComponent.displayName = 'AvatarsStackComponent';
+
 /**
  * Reaction - реакция на сообщение с эмодзи и стеком аватаров пользователей
  * @param emoji 'string' - эмодзи реакции
@@ -89,25 +122,29 @@ const UserCount = styled.span<{ $active?: boolean }>`
  * @param className 'string' - дополнительные CSS классы
  * @param currentUserId 'string' - ID текущего пользователя для подсветки активной реакции
  */
-export const Reaction: React.FC<ReactionProps> = ({
-  emoji,
-  users,
-  onClick,
-  className,
-  currentUserId,
-}) => {
-  const isActive = !!(currentUserId && users.some((u) => u.id === currentUserId));
-  return (
-    <ReactionRoot onClick={onClick} className={className} $active={isActive}>
-      <Emoji>{emoji}</Emoji>
-      <AvatarsStack>
-        {users.slice(0, 3).map((user, idx) => (
-          <AvatarWrapper key={user.id} $zIndex={10 - idx}>
-            <Avatar src={user.avatar} name={user.name} size='xxs' showStatus={false} />
-          </AvatarWrapper>
-        ))}
-        {users.length > 3 && <UserCount $active={isActive}>+{users.length - 3}</UserCount>}
-      </AvatarsStack>
-    </ReactionRoot>
-  );
-};
+export const Reaction: React.FC<ReactionProps> = React.memo(
+  ({ emoji, users, onClick, className, currentUserId }) => {
+    // Мемоизируем вычисление активного состояния
+    const isActive = useMemo(
+      () => !!(currentUserId && users.some((u) => u.id === currentUserId)),
+      [currentUserId, users]
+    );
+
+    // Стабилизируем обработчик клика
+    const handleClick = useCallback(
+      (e: React.MouseEvent) => {
+        onClick?.(e);
+      },
+      [onClick]
+    );
+
+    return (
+      <ReactionRoot onClick={handleClick} className={className} $active={isActive}>
+        <Emoji>{emoji}</Emoji>
+        <AvatarsStackComponent users={users} isActive={isActive} />
+      </ReactionRoot>
+    );
+  }
+);
+
+Reaction.displayName = 'Reaction';
