@@ -59,6 +59,11 @@ export { Reaction, type ReactionProps } from './data-display/Reaction/Reaction';
  */
 export { Alert, type AlertProps } from './Feedback/Alert/Alert';
 export {
+  AlertWithBorder,
+  type AlertWithBorderProps,
+  type AlertWithBorderType,
+} from './Feedback/Alert/AlertWithBorder';
+export {
   CircularProgressWithLabel,
   type CircularProgressWithLabelProps,
   LinearProgress,
