@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface PortalProps {
@@ -15,38 +16,58 @@ export interface PortalProps {
  * @param disabled 'boolean' = false - отключить портал
  * @param className 'string' - дополнительные CSS классы
  */
-export const Portal: React.FC<PortalProps> = ({
-  children,
-  container,
-  disabled = false,
-  className,
-}) => {
-  /* 1. если портал отключён – выводим как есть */
-  if (disabled) {
-    return <div className={className}>{children}</div>;
-  }
+export const Portal = React.memo<PortalProps>(
+  ({ children, container, disabled = false, className }) => {
+    // Мемоизируем вычисление целевого элемента
+    const target = useMemo(() => {
+      /* 1. если портал отключён – возвращаем null */
+      if (disabled) {
+        return null;
+      }
 
-  /* 2. вычисляем целевой элемент «на лету» */
-  if (typeof document === 'undefined') return null; // SSR-гард
+      /* 2. SSR-гард */
+      if (typeof document === 'undefined') {
+        return null;
+      }
 
-  let target: HTMLElement | null = null;
+      let targetElement: HTMLElement | null = null;
 
-  if (typeof container === 'string') {
-    target = document.querySelector(container);
-    if (!target) {
-      console.warn(`Portal: selector "${container}" not найден, используем <body>`);
-      target = document.body;
+      if (typeof container === 'string') {
+        targetElement = document.querySelector(container);
+        if (!targetElement) {
+          console.warn(`Portal: selector "${container}" не найден, используем <body>`);
+          targetElement = document.body;
+        }
+      } else if (container instanceof HTMLElement) {
+        targetElement = container;
+      } else {
+        targetElement = document.body;
+      }
+
+      return targetElement;
+    }, [disabled, container]);
+
+    // Мемоизируем контент портала
+    const portalContent = useMemo(() => {
+      if (className) {
+        return <div className={className}>{children}</div>;
+      }
+      return children;
+    }, [children, className]);
+
+    /* 1. если портал отключён – выводим как есть */
+    if (disabled) {
+      return <div className={className}>{children}</div>;
     }
-  } else if (container instanceof HTMLElement) {
-    target = container;
-  } else {
-    target = document.body;
+
+    /* 2. если нет целевого элемента – не рендерим */
+    if (!target) {
+      return null;
+    }
+
+    /* 3. сам портал */
+    return createPortal(portalContent, target);
   }
+);
 
-  if (!target) return null; // крайний случай
-
-  /* 3. сам портал */
-  const node = className ? <div className={className}>{children}</div> : children;
-
-  return createPortal(node, target);
-};
+Portal.displayName = 'Portal';

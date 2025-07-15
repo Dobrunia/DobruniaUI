@@ -9,3 +9,5 @@ export { useBackdropClick } from './useBackdropClick';
 export { useModalEscape } from './useModalEscape';
 export { useSnackbarStack, type SnackbarOrigin } from './useSnackbarStack';
 export { useAutoHide } from './useAutoHide';
+export { useDragScroll } from './useDragScroll';
+export { useWheelScroll } from './useWheelScroll';

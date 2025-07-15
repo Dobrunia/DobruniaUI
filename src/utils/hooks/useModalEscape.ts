@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Глобальный стек открытых модальных окон
 const modalStack: Array<() => void> = [];

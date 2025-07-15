@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Tab, type TabData, DESIGN_TOKENS } from '@DobruniaUI';
+import { useDragScroll, useWheelScroll } from '../../utils/hooks';
 
 export interface TabbarProps {
   tabs: TabData[];
@@ -26,6 +27,16 @@ const Container = styled.div`
   }
 `;
 
+// Мемоизированный подкомпонент
+const TabItem = React.memo<{
+  tab: TabData;
+  selected: boolean;
+  onClick: (id: string | number) => void;
+}>(({ tab, selected, onClick }) => (
+  <Tab key={tab.id} tab={tab} selected={selected} onClick={onClick} />
+));
+TabItem.displayName = 'TabItem';
+
 /**
  * Tabbar component - компонент для навигации по вкладкам
  *
@@ -34,65 +45,41 @@ const Container = styled.div`
  * @param onTabPress '(id: string | number) => void' - функция обработки нажатия на вкладку
  * @param className 'string' - дополнительный CSS класс для кастомизации
  */
-export const Tabbar: React.FC<TabbarProps> = ({ tabs, selectedId, onTabPress, className }) => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  // drag-scroll state
-  const isDragging = React.useRef(false);
-  const startX = React.useRef(0);
-  const scrollLeft = React.useRef(0);
+export const Tabbar = React.memo<TabbarProps>(({ tabs, selectedId, onTabPress, className }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Фикс для preventDefault в wheel событии
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // Используем кастомные хуки для DOM-взаимодействий
+  const dragScrollHandlers = useDragScroll(containerRef);
+  useWheelScroll(containerRef);
 
-    const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        container.scrollLeft += e.deltaY * 0.5;
-      }
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container.removeEventListener('wheel', handleWheel);
-  }, []);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      isDragging.current = true;
-      startX.current = e.pageX - containerRef.current.offsetLeft;
-      scrollLeft.current = containerRef.current.scrollLeft;
-      containerRef.current.style.cursor = 'grabbing';
-    }
-  };
-  const onMouseLeave = () => {
-    isDragging.current = false;
-    if (containerRef.current) containerRef.current.style.cursor = '';
-  };
-  const onMouseUp = () => {
-    isDragging.current = false;
-    if (containerRef.current) containerRef.current.style.cursor = '';
-  };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || !containerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = x - startX.current;
-    containerRef.current.scrollLeft = scrollLeft.current - walk;
-  };
-
-  return (
-    <Container
-      ref={containerRef}
-      className={className}
-      onMouseDown={onMouseDown}
-      onMouseLeave={onMouseLeave}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
-    >
-      {tabs.map((tab) => (
-        <Tab key={tab.id} tab={tab} selected={tab.id === selectedId} onClick={onTabPress} />
-      ))}
-    </Container>
+  // Стабилизируем обработчик клика по вкладке
+  const handleTabClick = useCallback(
+    (id: string | number) => {
+      onTabPress(id);
+    },
+    [onTabPress]
   );
-};
+
+  // Мемоизируем рендер вкладок
+  const tabElements = useMemo(
+    () =>
+      tabs.map((tab) => (
+        <TabItem key={tab.id} tab={tab} selected={tab.id === selectedId} onClick={handleTabClick} />
+      )),
+    [tabs, selectedId, handleTabClick]
+  );
+
+  // Мемоизируем пропсы для контейнера
+  const containerProps = useMemo(
+    () => ({
+      ref: containerRef,
+      className,
+      ...dragScrollHandlers,
+    }),
+    [className, dragScrollHandlers]
+  );
+
+  return <Container {...containerProps}>{tabElements}</Container>;
+});
+
+Tabbar.displayName = 'Tabbar';

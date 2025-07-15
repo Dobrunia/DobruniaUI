@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 
 export interface RowProps {
@@ -73,6 +73,25 @@ const RightSlot = styled.div`
   flex-shrink: 0;
 `;
 
+// Мемоизированные подкомпоненты
+const RowLeftSlot = React.memo<{ children: React.ReactNode }>(({ children }) => (
+  <LeftSlot>{children}</LeftSlot>
+));
+RowLeftSlot.displayName = 'RowLeftSlot';
+
+const RowCenterSlot = React.memo<{
+  children: React.ReactNode;
+  centerJustify: string;
+}>(({ children, centerJustify }) => (
+  <CenterSlot $centerJustify={centerJustify}>{children}</CenterSlot>
+));
+RowCenterSlot.displayName = 'RowCenterSlot';
+
+const RowRightSlot = React.memo<{ children: React.ReactNode }>(({ children }) => (
+  <RightSlot>{children}</RightSlot>
+));
+RowRightSlot.displayName = 'RowRightSlot';
+
 /**
  * Row component - компонент строки с тремя слотами
  *
@@ -85,27 +104,39 @@ const RightSlot = styled.div`
  * @param className 'string' - дополнительный CSS класс
  * @param onClick '() => void' - обработчик клика по строке
  */
-export const Row: React.FC<RowProps> = ({
-  left,
-  center,
-  right,
-  centerJustify = 'center',
-  padding,
-  minHeight,
-  className,
-  onClick,
-}) => {
-  return (
-    <RowContainer
-      $padding={padding}
-      $minHeight={minHeight}
-      $clickable={!!onClick}
-      className={className}
-      onClick={onClick}
-    >
-      {left && <LeftSlot>{left}</LeftSlot>}
-      {center && <CenterSlot $centerJustify={centerJustify}>{center}</CenterSlot>}
-      {right && <RightSlot>{right}</RightSlot>}
-    </RowContainer>
-  );
-};
+export const Row = React.memo<RowProps>(
+  ({ left, center, right, centerJustify = 'center', padding, minHeight, className, onClick }) => {
+    // Стабилизируем обработчик клика
+    const handleClick = useCallback(() => {
+      onClick?.();
+    }, [onClick]);
+
+    // Мемоизируем пропсы для контейнера
+    const containerProps = useMemo(
+      () => ({
+        $padding: padding,
+        $minHeight: minHeight,
+        $clickable: !!onClick,
+      }),
+      [padding, minHeight, onClick]
+    );
+
+    // Мемоизируем пропсы для центрального слота
+    const centerSlotProps = useMemo(
+      () => ({
+        centerJustify,
+      }),
+      [centerJustify]
+    );
+
+    return (
+      <RowContainer {...containerProps} className={className} onClick={handleClick}>
+        {left && <RowLeftSlot>{left}</RowLeftSlot>}
+        {center && <RowCenterSlot {...centerSlotProps}>{center}</RowCenterSlot>}
+        {right && <RowRightSlot>{right}</RowRightSlot>}
+      </RowContainer>
+    );
+  }
+);
+
+Row.displayName = 'Row';

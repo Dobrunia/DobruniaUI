@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 
@@ -84,6 +84,40 @@ function getPages(page: number, count: number, siblingCount: number, boundaryCou
   return pages.filter((v, i, arr) => (typeof v === 'number' ? arr.indexOf(v) === i : true));
 }
 
+// Мемоизированные подкомпоненты
+const PaginationDots = React.memo<{ index: number }>(({ index }) => (
+  <Dots key={`dots-${index}`}>…</Dots>
+));
+PaginationDots.displayName = 'PaginationDots';
+
+const PaginationPageButton = React.memo<{
+  pageNumber: number;
+  isActive: boolean;
+  onClick: () => void;
+}>(({ pageNumber, isActive, onClick }) => (
+  <PageBtn
+    key={pageNumber}
+    $active={isActive}
+    onClick={onClick}
+    aria-current={isActive ? 'page' : undefined}
+  >
+    {pageNumber}
+  </PageBtn>
+));
+PaginationPageButton.displayName = 'PaginationPageButton';
+
+const PaginationIconButton = React.memo<{
+  onClick: () => void;
+  disabled: boolean;
+  ariaLabel: string;
+  icon: React.ReactNode;
+}>(({ onClick, disabled, ariaLabel, icon }) => (
+  <IconBtn onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
+    {icon}
+  </IconBtn>
+));
+PaginationIconButton.displayName = 'PaginationIconButton';
+
 /**
  * Pagination component - компонент для навигации по страницам
  *
@@ -94,43 +128,86 @@ function getPages(page: number, count: number, siblingCount: number, boundaryCou
  * @param boundaryCount 'number' = 1 - количество страниц, отображаемых на границах (в начале и конце)
  * @param className 'string' - дополнительные CSS классы
  */
-export const Pagination: React.FC<PaginationProps> = ({
-  page,
-  count,
-  onChange,
-  siblingCount = 1,
-  boundaryCount = 1,
-  className,
-}) => {
-  const pages = getPages(page, count, siblingCount, boundaryCount);
-  return (
-    <PaginationRoot className={className} aria-label='pagination'>
-      <IconBtn onClick={() => onChange(1)} disabled={page === 1} aria-label='first page'>
-        <FirstIcon />
-      </IconBtn>
-      <IconBtn onClick={() => onChange(page - 1)} disabled={page === 1} aria-label='previous page'>
-        <PrevIcon />
-      </IconBtn>
-      {pages.map((p, i) =>
-        p === 'dots' ? (
-          <Dots key={`dots-${i}`}>…</Dots>
-        ) : (
-          <PageBtn
-            key={p}
-            $active={p === page}
-            onClick={() => onChange(p as number)}
-            aria-current={p === page ? 'page' : undefined}
-          >
-            {p}
-          </PageBtn>
-        )
-      )}
-      <IconBtn onClick={() => onChange(page + 1)} disabled={page === count} aria-label='next page'>
-        <NextIcon />
-      </IconBtn>
-      <IconBtn onClick={() => onChange(count)} disabled={page === count} aria-label='last page'>
-        <LastIcon />
-      </IconBtn>
-    </PaginationRoot>
-  );
-};
+export const Pagination = React.memo<PaginationProps>(
+  ({ page, count, onChange, siblingCount = 1, boundaryCount = 1, className }) => {
+    // Мемоизируем вычисление страниц
+    const pages = useMemo(
+      () => getPages(page, count, siblingCount, boundaryCount),
+      [page, count, siblingCount, boundaryCount]
+    );
+
+    // Стабилизируем обработчики
+    const handleFirstPage = useCallback(() => onChange(1), [onChange]);
+    const handlePrevPage = useCallback(() => onChange(page - 1), [onChange, page]);
+    const handleNextPage = useCallback(() => onChange(page + 1), [onChange, page]);
+    const handleLastPage = useCallback(() => onChange(count), [onChange, count]);
+
+    const handlePageClick = useCallback(
+      (pageNumber: number) => {
+        onChange(pageNumber);
+      },
+      [onChange]
+    );
+
+    // Мемоизируем рендер страниц
+    const pageElements = useMemo(
+      () =>
+        pages.map((p, i) =>
+          p === 'dots' ? (
+            <PaginationDots key={`dots-${i}`} index={i} />
+          ) : (
+            <PaginationPageButton
+              key={p}
+              pageNumber={p as number}
+              isActive={p === page}
+              onClick={() => handlePageClick(p as number)}
+            />
+          )
+        ),
+      [pages, page, handlePageClick]
+    );
+
+    // Мемоизируем пропсы для кнопок навигации
+    const navigationButtons = useMemo(
+      () => ({
+        firstPage: {
+          onClick: handleFirstPage,
+          disabled: page === 1,
+          ariaLabel: 'first page',
+          icon: <FirstIcon />,
+        },
+        prevPage: {
+          onClick: handlePrevPage,
+          disabled: page === 1,
+          ariaLabel: 'previous page',
+          icon: <PrevIcon />,
+        },
+        nextPage: {
+          onClick: handleNextPage,
+          disabled: page === count,
+          ariaLabel: 'next page',
+          icon: <NextIcon />,
+        },
+        lastPage: {
+          onClick: handleLastPage,
+          disabled: page === count,
+          ariaLabel: 'last page',
+          icon: <LastIcon />,
+        },
+      }),
+      [handleFirstPage, handlePrevPage, handleNextPage, handleLastPage, page, count]
+    );
+
+    return (
+      <PaginationRoot className={className} aria-label='pagination'>
+        <PaginationIconButton {...navigationButtons.firstPage} />
+        <PaginationIconButton {...navigationButtons.prevPage} />
+        {pageElements}
+        <PaginationIconButton {...navigationButtons.nextPage} />
+        <PaginationIconButton {...navigationButtons.lastPage} />
+      </PaginationRoot>
+    );
+  }
+);
+
+Pagination.displayName = 'Pagination';

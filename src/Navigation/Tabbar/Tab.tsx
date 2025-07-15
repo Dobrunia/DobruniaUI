@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
@@ -78,6 +78,23 @@ const Underline = styled.div`
   border-radius: ${DESIGN_TOKENS.radius.medium};
 `;
 
+// Мемоизированные подкомпоненты
+const TabLeftSlot = React.memo<{ leftSlot: React.ReactNode }>(({ leftSlot }) => (
+  <LeftSlotWrapper>{leftSlot}</LeftSlotWrapper>
+));
+TabLeftSlot.displayName = 'TabLeftSlot';
+
+const TabTextContent = React.memo<{ label: string }>(({ label }) => <TabText>{label}</TabText>);
+TabTextContent.displayName = 'TabTextContent';
+
+const TabNotification = React.memo<{ notification: number }>(({ notification }) => (
+  <RightSlotWrapper>{notification}</RightSlotWrapper>
+));
+TabNotification.displayName = 'TabNotification';
+
+const TabUnderline = React.memo(() => <Underline />);
+TabUnderline.displayName = 'TabUnderline';
+
 /**
  * Tab component - отдельная вкладка для использования в Tabbar
  *
@@ -86,17 +103,40 @@ const Underline = styled.div`
  * @param onClick '(id: string | number) => void' - обработчик клика
  * @param className 'string' - дополнительные CSS классы
  */
-export const Tab: React.FC<TabProps> = ({ tab, selected, onClick, className }) => {
+export const Tab = React.memo<TabProps>(({ tab, selected, onClick, className }) => {
+  // Стабилизируем обработчик клика
+  const handleClick = useCallback(() => {
+    onClick(tab.id);
+  }, [onClick, tab.id]);
+
+  // Мемоизируем пропсы для кнопки
+  const buttonProps = useMemo(
+    () => ({
+      $selected: selected,
+      onClick: handleClick,
+    }),
+    [selected, handleClick]
+  );
+
+  // Мемоизируем проверку уведомления
+  const showNotification = useMemo(
+    () =>
+      typeof tab.notification === 'number' &&
+      tab.notification !== undefined &&
+      tab.notification !== null,
+    [tab.notification]
+  );
+
   return (
-    <TabButton $selected={selected} onClick={() => onClick(tab.id)} className={className}>
+    <TabButton {...buttonProps} className={className}>
       <LeftBlock>
-        {tab.leftSlot && <LeftSlotWrapper>{tab.leftSlot}</LeftSlotWrapper>}
-        <TabText>{tab.label}</TabText>
-        {selected && <Underline />}
+        {tab.leftSlot && <TabLeftSlot leftSlot={tab.leftSlot} />}
+        <TabTextContent label={tab.label} />
+        {selected && <TabUnderline />}
       </LeftBlock>
-      {typeof tab.notification === 'number' &&
-        tab.notification !== undefined &&
-        tab.notification !== null && <RightSlotWrapper>{tab.notification}</RightSlotWrapper>}
+      {showNotification && <TabNotification notification={tab.notification!} />}
     </TabButton>
   );
-};
+});
+
+Tab.displayName = 'Tab';

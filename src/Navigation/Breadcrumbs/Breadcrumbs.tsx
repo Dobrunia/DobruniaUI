@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { DESIGN_TOKENS } from '@DobruniaUI';
 import styled from 'styled-components';
 
@@ -167,6 +167,82 @@ const CollapsedIndicator = styled.span`
   }
 `;
 
+// Мемоизированные подкомпоненты
+const BreadcrumbIcon = React.memo<{
+  icon: React.ReactNode;
+  size: 'small' | 'medium' | 'large';
+}>(({ icon, size }) => <IconWrapper $size={size}>{icon}</IconWrapper>);
+BreadcrumbIcon.displayName = 'BreadcrumbIcon';
+
+const BreadcrumbSeparator = React.memo<{
+  separator: React.ReactNode;
+  size: 'small' | 'medium' | 'large';
+  index: number;
+}>(({ separator, size, index }) => (
+  <Separator key={`separator-${index}`} $size={size} aria-hidden='true'>
+    {separator}
+  </Separator>
+));
+BreadcrumbSeparator.displayName = 'BreadcrumbSeparator';
+
+const CollapsedBreadcrumb = React.memo<{
+  onExpand: (e: React.MouseEvent) => void;
+}>(({ onExpand }) => (
+  <CollapsedIndicator key='collapsed' onClick={onExpand} title='Показать все элементы'>
+    ...
+  </CollapsedIndicator>
+));
+CollapsedBreadcrumb.displayName = 'CollapsedBreadcrumb';
+
+const BreadcrumbLink = React.memo<{
+  item: InternalBreadcrumbItem;
+  index: number;
+  isClickable: boolean;
+  isLast: boolean;
+  variant: 'default' | 'underlined' | 'pills';
+  size: 'small' | 'medium' | 'large';
+  showIcons: boolean;
+  onClick: (e: React.MouseEvent) => void;
+}>(({ item, index, isClickable, isLast, variant, size, showIcons, onClick }) => {
+  const content = (
+    <>
+      {showIcons && item.icon && <BreadcrumbIcon icon={item.icon} size={size} />}
+      {item.label}
+    </>
+  );
+
+  if (item.href && !isLast) {
+    return (
+      <BreadcrumbItem
+        key={index}
+        as='a'
+        href={item.href}
+        $isClickable={isClickable}
+        $isLast={isLast}
+        $variant={variant}
+        $size={size}
+        onClick={onClick}
+      >
+        {content}
+      </BreadcrumbItem>
+    );
+  }
+
+  return (
+    <BreadcrumbItem
+      key={index}
+      $isClickable={isClickable}
+      $isLast={isLast}
+      $variant={variant}
+      $size={size}
+      onClick={isClickable ? onClick : undefined}
+    >
+      {content}
+    </BreadcrumbItem>
+  );
+});
+BreadcrumbLink.displayName = 'BreadcrumbLink';
+
 /**
  * Breadcrumbs component - компонент навигационных хлебных крошек
  *
@@ -179,138 +255,116 @@ const CollapsedIndicator = styled.span`
  * @param className 'string' - CSS классы
  * @param onItemClick '(item: BreadcrumbItem, index: number) => void' - обработчик клика по элементу
  */
-export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
-  items,
-  separator = '/',
-  maxItems,
-  size = 'medium',
-  variant = 'default',
-  showIcons = true,
-  className,
-  onItemClick,
-}) => {
-  const [showAllItems, setShowAllItems] = React.useState(false);
+export const Breadcrumbs = React.memo<BreadcrumbsProps>(
+  ({
+    items,
+    separator = '/',
+    maxItems,
+    size = 'medium',
+    variant = 'default',
+    showIcons = true,
+    className,
+    onItemClick,
+  }) => {
+    const [showAllItems, setShowAllItems] = useState(false);
 
-  // Логика сворачивания элементов
-  const getDisplayItems = (): InternalBreadcrumbItem[] => {
-    if (!maxItems || items.length <= maxItems || showAllItems) {
-      return items;
-    }
+    // Мемоизируем логику сворачивания элементов
+    const displayItems = useMemo((): InternalBreadcrumbItem[] => {
+      if (!maxItems || items.length <= maxItems || showAllItems) {
+        return items;
+      }
 
-    if (maxItems <= 2) {
-      return [items[0], items[items.length - 1]];
-    }
+      if (maxItems <= 2) {
+        return [items[0], items[items.length - 1]];
+      }
 
-    const startItems = items.slice(0, 1);
-    const endItems = items.slice(-(maxItems - 2));
+      const startItems = items.slice(0, 1);
+      const endItems = items.slice(-(maxItems - 2));
 
-    return [
-      ...startItems,
-      { label: '...', isCollapsed: true } as InternalBreadcrumbItem,
-      ...endItems,
-    ];
-  };
+      return [
+        ...startItems,
+        { label: '...', isCollapsed: true } as InternalBreadcrumbItem,
+        ...endItems,
+      ];
+    }, [items, maxItems, showAllItems]);
 
-  const displayItems = getDisplayItems();
+    // Стабилизируем обработчики
+    const handleItemClick = useCallback(
+      (item: InternalBreadcrumbItem, index: number, event: React.MouseEvent) => {
+        if (item.isCollapsed) {
+          event.preventDefault();
+          setShowAllItems(true);
+          return;
+        }
 
-  const handleItemClick = (
-    item: InternalBreadcrumbItem,
-    index: number,
-    event: React.MouseEvent
-  ) => {
-    if (item.isCollapsed) {
+        if (item.onClick) {
+          event.preventDefault();
+          item.onClick();
+        }
+
+        onItemClick?.(item, index);
+      },
+      [onItemClick]
+    );
+
+    const handleExpand = useCallback((event: React.MouseEvent) => {
       event.preventDefault();
       setShowAllItems(true);
-      return;
-    }
+    }, []);
 
-    if (item.onClick) {
-      event.preventDefault();
-      item.onClick();
-    }
-
-    onItemClick?.(item, index);
-  };
-
-  const renderItem = (item: InternalBreadcrumbItem, index: number, isLast: boolean) => {
-    const isClickable = !!(item.href || item.onClick) && !isLast;
-    const isCollapsed = item.isCollapsed;
-
-    if (isCollapsed) {
-      return (
-        <CollapsedIndicator
-          key='collapsed'
-          onClick={(e) => handleItemClick(item, index, e)}
-          title='Показать все элементы'
-        >
-          ...
-        </CollapsedIndicator>
-      );
-    }
-
-    const content = (
-      <>
-        {showIcons && item.icon && <IconWrapper $size={size}>{item.icon}</IconWrapper>}
-        {item.label}
-      </>
-    );
-
-    if (item.href && !isLast) {
-      return (
-        <BreadcrumbItem
-          key={index}
-          as='a'
-          href={item.href}
-          $isClickable={isClickable}
-          $isLast={isLast}
-          $variant={variant}
-          $size={size}
-          onClick={(e) => handleItemClick(item, index, e)}
-        >
-          {content}
-        </BreadcrumbItem>
-      );
-    }
-
-    return (
-      <BreadcrumbItem
-        key={index}
-        $isClickable={isClickable}
-        $isLast={isLast}
-        $variant={variant}
-        $size={size}
-        onClick={isClickable ? (e) => handleItemClick(item, index, e) : undefined}
-      >
-        {content}
-      </BreadcrumbItem>
-    );
-  };
-
-  return (
-    <BreadcrumbsContainer
-      $size={size}
-      className={className}
-      role='navigation'
-      aria-label='Breadcrumb'
-    >
-      {displayItems
+    // Мемоизируем рендер элементов
+    const breadcrumbElements = useMemo(() => {
+      return displayItems
         .map((item, index) => {
           const isLast = index === displayItems.length - 1;
           const elements = [];
 
-          elements.push(renderItem(item, index, isLast));
+          if (item.isCollapsed) {
+            elements.push(<CollapsedBreadcrumb key='collapsed' onExpand={handleExpand} />);
+          } else {
+            const isClickable = !!(item.href || item.onClick) && !isLast;
+            elements.push(
+              <BreadcrumbLink
+                key={index}
+                item={item}
+                index={index}
+                isClickable={isClickable}
+                isLast={isLast}
+                variant={variant}
+                size={size}
+                showIcons={showIcons}
+                onClick={(e) => handleItemClick(item, index, e)}
+              />
+            );
+          }
 
           if (!isLast) {
             elements.push(
-              <Separator key={`separator-${index}`} $size={size} aria-hidden='true'>
-                {separator}
-              </Separator>
+              <BreadcrumbSeparator
+                key={`separator-${index}`}
+                separator={separator}
+                size={size}
+                index={index}
+              />
             );
           }
 
           return elements;
         })
-        .flat()}
-    </BreadcrumbsContainer>
-  );
-};
+        .flat();
+    }, [displayItems, handleItemClick, handleExpand, variant, size, showIcons, separator]);
+
+    return (
+      <BreadcrumbsContainer
+        $size={size}
+        className={className}
+        role='navigation'
+        aria-label='Breadcrumb'
+      >
+        {breadcrumbElements}
+      </BreadcrumbsContainer>
+    );
+  }
+);
+
+Breadcrumbs.displayName = 'Breadcrumbs';
