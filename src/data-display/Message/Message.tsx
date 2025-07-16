@@ -464,6 +464,7 @@ const MessageText = styled.div`
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
+  white-space: pre-wrap;
 `;
 
 // Мемоизированная функция форматирования времени
@@ -819,13 +820,15 @@ export const Message: React.FC<MessageProps> = React.memo(
                 audioPlayer={audioPlayer}
                 onImageClick={handleImageClick}
               />
-              <BottomBar>
-                <ReactionsComponent
-                  reactions={reactions}
-                  currentUserId={currentUserId}
-                  onReaction={onReaction}
-                />
-              </BottomBar>
+              {reactions && reactions.length > 0 && (
+                <BottomBar>
+                  <ReactionsComponent
+                    reactions={reactions}
+                    currentUserId={currentUserId}
+                    onReaction={onReaction}
+                  />
+                </BottomBar>
+              )}
               <BubbleMeta>
                 <SendTime $type={type} $isRead={isRead}>
                   {time}
