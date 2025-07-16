@@ -139,7 +139,7 @@ const BottomBar = styled.div`
 
 const BubbleMeta = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
   gap: 6px;
   margin-top: 4px;
@@ -147,14 +147,18 @@ const BubbleMeta = styled.div`
 `;
 
 const SendTime = styled.span<{ $type: MessageType; $isRead?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
   font-size: ${DESIGN_TOKENS.fontSize.small};
   color: ${(p) => (p.$type === 'outgoing' ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)')};
   opacity: ${(p) => (p.$type === 'outgoing' ? 0.9 : 1)};
 `;
 
 const ReadIcon = styled.span<{ $type: MessageType; $isRead?: boolean }>`
+  height: 100%;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
   font-size: ${DESIGN_TOKENS.fontSize.small};
   color: ${(p) =>
     p.$isRead
@@ -166,7 +170,9 @@ const ReadIcon = styled.span<{ $type: MessageType; $isRead?: boolean }>`
 
   svg {
     display: block;
-    vertical-align: bottom;
+    vertical-align: middle;
+    width: 18px;
+    height: 100%;
   }
 `;
 
@@ -826,27 +832,25 @@ export const Message: React.FC<MessageProps> = React.memo(
                 </SendTime>
                 <ReadIcon $type={type} $isRead={isRead}>
                   {isRead ? (
-                    <>
-                      <svg width='18' height='16' viewBox='0 0 18 16' fill='none'>
-                        <path
-                          d='M3 8.5L7 12.5L13 6.5'
-                          stroke='currentColor'
-                          strokeWidth='1.5'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                        />
-                        <path
-                          d='M3 8.5L7 12.5L13 6.5'
-                          transform='translate(4)'
-                          stroke='currentColor'
-                          strokeWidth='1.5'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                        />
-                      </svg>
-                    </>
+                    <svg viewBox='0 0 18 20' fill='none'>
+                      <path
+                        d='M3 8.5L7 12.5L13 6.5'
+                        stroke='currentColor'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                      <path
+                        d='M3 8.5L7 12.5L13 6.5'
+                        transform='translate(4)'
+                        stroke='currentColor'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
                   ) : (
-                    <svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
+                    <svg viewBox='0 0 18 20' fill='none'>
                       <path
                         d='M3 8.5L7 12.5L13 6.5'
                         stroke='currentColor'
