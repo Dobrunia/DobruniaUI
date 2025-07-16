@@ -164,9 +164,7 @@ const TypingIndicator = styled.div`
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 4px 8px;
-  padding-left: 2px;
-  background: var(--c-bg-elevated);
+  padding: 4px 2px;
   border-radius: 12px;
   font-size: ${DESIGN_TOKENS.fontSize.small};
   color: var(--c-text-secondary);
@@ -176,7 +174,7 @@ const TypingIndicator = styled.div`
     height: 4px;
     background: currentColor;
     border-radius: 50%;
-    animation: typing 1.4s infinite ease-in-out;
+    animation: typing 1.2s infinite ease-in-out;
 
     &:nth-child(1) {
       animation-delay: -0.32s;
