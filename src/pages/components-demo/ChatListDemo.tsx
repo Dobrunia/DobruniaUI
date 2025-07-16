@@ -62,6 +62,17 @@ const demoChats = [
     isOutgoing: true,
     status: 'dnd' as const,
   },
+  {
+    id: '7',
+    avatar: 'https://randomuser.me/api/portraits/men/55.jpg',
+    name: 'Иван Петров',
+    lastMessage: '',
+    time: 'сейчас',
+    messageStatus: 'read' as const,
+    isOutgoing: false,
+    status: 'online' as const,
+    isTyping: true,
+  },
 ];
 
 export const ChatListDemo: React.FC = () => {

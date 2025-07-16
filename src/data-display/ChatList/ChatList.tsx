@@ -19,6 +19,7 @@ import {
  * @param isOutgoing 'boolean' = false - флаг, указывающий на исходящее сообщение
  * @param status 'Presence' = 'offline' - статус пользователя
  * @param unreadCount 'number' - количество непрочитанных сообщений
+ * @param isTyping 'boolean' = false - индикатор печати пользователя
  */
 export interface ChatListItem {
   id: string;
@@ -30,6 +31,7 @@ export interface ChatListItem {
   isOutgoing?: boolean;
   status?: Presence;
   unreadCount?: number;
+  isTyping?: boolean;
 }
 
 /**
@@ -158,6 +160,49 @@ const UnreadBadge = styled.span`
   line-height: 1;
 `;
 
+const TypingIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  padding-left: 2px;
+  background: var(--c-bg-elevated);
+  border-radius: 12px;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
+  color: var(--c-text-secondary);
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0s;
+    }
+  }
+
+  @keyframes typing {
+    0%,
+    80%,
+    100% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+`;
+
 const CustomCheckmark = styled.span<{
   $msg: MessageStatus | undefined;
   $out: boolean | undefined;
@@ -256,12 +301,21 @@ const ChatItem = React.memo<{
         </NameRow>
 
         <NameRow>
-          <LastMessage $msg={item.messageStatus} $out={item.isOutgoing}>
-            {item.lastMessage}
-          </LastMessage>
+          {item.isTyping ? (
+            <TypingIndicator>
+              <div className='dot'></div>
+              <div className='dot'></div>
+              <div className='dot'></div>
+            </TypingIndicator>
+          ) : (
+            <LastMessage $msg={item.messageStatus} $out={item.isOutgoing}>
+              {item.lastMessage}
+            </LastMessage>
+          )}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {mark &&
+              !item.isTyping &&
               (mark === '!' ? (
                 <Mark $msg={item.messageStatus} $out={item.isOutgoing}>
                   {mark}
@@ -286,7 +340,7 @@ const ChatItem = React.memo<{
                   </svg>
                 </CustomCheckmark>
               ))}
-            {item.unreadCount && (
+            {item.unreadCount && !item.isTyping && (
               <UnreadBadge>{item.unreadCount > 99 ? '99+' : item.unreadCount}</UnreadBadge>
             )}
           </div>

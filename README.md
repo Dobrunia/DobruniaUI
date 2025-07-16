@@ -893,6 +893,7 @@ interface ChatListItem {
   isOutgoing?: boolean; // true - исходящее сообщение, false - входящее
   status?: Presence;
   unreadCount?: number; // количество непрочитанных сообщений
+  isTyping?: boolean; // индикатор печати пользователя
 }
 ```
 
@@ -908,6 +909,13 @@ interface ChatListItem {
   - `unread` → текст синий + жирный (я не прочитал)
   - `read` → текст обычный серый (я прочитал)
   - `error` → ! красный (ошибка получения)
+
+**Индикатор печати:**
+
+- Показывает анимированные точки когда пользователь печатает (`isTyping: true`)
+- Заменяет последнее сообщение во время печати
+- Скрывает галочки статуса и бейдж непрочитанных во время печати
+- Анимация с задержкой для каждой точки создает эффект волны
 
 ```tsx
 <ChatList
@@ -930,6 +938,16 @@ interface ChatListItem {
       messageStatus: 'unread',
       isOutgoing: false, // входящее непрочитанное
       status: 'offline',
+    },
+    {
+      id: '3',
+      name: 'Иван',
+      lastMessage: '',
+      time: 'сейчас',
+      messageStatus: 'read',
+      isOutgoing: false,
+      status: 'online',
+      isTyping: true, // показывает индикатор печати
     },
   ]}
   selectedId={selectedChatId}
