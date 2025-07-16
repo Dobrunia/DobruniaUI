@@ -48,13 +48,13 @@ export interface ChatListProps {
   className?: string;
 }
 
-/* ------------------------------------------------------------------ */
-/*                              styled                                */
-/* ------------------------------------------------------------------ */
 const List = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  /* Кастомный цвет для более яркого вторичного текста */
+  --chat-text-secondary: color-mix(in srgb, var(--c-text-secondary) 80%, var(--c-text-primary) 20%);
 `;
 
 const Item = styled.div<{
@@ -66,14 +66,19 @@ const Item = styled.div<{
   padding: 12px 16px;
   cursor: pointer;
   border-bottom: 1px solid var(--c-border);
+  border-left: 4px solid transparent;
+  position: relative;
+  color: var(--c-text-primary);
 
-  background: ${({ $selected }) => ($selected ? 'var(--c-accent)' : 'transparent')};
-  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-text-primary)')};
-
-  &:hover {
-    background: ${({ $selected }) =>
-      $selected ? 'var(--c-accent-hover)' : 'var(--c-bg-elevated)'};
-  }
+  ${({ $selected }) =>
+    $selected
+      ? `
+    background: var(--c-bg-default);
+    border-left: 4px solid var(--c-accent);
+  `
+      : `&:hover {
+    filter: brightness(0.85);
+  }`}
 `;
 
 const Info = styled.div`
@@ -103,12 +108,11 @@ const Time = styled.span<{ $selected: boolean }>`
   align-items: center;
   font-size: ${DESIGN_TOKENS.fontSize.small};
   margin-left: 8px;
-  color: ${({ $selected }) => ($selected ? 'var(--c-text-inverse)' : 'var(--c-text-secondary)')};
+  color: var(--chat-text-secondary);
 `;
 
 const LastMessage = styled.span<{
   $msg: MessageStatus | undefined;
-  $selected: boolean;
   $out: boolean | undefined;
 }>`
   font-size: ${DESIGN_TOKENS.fontSize.small};
@@ -116,27 +120,24 @@ const LastMessage = styled.span<{
   overflow: hidden;
   text-overflow: ellipsis;
 
-  ${({ $msg, $selected, $out }) => {
-    if ($selected) return 'color:var(--c-text-inverse);';
+  ${({ $msg, $out }) => {
     if (!$out && $msg === 'unread') return 'color:var(--c-accent); font-weight:500;';
     if ($msg === 'error') return 'color:var(--c-error);';
-    return 'color:var(--c-text-secondary);';
+    return 'color:var(--chat-text-secondary);';
   }}
 `;
 
 const Mark = styled.span<{
-  $selected: boolean;
   $msg: MessageStatus | undefined;
   $out: boolean | undefined;
 }>`
   margin-left: 6px;
   font-size: ${DESIGN_TOKENS.fontSize.medium};
 
-  ${({ $selected, $msg, $out }) => {
-    if ($selected) return 'color:var(--c-text-inverse);';
+  ${({ $msg, $out }) => {
     if ($msg === 'error') return 'color:var(--c-error);';
     if ($out && $msg === 'read') return 'color:var(--c-accent);';
-    return 'color:var(--c-text-secondary);';
+    return 'color:var(--chat-text-secondary);';
   }}
 `;
 
@@ -149,10 +150,10 @@ const FallbackAvatar = React.memo(() => (
     viewBox='0 0 44 44'
   >
     <circle cx='22' cy='22' r='22' fill='var(--c-bg-elevated)' />
-    <circle cx='22' cy='18' r='6' fill='var(--c-text-secondary)' />
+    <circle cx='22' cy='18' r='6' fill='var(--chat-text-secondary)' />
     <path
       d='M12 36c0-5.523 4.477-10 10-10s10 4.477 10 10'
-      stroke='var(--c-text-secondary)'
+      stroke='var(--chat-text-secondary)'
       strokeWidth='2'
       strokeLinecap='round'
     />
@@ -218,12 +219,12 @@ const ChatItem = React.memo<{
         </NameRow>
 
         <NameRow>
-          <LastMessage $msg={item.messageStatus} $selected={selected} $out={item.isOutgoing}>
+          <LastMessage $msg={item.messageStatus} $out={item.isOutgoing}>
             {item.lastMessage}
           </LastMessage>
 
           {mark && (
-            <Mark $selected={selected} $msg={item.messageStatus} $out={item.isOutgoing}>
+            <Mark $msg={item.messageStatus} $out={item.isOutgoing}>
               {mark}
             </Mark>
           )}

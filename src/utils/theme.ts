@@ -66,7 +66,7 @@ const builtInThemes: ThemeConfig[] = [
       '--c-bg-subtle': '#282B31',
       '--c-bg-elevated': '#2D3037',
       '--c-text-primary': '#d5d9e9',
-      '--c-text-secondary': '#747E88',
+      '--c-text-secondary': '#b4bac0',
       '--c-text-inverse': '#F5F5F5',
       '--c-border': '#32363C',
       '--c-border-focus': '#1669CC',
