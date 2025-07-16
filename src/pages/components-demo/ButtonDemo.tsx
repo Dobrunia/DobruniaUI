@@ -153,13 +153,14 @@ export const ButtonDemo: React.FC = () => {
   const [errorDisabled, setErrorDisabled] = useState(false);
 
   // IconBtn Playground State
-  const [iconType, setIconType] = useState<'clock' | 'exclamation' | 'question' | 'dots' | 'exit'>(
-    'clock'
-  );
+  const [iconType, setIconType] = useState<
+    'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings'
+  >('clock');
   const [iconVariant, setIconVariant] = useState<'primary' | 'secondary' | 'ghost' | 'warning'>(
     'secondary'
   );
   const [iconSize, setIconSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [iconColor, setIconColor] = useState<string>('');
   const [iconDisabled, setIconDisabled] = useState(false);
 
   // SlottedButton Playground State
@@ -207,6 +208,7 @@ export const ButtonDemo: React.FC = () => {
     props.push(`icon="${iconType}"`);
     if (iconVariant !== 'secondary') props.push(`variant="${iconVariant}"`);
     if (iconSize !== 'medium') props.push(`size="${iconSize}"`);
+    if (iconColor) props.push(`iconColor="${iconColor}"`);
     if (iconDisabled) props.push('disabled');
 
     const propsString = props.join(' ');
@@ -402,7 +404,13 @@ export const ButtonDemo: React.FC = () => {
                 value={iconType}
                 onChange={(e) =>
                   setIconType(
-                    e.target.value as 'clock' | 'exclamation' | 'question' | 'dots' | 'exit'
+                    e.target.value as
+                      | 'clock'
+                      | 'exclamation'
+                      | 'question'
+                      | 'dots'
+                      | 'exit'
+                      | 'settings'
                   )
                 }
               >
@@ -411,6 +419,7 @@ export const ButtonDemo: React.FC = () => {
                 <option value='question'>Question</option>
                 <option value='dots'>Dots</option>
                 <option value='exit'>Exit</option>
+                <option value='settings'>Settings</option>
               </Select>
             </ControlGroup>
 
@@ -441,6 +450,16 @@ export const ButtonDemo: React.FC = () => {
               </Select>
             </ControlGroup>
 
+            <ControlGroup>
+              <ControlLabel>Icon Color (optional)</ControlLabel>
+              <Input
+                type='text'
+                value={iconColor}
+                onChange={(e) => setIconColor(e.target.value)}
+                placeholder='#ff6b6b or var(--c-success)'
+              />
+            </ControlGroup>
+
             <Checkbox
               label='Disabled'
               checked={iconDisabled}
@@ -453,6 +472,7 @@ export const ButtonDemo: React.FC = () => {
               icon={iconType}
               variant={iconVariant}
               size={iconSize}
+              iconColor={iconColor || undefined}
               disabled={iconDisabled}
               onClick={() => alert(`${iconType} icon clicked!`)}
             />
@@ -620,9 +640,20 @@ export const ButtonDemo: React.FC = () => {
             <div style={{ display: 'flex', gap: '8px' }}>
               <IconBtn icon='clock' variant='ghost' />
               <IconBtn icon='dots' variant='ghost' />
+              <IconBtn icon='settings' variant='ghost' />
               <IconBtn icon='exit' variant='ghost' />
             </div>
             <PreviewLabel>ghost: прозрачный фон, hover насыщенная заливка</PreviewLabel>
+          </ExampleCard>
+
+          <ExampleCard>
+            <ExampleTitle>Custom Icon Colors</ExampleTitle>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <IconBtn icon='settings' iconColor='#ff6b6b' variant='ghost' />
+              <IconBtn icon='clock' iconColor='var(--c-success)' variant='secondary' />
+              <IconBtn icon='exclamation' iconColor='var(--c-warning)' variant='ghost' />
+            </div>
+            <PreviewLabel>кастомные цвета иконок через iconColor пропс</PreviewLabel>
           </ExampleCard>
 
           <ExampleCard>

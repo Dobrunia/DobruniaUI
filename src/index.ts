@@ -8,7 +8,7 @@ import './styles/inject';
  */
 export { Checkbox, type CheckboxProps } from './Inputs/Checkbox/Checkbox';
 export { Button, type ButtonProps } from './Inputs/Button/Button';
-export { IconBtn, type IconBtnProps } from './Inputs/Button/IconBtn';
+export { IconBtn, type IconBtnProps, type IconType } from './Inputs/Button/IconBtn';
 export { ErrorButton, type ErrorButtonProps } from './Inputs/Button/ErrorButton';
 export {
   SlottedButton,

@@ -4,13 +4,14 @@ import { DESIGN_TOKENS } from '@DobruniaUI';
 import type { ButtonSize, ButtonVariant } from './variables';
 import { buttonVariantStyles, solidBaseStyles, getSquareButtonSize } from './variables';
 
-type IconType = 'clock' | 'exclamation' | 'question' | 'dots' | 'exit';
+export type IconType = 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings';
 
 export interface IconBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: IconType;
   size?: ButtonSize;
   variant?: ButtonVariant;
   title?: string;
+  iconColor?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
 }
@@ -25,6 +26,7 @@ const getButtonStyles = (variant: ButtonVariant) => {
 interface StyledIconBtnProps {
   $size: ButtonSize;
   $variant: ButtonVariant;
+  $iconColor?: string;
 }
 
 const StyledIconBtn = styled.button<StyledIconBtnProps>`
@@ -58,6 +60,7 @@ const StyledIconBtn = styled.button<StyledIconBtnProps>`
     display: block;
     margin: auto;
     pointer-events: none;
+    color: ${({ $iconColor }) => $iconColor || 'currentColor'};
   }
 `;
 
@@ -183,6 +186,29 @@ const ExitIcon: React.FC<{ size: ButtonSize }> = ({ size }) => {
   );
 };
 
+const SettingsIcon: React.FC<{ size: ButtonSize }> = ({ size }) => {
+  const iconSize = size === 'small' ? '16' : size === 'large' ? '24' : '20';
+  const strokeWidth = size === 'small' ? '2' : size === 'large' ? '2.5' : '2';
+  return (
+    <svg
+      width={iconSize}
+      height={iconSize}
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <circle cx='12' cy='12' r='3' stroke='currentColor' strokeWidth={strokeWidth} />
+      <path
+        d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'
+        stroke='currentColor'
+        strokeWidth={strokeWidth}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  );
+};
+
 const renderIcon = (icon: IconType, size: ButtonSize) => {
   switch (icon) {
     case 'clock':
@@ -195,16 +221,19 @@ const renderIcon = (icon: IconType, size: ButtonSize) => {
       return <DotsIcon size={size} />;
     case 'exit':
       return <ExitIcon size={size} />;
+    case 'settings':
+      return <SettingsIcon size={size} />;
   }
 };
 
 /**
  * IconBtn component - квадратная кнопка-иконка с предопределенными иконками
  *
- * @param icon - тип иконки: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit'
+ * @param icon - тип иконки: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings'
  * @param size - размер кнопки: 'small' | 'medium' | 'large'
  * @param variant - стиль кнопки: 'primary' | 'secondary' | 'ghost' | 'warning'
  * @param title - текст для tooltip при наведении
+ * @param iconColor - цвет иконки (по умолчанию наследует цвет текста кнопки)
  * @param disabled - заблокированное состояние кнопки
  * @param onClick - (event: React.MouseEvent<HTMLButtonElement>) => void; обработчик клика по кнопке
  * @param className - дополнительные CSS классы
@@ -214,6 +243,7 @@ export const IconBtn: React.FC<IconBtnProps> = ({
   size = 'medium',
   variant = 'secondary',
   title,
+  iconColor,
   onClick,
   className,
   ...restProps
@@ -222,6 +252,7 @@ export const IconBtn: React.FC<IconBtnProps> = ({
     <StyledIconBtn
       $size={size}
       $variant={variant}
+      $iconColor={iconColor}
       title={title}
       onClick={onClick}
       className={className}
