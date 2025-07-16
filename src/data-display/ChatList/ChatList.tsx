@@ -157,7 +157,6 @@ const UnreadBadge = styled.span`
   border-radius: 8px;
   font-size: ${DESIGN_TOKENS.fontSize.small};
   font-weight: 500;
-  line-height: 1;
 `;
 
 const TypingIndicator = styled.div`
