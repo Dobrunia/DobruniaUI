@@ -11,6 +11,7 @@ const demoChats = [
     messageStatus: 'unread' as const,
     isOutgoing: false,
     status: 'online' as const,
+    unreadCount: 4,
   },
   {
     id: '2',

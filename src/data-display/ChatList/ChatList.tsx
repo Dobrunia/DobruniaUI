@@ -18,6 +18,7 @@ import {
  * @param messageStatus 'unread' | 'read' | 'error' = 'unread' - статус сообщения
  * @param isOutgoing 'boolean' = false - флаг, указывающий на исходящее сообщение
  * @param status 'Presence' = 'offline' - статус пользователя
+ * @param unreadCount 'number' - количество непрочитанных сообщений
  */
 export interface ChatListItem {
   id: string;
@@ -28,6 +29,7 @@ export interface ChatListItem {
   messageStatus?: MessageStatus;
   isOutgoing?: boolean;
   status?: Presence;
+  unreadCount?: number;
 }
 
 /**
@@ -131,8 +133,43 @@ const Mark = styled.span<{
   $msg: MessageStatus | undefined;
   $out: boolean | undefined;
 }>`
-  margin-left: 6px;
-  font-size: ${DESIGN_TOKENS.fontSize.medium};
+  margin-left: 12px;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
+
+  ${({ $msg, $out }) => {
+    if ($msg === 'error') return 'color:var(--c-error);';
+    if ($out && $msg === 'read') return 'color:var(--c-accent);';
+    return 'color:var(--chat-text-secondary);';
+  }}
+`;
+
+const UnreadBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--c-accent);
+  color: var(--c-text-inverse);
+  border-radius: 8px;
+  font-size: ${DESIGN_TOKENS.fontSize.small};
+  font-weight: 500;
+  line-height: 1;
+`;
+
+const CustomCheckmark = styled.span<{
+  $msg: MessageStatus | undefined;
+  $out: boolean | undefined;
+}>`
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 
   ${({ $msg, $out }) => {
     if ($msg === 'error') return 'color:var(--c-error);';
@@ -194,7 +231,7 @@ const ChatItem = React.memo<{
 
   const mark = useMemo(() => {
     if (item.messageStatus === 'error') return '!';
-    if (item.isOutgoing) return '✔✔';
+    if (item.isOutgoing) return 'checkmark';
     return null;
   }, [item.messageStatus, item.isOutgoing]);
 
@@ -223,11 +260,36 @@ const ChatItem = React.memo<{
             {item.lastMessage}
           </LastMessage>
 
-          {mark && (
-            <Mark $msg={item.messageStatus} $out={item.isOutgoing}>
-              {mark}
-            </Mark>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {mark &&
+              (mark === '!' ? (
+                <Mark $msg={item.messageStatus} $out={item.isOutgoing}>
+                  {mark}
+                </Mark>
+              ) : (
+                <CustomCheckmark $msg={item.messageStatus} $out={item.isOutgoing}>
+                  <svg viewBox='0 0 260 200' xmlns='http://www.w3.org/2000/svg' fill='none'>
+                    <path
+                      d='M20 120 L80 180 L200 40'
+                      stroke='currentColor'
+                      strokeWidth='28'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                    <path
+                      d='M130 180 L244 46'
+                      stroke='currentColor'
+                      strokeWidth='28'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                  </svg>
+                </CustomCheckmark>
+              ))}
+            {item.unreadCount && (
+              <UnreadBadge>{item.unreadCount > 99 ? '99+' : item.unreadCount}</UnreadBadge>
+            )}
+          </div>
         </NameRow>
       </Info>
     </Item>

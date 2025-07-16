@@ -892,6 +892,7 @@ interface ChatListItem {
   messageStatus?: MessageStatus;
   isOutgoing?: boolean; // true - исходящее сообщение, false - входящее
   status?: Presence;
+  unreadCount?: number; // количество непрочитанных сообщений
 }
 ```
 
@@ -919,6 +920,7 @@ interface ChatListItem {
       messageStatus: 'read',
       isOutgoing: true, // моё сообщение, прочитанное
       status: 'online',
+      unreadCount: 3, // количество непрочитанных сообщений
     },
     {
       id: '2',
