@@ -830,37 +830,39 @@ export const Message: React.FC<MessageProps> = React.memo(
                 <SendTime $type={type} $isRead={isRead}>
                   {time}
                 </SendTime>
-                <ReadIcon $type={type} $isRead={isRead}>
-                  {isRead ? (
-                    <svg viewBox='0 0 18 20' fill='none'>
-                      <path
-                        d='M3 8.5L7 12.5L13 6.5'
-                        stroke='currentColor'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                      <path
-                        d='M3 8.5L7 12.5L13 6.5'
-                        transform='translate(4)'
-                        stroke='currentColor'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                    </svg>
-                  ) : (
-                    <svg viewBox='0 0 18 20' fill='none'>
-                      <path
-                        d='M3 8.5L7 12.5L13 6.5'
-                        stroke='currentColor'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                    </svg>
-                  )}
-                </ReadIcon>
+                {isRead !== undefined && (
+                  <ReadIcon $type={type} $isRead={isRead}>
+                    {isRead ? (
+                      <svg viewBox='0 0 18 20' fill='none'>
+                        <path
+                          d='M3 8.5L7 12.5L13 6.5'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                        <path
+                          d='M3 8.5L7 12.5L13 6.5'
+                          transform='translate(4)'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    ) : (
+                      <svg viewBox='0 0 18 20' fill='none'>
+                        <path
+                          d='M3 8.5L7 12.5L13 6.5'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    )}
+                  </ReadIcon>
+                )}
               </BubbleMeta>
               {sender && (
                 <AvatarBubbleWrapper $type={type}>
