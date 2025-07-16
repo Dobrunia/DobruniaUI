@@ -831,7 +831,7 @@ const darkTheme = getThemeConfig('dark');
 - `text?: string` - текст сообщения
 - `time?: string` - время отправки
 - `isRead?: boolean` - прочитано ли сообщение
-- `sender?: MessageSender` - отправитель сообщения
+- `sender?: MessageSender` - отправитель сообщения (id, name, avatar, status = 'offline', showStatus = false)
 - `reactions?: MessageReaction[]` - массив реакций
 - `reactionEmojis?: string[]` - доступные эмодзи для реакций
 - `actions?: ActionItem[]` - действия в контекстном меню
@@ -854,6 +854,8 @@ const darkTheme = getThemeConfig('dark');
     id: '1',
     name: 'John Doe',
     avatar: '/avatar.jpg',
+    status: 'online',
+    showStatus: true,
   }}
   reactions={[
     {

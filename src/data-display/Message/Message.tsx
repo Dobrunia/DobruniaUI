@@ -9,6 +9,8 @@ interface User {
   id: string;
   name: string;
   avatar?: string;
+  status?: 'online' | 'offline' | 'dnd' | 'invisible';
+  showStatus?: boolean;
 }
 
 interface ReactionData {
@@ -643,7 +645,7 @@ ReactionMenuComponent.displayName = 'ReactionMenuComponent';
  * @param time 'string' - время отправки сообщения
  * @param reactions 'ReactionData[]' - массив реакций на сообщение
  * @param className 'string' - дополнительные CSS классы
- * @param sender 'User' - информация об отправителе (id, name, avatar)
+ * @param sender 'User' - информация об отправителе (id, name, avatar, status = 'offline', showStatus = false)
  * @param isRead 'boolean' - флаг прочтения сообщения
  * @param onReaction '(emoji: string) => void' - обработчик добавления реакции
  * @param reactionEmojis 'string[]' = ['❤️', '😂', '👍', '🔥'] - доступные эмодзи
@@ -859,7 +861,13 @@ export const Message: React.FC<MessageProps> = React.memo(
               {sender && (
                 <AvatarBubbleWrapper $type={type}>
                   <OutlinedAvatar>
-                    <Avatar src={sender.avatar} size='sm' name={sender.name} />
+                    <Avatar
+                      src={sender.avatar}
+                      size='sm'
+                      name={sender.name}
+                      status={sender.status}
+                      showStatus={sender.showStatus || false}
+                    />
                   </OutlinedAvatar>
                 </AvatarBubbleWrapper>
               )}
