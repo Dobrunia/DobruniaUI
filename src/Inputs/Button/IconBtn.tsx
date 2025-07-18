@@ -4,7 +4,15 @@ import { DESIGN_TOKENS } from '@DobruniaUI';
 import type { ButtonSize, ButtonVariant } from './variables';
 import { buttonVariantStyles, solidBaseStyles, getSquareButtonSize } from './variables';
 
-export type IconType = 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings';
+export type IconType =
+  | 'clock'
+  | 'exclamation'
+  | 'question'
+  | 'dots'
+  | 'exit'
+  | 'settings'
+  | 'add'
+  | 'search';
 
 export interface IconBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: IconType;
@@ -209,6 +217,64 @@ const SettingsIcon: React.FC<{ size: ButtonSize }> = ({ size }) => {
   );
 };
 
+const AddIcon: React.FC<{ size: ButtonSize }> = ({ size }) => {
+  const iconSize = size === 'small' ? '16' : size === 'large' ? '24' : '20';
+  const strokeWidth = size === 'small' ? '2.5' : size === 'large' ? '3' : '2.5';
+  return (
+    <svg
+      width={iconSize}
+      height={iconSize}
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <line
+        x1='12'
+        y1='5'
+        x2='12'
+        y2='19'
+        stroke='currentColor'
+        strokeWidth={strokeWidth}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <line
+        x1='5'
+        y1='12'
+        x2='19'
+        y2='12'
+        stroke='currentColor'
+        strokeWidth={strokeWidth}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  );
+};
+
+const SearchIcon: React.FC<{ size: ButtonSize }> = ({ size }) => {
+  const iconSize = size === 'small' ? '16' : size === 'large' ? '24' : '20';
+  const strokeWidth = size === 'small' ? '2.5' : size === 'large' ? '3' : '2.5';
+  return (
+    <svg
+      width={iconSize}
+      height={iconSize}
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <circle cx='11' cy='11' r='8' stroke='currentColor' strokeWidth={strokeWidth} />
+      <path
+        d='m21 21-4.35-4.35'
+        stroke='currentColor'
+        strokeWidth={strokeWidth}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  );
+};
+
 const renderIcon = (icon: IconType, size: ButtonSize) => {
   switch (icon) {
     case 'clock':
@@ -223,13 +289,17 @@ const renderIcon = (icon: IconType, size: ButtonSize) => {
       return <ExitIcon size={size} />;
     case 'settings':
       return <SettingsIcon size={size} />;
+    case 'add':
+      return <AddIcon size={size} />;
+    case 'search':
+      return <SearchIcon size={size} />;
   }
 };
 
 /**
  * IconBtn component - квадратная кнопка-иконка с предопределенными иконками
  *
- * @param icon - тип иконки: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings'
+ * @param icon - тип иконки: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings' | 'add' | 'search'
  * @param size - размер кнопки: 'small' | 'medium' | 'large'
  * @param variant - стиль кнопки: 'primary' | 'secondary' | 'ghost' | 'warning'
  * @param title - текст для tooltip при наведении

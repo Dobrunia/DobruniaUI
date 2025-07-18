@@ -126,6 +126,7 @@ const ExampleCard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${DESIGN_TOKENS.spacing.small};
+  background: var(--c-bg-default);
 `;
 
 const ExampleTitle = styled.h4`
@@ -154,7 +155,7 @@ export const ButtonDemo: React.FC = () => {
 
   // IconBtn Playground State
   const [iconType, setIconType] = useState<
-    'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings'
+    'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings' | 'add' | 'search'
   >('clock');
   const [iconVariant, setIconVariant] = useState<'primary' | 'secondary' | 'ghost' | 'warning'>(
     'secondary'
@@ -411,6 +412,8 @@ export const ButtonDemo: React.FC = () => {
                       | 'dots'
                       | 'exit'
                       | 'settings'
+                      | 'add'
+                      | 'search'
                   )
                 }
               >
@@ -420,6 +423,8 @@ export const ButtonDemo: React.FC = () => {
                 <option value='dots'>Dots</option>
                 <option value='exit'>Exit</option>
                 <option value='settings'>Settings</option>
+                <option value='add'>Add</option>
+                <option value='search'>Search</option>
               </Select>
             </ControlGroup>
 
@@ -638,10 +643,10 @@ export const ButtonDemo: React.FC = () => {
           <ExampleCard>
             <ExampleTitle>Icon Actions</ExampleTitle>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <IconBtn icon='clock' variant='ghost' />
-              <IconBtn icon='dots' variant='ghost' />
+              <IconBtn icon='clock' variant='primary' />
+              <IconBtn icon='dots' variant='secondary' />
               <IconBtn icon='settings' variant='ghost' />
-              <IconBtn icon='exit' variant='ghost' />
+              <IconBtn icon='exit' variant='warning' />
             </div>
             <PreviewLabel>ghost: прозрачный фон, hover насыщенная заливка</PreviewLabel>
           </ExampleCard>

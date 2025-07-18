@@ -356,7 +356,7 @@ const darkTheme = getThemeConfig('dark');
 
 **Пропсы:**
 
-- `icon: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings'` - тип иконки (обязательный)
+- `icon: 'clock' | 'exclamation' | 'question' | 'dots' | 'exit' | 'settings' | 'add' | 'search'` - тип иконки (обязательный)
 - `size?: 'small' | 'medium' | 'large'` - размер кнопки
 - `variant?: 'primary' | 'secondary' | 'ghost' | 'warning'` - стиль кнопки
 - `title?: string` - текст для tooltip при наведении
@@ -373,9 +373,13 @@ const darkTheme = getThemeConfig('dark');
 - `dots` - три точки (меню)
 - `exit` - выход/логин
 - `settings` - настройки/шестеренка
+- `add` - плюс (добавление)
+- `search` - лупа (поиск)
 
 ```tsx
-<IconBtn icon='clock' variant='primary' title='Показать время' onClick={() => showTimeMenu()} />
+<IconBtn icon='add' variant='primary' title='Добавить элемент' onClick={() => addItem()} />
+<IconBtn icon='search' variant='secondary' title='Поиск' onClick={() => openSearch()} />
+<IconBtn icon='clock' variant='ghost' title='Показать время' onClick={() => showTimeMenu()} />
 <IconBtn icon='exclamation' variant='warning' size='large' title='Предупреждение' />
 <IconBtn icon='dots' variant='ghost' title='Меню' onClick={() => openContextMenu()} />
 <IconBtn icon='settings' variant='secondary' title='Настройки' onClick={() => openSettings()} />
