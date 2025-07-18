@@ -797,12 +797,22 @@ const darkTheme = getThemeConfig('dark');
 - `status?: 'online' | 'offline' | 'dnd' | 'invisible'` - статус пользователя
 - `showStatus?: boolean` - показывать статус
 - `onStatusChange?: (status: Presence) => void` - обработчик изменения статуса
+- `onClick?: () => void` - обработчик клика по аватару
 - `language?: 'ru' | 'en'` - язык интерфейса для статусов
 - `className?: string` - дополнительные CSS классы
+
+**Особенности:**
+
+- **Кликабельность** - cursor pointer только когда есть `onClick` или `onStatusChange`
+- **Приоритет обработчиков** - если есть `onClick`, он выполняется; если нет `onClick` но есть `onStatusChange`, открывается меню статусов
+- **Статусы** - поддержка 4 статусов с цветовыми индикаторами
+- **Инициалы** - автоматическая генерация инициалов из имени при отсутствии изображения
 
 ```tsx
 <Avatar src='/avatar.jpg' name='John Doe' size='lg' status='online' showStatus />
 <Avatar name='Иван Иванов' size='md' status='dnd' onStatusChange={setStatus} language='ru' />
+<Avatar name='Кликабельный' onClick={() => alert('Аватар кликнут!')} />
+<Avatar name='Не кликабельный' /> {/* cursor: default */}
 ```
 
 #### **Badge** - Значки и счетчики

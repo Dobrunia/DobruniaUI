@@ -121,6 +121,24 @@ export const AvatarDemo: React.FC = () => {
           <Label>Текущий статус: {status}</Label>
         </Col>
       </Row>
+      <h2>Avatar with onClick</h2>
+      <Row>
+        <Col>
+          <Avatar 
+            size='md' 
+            name='Кликабельный' 
+            onClick={() => alert('Аватар кликнут!')} 
+          />
+          <Label>onClick handler</Label>
+        </Col>
+        <Col>
+          <Avatar 
+            size='md' 
+            name='Не кликабельный' 
+          />
+          <Label>Без обработчиков</Label>
+        </Col>
+      </Row>
     </DemoWrapper>
   );
 };

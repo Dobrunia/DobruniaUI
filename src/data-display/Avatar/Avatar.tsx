@@ -25,7 +25,7 @@ const statusLabels = {
 } as const;
 
 /* ——— styled ——— */
-const Root = styled.div<{ $size: AvatarSize; $focused: boolean }>`
+const Root = styled.div<{ $size: AvatarSize; $focused: boolean; $clickable: boolean }>`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -35,7 +35,7 @@ const Root = styled.div<{ $size: AvatarSize; $focused: boolean }>`
   color: var(--c-accent);
   font-weight: 600;
   user-select: none;
-  cursor: pointer;
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   ${({ $size }) => css`
     width: ${sizeMap[$size]};
     height: ${sizeMap[$size]};
@@ -173,6 +173,7 @@ export interface AvatarProps {
   showStatus?: boolean;
   className?: string;
   onStatusChange?: (p: Presence) => void;
+  onClick?: () => void;
   language?: 'ru' | 'en';
 }
 
@@ -186,6 +187,7 @@ export interface AvatarProps {
  * @param showStatus 'boolean' = true - показывать индикатор статуса
  * @param className 'string' - дополнительные CSS классы
  * @param onStatusChange '(status: Presence) => void' - обработчик изменения статуса
+ * @param onClick '() => void' - обработчик клика по аватару
  * @param language 'ru' | 'en' = 'en' - язык интерфейса для статусов
  */
 export const Avatar: React.FC<AvatarProps> = React.memo(
@@ -198,10 +200,14 @@ export const Avatar: React.FC<AvatarProps> = React.memo(
     showStatus = true,
     className,
     onStatusChange,
+    onClick,
     language = 'en',
   }) => {
     const [open, setOpen] = React.useState(false);
     const rootRef = useRef<HTMLDivElement>(null);
+
+    // Определяем, кликабельный ли аватар
+    const isClickable = Boolean(onClick || onStatusChange);
 
     // Мемоизируем опции меню
     const options = useMemo(
@@ -214,11 +220,13 @@ export const Avatar: React.FC<AvatarProps> = React.memo(
     );
 
     // Стабилизируем обработчики
-    const toggleMenu = useCallback(() => {
-      if (onStatusChange) {
+    const handleClick = useCallback(() => {
+      if (onClick) {
+        onClick();
+      } else if (onStatusChange) {
         setOpen((v) => !v);
       }
-    }, [onStatusChange]);
+    }, [onClick, onStatusChange]);
 
     const closeMenu = useCallback(() => {
       setOpen(false);
@@ -260,9 +268,10 @@ export const Avatar: React.FC<AvatarProps> = React.memo(
         ref={rootRef}
         $size={size}
         $focused={open}
+        $clickable={isClickable}
         className={className}
-        tabIndex={onStatusChange ? 0 : undefined}
-        onClick={toggleMenu}
+        tabIndex={isClickable ? 0 : undefined}
+        onClick={isClickable ? handleClick : undefined}
       >
         {src ? <Img src={src} alt={alt ?? name ?? 'avatar'} /> : initials(name)}
         {showStatus && (
