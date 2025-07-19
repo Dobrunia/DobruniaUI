@@ -70,26 +70,29 @@ const SearchInputField = styled.input<{ $size: 'small' | 'medium' | 'large' }>`
  * @param placeholder - placeholder текст (по умолчанию 'Поиск')
  * @param ...rest - все остальные HTML атрибуты input (ref, disabled, autoFocus, etc.)
  */
-export const SearchInput: React.FC<SearchInputProps> = React.memo(
-  ({ value, onChange, size = 'medium', placeholder = 'Поиск', ...rest }) => {
-    const handleChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.value);
-      },
-      [onChange]
-    );
+export const SearchInput = React.memo(
+  React.forwardRef<HTMLInputElement, SearchInputProps>(
+    ({ value, onChange, size = 'medium', placeholder = 'Поиск', ...rest }, ref) => {
+      const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+          onChange(e.target.value);
+        },
+        [onChange]
+      );
 
-    return (
-      <SearchInputField
-        type='text'
-        placeholder={placeholder}
-        value={value}
-        onChange={handleChange}
-        $size={size}
-        {...rest}
-      />
-    );
-  }
+      return (
+        <SearchInputField
+          ref={ref}
+          type='text'
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          $size={size}
+          {...rest}
+        />
+      );
+    }
+  )
 );
 
 SearchInput.displayName = 'SearchInput';
