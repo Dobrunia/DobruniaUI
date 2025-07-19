@@ -503,9 +503,9 @@ const darkTheme = getThemeConfig('dark');
 
 - `value: string` - значение поиска (обязательный)
 - `onChange: (value: string) => void` - обработчик изменения (обязательный)
-- `placeholder?: string` - placeholder текст
 - `size?: 'small' | 'medium' | 'large'` - размер поля (по умолчанию 'medium')
-- `className?: string` - дополнительные CSS классы
+- `placeholder?: string` - placeholder текст (по умолчанию 'Поиск')
+- `...rest` - все остальные HTML атрибуты input (ref, disabled, autoFocus, etc.)
 
 **Размеры:**
 

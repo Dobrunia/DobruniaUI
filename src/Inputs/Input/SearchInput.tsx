@@ -21,17 +21,14 @@ const SIZE_MAP = {
   },
 } as const;
 
-export interface SearchInputProps {
+export interface SearchInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'size'> {
   /** Значение поиска */
   value: string;
   /** Обработчик изменения значения */
   onChange: (value: string) => void;
-  /** Placeholder текст */
-  placeholder?: string;
   /** Размер поля */
   size?: 'small' | 'medium' | 'large';
-  /** Дополнительные CSS классы */
-  className?: string;
 }
 
 const SearchInputField = styled.input<{ $size: 'small' | 'medium' | 'large' }>`
@@ -69,12 +66,12 @@ const SearchInputField = styled.input<{ $size: 'small' | 'medium' | 'large' }>`
  *
  * @param value - значение поиска
  * @param onChange - обработчик изменения значения
- * @param placeholder - placeholder текст
  * @param size - размер поля ('small' | 'medium' | 'large'), по умолчанию 'medium'
- * @param className - дополнительные CSS классы
+ * @param placeholder - placeholder текст (по умолчанию 'Поиск')
+ * @param ...rest - все остальные HTML атрибуты input (ref, disabled, autoFocus, etc.)
  */
 export const SearchInput: React.FC<SearchInputProps> = React.memo(
-  ({ value, onChange, placeholder = 'Поиск', size = 'medium', className }) => {
+  ({ value, onChange, size = 'medium', placeholder = 'Поиск', ...rest }) => {
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
@@ -88,8 +85,8 @@ export const SearchInput: React.FC<SearchInputProps> = React.memo(
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        className={className}
         $size={size}
+        {...rest}
       />
     );
   }
