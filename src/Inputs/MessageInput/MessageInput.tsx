@@ -221,7 +221,6 @@ export const MessageInput: React.FC<MessageInputProps> = React.memo(
     disabled = false,
     className,
   }) => {
-    console.log('📱 MessageInput render:', { valueLength: value.length, filesCount: files.length });
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
