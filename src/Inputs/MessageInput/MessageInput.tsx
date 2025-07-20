@@ -355,6 +355,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const handleSend = () => {
     if ((value.trim() || files.length > 0) && !disabled) {
       onSend?.();
+      // Автофокус на input после отправки
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }, 0);
     }
   };
 
