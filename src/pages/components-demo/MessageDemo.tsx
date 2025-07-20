@@ -1,11 +1,4 @@
-import {
-  Badge,
-  Message,
-  MessageContainer,
-  type MessageType,
-  type ActionsMenuAction,
-} from '@DobruniaUI';
-import { useState } from 'react';
+import { Message, type ActionsMenuAction } from '@DobruniaUI';
 
 // SVG иконки для действий с сообщениями
 const ReplyIcon = () => (
@@ -37,181 +30,15 @@ const userMe = {
   name: 'Я',
   avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
 };
+
 const userOther = {
   id: 'other',
   name: 'Аня',
   avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
 };
 
-const initialMessages: Array<{
-  type: MessageType;
-  text: string;
-  time: string;
-  reactions: { emoji: string; users: (typeof userMe)[] }[];
-  sender?: typeof userMe;
-  isRead: boolean;
-  id: string;
-  attachments?: {
-    type: 'image' | 'file' | 'audio';
-    url: string;
-    name?: string;
-    size?: number;
-    duration?: number;
-  }[];
-  forwardedFrom?: { id: string; name: string };
-  replyTo?: {
-    id: string;
-    text: string;
-    sender: { name: string };
-  };
-}> = [
-  {
-    id: 'msg-1',
-    type: 'incoming',
-    text: 'Привет! Как дела? (Это сообщение с обычным набором эмодзи)',
-    time: '8:10',
-    reactions: [
-      { emoji: '❤️', users: [userMe, userOther] },
-      { emoji: '😂', users: [userOther] },
-      { emoji: '👍', users: [userMe] },
-      { emoji: '🔥', users: [userMe] },
-    ],
-    sender: userOther,
-    isRead: false,
-  },
-  {
-    id: 'msg-2',
-    type: 'outgoing',
-    text: 'Все отлично, спасибо! 😊 (Сообщение с 2 эмодзи)',
-    time: '8:10',
-    reactions: [{ emoji: '❤️', users: [userMe, userOther] }],
-    sender: userMe,
-    isRead: false,
-  },
-  {
-    id: 'msg-3',
-    type: 'incoming',
-    text: 'Посмотри, какая красивая картинка!',
-    time: '8:11',
-    reactions: [],
-    sender: userOther,
-    isRead: true,
-    attachments: [
-      {
-        type: 'image',
-        url: 'https://cdn.fishki.net/upload/post/2021/02/16/3613245/tn/alberta-2297204-1280.jpg',
-        name: 'beautiful-landscape.jpg',
-      },
-    ],
-  },
-  {
-    id: 'msg-4',
-    type: 'outgoing',
-    text: 'А вот мое голосовое сообщение',
-    time: '8:12',
-    reactions: [],
-    sender: userMe,
-    isRead: true,
-    attachments: [
-      {
-        type: 'audio',
-        url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav',
-        name: 'voice-message.mp3',
-        duration: 15, // 15 seconds
-      },
-    ],
-  },
-  {
-    id: 'msg-5',
-    type: 'incoming',
-    text: 'Всем привет!',
-    time: '8:13',
-    reactions: [],
-    sender: userOther,
-    isRead: true,
-  },
-  {
-    id: 'msg-6',
-    type: 'incoming',
-    text: 'Это сообщение без отправителя.',
-    time: '8:14',
-    reactions: [],
-    sender: undefined,
-    isRead: false,
-  },
-  {
-    id: 'msg-7',
-    type: 'outgoing',
-    text: 'Это сообщение без отправителя.',
-    time: '8:15',
-    reactions: [],
-    sender: undefined,
-    isRead: false,
-  },
-  {
-    id: 'msg-8',
-    type: 'outgoing',
-    text: '🚀 ТЕСТ: Много эмодзи! Попробуй добавить реакцию - должен появиться скролл!',
-    time: '8:16',
-    reactions: [
-      { emoji: '❤️', users: [userMe, userOther] },
-      { emoji: '😂', users: [userOther] },
-      { emoji: '👍', users: [userMe] },
-      { emoji: '🔥', users: [userMe] },
-    ],
-    sender: userMe,
-    isRead: true,
-  },
-  {
-    id: 'msg-9',
-    type: 'outgoing',
-    text: '⚡ Компактные действия - тест ActionsMenu с минимальным набором',
-    time: '8:17',
-    reactions: [],
-    sender: userMe,
-    isRead: true,
-  },
-  {
-    id: 'msg-10',
-    type: 'incoming',
-    text: 'Это сообщение переслано от Vasya',
-    time: '1:03',
-    reactions: [],
-    sender: {
-      id: 'Vasya',
-      name: 'Vasya',
-      avatar: 'https://randomuser.me/api/portraits/men/33.jpg',
-    },
-    isRead: true,
-    forwardedFrom: { id: 'Vasya', name: 'Vasya' },
-  },
-  {
-    id: 'msg-11',
-    type: 'outgoing',
-    text: 'Это сообщение ответное на сообщение от Аня',
-    time: '1:04',
-    reactions: [],
-    sender: userMe,
-    isRead: true,
-    replyTo: {
-      id: 'msg-3',
-      text: 'Посмотри, какая красивая картинка!',
-      sender: { name: 'Аня' },
-    },
-  },
-  {
-    id: 'msg-12',
-    type: 'incoming',
-    text: '📝 Это сообщение БЕЗ меню действий и реакций - просто обычный текст',
-    time: '1:05',
-    reactions: [],
-    sender: userOther,
-    isRead: true,
-  },
-];
-
 // Разные наборы действий для тестирования ActionsMenu
-const fullActionsDemo: ActionsMenuAction[] = [
+const fullActions: ActionsMenuAction[] = [
   {
     label: 'Ответить',
     icon: <ReplyIcon />,
@@ -237,23 +64,6 @@ const fullActionsDemo: ActionsMenuAction[] = [
   },
 ];
 
-// Компактные действия (меньше опций)
-const compactActions: ActionsMenuAction[] = [
-  {
-    label: 'Копировать',
-    icon: <CopyIcon />,
-    onClick: () => alert('📋 Компактное действие: Копировать'),
-    shortcut: '⌘C',
-  },
-  {
-    label: 'Удалить',
-    icon: <DeleteIcon />,
-    onClick: () => alert('🗑️ Компактное действие: Удалить'),
-    type: 'destructive',
-  },
-];
-
-// Только основные действия
 const basicActions: ActionsMenuAction[] = [
   {
     label: 'Ответить',
@@ -263,97 +73,338 @@ const basicActions: ActionsMenuAction[] = [
   },
 ];
 
-// Большой набор эмодзи для тестирования горизонтального скролла
-const manyEmojis = ['❤️', '😂', '👍', '🔥', '😍', '😢', '😮', '😡', '🎉', '💯', '🚀', '⭐'];
+// Наборы эмодзи
 const standardEmojis = ['❤️', '😂', '👍', '🔥'];
-const basicEmojis = ['❤️', '👍'];
+const manyEmojis = ['❤️', '😂', '👍', '🔥', '😍', '😢', '😮', '😡', '🎉', '💯', '🚀', '⭐'];
 
 export const MessageDemo = () => {
-  const [messages, setMessages] = useState(initialMessages);
-
-  // Добавление реакции к сообщению по индексу
-  const handleReaction = (msgIdx: number, emoji: string) => {
-    setMessages((prev) =>
-      prev.map((msg, i) => {
-        if (i !== msgIdx) return msg;
-        // Проверяем, есть ли уже такая реакция от userMe
-        const existing = msg.reactions.find(
-          (r) => r.emoji === emoji && r.users.some((u) => u.id === userMe.id)
-        );
-        if (existing) {
-          // Если уже есть, убираем реакцию userMe
-          return {
-            ...msg,
-            reactions: msg.reactions
-              .map((r) =>
-                r.emoji === emoji ? { ...r, users: r.users.filter((u) => u.id !== userMe.id) } : r
-              )
-              .filter((r) => r.users.length > 0),
-          };
-        } else {
-          // Если нет, добавляем реакцию userMe
-          const found = msg.reactions.find((r) => r.emoji === emoji);
-          if (found) {
-            return {
-              ...msg,
-              reactions: msg.reactions.map((r) =>
-                r.emoji === emoji ? { ...r, users: [...r.users, userMe] } : r
-              ),
-            };
-          } else {
-            return {
-              ...msg,
-              reactions: [...msg.reactions, { emoji, users: [userMe] }],
-            };
-          }
-        }
-      })
-    );
-  };
-
-  const handleForwardedClick = (id: string) => {
-    alert('Переход к сообщению пользователя с id: ' + id);
-  };
+  const handleReaction = () => {};
 
   return (
-    <MessageContainer maxHeight={600}>
-      <Badge variant='message-date' date={new Date()} locale='ru' />
-      {messages.map((msg, idx) => {
-        // Разные наборы эмодзи и действий для тестирования
-        let reactionEmojis = standardEmojis;
-        let actions = fullActionsDemo;
+    <div className='message-demo'>
+      <h1>💬 Message Component</h1>
+      <p>Компонент сообщения для чатов с поддержкой реакций, вложений и действий</p>
 
-        if (msg.id === 'msg-8') {
-          // Сообщение с большим количеством эмодзи для тестирования скролла
-          reactionEmojis = manyEmojis;
-        } else if (msg.id === 'msg-2') {
-          // Сообщение с минимальными эмодзи
-          reactionEmojis = basicEmojis;
-          actions = basicActions;
-        } else if (msg.id === 'msg-9') {
-          // Сообщение с компактными действиями
-          actions = compactActions;
-        } else if (msg.id === 'msg-12') {
-          // Сообщение БЕЗ меню действий и реакций
-          reactionEmojis = [];
-          actions = [];
+      {/* Основные типы сообщений */}
+      <section className='section'>
+        <h2>🎨 Основные типы сообщений</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>Входящее сообщение</h3>
+            <Message
+              type='incoming'
+              text='Привет! Как дела? Это входящее сообщение от другого пользователя.'
+              time='30:14'
+              sender={userOther}
+              isRead={true}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Исходящее сообщение</h3>
+            <Message
+              type='outgoing'
+              text='Привет! Все отлично, спасибо! Это исходящее сообщение от меня.'
+              time='32:14'
+              sender={userMe}
+              isRead={false}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Без отправителя</h3>
+            <Message
+              type='incoming'
+              text='Это сообщение без указания отправителя - просто текст.'
+              time='35:14'
+              isRead={true}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Сообщения с реакциями */}
+      <section className='section'>
+        <h2>😊 Сообщения с реакциями</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>С реакциями</h3>
+            <Message
+              type='incoming'
+              text='Посмотри на эту картинку!'
+              time='00:15'
+              sender={userOther}
+              reactions={[
+                { emoji: '❤️', users: [userMe, userOther] },
+                { emoji: '😂', users: [userOther] },
+                { emoji: '👍', users: [userMe] },
+              ]}
+              currentUserId={userMe.id}
+              reactionEmojis={standardEmojis}
+              onReaction={handleReaction}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Много эмодзи</h3>
+            <Message
+              type='outgoing'
+              text='Сообщение с большим набором эмодзи для тестирования скролла!'
+              time='05:15'
+              sender={userMe}
+              reactions={[
+                { emoji: '❤️', users: [userMe] },
+                { emoji: '🚀', users: [userOther] },
+                { emoji: '💯', users: [userMe] },
+              ]}
+              currentUserId={userMe.id}
+              reactionEmojis={manyEmojis}
+              onReaction={handleReaction}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Без реакций</h3>
+            <Message
+              type='incoming'
+              text='Это сообщение без реакций - просто обычный текст.'
+              time='10:15'
+              sender={userOther}
+              reactionEmojis={[]}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Сообщения с вложениями */}
+      <section className='section'>
+        <h2>📎 Сообщения с вложениями</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>С изображением</h3>
+            <Message
+              type='incoming'
+              text='Красивый пейзаж!'
+              time='00:16'
+              sender={userOther}
+              attachments={[
+                {
+                  type: 'image',
+                  url: 'https://cdn.fishki.net/upload/post/2021/02/16/3613245/tn/alberta-2297204-1280.jpg',
+                  name: 'landscape.jpg',
+                },
+              ]}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>С аудио</h3>
+            <Message
+              type='outgoing'
+              text='Голосовое сообщение'
+              time='05:16'
+              sender={userMe}
+              attachments={[
+                {
+                  type: 'audio',
+                  url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav',
+                  name: 'voice-message.mp3',
+                  duration: 15,
+                },
+              ]}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>С файлом</h3>
+            <Message
+              type='incoming'
+              text='Документ для тебя'
+              time='10:16'
+              sender={userOther}
+              attachments={[
+                {
+                  type: 'file',
+                  url: '#',
+                  name: 'document.pdf',
+                  size: 1024 * 1024, // 1MB
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Сообщения с действиями */}
+      <section className='section'>
+        <h2>⚡ Сообщения с действиями</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>Полное меню действий</h3>
+            <Message
+              type='outgoing'
+              text='Сообщение с полным набором действий в контекстном меню'
+              time='00:17'
+              sender={userMe}
+              actions={fullActions}
+              showActionsOnClick={true}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Базовые действия</h3>
+            <Message
+              type='incoming'
+              text='Сообщение с базовыми действиями'
+              time='05:17'
+              sender={userOther}
+              actions={basicActions}
+              showActionsOnClick={true}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Без действий</h3>
+            <Message
+              type='outgoing'
+              text='Обычное сообщение без дополнительных действий'
+              time='10:17'
+              sender={userMe}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Специальные типы сообщений */}
+      <section className='section'>
+        <h2>🔄 Специальные типы сообщений</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>Пересланное сообщение</h3>
+            <Message
+              type='incoming'
+              text='Это пересланное сообщение от другого пользователя'
+              time='00:18'
+              sender={userOther}
+              forwardedFrom={{ id: 'vasya', name: 'Vasya' }}
+              onForwardedClick={(id) => alert(`Переход к сообщению от ${id}`)}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Ответное сообщение</h3>
+            <Message
+              type='outgoing'
+              text='Это ответ на предыдущее сообщение'
+              time='05:18'
+              sender={userMe}
+              replyTo={{
+                id: 'msg-1',
+                text: 'Привет! Как дела?',
+                sender: { name: 'Аня' },
+              }}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Длинное сообщение</h3>
+            <Message
+              type='incoming'
+              text='Это очень длинное сообщение для демонстрации того, как компонент обрабатывает текст, который не помещается в одну строку. Такие сообщения должны корректно переноситься и отображаться с правильными отступами и форматированием.'
+              time='10:18'
+              sender={userOther}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Статусы прочтения */}
+      <section className='section'>
+        <h2>👁️ Статусы прочтения</h2>
+
+        <div className='messages-grid'>
+          <div className='message-example'>
+            <h3>Прочитано</h3>
+            <Message
+              type='outgoing'
+              text='Это сообщение прочитано получателем'
+              time='00:19'
+              sender={userMe}
+              isRead={true}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Не прочитано</h3>
+            <Message
+              type='outgoing'
+              text='Это сообщение еще не прочитано'
+              time='05:19'
+              sender={userMe}
+              isRead={false}
+            />
+          </div>
+
+          <div className='message-example'>
+            <h3>Без статуса</h3>
+            <Message
+              type='incoming'
+              text='Входящие сообщения не показывают статус прочтения'
+              time='10:19'
+              sender={userOther}
+            />
+          </div>
+        </div>
+      </section>
+
+      <style>{`
+        .message-demo {
+          padding: 20px;
+          max-width: 1200px;
+          margin: 0 auto;
         }
 
-        return (
-          <Message
-            key={msg.id}
-            {...msg}
-            onReaction={
-              reactionEmojis.length > 0 ? (emoji: string) => handleReaction(idx, emoji) : undefined
-            }
-            currentUserId={userMe.id}
-            actions={actions.length > 0 ? actions : undefined}
-            reactionEmojis={reactionEmojis}
-            showActionsOnClick={actions.length > 0}
-            onForwardedClick={msg.forwardedFrom ? handleForwardedClick : undefined}
-          />
-        );
-      })}
-    </MessageContainer>
+        .section {
+          margin-bottom: 40px;
+        }
+
+        .section h2 {
+          margin-bottom: 20px;
+          color: var(--c-text-primary);
+        }
+
+        .messages-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 30px;
+          margin-bottom: 20px;
+        }
+
+        .message-example {
+          border: 1px solid var(--c-border);
+          border-radius: 12px;
+          padding: 20px;
+          background: var(--c-bg-elevated);
+        }
+
+        .message-example h3 {
+          margin: 0 0 15px 0;
+          font-size: 16px;
+          color: var(--c-text-primary);
+          font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+          .messages-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+    </div>
   );
 };

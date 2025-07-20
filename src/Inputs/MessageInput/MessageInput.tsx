@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button, DESIGN_TOKENS, AudioInput, EmojiInput, FileInput } from '@DobruniaUI';
-import { useScrollToBottom } from '../../utils/hooks/useScrollToBottom';
-import { useScrollPosition } from '../../utils/hooks/useScrollPosition';
 
 export interface MessageInputProps {
   /** Значение текста сообщения */
@@ -25,10 +23,6 @@ export interface MessageInputProps {
   className?: string;
   /** Отключить компонент */
   disabled?: boolean;
-  /** Дочерние элементы для отображения в контейнере сообщений */
-  children?: React.ReactNode;
-  /** Максимальная высота контейнера сообщений */
-  maxHeight?: string | number;
 }
 
 // SVG иконка для аудио файлов
@@ -52,73 +46,16 @@ const AudioIcon = () => (
 );
 
 // Стили
-const ChatContainer = styled.div<{ $disabled?: boolean }>`
-  position: relative;
-  height: 100%;
-  min-height: 0;
-  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
-  pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
-`;
-
-const MessageContainer = styled.div<{ $maxHeight?: string | number }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 100%;
-  max-height: ${({ $maxHeight }) =>
-    $maxHeight ? (typeof $maxHeight === 'number' ? `${$maxHeight}px` : $maxHeight) : '100%'};
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--c-bg-default);
-  padding: 24px 0 24px 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--c-accent) var(--c-bg-default);
-  margin-bottom: 64px;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-    background: var(--c-bg-default);
-    border-radius: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--c-accent);
-    border-radius: 8px;
-  }
-`;
-
-const ScrollToBottomWrapper = styled.div`
-  position: absolute;
-  bottom: 80px;
-  right: 16px;
-  z-index: 10;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.2s ease;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const InputSection = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+const InputContainer = styled.div<{ $disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${DESIGN_TOKENS.spacing.small};
   border-top: 1px solid var(--c-border);
   background: var(--c-bg-elevated);
   padding: ${DESIGN_TOKENS.spacing.small};
-  max-height: 200px; /* Ограничиваем максимальную высоту секции ввода */
+  max-height: 200px;
+  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
 `;
 
 const FilePreview = styled.div`
@@ -128,7 +65,7 @@ const FilePreview = styled.div`
   padding: ${DESIGN_TOKENS.spacing.small};
   border-radius: ${DESIGN_TOKENS.radius.medium};
   flex-wrap: wrap;
-  flex-shrink: 0; /* Предотвращаем сжатие */
+  flex-shrink: 0;
 `;
 
 const FileThumbWrapper = styled.div`
@@ -173,7 +110,7 @@ const InputBar = styled.div`
   gap: 8px;
   width: 100%;
   border-radius: ${DESIGN_TOKENS.radius.large};
-  flex-shrink: 0; /* Предотвращаем сжатие */
+  flex-shrink: 0;
 `;
 
 const StyledTextarea = styled.textarea`
@@ -185,7 +122,7 @@ const StyledTextarea = styled.textarea`
   outline: none;
   resize: none;
   min-height: 32px;
-  max-height: 120px; /* Ограничиваем максимальную высоту textarea */
+  max-height: 120px;
   line-height: 32px;
   overflow-y: auto;
   padding: 0 4px;
@@ -251,10 +188,9 @@ const ImageModalImg = styled.img`
 `;
 
 /**
- * MessageInput - комплексный компонент чата с контейнером сообщений и вводом
+ * MessageInput - компонент ввода сообщений с поддержкой файлов, эмодзи и аудио
  *
- * Объединяет в себе:
- * - Контейнер сообщений с автоскроллом
+ * Включает в себя:
  * - Текстовый ввод с автоматическим изменением высоты
  * - Прикрепление файлов с превью
  * - Выбор эмодзи (EmojiInput)
@@ -270,138 +206,84 @@ const ImageModalImg = styled.img`
  * @param onAudioRecord - обработчик записи аудио
  * @param placeholder - placeholder текста
  * @param disabled - отключить компонент
- * @param children - сообщения для отображения в контейнере
- * @param maxHeight - максимальная высота контейнера сообщений
  * @param className - дополнительные CSS классы
  */
-export const MessageInput: React.FC<MessageInputProps> = ({
-  value,
-  onChange,
-  files,
-  onFilesChange,
-  onSend,
-  onEmojiSelect,
-  onAudioRecord,
-  placeholder = 'Введите сообщение...',
-  disabled = false,
-  children,
-  maxHeight,
-  className,
-}) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const messageContainerRef = useRef<HTMLDivElement>(null);
+export const MessageInput: React.FC<MessageInputProps> = React.memo(
+  ({
+    value,
+    onChange,
+    files,
+    onFilesChange,
+    onSend,
+    onEmojiSelect,
+    onAudioRecord,
+    placeholder = 'Введите сообщение...',
+    disabled = false,
+    className,
+  }) => {
+    console.log('📱 MessageInput render:', { valueLength: value.length, filesCount: files.length });
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // Хуки для скролла
-  const { scrollToBottom, initializeScroll } = useScrollToBottom(messageContainerRef);
-  const { isAtBottom, isScrolledUp } = useScrollPosition(messageContainerRef);
-
-  // Для авто-роста textarea
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = '26.38px';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-    }
-  }, [value]);
-
-  // Автоскролл при новых сообщениях (если пользователь был внизу)
-  useEffect(() => {
-    if (isAtBottom) {
-      scrollToBottom();
-    }
-  }, [children, isAtBottom, scrollToBottom]);
-
-  // Инициализация скролла при первом рендере
-  useEffect(() => {
-    initializeScroll();
-  }, [initializeScroll]);
-
-  // File handling
-  const handleFileChange = (newFiles: File[]) => {
-    const all = [...files, ...newFiles];
-    const unique = all.filter(
-      (file, idx, arr) => arr.findIndex((f) => f.name === file.name && f.size === file.size) === idx
-    );
-    onFilesChange(unique);
-  };
-
-  const handleRemoveFile = (idx: number) => {
-    const updated = files.filter((_, i) => i !== idx);
-    onFilesChange(updated);
-  };
-
-  const handlePreview = (file: File) => {
-    if (file.type.startsWith('image/')) {
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
-  const closePreview = () => setPreviewImage(null);
-
-  // Для message: вставка emoji в value
-  const handleEmojiSelect = (emoji: string) => {
-    const newValue = value + emoji;
-    onChange(newValue);
-    setTimeout(() => {
+    // Для авто-роста textarea
+    useEffect(() => {
       if (textareaRef.current) {
-        textareaRef.current.focus();
-        const len = newValue.length;
-        textareaRef.current.setSelectionRange(len, len);
+        textareaRef.current.style.height = '26.38px';
+        textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
       }
-    }, 0);
-    onEmojiSelect?.(emoji);
-  };
+    }, [value]);
 
-  const handleSend = () => {
-    if ((value.trim() || files.length > 0) && !disabled) {
-      onSend?.();
-      // Автофокус на input после отправки
+    // File handling
+    const handleFileChange = (newFiles: File[]) => {
+      const all = [...files, ...newFiles];
+      const unique = all.filter(
+        (file, idx, arr) =>
+          arr.findIndex((f) => f.name === file.name && f.size === file.size) === idx
+      );
+      onFilesChange(unique);
+    };
+
+    const handleRemoveFile = (idx: number) => {
+      const updated = files.filter((_, i) => i !== idx);
+      onFilesChange(updated);
+    };
+
+    const handlePreview = (file: File) => {
+      if (file.type.startsWith('image/')) {
+        setPreviewImage(URL.createObjectURL(file));
+      }
+    };
+
+    const closePreview = () => setPreviewImage(null);
+
+    // Вставка emoji в value
+    const handleEmojiSelect = (emoji: string) => {
+      const newValue = value + emoji;
+      onChange(newValue);
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.focus();
+          const len = newValue.length;
+          textareaRef.current.setSelectionRange(len, len);
         }
       }, 0);
-    }
-  };
+      onEmojiSelect?.(emoji);
+    };
 
-  const handleScrollToBottom = () => {
-    scrollToBottom();
-  };
+    const handleSend = () => {
+      if ((value.trim() || files.length > 0) && !disabled) {
+        onSend?.();
+        // Автофокус на input после отправки
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.focus();
+          }
+        }, 0);
+      }
+    };
 
-  return (
-    <ChatContainer $disabled={disabled} className={className}>
-      {/* Контейнер сообщений */}
-      <MessageContainer ref={messageContainerRef} $maxHeight={maxHeight}>
-        {children}
-      </MessageContainer>
-
-      {/* Кнопка скролла вниз */}
-      {isScrolledUp && (
-        <ScrollToBottomWrapper className='visible'>
-          <Button
-            variant='secondary'
-            shape='circle'
-            size='small'
-            onClick={handleScrollToBottom}
-            aria-label='Прокрутить вниз'
-          >
-            <svg
-              width='16'
-              height='16'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-            >
-              <path d='M7 13l5 5 5-5' strokeLinecap='round' strokeLinejoin='round' />
-              <path d='M7 6l5 5 5-5' strokeLinecap='round' strokeLinejoin='round' />
-            </svg>
-          </Button>
-        </ScrollToBottomWrapper>
-      )}
-
-      {/* Секция ввода */}
-      <InputSection>
+    return (
+      <InputContainer $disabled={disabled} className={className}>
         {/* Превью файлов - показываем только если есть файлы */}
         {files.length > 0 && (
           <FilePreview>
@@ -480,7 +362,22 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             <AudioInput onAudioRecord={onAudioRecord} />
           ) : null}
         </InputBar>
-      </InputSection>
-    </ChatContainer>
-  );
-};
+      </InputContainer>
+    );
+  },
+  (prevProps, nextProps) => {
+    // Кастомная функция сравнения - сравниваем только важные пропсы
+    return (
+      prevProps.value === nextProps.value &&
+      prevProps.disabled === nextProps.disabled &&
+      prevProps.placeholder === nextProps.placeholder &&
+      prevProps.files.length === nextProps.files.length &&
+      prevProps.files.every(
+        (file, index) =>
+          file.name === nextProps.files[index]?.name && file.size === nextProps.files[index]?.size
+      )
+    );
+  }
+);
+
+MessageInput.displayName = 'MessageInput';

@@ -118,10 +118,6 @@ export {
   type ThemeConfig,
 } from './utils/theme';
 export type { Presence, MessageStatus } from './utils/types';
-export {
-  MessageContainer,
-  type MessageContainerProps,
-} from './utils/components/MessageContainer/MessageContainer';
 
 /**
  * Theme Components

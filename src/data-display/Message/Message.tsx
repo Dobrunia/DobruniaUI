@@ -685,6 +685,7 @@ export const Message: React.FC<MessageProps> = React.memo(
     id,
     showActionsOnClick = false,
   }) => {
+    console.log('💬 Message render:', id || 'no-id', { text: text.length, attachments: attachments?.length });
     const [showReactions, setShowReactions] = useState(false);
     const [showActions, setShowActions] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
